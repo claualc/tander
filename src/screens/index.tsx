@@ -19,6 +19,10 @@ const App: React.FC<Props> = () => {
   const testFirestore = useCallback(async () => {
     const users = await userService.listAll();
     console.log("users ################################")
+    const not  = await FCMService.schedulePushNotification(
+      "Tander","Deu match!!! 😘💕💖😎", { data: 'goes here' }
+    )
+    console.log(not)
   }, []);
 
   return (

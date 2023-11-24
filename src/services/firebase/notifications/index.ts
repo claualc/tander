@@ -19,6 +19,7 @@ const FCMService = {
             });
             
             if (Platform.OS === 'android') {
+                console.log("setNotificationChannelAsync")
                 await Notifications.setNotificationChannelAsync(
                     'default', {
                         name: 'default',
@@ -35,20 +36,22 @@ const FCMService = {
                 let finalStatus = existingStatus;
                 
                 if (existingStatus !== 'granted') {
-                    const { status } = await Notifications.requestPermissionsAsync();
-                    finalStatus = status;
+                    try{
+                        const { status } = await Notifications.requestPermissionsAsync();
+                        finalStatus = status;
+                    } catch(error) {
+                        console.log(error)
+                    }
                 }
                 if (finalStatus !== 'granted') {
                     console.log("..:: FCMService ERROR!: permissions not granted")
                     return;
                 }
 
-
-                console.log("PROJECT ID",apiKeys.firebaseConfig.projectId )
-                token = (await Notifications.getExpoPushTokenAsync(apiKeys.firebaseConfig)).data
+                token = (await Notifications.getExpoPushTokenAsync({
+                     projectId: "3bd5e4ec-9401-4379-8fa9-b1c4c2c1897a"  })).data
                 
-                console.log("..:: FCMService initiated")
-                console.log("   ",token);
+                console.log("..:: FCMService initiated", token)
 
             } else {
                 console.log("..:: FCMService ERROR!")
@@ -56,13 +59,14 @@ const FCMService = {
 
             return token
         },
-        schedulePushNotification: async () => {
+        schedulePushNotification: async (
+            title: string, 
+            body: string, 
+            data: Object) => {
             await Notifications.scheduleNotificationAsync({
               content: {
-                title: "You've got mail! 📬",
-                body: 'Here is the notification body',
-                data: { data: 'goes here' },
-              },
+                title, body, data
+                },
               trigger: { seconds: 2 },
             });
         },
