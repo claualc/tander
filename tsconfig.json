@@ -8,6 +8,7 @@
         "@screens/*": ["src/screens/*"],
         "@serv/*": ["src/services/*"],
         "@api/*": ["src/api/*"],
+        "@domain/*": ["src/api/domain/*"],
       },
     }
 }

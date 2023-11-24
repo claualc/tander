@@ -1,25 +1,21 @@
 import * as firebase from 'firebase/app';
 import apiKeys from "./keys";
 
-//firebase modules
-import FirestoreModule from "@serv/firebase/database";
+
+// to init services
+import dBService from "./database"
 
 // Initialize Firebase
-const initFirebaseService = () => {
-  console.log("\n..::Init FirebaseService")
+console.log("\n..::Init FirebaseService")
   
-  if (!firebase.getApps().length) {
-    console.log(".... Connected Firebase")
+if (!firebase.getApps().length) {
+  console.log(".... Connected Firebase")
+  firebase.initializeApp(apiKeys.firebaseConfig);
 
-    const app = firebase.initializeApp(apiKeys.firebaseConfig);
-    
-    // add modules
-    const dbService = FirestoreModule(app)
-
-    return { 
-      dbService
-    }
-  }
+  // return { 
+  //   // modules
+  //   dbService: await FirestoreModule(app)
+  // }
 }
 
-export const services = initFirebaseService();
+export default firebase;

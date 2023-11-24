@@ -1,10 +1,9 @@
-import "@serv/firebase";
-
-
 import React, { useEffect, useCallback } from 'react';
 import {Button, Text, View} from 'react-native';
-import userService from '@api/userService';
 
+import "@serv/firebase"; // import to initiate the firebase module
+import userService from '@serv/userService';
+import initFirebaseService from '@serv/firebase';
 
 export type Props = {
   name?: string;
@@ -15,8 +14,7 @@ const App: React.FC<Props> = () => {
 
   const testFirestore = useCallback(async () => {
     const users = await userService.listAll();
-    console.log("USEEERSS")
-    console.log(users)
+    console.log("users ################################")
   }, []);
 
   return (
