@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.11",
+    "@types/react-native-dotenv": "^0.2.2",
     "expo": "~49.0.15",
-    "expo-constants": "~14.4.2",
     "expo-device": "~5.4.0",
     "expo-notifications": "~0.20.1",
     "expo-status-bar": "~1.6.0",

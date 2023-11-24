@@ -4,6 +4,7 @@ import * as Device from 'expo-device';
 import { Platform } from 'react-native';
 import apiKeys from "./../keys";
 
+
 const FCMService = {
         initFCMAsyncService: async () => {
             let token;
@@ -48,8 +49,10 @@ const FCMService = {
                     return;
                 }
 
+                console.log("EXPO_PROJECT_ID",process.env.EXPO_PUBLIC_EXPO_PROJECT_ID)
+
                 token = (await Notifications.getExpoPushTokenAsync({
-                     projectId: "3bd5e4ec-9401-4379-8fa9-b1c4c2c1897a"  })).data
+                     projectId: process.env.EXPO_PUBLIC_EXPO_PROJECT_ID  })).data
                 
                 console.log("..:: FCMService initiated", token)
 
