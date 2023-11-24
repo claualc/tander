@@ -20,7 +20,6 @@ const FCMService = () => {
             });
             
             if (Platform.OS === 'android') {
-                console.log("setNotificationChannelAsync")
                 await Notifications.setNotificationChannelAsync(
                     'default', {
                         name: 'default',
@@ -37,6 +36,7 @@ const FCMService = () => {
                 let finalStatus = existingStatus;
                 
                 if (existingStatus !== 'granted') {
+                    console.log("  FCM permissions already granted")
                     try{
                         const { status } = await Notifications.requestPermissionsAsync();
                         finalStatus = status;
@@ -45,6 +45,8 @@ const FCMService = () => {
                     }
                 }
                 if (finalStatus !== 'granted') {
+                    console.log("  FCM permissions not granted, status: ", finalStatus)
+
                     console.log("..:: FCMService ERROR!: permissions not granted")
                     return;
                 }
