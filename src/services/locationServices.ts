@@ -1,5 +1,5 @@
 import { City, Country } from "@api/domain/Location";
-import {converter} from "./firebase/converterDTO";
+import {converter} from "@firebaseServ/database/converterDTO";
 
 import dbServices from "./firebase/database";
 

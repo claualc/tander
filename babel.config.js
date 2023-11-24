@@ -9,11 +9,12 @@ module.exports = function(api) {
            root: ['./src'],
            extensions: ['.ios.js', '.android.js', '.js', '.ts', '.tsx', '.json'],
            alias: {
+            "@serv": "./src/services",
+            "@firebaseServ": "./src/services/firebase",
             "@": "src/",
             "@components": "./src/components",
             "@screens": "./src/screens",
             "@api": "./src/api",
-            "@serv": "./src/services",
             "@domain": "./src/api/domain",
            }
          }

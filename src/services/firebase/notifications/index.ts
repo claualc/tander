@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import { Platform } from 'react-native';
-import apiKeys from "./../keys";
 
 
-const FCMService = {
-        initFCMAsyncService: async () => {
+const FCMService = () => {
+    return {
+        initAsyncService: async () => {
             let token;
 
             // First, set the handler that will cause the notification
@@ -73,8 +73,8 @@ const FCMService = {
               trigger: { seconds: 2 },
             });
         },
-      
-}
+    }
+};
 
-export default FCMService;
+export default FCMService();
 

@@ -4,6 +4,7 @@ import {Button, Text, View} from 'react-native';
 import userService from '@serv/userService';
 import "@serv/firebase"; // import to initiate the firebase module
 import FCMService from '@serv/firebase/notifications';
+import {initAsyncFirebaseServices} from '@serv/firebase';
 
 export type Props = {
   name?: string;
@@ -13,7 +14,7 @@ export type Props = {
 const App: React.FC<Props> = () => {
 
   useEffect(() => {
-    (async () => await FCMService.initFCMAsyncService())();
+    (async () => await initAsyncFirebaseServices())();
   }, [])
 
   const testFirestore = useCallback(async () => {

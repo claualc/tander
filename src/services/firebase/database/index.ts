@@ -1,10 +1,10 @@
 import { getFirestore, getDocs, doc, query, collection, DocumentData, QueryDocumentSnapshot, SnapshotOptions, getDoc } from "firebase/firestore";
-import {converter} from "../converterDTO";
+import { converter } from "./converterDTO";
+import { firebaseLocal } from "@firebaseServ/index";
 
-import firebase from "./../index";
 
 const FirestoreService = () => {
-    const db = getFirestore(firebase.getApp());
+    const db = getFirestore(firebaseLocal.getApp());
     console.log("..:: FirestoreService initiated");
 
     return {

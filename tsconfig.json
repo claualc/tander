@@ -3,10 +3,11 @@
     "compilerOptions": {
       "baseUrl": ".",
       "paths": {
+        "@serv/*": ["src/services/*"],
+        "@firebaseServ/*": ["src/services/firebase/*"],
         "@/*": ["src/*"],
         "@components/*": ["src/components/*"],
         "@screens/*": ["src/screens/*"],
-        "@serv/*": ["src/services/*"],
         "@api/*": ["src/api/*"],
         "@domain/*": ["src/api/domain/*"],
       },
