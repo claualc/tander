@@ -4,7 +4,7 @@ import dbServices from "./firebase/database"
 import { User } from "@domain/User";
 import { Course, Univeristy } from "@api/domain/University";
 import { Language } from "@api/domain/Language";
-import { converter } from "./firebase/converterDTO";
+import { converter } from "@firebaseServ/database/converterDTO";
 
 interface userServiceI {
     listAll(): Promise<any>;

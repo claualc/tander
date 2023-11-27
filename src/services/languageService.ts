@@ -1,6 +1,6 @@
 import services from "@serv/firebase";
 import { Language } from "@api/domain/Language";
-import { converter } from "./firebase/converterDTO";
+import { converter } from "@firebaseServ/database/converterDTO";
 
 import dbServices from "./firebase/database"
 

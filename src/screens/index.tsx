@@ -1,10 +1,13 @@
 import React, { useEffect, useCallback } from 'react';
 import {Button, Text, View} from 'react-native';
 
-import userService from '@serv/userService';
 import "@serv/firebase"; // import to initiate the firebase module
-import FCMService from '@serv/firebase/notifications';
 import {initAsyncFirebaseServices} from '@serv/firebase';
+import styled, { ThemeProvider } from 'styled-components/native';
+import { theme } from './theme';
+import FCMService from "@firebaseServ/notifications"
+import userService from '@serv/userService';
+
 
 export type Props = {
   name?: string;
@@ -17,27 +20,42 @@ const App: React.FC<Props> = () => {
     (async () => await initAsyncFirebaseServices())();
   }, [])
 
-  const testFirestore = useCallback(async () => {
-    const users = await userService.listAll();
-    console.log("users ################################")
-    const not  = await FCMService.schedulePushNotification(
-      "Tander","Deu match!!! 😘💕💖😎", { data: 'goes here' }
-    )
-    console.log(not)
-  }, []);
+    const testFirestore = useCallback(async () => {
+      //const users = await userService.listAll();
+
+      const not  = await FCMService.schedulePushNotification(
+        "Tander","Deu match!!! 😘💕💖😎", { data: 'goes here' }
+      )
+
+
+      // check
+      // user permision to add notifications
+    }, []);
 
   return (
-    <View>
-      <Text>
-       uaydiuyaeuhrelkjlkjf dlsjfekdjfò j
-      </Text>
-      <Button
-        onPress={testFirestore}
-        title="testFirestore"
-        color="#841584"
-      />
-    </View>
+    <ThemeProvider theme={theme}>
+      <MainWrapper>
+        <Text>
+          uaydiuyaeuhrelkjlkjf dlsjfekdjfò j
+          </Text>
+          <Button
+            onPress={testFirestore}
+            title="testFirestore"
+            color="#841584"
+          />
+      </MainWrapper>
+    </ThemeProvider>
   );
 };
+
+const MainWrapper = styled.View`
+  background-color: ${props => props.theme.main};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+`;
 
 export default App;

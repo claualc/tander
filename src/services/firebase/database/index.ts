@@ -4,6 +4,7 @@ import firebase from "@firebaseServ/index";
 
 
 const FirestoreService = () => {
+    console.log("..:: FirestoreService ...")
     const db = getFirestore(firebase.getApp());
     console.log("..:: FirestoreService initiated");
 

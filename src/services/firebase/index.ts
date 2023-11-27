@@ -19,7 +19,6 @@ if (!firebase.getApps().length) {
   });
 
   // init modules
-  // FirestoreService; by import
 }
 
 const initAsyncFirebaseServices = async () => {
