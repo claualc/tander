@@ -36,11 +36,16 @@ const FirestoreService = () => {
         },
         getDocRefById,
         listAll: async (collect: string, converter: converter<any>) => {
+
             const q = query(collection(db, collect)
                                 ).withConverter(converter)
 
             const querySnapshot = await getDocs(q);
-            return querySnapshot.docs;
+            
+            const docsData =  querySnapshot.docs.map(
+                async (d) => {
+                    return await d.data()});
+            return Promise.all(docsData)
         },
     }
 }

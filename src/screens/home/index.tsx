@@ -10,10 +10,10 @@ interface Props {
 }
 
 const HomeScreen: React.FC<Props> = ({ children, style, ...rest }: any) => {
-  const id =  "Lye42fLFNWSZ4HGHCifr";
+  const id =  "MM5JZ2637u3UlKsKgWRK";
   useEffect(() => {
     (async () => {
-      const user = await userService.getById(id)
+      const user = await userService.listAll()
       console.log("user",user)
     })();
 

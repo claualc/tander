@@ -40,32 +40,25 @@ const parseUserAsync = async (data: any): Promise<User> => {
         team.data() as UserTeam,
         city,
         likedUsersId,
-        matches
+        matches,
     )
 
+    console.log("user")
     return user
 }
 
 const userFirebaseConverter: converter<User> = {
     toFirestore: (item) => ({...item}),
-    fromFirestore: (snap, opt) => {
+    fromFirestore: async (snap, opt) => {
         const data = snap.data(opt)!;
-        return data;
+        return await parseUserAsync(data);
     }
 }
 
 export const listAll = async () => {
-    const docs = await dbServices.listAll(COLLECTION_ID, userFirebaseConverter);
-    const users  = await docs.map(async (d) => {
-        let data = await d.data()
-        const user: User = await parseUserAsync(data)
-        return user
-    });
-
-    return users
+    return await dbServices.listAll(COLLECTION_ID, userFirebaseConverter);
 }
 
 export const getById = async (id: string | String | number | Number) => {
-    const user_own = await dbServices.findById(COLLECTION_ID,userFirebaseConverter,id)
-    return await parseUserAsync(user_own)
+    return await dbServices.findById(COLLECTION_ID,userFirebaseConverter,id)
 }
