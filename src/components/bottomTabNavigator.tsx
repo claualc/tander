@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components/native';
 import { IconBarTab } from './index';
 import { stackNavigateTo } from '@screens/stackNavigator';
+import { View } from 'react-native';
 
 
 const MainView = styled.View<{
@@ -36,17 +37,15 @@ const BottomTabNavigator: React.FC<Props> = ({ routes, height}) => {
     <MainView height={height}>
 
     { routes.map(({name, icon}, i) => (
-        <>
-            <IconBarTab 
-                key={i}
-                onPress={() => {
-                    setFocusedScreen(i)
-                    stackNavigateTo(name);
-                }}
-                focused={focusedScreen == i} 
-                name={icon} 
-                size={45} />
-        </>
+        <IconBarTab 
+            key={i}
+            onPress={() => {
+                setFocusedScreen(i)
+                stackNavigateTo(name);
+            }}
+            focused={focusedScreen == i} 
+            name={icon} 
+            size={45} />
     ))} 
 
   </MainView>);

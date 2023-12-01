@@ -28,8 +28,8 @@ export class User {
         public photos?: Photo[],
         public team?: UserTeam,
         public city?: City,
-        public likedUsers?: User[],
-        public matches?: User[],
+        public likedUsers?: User[] | String[],
+        public matches?: User[] | String[],
     ) {}
 }
   

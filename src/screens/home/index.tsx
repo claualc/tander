@@ -1,14 +1,26 @@
-import React from "react";
-import { MainWrapper } from "@components/index";
-import { Image, StyleSheet, Text, TextProps, TextStyle, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View } from "react-native";
 import { User } from "@domain/User";
+import { MainWrapper } from "@components/index";
+import userService from "@serv/userService";
 
 
 interface Props {
   user?: User
 }
 
-const HomeScreen: React.FC<Props> = ({ children, style, user, ...rest }: any) => {
+const HomeScreen: React.FC<Props> = ({ children, style, ...rest }: any) => {
+  const id =  "Lye42fLFNWSZ4HGHCifr";
+  useEffect(() => {
+    (async () => {
+      const user = await userService.getById(id)
+      console.log("user",user)
+    })();
+
+  })
+
+  const [user, setUser] = useState<User>();
+
   return (
     <MainWrapper>
       <View
@@ -16,11 +28,11 @@ const HomeScreen: React.FC<Props> = ({ children, style, user, ...rest }: any) =>
           width: "80%",
           height: "80%",
           backgroundColor: "red",
-          shadowOpacity: 0.20,
-          shadowRadius: 3.453,
-          elevation: 3,
+          shadowOpacity: 1,
+          shadowRadius: 1,
+          elevation: 10,
           shadowColor: "black",
-          shadowOffset: { height: 3.453, width: 0},
+          shadowOffset: { height: 10, width: 0},
           borderRadius: 13
       }}
     

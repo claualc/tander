@@ -1,63 +1,48 @@
-import { getDoc } from "firebase/firestore";
+import { getDoc, getFirestore, doc, getDocs } from "firebase/firestore";
 
 import dbServices from "./firebase/database"
-import { User } from "@domain/User";
-import { Course, Univeristy } from "@api/domain/University";
+import { Photo, User, UserTeam } from "@domain/User";
 import { Language } from "@api/domain/Language";
 import { converter } from "@firebaseServ/database/converterDTO";
+import { City } from "@api/domain/Location";
+import locationServices from "@serv/locationServices";
+import { Course, Univeristy } from "@api/domain/University";
 
 interface userServiceI {
     listAll(): Promise<any>;
+    getById(id: string | String | number | Number): Promise<User>;
 }
 
 const COLLECTION_ID = "user"; //collection
 
-const parseUserAsync = async (data: any) => {
-    console.log("parseUserAsync")
-    const university = (
-        await getDoc(data.university)
-    ).data() as Univeristy
-    const course = (
-        await getDoc(data.course) 
-    ).data() as Course
+const parseUserAsync = async (data: any): Promise<User> => {
+    const university = await getDoc(data.university)
+    const course = await getDoc(data.course) 
+    const team = await getDoc(data.team) 
 
-    const langToLearn: Language[] = await data.langToLearn.map(
-        async (d: any) => {
-            const doc = await getDoc(d)
-            console.log("D",d)
-            return doc
-    });
-
-    const langKnown: Language[] = await data.langKnown.map(
-        async (d: any) => {
-            const doc = await getDoc(d)
-            return doc
-    });
+    const langKnown: Language[] = await dbServices.getListDataFromDocReferences(data.langKnown)
+    const langToLearn: Language[] = await dbServices.getListDataFromDocReferences(data.langToLearn)
+    const photos: Photo[] = await dbServices.getListDataFromDocReferences(data.photos)
+    const city: City = await locationServices.getCity(data.city)
+    const matches: String[] = data.matches
+    const likedUsersId: String[] = data.likedUsers
 
     const user = new User(
         data.id,
         data.username,
         new Date(data.birth.seconds * 1000),
         data.hasSeenWhoLikesMeToday, // always at 12pm resets to false,
-        university,
-        course,
+        university.data() as Univeristy,
+        course.data() as Course,
         langToLearn,
-        langKnown
-        // photos.data() as Photo[],
-        // team.data() as UserTeam,
-        // city.data() as City,
-        // likedUsers.data() as User[],
-        // matches.data() as User[]
+        langKnown,
+        photos,
+        team.data() as UserTeam,
+        city,
+        likedUsersId,
+        matches
     )
 
-    // const photos = await getDoc(data.photos)
-    // console.log("..::938932 photos", photos)
-    // const team = await getDoc(data.team)
-    // const city = await getDoc(data.city)
-    // const likedUsers = await getDoc(data.likedUsers)
-    // const matches = await getDoc(data.matches)
-    console.log("parser user async", user)
-    console.log(user)
     return user
 }
 
@@ -69,21 +54,21 @@ const userFirebaseConverter: converter<User> = {
     }
 }
 
-const listAll = async () => {
-    const docs = await dbServices.listAll(COLLECTION_ID, userFirebaseConverter);
-    const users  = await docs.map(async (d) => {
-        let data = await d.data()
-        console.log("PARSER")
-        const user: User = await parseUserAsync(data)
-        console.log("FINAL PARSER")
-        return user
-    });
-
-    return users
-}
-
 const userService: userServiceI = {
-    listAll
+    listAll : async () => {
+        const docs = await dbServices.listAll(COLLECTION_ID, userFirebaseConverter);
+        const users  = await docs.map(async (d) => {
+            let data = await d.data()
+            const user: User = await parseUserAsync(data)
+            return user
+        });
+    
+        return users
+    },
+    getById : async (id: string | String | number | Number) => {
+        const user_own = await dbServices.findById(COLLECTION_ID,userFirebaseConverter,id)
+        return await parseUserAsync(user_own)
+    }
 }
 
 export default userService;
