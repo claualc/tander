@@ -23,12 +23,12 @@ const countryFC: converter<Country> = {
     }
 }
 
-const getCountry = async (docRef: DocumentReference<any, DocumentData>) => {
+export const getCountry = async (docRef: DocumentReference<any, DocumentData>) => {
     const doc = await getDoc(docRef)
     return doc.data() as Country;
 }
 
-const getCity = async (docRef: DocumentReference<any, DocumentData>) => {
+export const getCity = async (docRef: DocumentReference<any, DocumentData>) => {
     const cityDoc = await getDoc(docRef)
     const city = cityDoc.data()
     let country = city?.country
@@ -37,22 +37,13 @@ const getCity = async (docRef: DocumentReference<any, DocumentData>) => {
     return new City(city?.name, country);
 }
 
-const getCityById = async (id: string) => {
+export const getCityById = async (id: string) => {
     const docRef = dbServices.getDocRefById(COLLECTION_ID_I,cityFC,id);
     const city = await getCity(docRef)
     return city;
 }
 
-const getCountryById = async (id: string) => {
+export const getCountryById = async (id: string) => {
     const docRef = dbServices.getDocRefById(COLLECTION_ID_O,countryFC,id)
     return await getCountry(docRef);
 }
-
-const languageService = {
-    getCityById,
-    getCountryById,
-    getCity,
-    getCountry
-}
-
-export default languageService;

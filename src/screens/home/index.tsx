@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { User } from "@domain/User";
 import { MainWrapper } from "@components/index";
-import userService from "@serv/userService";
+import * as userService from "@serv/userService";
 
 
 interface Props {

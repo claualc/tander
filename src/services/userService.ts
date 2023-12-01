@@ -5,7 +5,7 @@ import { Photo, User, UserTeam } from "@domain/User";
 import { Language } from "@api/domain/Language";
 import { converter } from "@firebaseServ/database/converterDTO";
 import { City } from "@api/domain/Location";
-import locationServices from "@serv/locationServices";
+import * as locationServices from "@serv/locationServices";
 import { Course, Univeristy } from "@api/domain/University";
 
 interface userServiceI {
@@ -54,21 +54,18 @@ const userFirebaseConverter: converter<User> = {
     }
 }
 
-const userService: userServiceI = {
-    listAll : async () => {
-        const docs = await dbServices.listAll(COLLECTION_ID, userFirebaseConverter);
-        const users  = await docs.map(async (d) => {
-            let data = await d.data()
-            const user: User = await parseUserAsync(data)
-            return user
-        });
-    
-        return users
-    },
-    getById : async (id: string | String | number | Number) => {
-        const user_own = await dbServices.findById(COLLECTION_ID,userFirebaseConverter,id)
-        return await parseUserAsync(user_own)
-    }
+export const listAll = async () => {
+    const docs = await dbServices.listAll(COLLECTION_ID, userFirebaseConverter);
+    const users  = await docs.map(async (d) => {
+        let data = await d.data()
+        const user: User = await parseUserAsync(data)
+        return user
+    });
+
+    return users
 }
 
-export default userService;
+export const getById = async (id: string | String | number | Number) => {
+    const user_own = await dbServices.findById(COLLECTION_ID,userFirebaseConverter,id)
+    return await parseUserAsync(user_own)
+}
