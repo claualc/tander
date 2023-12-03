@@ -1,24 +1,7 @@
 
 import React, { useState } from 'react';
-import styled from 'styled-components/native';
-import { IconBarTab } from './index';
 import { stackNavigateTo } from '@screens/stackNavigator';
-import { View } from 'react-native';
-
-
-const MainView = styled.View<{
-    height: number
-}>`
-    width: 100%;
-    height: ${props => `${props.height}%`};
-    position: absolute;
-    bottom: 0;
-    background-color: ${props => props.theme.light_background};
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-`;
+import { IconBarTab, MainView } from './style';
 
 interface Props {
     height: number,

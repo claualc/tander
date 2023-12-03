@@ -10,9 +10,13 @@ export class UserTeam {
 }
 export class Photo {
     constructor(
-        public value: String,
+        public value: string,
         public id?: String,
     ) {}
+
+    getValue() {
+        return this.value
+    }
 }
 
 export class User {

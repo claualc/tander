@@ -15,7 +15,6 @@ const FirestoreService = () => {
 
     return {
         getDataArrayDoc: async (data: any[]): Promise<any> => {
-            console.log("getDataArrayDocgetDataArrayDoc", data)
             const promisses = data ? data.map(
                 async (d: any) => {
                     return d.data()

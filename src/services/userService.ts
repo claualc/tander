@@ -43,7 +43,6 @@ const parseUserAsync = async (data: any): Promise<User> => {
         matches,
     )
 
-    console.log("user")
     return user
 }
 
