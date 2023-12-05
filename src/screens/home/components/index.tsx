@@ -31,14 +31,14 @@ export const PhotoChipWrapper = styled.View`
 interface colorProp {
     color: string;
 }
-export const SwipePhotoButton = styled.Button<colorProp>`
-    opacity: 1;
-    width: 100%;
-    height: 100%;
-    background-color: color;
-    z-index: 4;
-    position: absolute;
-`
+// export const SwipePhotoButton = styled.Button<colorProp>`
+//     opacity: 1;
+//     width: 100%;
+//     height: 100%;
+//     background-color: color;
+//     z-index: 4;
+//     position: absolute;
+// `
 
 export const UserDataView = styled.View`
     width: 100%;

@@ -24,7 +24,7 @@ export class User {
         public id: String | null,
         public username: String,
         public birth: Date,
-        public yearsOld?: number,
+        public yearsOld: number,
         public hasSeenWhoLikesMeToday?: Boolean, // always at 12pm resets to false
         public university?: Univeristy,
         public course?: Course,
