@@ -1,4 +1,4 @@
-import { DimensionValue, View } from "react-native";
+import { DimensionValue, Text, View } from "react-native";
 import styled from "styled-components/native";
 
 export const MainWrapper = styled.View`
@@ -11,8 +11,23 @@ export const MainWrapper = styled.View`
   z-index: -1000;
 `;
 
-export const CustomText = styled.Text`
-  font-family: 'Format-Sans-RG';
+const typographyTypes = {
+  DM: 'Format-Sans-DM',
+  MD: 'Format-Sans-MD',
+  RG: 'Format-Sans-RG',
+  XB: 'Format-Sans-XB',
+  BD: 'Format-Sans-BD',
+}
+
+export const CustomText = styled.Text<{
+  fontFam?: keyof typeof typographyTypes;
+  size?: number;
+}>`
+  font-family: ${props => props.fontFam 
+      ? typographyTypes[props.fontFam] 
+      : typographyTypes["RG"]};
+  color: white;
+  font-size: ${props => props.size ? `${props.size}px` : "17px"};
 `;
 
 interface borderProps {
@@ -60,5 +75,34 @@ export const BorderBox: React.FC<React.PropsWithChildren<borderProps>> = ({
       zIndex: 0,
     }}
 >{children}</View>
+
+interface PropsChip {
+  width?: number;
+  height?: number;
+  backgroundColor?: string;
+}
+
+const ChipWrapper = styled.View<PropsChip>`
+  filter: blur(10px);
+  width: ${props => props.width};
+  height: ${props => props.height};
+  background-color: ${({backgroundColor,theme}) => backgroundColor ? backgroundColor : theme.secondary_background};
+  padding: 4px 10px 4px 10px;
+  margin: 4px 5px 4px 0px;
+  border-radius: 100px;
+  opacity: 0.65;
+`
+
+const TextChip = styled(CustomText)`
+`
+export const Chip: React.FC<React.PropsWithChildren<PropsChip>> = (
+  {children, ...rest}) => (
+  <ChipWrapper {...rest}>
+    <TextChip>
+      {children}
+    </TextChip>
+  </ChipWrapper>
+);
+
 
 

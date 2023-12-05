@@ -19,6 +19,7 @@ const parseUserAsync = async (data: any): Promise<User> => {
     const university = await getDoc(data.university)
     const course = await getDoc(data.course) 
     const team = await getDoc(data.team) 
+    const daybirth = new Date(data.birth) || new Date()
 
     const langKnown: Language[] = await dbServices.getListDataFromDocReferences(data.langKnown)
     const langToLearn: Language[] = await dbServices.getListDataFromDocReferences(data.langToLearn)
@@ -30,7 +31,8 @@ const parseUserAsync = async (data: any): Promise<User> => {
     const user = new User(
         data.id,
         data.username,
-        new Date(data.birth.seconds * 1000),
+        daybirth, // miliseconds from epoch
+        new Date().getUTCFullYear() - daybirth.getUTCFullYear(), // miliseconds from epoch
         data.hasSeenWhoLikesMeToday, // always at 12pm resets to false,
         university.data() as Univeristy,
         course.data() as Course,

@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Image, ImageBackground, TouchableWithoutFeedback, View } from "react-native";
+import { Image, TouchableWithoutFeedback, View } from "react-native";
 import { Photo, User } from "@domain/User";
-import { BorderBox, MainWrapper } from "@components/index";
+import { BorderBox, Chip, CustomText, MainWrapper } from "@components/index";
 import * as userService from "@serv/userService";
-import { PhotoChipWrapper, PhotoSwipeChips, SwipePhotoButton } from "./components";
+import { PhotoChipWrapper, PhotoSwipeChips, SwipePhotoButton, UserDataView } from "./components";
 import EmptyImage from "@assets/empty_image.png";
 
 interface Props {
@@ -26,10 +26,7 @@ const HomeScreen: React.FC<Props> = ({ children, style, ...rest }: any) => {
   const [currentPhotoId, setCurrentPhotoId] = useState<number>(0);
   const [photosBase64, setPhotosBase64] = useState<string[]>([]);
 
-  useEffect(() => console.log("photosBase64",photosBase64[currentPhotoId]), [photosBase64,currentPhotoId])
-
   const swipePhotoRight = useCallback(() => {
-    console.log("swipe right", currentPhotoId)
     if (photosBase64.length) {
       setCurrentPhotoId(p => (
           (p+1) >= photosBase64.length
@@ -38,7 +35,6 @@ const HomeScreen: React.FC<Props> = ({ children, style, ...rest }: any) => {
   },[photosBase64,currentPhotoId])
 
   const swipePhotoLeft = useCallback(() => {
-    console.log("swipe left", currentPhotoId)
     setCurrentPhotoId(p => (p-1) >= 0 ? (p-1) : p)
   },[currentPhotoId])
 
@@ -52,12 +48,12 @@ const HomeScreen: React.FC<Props> = ({ children, style, ...rest }: any) => {
           height={"85%"}>
 
           <View style={{ 
-              zIndex:4,
-              position: "absolute",
               width: "100%",
+              position: "absolute",
               height: "100%",
               display: "flex",
               alignItems: "center",
+              justifyContent: "space-between",
               flexDirection: "column" }}>
 
           {
@@ -76,21 +72,39 @@ const HomeScreen: React.FC<Props> = ({ children, style, ...rest }: any) => {
               <Image style= {{flex:1 , width: "100%", height: "100%"}}    
                     source={{uri: photosBase64[currentPhotoId]}}/> 
 
+
               </> :  <Image style= {{flex:1 , width: "100%", height: "100%"}}    
                     source={EmptyImage}/> 
           }
-            
           </View>
 
-          <View style={{ zIndex:6,width: "100%", height: "100%", position: "absolute",opacity:0, flexDirection: "row"}}>
+          <UserDataView>
+            <View style={{ width: "100%", display:"flex",flexDirection:"row",justifyContent: "flex-start", alignItems:"center"}}>
+              <CustomText size={25} fontFam={"BD"}>{user.username+" "}</CustomText>
+              <CustomText size={25}>{user.yearsOld}</CustomText>
+            </View>
+            <Chip>{user.city?.name}</Chip>
+            <Chip>{"spritz"}</Chip>
+
+            <View style={{ width: "100%", display:"flex",flexDirection:"row",justifyContent: "flex-start", alignItems:"center"}}>
+              { 
+                user?.langKnown?.length ?
+                user.langKnown.map((lang, i) => {
+                return <Chip key={i}>{lang.name}</Chip>})
+                : null
+              }
+            </View>
+          </UserDataView>
+
+          <View style={{ zIndex:5, width: "100%", height: "100%", position: "absolute",opacity:0, flexDirection: "row"}}>
               <TouchableWithoutFeedback 
                 onPress={swipePhotoLeft}>
                   <View style={{opacity: 0, width: "50%", height: "100%"}} />
                 </TouchableWithoutFeedback>
-               <TouchableWithoutFeedback 
+              <TouchableWithoutFeedback 
                 onPress={swipePhotoRight}>
-                  <View style={{opacity: 0, width: "50%", height: "100%",}} />
-                </TouchableWithoutFeedback>
+                  <View style={{opacity: 0, width: "50%", height: "100%"}} />
+              </TouchableWithoutFeedback>
           </View>
 
       </BorderBox>

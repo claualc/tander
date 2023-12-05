@@ -39,3 +39,15 @@ export const SwipePhotoButton = styled.Button<colorProp>`
     z-index: 4;
     position: absolute;
 `
+
+export const UserDataView = styled.View`
+    width: 100%;
+    height: 100%;
+    z-index: 7;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: 4% 5% 10% 7%;
+    z-index: 3;
+`

@@ -1,21 +1,28 @@
 
 export class Country {
     constructor(
-        private name: String,
+        private name_: String,
         private id?: String,
     ) {}
+
+    get name() {
+        return this.name_
+    }
 }
 
 export class City {
     constructor(
-        private name: String,
-        private country: Country | String | null,
-        private id?: String,
+        private name_: String,
+        private country_: Country,
+        private id_?: String,
     ) {}
 
+    get country() {
+        return this.country_
+    }
 
-    getCountry() {
-        return this.country
+    get name() {
+        return this.name_
     }
 }
   

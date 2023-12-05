@@ -10,6 +10,8 @@ const App = () => {
     'Format-Sans-MD': require('./assets/fonts/OCFormatSans-Md.otf'),
     // regular
     'Format-Sans-RG': require('./assets/fonts/OCFormatSans-Rg.otf'),
+    'Format-Sans-XB': require('./assets/fonts/OCFormatSans-XBd.otf'),
+    'Format-Sans-BD': require('./assets/fonts/OCFormatSans-Bd.otf'),
   });
 
   return <Main/>;
