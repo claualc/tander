@@ -62,6 +62,7 @@ const HomeScreen: React.FC<Props> = ({ children, style, ...rest }: any) => {
   return (
     <MainWrapper
       style={{justifyContent: "center"}}>
+        { user && 
            <Card 
                 photosDisplayArray={
                     user?.photos?.length ? 
@@ -75,6 +76,7 @@ const HomeScreen: React.FC<Props> = ({ children, style, ...rest }: any) => {
                 langKnown={user?.langKnown || []}
                 
               /> 
+        }
     </MainWrapper>
   );
 }
