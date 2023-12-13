@@ -35,9 +35,9 @@ const MyStack = () => {
                 initialRouteName={HOME_SCREEN} 
                 screenOptions={{headerShown: false}}>
                 {
-                routes.map((
-                    {name, component}) => <Stack.Screen key={name} name={name} component={component} />
-                )
+                    routes.map((
+                        {name, component}) => <Stack.Screen key={name} name={name} component={component} />
+                    )
                 }
             </Stack.Navigator>
         </NavigationContainer>

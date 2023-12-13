@@ -12,5 +12,5 @@
         "@domain/*": ["src/api/domain/*"],
         "@assets/*":["assets/*"]
       },
-    }
+    },
 }

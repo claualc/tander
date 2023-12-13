@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
+import * as SplashScreen from 'expo-splash-screen';
+import * as Font from 'expo-font';
 
 import {initAsyncFirebaseServices} from '@serv/firebase';
 
@@ -11,33 +13,46 @@ import ScreensStack, { routes } from './stackNavigator';
 import "@serv/firebase"; // import to initiate the firebase module
 import BottomTabNavigator from '@components/bottomTabNavigator';
 
+// Keep the splash screen visible while we fetch resources
+SplashScreen.preventAutoHideAsync();
 
 const App: React.FC = () => {
 
   const [tabHeight, setTabHeight] = useState(13);
+  const [appIsReady, setAppIsReady] = useState(false);
+  const [fontsLoaded] = Font.useFonts({
+    // demibold: btwn regular and bold
+    'Format-Sans-DM': require('@assets/fonts/OCFormatSans-Dm.otf'),
+    // medium:   btwn demibold and regular
+    'Format-Sans-MD': require('@assets/fonts/OCFormatSans-Md.otf'),
+    // regular
+    'Format-Sans-RG': require('@assets/fonts/OCFormatSans-Rg.otf'),
+    'Format-Sans-XB': require('@assets/fonts/OCFormatSans-XBd.otf'),
+    'Format-Sans-BD': require('@assets/fonts/OCFormatSans-Bd.otf'),
+  });
 
-  useEffect(() => {
-    (async () => await initAsyncFirebaseServices())();
-  }, [])
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await initAsyncFirebaseServices();
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
 
-    const testFirestore = useCallback(async () => {
-      //const users = await userService.listAll();
-      const not  = await FCMService.schedulePushNotification(
-        "Tander","Deu match!!! 😘💕💖😎", { data: 'goes here' }
-      )
-    }, []);
-
+  if (!fontsLoaded) {
+    return null;
+  }
 
   return (
-    <ThemeProvider theme={theme}>
-      <View style={{
-        width: "100%",
-        height: "100%",
-        backgroundColor: "red", // to help debug inconsistencies
-        position: 'absolute',
-        top: 0
-      }}>
-        <View style={{
+    <View style={{
+      width: "100%",
+      height: "100%",
+      backgroundColor: "red", // to help debug inconsistencies
+      position: 'absolute',
+      top: 0
+    }}
+    onLayout={onLayoutRootView} >  
+      <ThemeProvider theme={theme}>
+          <View style={{
             display: "flex",
             width: "100%",
             height: `${100-tabHeight}%`,
@@ -45,11 +60,11 @@ const App: React.FC = () => {
             backgroundColor: theme.light_background,
             top: 0,
         }}>
-          <ScreensStack/>
+        <ScreensStack/>
         </View>
         <BottomTabNavigator routes={routes} height={tabHeight}/>
-      </View>
-    </ThemeProvider>
+      </ThemeProvider>
+    </View>
   );
 };
 

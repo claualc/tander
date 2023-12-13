@@ -98,11 +98,11 @@ const Card: React.FC<CardProps> = ({
         <View style={{ zIndex:5, width: "100%", height: "100%", position: "absolute",opacity:0, flexDirection: "row"}}>
             <TouchableWithoutFeedback 
             onPress={swipePhotoLeft}>
-                <View style={{opacity: 0, width: "50%", height: "100%"}} />
+                <View style={{opacity: 0, width: "50%",backgroundColor:"green", height: "100%"}} />
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback 
             onPress={swipePhotoRight}>
-                <View style={{opacity: 0, width: "50%", height: "100%"}} />
+                <View style={{opacity: 0, width: "50%",backgroundColor:"purple", height: "100%"}} />
             </TouchableWithoutFeedback>
         </View>
 
