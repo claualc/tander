@@ -31,8 +31,8 @@ export const CustomText = styled.Text<{
 `;
 
 interface borderProps {
-  width?: DimensionValue,
-  height?: DimensionValue,
+  width?: number,
+  height?: number,
   shadowOpacity?: number,
   shadowRadius?: number,
   elevation?: number,
@@ -42,7 +42,8 @@ interface borderProps {
     height?: number,
   },
   shadowColor?: string,
-  children?: any
+  children?: any, 
+  offBorder?: boolean;
 }
 
 export const BorderBox: React.FC<React.PropsWithChildren<borderProps>> = ({
@@ -55,10 +56,11 @@ export const BorderBox: React.FC<React.PropsWithChildren<borderProps>> = ({
   shadowOffset,
   shadowColor,
   children,
+  offBorder
 }) => <View
     style={{ 
-      width: width ? width : "100%",
-      height:  height || "100%",
+      width: width ? `${width}%` : "100%",
+      height:  height ? `${height}%` : "100%",
       shadowOpacity: shadowOpacity || 1,
       shadowRadius: shadowRadius || 1,
       elevation: elevation || 10,
@@ -67,7 +69,7 @@ export const BorderBox: React.FC<React.PropsWithChildren<borderProps>> = ({
         height: shadowOffset?.height || 10, 
         width: shadowOffset?.width || 0
       },
-      borderRadius: borderRadius || 13,
+      borderRadius: offBorder ? 0 : (borderRadius || 13),
       overflow: "hidden",
       display: "flex",
       alignItems: "center",

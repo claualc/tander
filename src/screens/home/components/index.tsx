@@ -26,6 +26,7 @@ export const PhotoChipWrapper = styled.View`
     margin-top: 2px;
     position: absolute;
     z-index: 2;
+    justify-content: center;
 `
 
 interface colorProp {

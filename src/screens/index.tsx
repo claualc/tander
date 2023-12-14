@@ -18,7 +18,7 @@ SplashScreen.preventAutoHideAsync();
 
 const App: React.FC = () => {
 
-  const [tabHeight, setTabHeight] = useState(13);
+  const [tabHeight, setTabHeight] = useState(12);
   const [appIsReady, setAppIsReady] = useState(false);
   const [fontsLoaded] = Font.useFonts({
     // demibold: btwn regular and bold
