@@ -31,15 +31,16 @@ export const isSwipeLeft = (ges : gesture) => (
     isSwipeMove(ges) && ges.dx < 0
 )
 
-export const isScroll = (ges : gesture) => {
-    // scroll up is negative
-    let scrollUp = ges.dy / Dimensions.get('window').height;
-    let horizontalDx = ges.dx / Dimensions.get('window').width;
-    if (scrollUp < 0 ) {
-        scrollUp = Math.abs(scrollUp);
-        console.log(Math.abs(ges.dx) <= SCROLL_MOVE_MAX_DX,scrollUp >= MIN_SCROLL_UP)
-        return Math.abs(horizontalDx) <= SCROLL_MOVE_MAX_DX && scrollUp >= MIN_SCROLL_UP
-    }
+export const isScrollUp = (ges : gesture) => (
+    isScroll(ges) && ges.dy < 0
+)
 
-    return false
-}
+export const isScrollDown = (ges : gesture) => (
+    isScroll(ges) && ges.dy > 0
+)
+
+export const isScroll = (ges : gesture) => {
+    let horizontalDx = ges.dx / Dimensions.get('window').width;
+    let scrollUp = ges.dy / Dimensions.get('window').height;
+    return Math.abs(horizontalDx) <= SCROLL_MOVE_MAX_DX && Math.abs(scrollUp) >= MIN_SCROLL_UP
+};

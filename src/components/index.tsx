@@ -2,13 +2,28 @@ import { DimensionValue, Text, View } from "react-native";
 import styled from "styled-components/native";
 
 export const MainWrapper = styled.View`
-  display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   height: 100%;
   background-color: ${props => props.theme.light_background};
   z-index: -1000;
+`;
+
+interface Dimensions {
+  widthPx?: number;
+  heightPx?: number;
+}
+
+export const Wrapper = styled.View<Dimensions>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  width: ${p => p.widthPx ? `${p.widthPx}px` : undefined};
+  height: ${p => p.heightPx ? `${p.heightPx}px` : undefined};
+  z-index: -999;
 `;
 
 const typographyTypes = {
@@ -45,38 +60,6 @@ interface borderProps {
   children?: any, 
   offBorder?: boolean;
 }
-
-export const BorderBox: React.FC<React.PropsWithChildren<borderProps>> = ({
-  width,
-  height,
-  shadowOpacity,
-  shadowRadius,
-  elevation,
-  borderRadius,
-  shadowOffset,
-  shadowColor,
-  children,
-  offBorder
-}) => <View
-    style={{ 
-      width: width ? `${width}%` : "100%",
-      height:  height ? `${height}%` : "100%",
-      shadowOpacity: shadowOpacity || 1,
-      shadowRadius: shadowRadius || 1,
-      elevation: elevation || 10,
-      shadowColor: shadowColor||"black",
-      shadowOffset: { 
-        height: shadowOffset?.height || 10, 
-        width: shadowOffset?.width || 0
-      },
-      borderRadius: offBorder ? 0 : (borderRadius || 13),
-      overflow: "hidden",
-      display: "flex",
-      alignItems: "center",
-      flexDirection: "column",
-      zIndex: 0,
-    }}
->{children}</View>
 
 interface PropsChip {
   width?: number;
