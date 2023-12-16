@@ -1,5 +1,25 @@
-import { DimensionValue, Text, View } from "react-native";
+import { theme } from "@screens/theme";
+import { useState } from "react";
 import styled from "styled-components/native";
+
+const convertHexToRGBA = (hexCode: string, opacity = 1) => {  
+  let hex = hexCode.replace('#', '');
+  
+  if (hex.length === 3) {
+      hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+  }    
+  
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+  
+  /* Backward compatibility for whole number based opacity values. */
+  if (opacity > 1 && opacity <= 100) {
+      opacity = opacity / 100;   
+  }
+
+  return `rgba(${r},${g},${b},${opacity})`;
+};
 
 export const MainWrapper = styled.View`
   justify-content: center;
@@ -37,11 +57,12 @@ const typographyTypes = {
 export const CustomText = styled.Text<{
   fontFam?: keyof typeof typographyTypes;
   size?: number;
+  color?: string;
 }>`
   font-family: ${props => props.fontFam 
       ? typographyTypes[props.fontFam] 
       : typographyTypes["RG"]};
-  color: white;
+  color: ${p => p.color || "black"};
   font-size: ${props => props.size ? `${props.size}px` : "17px"};
 `;
 
@@ -65,6 +86,7 @@ interface PropsChip {
   width?: number;
   height?: number;
   backgroundColor?: string;
+  textColor?: string;
 }
 
 const ChipWrapper = styled.View<PropsChip>`
@@ -81,13 +103,43 @@ const ChipWrapper = styled.View<PropsChip>`
 const TextChip = styled(CustomText)`
 `
 export const Chip: React.FC<React.PropsWithChildren<PropsChip>> = (
-  {children, ...rest}) => (
+  {children, textColor, ...rest}) => (
   <ChipWrapper {...rest}>
-    <TextChip>
+    <TextChip color={textColor}>
       {children}
     </TextChip>
   </ChipWrapper>
 );
+
+
+const Cwrapper = styled.View<{color: string}>`
+  border-radius: 15px;
+  flex: 0;
+  margin: 3px;
+  padding: 5px;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  background-color: ${p => p.color};
+`;
+
+interface PropsColoWrapper {
+  inColor?: string;
+}
+
+function getRandomInt(max: number) {
+  return Math.floor(Math.random() * max);
+}
+
+export const ColorWrapper: React.FC<React.PropsWithChildren<PropsColoWrapper>> = ({children, inColor}) => {
+  const [color, setColor] = useState(() => {
+    const randomColorChooses = [theme.tertiary, theme.secondary]
+    return inColor || randomColorChooses[getRandomInt(randomColorChooses.length)]
+  })
+
+  return <Cwrapper color={convertHexToRGBA(color, 0.2)}>{children}</Cwrapper>
+}
 
 
 

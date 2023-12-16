@@ -5,6 +5,7 @@ import EmptyImage from "@assets/empty_image.png";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { Language } from "@api/domain/Language";
 import { INITIAL_GESTURE_VALS, panRes } from "./PanResponder";
+import { theme } from "@screens/theme";
 
 
 interface CardProps {
@@ -151,16 +152,16 @@ const Card: React.FC<CardProps> = ({
                 !isScrolledUp && 
                 <UserDataView>
                     <View style={{ width: "100%", display:"flex",flexDirection:"row",justifyContent: "flex-start", alignItems:"center"}}>
-                        <CustomText size={25} fontFam={"BD"}>{username+" "}</CustomText>
-                        <CustomText size={25}>{yearsOld}</CustomText>
+                        <CustomText color={theme.text_ligth_primary} size={25} fontFam={"BD"}>{username+" "}</CustomText>
+                        <CustomText color={theme.text_ligth_primary} size={25}>{yearsOld}</CustomText>
                     </View>
-                    <Chip>{nationality}</Chip>
-                    <Chip>{userTeam}</Chip>
+                    <Chip textColor={theme.text_ligth_primary} >{nationality}</Chip>
+                    <Chip textColor={theme.text_ligth_primary} >{userTeam}</Chip>
 
                     <View style={{ width: "100%", display:"flex",flexDirection:"row",justifyContent: "flex-start", alignItems:"center"}}>
                         { 
                             langKnown.map((lang, i) => {
-                            return <Chip key={i}>{lang.name}</Chip>})
+                            return <Chip textColor={theme.text_ligth_primary} key={i}>{lang.flag}</Chip>})
                         }
                     </View>
                 </UserDataView>

@@ -1,9 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Photo, User } from "@domain/User";
-import { MainWrapper } from "@components/index";
+import { Chip, ColorWrapper, CustomText, MainWrapper, Wrapper } from "@components/index";
 import * as userService from "@serv/userService";
 import Card from "./components/Card";
-import { ScrollView, Text } from "react-native";
+import { ScrollView, Text, View } from "react-native";
+import { AntDesign, Ionicons, SimpleLineIcons } from "@expo/vector-icons";
+import { UserDecSections, UserDescWrapper } from "./components";
+import { theme } from "../theme";
 
 interface Props {
   currentUser?: User
@@ -23,30 +26,30 @@ const HomeScreen: React.FC<Props> = ({ children, style, ...rest }: any) => {
     })();
   }, []);
 
-  const [currentUser, setCurrentUser] = useState<Number>(0);
+  const [currentUser, setCurrentUser] = useState<number>(0);
   const [users, setUsers] = useState<User[]>([]);
   const [seeDescription, setSeeDescription] = useState<boolean>(false);
 
   const [renderUserCards, setRenderUserCards ] = useState<boolean[]>([]);
   const [swipedUserCards, setSwipedUserCards ] = useState<boolean[]>([]);
 
-  useEffect(() => console.log(swipedUserCards), [swipedUserCards])
-
-  const renderOnlyTopStackUser = useCallback(() => {
-    let updated = renderUserCards.map(u => false);
-    updated[updated.length-1] = true
-    setRenderUserCards(updated);
-  }, [renderUserCards]);
+  const renderOnlyThisCard = useCallback((id: number) => {
+    setRenderUserCards(cards => cards.map(
+      (c, i) => i == id));
+  }, [renderUserCards, currentUser]);
 
   const renderAllNonSwipedUsers = useCallback(() => {
-    let updated = renderUserCards.map(u => true);
-    setRenderUserCards(updated);
-  }, [renderUserCards]);
+    setRenderUserCards(swipedUserCards.map(s => !s));
+  }, [renderUserCards, swipedUserCards]);
 
   const userSwiped = useCallback((id: number) => {
+    if (currentUser > 0)
+      setCurrentUser(currentUser-1)
     setSwipedUserCards(newSwp => newSwp.map(
       (sw, i) => i == id ? true : sw));
-  }, [swipedUserCards]);
+    setRenderUserCards(cards => cards.map(
+      (c, i) => i == id ? false : c));
+  }, [swipedUserCards, renderUserCards,currentUser]);
 
   // const toLikeUser = useCallback((id: number) => {
   //   console.log("USER LIKED")
@@ -61,10 +64,11 @@ const HomeScreen: React.FC<Props> = ({ children, style, ...rest }: any) => {
 
   return (
     <MainWrapper>
+      <View style={{flex: 1, width: "100%"}} >
          <ScrollView  
-              style={{padding: 0, width: "100%", height: "100%", flex: 1}}
+              style={{padding: 0, width: "100%", flex: 1}}
               contentContainerStyle={{flexGrow:1, justifyContent: "flex-end", alignItems: "center"}}
-              scrollEnabled={seeDescription}>
+              scrollEnabled={true}>
                 {
                   users.map((user, i) => <Card 
                     key={i}
@@ -76,30 +80,89 @@ const HomeScreen: React.FC<Props> = ({ children, style, ...rest }: any) => {
                     zIndex={i}
                     username={user?.username || ""}
                     yearsOld={user?.yearsOld || 0}
-                    nationality={"Brasiliano" || ""}
+                    nationality={user?.city?.country?.nationality || ""}
                     userTeam={"Spritz"}
                     langKnown={user?.langKnown || []}
-                    onScrollUp={() => {setSeeDescription(true)}}
-                    onScrollDown={() => {setSeeDescription(false)}}
+                    onScrollUp={() => {
+                      console.log("onScrollUp", i)
+                      renderOnlyThisCard(i);
+                      setSeeDescription(true)}}
+                    onScrollDown={() => {
+                      console.log("onScrollDown")
+                      renderAllNonSwipedUsers()
+                      setSeeDescription(false)}}
                     onSwipeLeft={() => {
+                      console.log("onSwipeLeft")
                       console.log("USER LIKED")
                       userSwiped(i);
                     }}
                     onSwipeRigth={() => {
+                      console.log("onSwipeRigth")
                       console.log("USER DiSLIKED")
                       userSwiped(i);
                     }}
                     isScrolledUp={seeDescription}
                     render={renderUserCards[i]}
                   /> )
+                } 
+                <UserDescWrapper>
+                  { seeDescription && <>
+                  <UserDecSections>
+                    <CustomText size={30} fontFam="BD">{users[currentUser]?.username || ""}</CustomText>   
+                    <CustomText  size={30}>{" " + users[currentUser]?.yearsOld}</CustomText>  
+                  </UserDecSections> 
+                  <UserDecSections>
+                    <AntDesign name="book" size={24} color={theme.text_dark_priamry} />
+                    <CustomText>{" " + users[currentUser]?.course?.name}</CustomText>  
+                  </UserDecSections> 
+                  <UserDecSections>
+                    <SimpleLineIcons name="graduation" size={24} color={theme.text_dark_priamry} />
+                    <CustomText>{" " +  users[currentUser]?.university?.name}</CustomText>  
+                  </UserDecSections> 
+                  <UserDecSections>
+                    <Ionicons name="earth-outline" size={24} color={theme.text_dark_priamry} />
+                    <CustomText>{" " +  users[currentUser]?.university?.name}</CustomText>  
+                  </UserDecSections> 
+                  <UserDecSections style={{justifyContent: "space-evenly", width: "100%", flexDirection: "row", marginTop:15}}>
+                    <ColorWrapper inColor={theme.secondary}>
+                      <View style={{flex:1, justifyContent: "center", alignItems: "center"}}>
+                        <CustomText size={30}>🤓</CustomText>
+                      </View>
+                      <View style={{flex:3, flexDirection: "column",justifyContent: "center", alignItems: "center"}}>
+                        <CustomText size={13} color={theme.secondary}>Here To learn</CustomText>
+                        <View style={{flex:2, flexDirection: "row", justifyContent: "space-between"}}>
+                        {
+                            users[currentUser]?.langKnown?.map((lang, i) => {
+                            return <CustomText key={i} size={25} >{" " + lang.flag + " "}</CustomText>})
+                        }
+                        </View>
+                      </View>
+                    </ColorWrapper>
+                    <ColorWrapper inColor={theme.tertiary}>
+                      <View style={{flex:1}}>
+                        <CustomText size={30}>😎</CustomText>
+                      </View>
+                      <View style={{flex:3, justifyContent: "center", alignItems: "center"}}>
+                        <CustomText size={13}  color={theme.tertiary}>Here To learn</CustomText>
+                        <View style={{flex:2, flexDirection: "row", justifyContent: "space-between"}}>
+                        {
+                            users[currentUser]?.langToLearn?.map((lang, i) => {
+                            return <CustomText size={25} >{" " + lang.flag + " "}</CustomText>})
+                        }
+                        </View>
+                      </View>
+                    </ColorWrapper>
+                  </UserDecSections>
+                  <UserDecSections></UserDecSections>
+                </>
                 }
-                
-              { seeDescription && <>
+                  
+                </UserDescWrapper>
+
+
                
-              </>
-              }
-             
           </ScrollView>
+          </View>
     </MainWrapper>
   );
 }

@@ -13,8 +13,10 @@ const COLLECTION_ID = "language"; //collection
 const languageFirebaseConverter: converter<Language> = {
     toFirestore: (item) => ({...item}),
     fromFirestore(snap, opt) {
-        const data = snap.data(opt)! as Language;
-        return data;
+        const data = snap.data(opt)!;
+        return new Language(
+            data.name,
+            data.id);
     }
 }
 

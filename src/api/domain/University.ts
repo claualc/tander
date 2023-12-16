@@ -1,18 +1,25 @@
 
 export class Univeristy {
     constructor(
-        private name: String,
-        private id?: String,
+        private name_: String,
+        private id_?: String,
     ) {}
+
+    get name() {return this.name_};
+    get id() {return this.id_};
 }
   
 export class Course {
     constructor(
-        private name: String,
-        private id?: String,
-        private university?: Univeristy,
+        private name_: String,
+        private id_?: String,
     ) {}
+
+    get name() {return this.name_};
+    get id() {return this.id_};
 }
+
+
   
 
 

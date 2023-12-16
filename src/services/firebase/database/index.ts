@@ -17,7 +17,7 @@ const FirestoreService = () => {
         getDataArrayDoc: async (data: any[]): Promise<any> => {
             const promisses = data ? data.map(
                 async (d: any) => {
-                    return d.data()
+                    return  {data: d.data(), id: d.id}
             }) : null;
             return promisses ? Promise.all(promisses) : []
         },
@@ -25,7 +25,7 @@ const FirestoreService = () => {
             const promisses = data ? data.map(
                 async (d: any) => {
                     const doc = await getDoc(d)
-                    return doc.data()
+                    return {data: doc.data(), id: doc.id}
             }) : null;
             return promisses ? Promise.all(promisses) : []
         },

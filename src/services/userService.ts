@@ -21,8 +21,10 @@ const parseUserAsync = async (data: any): Promise<User> => {
     const team = await getDoc(data.team) 
     const daybirth = new Date(data.birth) || new Date()
 
-    const langKnown: Language[] = await dbServices.getListDataFromDocReferences(data.langKnown)
-    const langToLearn: Language[] = await dbServices.getListDataFromDocReferences(data.langToLearn)
+    let langKnown = await dbServices.getListDataFromDocReferences(data.langKnown)
+    langKnown = langKnown.map((l: any) => new Language(l.data.name, l.id))
+    let langToLearn = await dbServices.getListDataFromDocReferences(data.langToLearn)
+    langToLearn = langToLearn.map((l:any) => new Language(l.data.name, l.id))
     const photos: Photo[] = await dbServices.getListDataFromDocReferences(data.photos)
     const city: City = await locationServices.getCity(data.city)
     const matches: String[] = data.matches

@@ -21,20 +21,35 @@ export class Photo {
 
 export class User {
     constructor(
-        public id: String | null,
-        public username: String,
-        public birth: Date,
-        public yearsOld: number,
-        public hasSeenWhoLikesMeToday?: Boolean, // always at 12pm resets to false
-        public university?: Univeristy,
-        public course?: Course,
-        public langToLearn?: Language[],
-        public langKnown?: Language[],
-        public photos?: Photo[],
-        public team?: UserTeam,
-        public city?: City,
-        public likedUsers?: User[] | String[],
-        public matches?: User[] | String[],
+        public id_: String | null,
+        public username_: String,
+        public birth_: Date,
+        public yearsOld_: number,
+        public hasSeenWhoLikesMeToday_?: Boolean, // always at 12pm resets to false
+        public university_?: Univeristy,
+        public course_?: Course,
+        public langToLearn_?: Language[],
+        public langKnown_?: Language[],
+        public photos_?: Photo[],
+        public team_?: UserTeam,
+        public city_?: City,
+        public likedUsers_?: User[] | String[],
+        public matches_?: User[] | String[],
     ) {}
+
+    get id() {return this.id_};
+    get username() {return this.username_};
+    get yearsOld() {return this.yearsOld_};
+    get birth() {return this.birth_};
+    get hasSeenWhoLikesMeToday() {return this.hasSeenWhoLikesMeToday_};
+    get university() {return this.university_};
+    get course() {return this.course_};
+    get langToLearn() {return this.langToLearn_};
+    get langKnown() {return this.langKnown_};
+    get photos() {return this.photos_};
+    get team() {return this.team_};
+    get city() {return this.city_};
+    get likedUsers() {return this.likedUsers_};
+    get matches() {return this.matches_};
 }
   

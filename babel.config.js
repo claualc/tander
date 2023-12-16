@@ -17,6 +17,7 @@ module.exports = function(api) {
             "@api": "./src/api",
             "@domain": "./src/api/domain",
             "@assets": "./assets",
+            "@dict": "./assets/dictionaries",
            }
          }
       ]

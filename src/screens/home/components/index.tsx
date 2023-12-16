@@ -1,3 +1,4 @@
+import { Wrapper } from "@components/index";
 import styled from "styled-components/native";
 
 interface ChipProps {
@@ -51,4 +52,19 @@ export const UserDataView = styled.View`
     justify-content: flex-end;
     padding: 4% 5% 10% 7%;
     z-index: 3;
+    flex: 1;
+`
+
+export const UserDescWrapper = styled(Wrapper)`
+    margin-top: 145%; 
+    padding: 10% 7% 0% 7%; 
+    width: 100%;
+    justify-content: flex-start;
+    align-items: flex-start;
+`
+
+export const UserDecSections = styled.View`
+    width: "100%";
+    align-items: flex-start;
+    flex-direction: row;
 `

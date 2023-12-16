@@ -4,6 +4,10 @@ import {converter} from "@firebaseServ/database/converterDTO";
 import dbServices from "./firebase/database";
 import { DocumentData, DocumentReference, getDoc } from "firebase/firestore";
 
+import countries from "@dict/country";
+import nationalisties from "@dict/nationality";
+import countryCodes from "@dict/country_code";
+
 const COLLECTION_ID_I = "city"; //collection
 const COLLECTION_ID_O = "country"; //collection
 
@@ -23,17 +27,34 @@ const countryFC: converter<Country> = {
     }
 }
 
-export const getCountry = async (docRef: DocumentReference<any, DocumentData>) => {
-    const doc = await getDoc(docRef)
-    return doc.data() as Country;
-}
+// export const getCountry = async (docRef: DocumentReference<any, DocumentData>) => {
+//     const doc = await getDoc(docRef)
+//     return doc.data() as Country;
+// }
 
 export const getCity = async (docRef: DocumentReference<any, DocumentData>) => {
     const cityDoc = await getDoc(docRef)
     const city = cityDoc.data()
-    let country = city?.country
-        ? await getCountry(city?.country)
-        :null
+
+    const cId = city?.country
+    let country;
+    if (cId) {
+        let nationality = nationalisties[cId]
+        let lastLetter = nationality.split("").pop()
+        let firstLetter = nationality.split("")[0]
+        nationality = (lastLetter == "a" || lastLetter == "o")
+            ? firstLetter?.toUpperCase() + nationality.slice(1, -1) + "@" : nationality
+
+        country = new Country(
+            countries[cId],
+            countryCodes[cId],
+            nationality,
+            cId
+        );
+    }
+    // let country = city?.country
+    //     ? await getCountry(city?.country)
+    //     :null
     return new City(city?.name, country);
 }
 
@@ -43,7 +64,7 @@ export const getCityById = async (id: string) => {
     return city;
 }
 
-export const getCountryById = async (id: string) => {
-    const docRef = dbServices.getDocRefById(COLLECTION_ID_O,countryFC,id)
-    return await getCountry(docRef);
-}
+// export const getCountryById = async (id: string) => {
+//     const docRef = dbServices.getDocRefById(COLLECTION_ID_O,countryFC,id)
+//     return await getCountry(docRef);
+// }

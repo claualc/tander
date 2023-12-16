@@ -94,6 +94,7 @@ export const panRes = (
 
         } else {
             if (isScrollDown(ges)) {
+                whenScrollDown();
                 animations = [ 
                     Animated.spring(
                         scale,
@@ -104,7 +105,6 @@ export const panRes = (
                         {toValue:  INITIAL_GESTURE_VALS.pan, useNativeDriver: true}, // Back to zero
                     )
                 ]
-                whenScrollDown();
             }
         }
 
