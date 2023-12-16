@@ -18,8 +18,8 @@ const HomeScreen: React.FC<Props> = ({ children, style, ...rest }: any) => {
       const user: User = users[0]
       setCurrentUser(users.length? users.length-1 : 0)
       setUsers(users)
-      setShowUsers(users.map(p => true))
-      console.log(user)
+      setRenderUserCards(users.map(p => true))
+      setSwipedUserCards(users.map(p => false))
     })();
   }, []);
 
@@ -27,13 +27,37 @@ const HomeScreen: React.FC<Props> = ({ children, style, ...rest }: any) => {
   const [users, setUsers] = useState<User[]>([]);
   const [seeDescription, setSeeDescription] = useState<boolean>(false);
 
-  const [showUsers, setShowUsers ] = useState<boolean[]>([]);
+  const [renderUserCards, setRenderUserCards ] = useState<boolean[]>([]);
+  const [swipedUserCards, setSwipedUserCards ] = useState<boolean[]>([]);
 
-  const showOnlyTopStackUser = useCallback(() => {
-    let updated = showUsers.map(u => false);
-    updated[-1] = true;
-    setShowUsers(updated);
-  }, []);
+  useEffect(() => console.log(swipedUserCards), [swipedUserCards])
+
+  const renderOnlyTopStackUser = useCallback(() => {
+    let updated = renderUserCards.map(u => false);
+    updated[updated.length-1] = true
+    setRenderUserCards(updated);
+  }, [renderUserCards]);
+
+  const renderAllNonSwipedUsers = useCallback(() => {
+    let updated = renderUserCards.map(u => true);
+    setRenderUserCards(updated);
+  }, [renderUserCards]);
+
+  const userSwiped = useCallback((id: number) => {
+    setSwipedUserCards(newSwp => newSwp.map(
+      (sw, i) => i == id ? true : sw));
+  }, [swipedUserCards]);
+
+  // const toLikeUser = useCallback((id: number) => {
+  //   console.log("USER LIKED")
+  //   userSwiped(id);
+  // }, []);
+
+  // const toDislikeUser = useCallback((id: number) => {
+  //   console.log("USER DISLIKED")
+  //   userSwiped(id)
+  // }, []);
+
 
   return (
     <MainWrapper>
@@ -55,14 +79,21 @@ const HomeScreen: React.FC<Props> = ({ children, style, ...rest }: any) => {
                     nationality={"Brasiliano" || ""}
                     userTeam={"Spritz"}
                     langKnown={user?.langKnown || []}
-                    whenScrollUp={() => {setSeeDescription(true)}}
-                    whenScrollDown={() => {setSeeDescription(false)}}
+                    onScrollUp={() => {setSeeDescription(true)}}
+                    onScrollDown={() => {setSeeDescription(false)}}
+                    onSwipeLeft={() => {
+                      console.log("USER LIKED")
+                      userSwiped(i);
+                    }}
+                    onSwipeRigth={() => {
+                      console.log("USER DiSLIKED")
+                      userSwiped(i);
+                    }}
                     isScrolledUp={seeDescription}
-                    render={showUsers[i]}
+                    render={renderUserCards[i]}
                   /> )
                 }
                 
-              
               { seeDescription && <>
                
               </>

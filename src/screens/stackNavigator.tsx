@@ -16,7 +16,7 @@ export const routes = [
     { name: HOME_SCREEN, component: HomeScreen ,icon: "ellipse" },
     { name: PROFILE_SCREEN, component: ProfileScreen ,icon: "person" },
     { name: CHAT_SCREEN, component: ChatScreen ,icon: "chatbubbles" },
-    { name: MYLIKES_SCREEN, component: MyLikesScreen ,icon: "pizza" },
+    { name: MYLIKES_SCREEN, component: MyLikesScreen ,icon: "star" },
   ]
   
 const Stack = createNativeStackNavigator();

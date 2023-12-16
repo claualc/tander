@@ -11,10 +11,12 @@ export const panRes = (
     isScrolledUp: boolean,
     pan: Animated.ValueXY,
     scale: Animated.ValueXY,
-    swipePhotoLeft: () => void,
-    swipePhotoRight: () => void,
+    tapPhotoLeft: () => void,
+    tapPhotoRight: () => void,
     whenScrollUp: () => void,
     whenScrollDown: () => void,
+    onSwipeLeft: () => void,
+    onSwipeRigth: () => void,
     ) => PanResponder.create({
 
     onMoveShouldSetPanResponder: () => true,
@@ -34,29 +36,29 @@ export const panRes = (
             const height = Dimensions.get('screen').height;
 
             if (isLeftTap(ges))
-                swipePhotoLeft();
+                tapPhotoLeft();
             if (isRightTap(ges))
-                swipePhotoRight();
+                tapPhotoRight();
             
             if (!isScrolledUp) {
             switch(true) {
                 case isSwipeRight(ges):
-                    console.log("SWIPE RIGTH")
                     animations = [
                         Animated.spring(
                         pan,
                         {toValue:  {x:10000, y: INITIAL_GESTURE_VALS.pan.y}, speed: 2, useNativeDriver: true}, // Back to zero
                         )
                     ]
+                    onSwipeRigth();
                     break;
                 case isSwipeLeft(ges):
-                    console.log("SWIPE LEFT")
                     animations = [
                         Animated.spring(
                         pan,
                         {toValue:  {x:-10000, y: INITIAL_GESTURE_VALS.pan.y}, speed: 2, useNativeDriver: true}, // Back to zero
                         )
                     ]
+                    onSwipeLeft();
                     break;
                 case isScrollUp(ges):
                     animations = [
@@ -71,15 +73,13 @@ export const panRes = (
                             pan,
                             {toValue: {
                                 x: INITIAL_GESTURE_VALS.pan.x,
-                                y: INITIAL_GESTURE_VALS.pan.y -0.01*height
+                                y: INITIAL_GESTURE_VALS.pan.y -0.1*height
                             }, useNativeDriver: true}, // Back to zero
                         )
                     ]
-                    console.log("SCROLLL UP")
                     whenScrollUp();
                     break;
                 default:
-                    console.log("DEFAULT CASE")
                     animations = [
                         Animated.spring(
                         scale,
@@ -94,7 +94,6 @@ export const panRes = (
 
         } else {
             if (isScrollDown(ges)) {
-                console.log("SCROLLL DOWN")
                 animations = [ 
                     Animated.spring(
                         scale,

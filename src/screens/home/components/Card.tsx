@@ -14,8 +14,10 @@ interface CardProps {
     nationality: String;
     langKnown: Language[];
     userTeam: String;
-    whenScrollUp: () => void;
-    whenScrollDown: () => void;
+    onScrollUp: () => void;
+    onScrollDown: () => void;
+    onSwipeLeft: () => void;
+    onSwipeRigth: () => void;
     isScrolledUp: boolean;
     zIndex: number;
     render: boolean;
@@ -28,8 +30,10 @@ const Card: React.FC<CardProps> = ({
         nationality,
         langKnown,
         userTeam,
-        whenScrollUp,
-        whenScrollDown,
+        onScrollUp,
+        onScrollDown,
+        onSwipeLeft,
+        onSwipeRigth,
         isScrolledUp,
         zIndex,
         render
@@ -41,30 +45,31 @@ const Card: React.FC<CardProps> = ({
     const pan = useRef(new Animated.ValueXY(INITIAL_GESTURE_VALS.pan)).current;
     const scale = useRef(new Animated.ValueXY(INITIAL_GESTURE_VALS.scale)).current; // width (x) and height (y)
     
-    const swipePhotoRight = useCallback(() => {
-    if (photosBase64.length) {
-        setCurrentPhotoId(p => (
-            (p+1) >= photosBase64.length
-            ? p : (p+1)))
-    }
+    const tapPhotoRight = useCallback(() => {
+        if (photosBase64.length) {
+            setCurrentPhotoId(p => (
+                (p+1) >= photosBase64.length
+                ? p : (p+1))) 
+        }
     },[photosBase64,currentPhotoId])
 
-    const swipePhotoLeft = useCallback(() => {
+    const tapPhotoLeft = useCallback(() => {
         setCurrentPhotoId(p => (p-1) >= 0 ? (p-1) : p)
     },[currentPhotoId])
-
 
     const panResponder = useMemo(
         () => panRes(
             isScrolledUp,
             pan,
             scale,
-            swipePhotoLeft,
-            whenScrollUp,
-            whenScrollDown,
-            swipePhotoRight)
+            tapPhotoLeft,
+            tapPhotoRight,
+            onScrollUp,
+            onScrollDown,
+            onSwipeRigth,
+            onSwipeLeft)
         , [isScrolledUp]
-      );
+    );
 
 
     return !render ? <></> : (
