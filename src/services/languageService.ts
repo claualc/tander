@@ -10,13 +10,17 @@ interface languageServiceI {
 
 const COLLECTION_ID = "language"; //collection
 
+export const languageParser = async (data: any): Promise<Language> => {
+    return new Language(
+        data.name,
+        data.id);
+}
+
 const languageFirebaseConverter: converter<Language> = {
     toFirestore: (item) => ({...item}),
     fromFirestore(snap, opt) {
         const data = snap.data(opt)!;
-        return new Language(
-            data.name,
-            data.id);
+        return languageParser(data);
     }
 }
 

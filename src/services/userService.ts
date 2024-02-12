@@ -1,4 +1,4 @@
-import { getDoc, getFirestore, doc, getDocs } from "firebase/firestore";
+import { getDoc, getFirestore, doc, getDocs, DocumentReference, DocumentData } from "firebase/firestore";
 
 import dbServices from "./firebase/database"
 import { Photo, User, UserTeam } from "@domain/User";
@@ -25,8 +25,9 @@ const parseUserAsync = async (data: any): Promise<User> => {
     langKnown = langKnown.map((l: any) => new Language(l.data.name, l.id))
     let langToLearn = await dbServices.getListDataFromDocReferences(data.langToLearn)
     langToLearn = langToLearn.map((l:any) => new Language(l.data.name, l.id))
-    const photos: Photo[] = await dbServices.getListDataFromDocReferences(data.photos)
-    const city: City = await locationServices.getCity(data.city)
+    let photos: Photo[] = await dbServices.getListDataFromDocReferences(data.photos)
+    photos = photos.map((p:any) => new Photo(p.data.value, p.id))
+    const city: City = await locationServices.getCityObjectFromDocument(data.city)
     const matches: String[] = data.matches
     const likedUsersId: String[] = data.likedUsers
 
@@ -45,6 +46,7 @@ const parseUserAsync = async (data: any): Promise<User> => {
         city,
         likedUsersId,
         matches,
+        data.profileDescription
     )
 
     return user

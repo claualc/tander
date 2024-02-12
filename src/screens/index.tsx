@@ -7,7 +7,6 @@ import {initAsyncFirebaseServices} from '@serv/firebase';
 
 import { ThemeProvider } from 'styled-components/native';
 import { theme } from './theme';
-import FCMService from "@firebaseServ/notifications"
 import ScreensStack, { routes } from './stackNavigator';
 
 import "@serv/firebase"; // import to initiate the firebase module

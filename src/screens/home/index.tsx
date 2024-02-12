@@ -5,7 +5,7 @@ import * as userService from "@serv/userService";
 import Card from "./components/Card";
 import { ScrollView, Text, View } from "react-native";
 import { AntDesign, Ionicons, SimpleLineIcons } from "@expo/vector-icons";
-import { UserDecSections, UserDescWrapper } from "./components";
+import { Section, UserDecSections, UserDescWrapper } from "./components";
 import { theme } from "../theme";
 
 interface Props {
@@ -23,6 +23,7 @@ const HomeScreen: React.FC<Props> = ({ children, style, ...rest }: any) => {
       setUsers(users)
       setRenderUserCards(users.map(p => true))
       setSwipedUserCards(users.map(p => false))
+      
     })();
   }, []);
 
@@ -107,6 +108,7 @@ const HomeScreen: React.FC<Props> = ({ children, style, ...rest }: any) => {
                 } 
                 <UserDescWrapper>
                   { seeDescription && <>
+
                   <UserDecSections>
                     <CustomText size={30} fontFam="BD">{users[currentUser]?.username || ""}</CustomText>   
                     <CustomText  size={30}>{" " + users[currentUser]?.yearsOld}</CustomText>  
@@ -123,7 +125,9 @@ const HomeScreen: React.FC<Props> = ({ children, style, ...rest }: any) => {
                     <Ionicons name="earth-outline" size={24} color={theme.text_dark_priamry} />
                     <CustomText>{" " +  users[currentUser]?.university?.name}</CustomText>  
                   </UserDecSections> 
-                  <UserDecSections style={{justifyContent: "space-evenly", width: "100%", flexDirection: "row", marginTop:15}}>
+
+                  <Section style={{justifyContent: "flex-start",width:"100%", flexDirection: "row"}}>
+                    
                     <ColorWrapper inColor={theme.secondary}>
                       <View style={{flex:1, justifyContent: "center", alignItems: "center"}}>
                         <CustomText size={30}>🤓</CustomText>
@@ -138,6 +142,7 @@ const HomeScreen: React.FC<Props> = ({ children, style, ...rest }: any) => {
                         </View>
                       </View>
                     </ColorWrapper>
+        
                     <ColorWrapper inColor={theme.tertiary}>
                       <View style={{flex:1}}>
                         <CustomText size={30}>😎</CustomText>
@@ -147,20 +152,29 @@ const HomeScreen: React.FC<Props> = ({ children, style, ...rest }: any) => {
                         <View style={{flex:2, flexDirection: "row", justifyContent: "space-between"}}>
                         {
                             users[currentUser]?.langToLearn?.map((lang, i) => {
-                            return <CustomText size={25} >{" " + lang.flag + " "}</CustomText>})
+                            return <CustomText key={i} size={25} >{" " + lang.flag + " "}</CustomText>})
                         }
                         </View>
                       </View>
                     </ColorWrapper>
-                  </UserDecSections>
-                  <UserDecSections></UserDecSections>
+
+                  </Section>
+
+                  <Section>
+                    <CustomText size={20} fontFam="DM" color={theme.secondary_dark}>Qualcosa di me</CustomText>
+                    <CustomText size={17}  style={{marginTop: 10}}>
+                      {users[currentUser].profileDescription}
+                    </CustomText>
+                  </Section>
+
+                  <Section>
+                    <CustomText size={20} fontFam="DM" color={theme.secondary_dark}>On repeat</CustomText>
+                   
+                  </Section>
                 </>
                 }
                   
                 </UserDescWrapper>
-
-
-               
           </ScrollView>
           </View>
     </MainWrapper>

@@ -68,3 +68,11 @@ export const UserDecSections = styled.View`
     align-items: flex-start;
     flex-direction: row;
 `
+
+export const Section = styled.View`
+    width: "100%";
+    align-items: flex-start;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 30px;
+`

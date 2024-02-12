@@ -27,12 +27,8 @@ const countryFC: converter<Country> = {
     }
 }
 
-// export const getCountry = async (docRef: DocumentReference<any, DocumentData>) => {
-//     const doc = await getDoc(docRef)
-//     return doc.data() as Country;
-// }
 
-export const getCity = async (docRef: DocumentReference<any, DocumentData>) => {
+export const getCityObjectFromDocument = async (docRef: DocumentReference<any, DocumentData>) => {
     const cityDoc = await getDoc(docRef)
     const city = cityDoc.data()
 
@@ -52,19 +48,11 @@ export const getCity = async (docRef: DocumentReference<any, DocumentData>) => {
             cId
         );
     }
-    // let country = city?.country
-    //     ? await getCountry(city?.country)
-    //     :null
     return new City(city?.name, country);
 }
 
 export const getCityById = async (id: string) => {
     const docRef = dbServices.getDocRefById(COLLECTION_ID_I,cityFC,id);
-    const city = await getCity(docRef)
+    const city = await getCityObjectFromDocument(docRef)
     return city;
 }
-
-// export const getCountryById = async (id: string) => {
-//     const docRef = dbServices.getDocRefById(COLLECTION_ID_O,countryFC,id)
-//     return await getCountry(docRef);
-// }

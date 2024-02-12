@@ -2,10 +2,11 @@ import { Animated, Dimensions, Image, PanResponder, TouchableWithoutFeedback, Vi
 import { PhotoChipWrapper, PhotoSwipeChips, UserDataView } from "./index";
 import { Chip, CustomText } from "@components/index";
 import EmptyImage from "@assets/empty_image.png";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Language } from "@api/domain/Language";
 import { INITIAL_GESTURE_VALS, panRes } from "./PanResponder";
 import { theme } from "@screens/theme";
+import { Photo } from "@api/domain/User";
 
 
 interface CardProps {
@@ -53,7 +54,7 @@ const Card: React.FC<CardProps> = ({
                 ? p : (p+1))) 
         }
     },[photosBase64,currentPhotoId])
-
+    
     const tapPhotoLeft = useCallback(() => {
         setCurrentPhotoId(p => (p-1) >= 0 ? (p-1) : p)
     },[currentPhotoId])
@@ -143,9 +144,10 @@ const Card: React.FC<CardProps> = ({
                         height: Dimensions.get("window").height,
                     }} 
                     source={{uri: photosBase64[currentPhotoId]}}/> 
-                </> :  <Image style= {{flex:1 , width: "100%", height: "100%"}}    
+                </> :
+                  <Image style= {{flex:1 , width: "100%", height: "100%"}}    
                     source={EmptyImage}/> 
-            }
+        }
             </View>
 
             {

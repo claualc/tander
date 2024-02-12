@@ -4,19 +4,21 @@ import { Univeristy, Course} from "./University";
 
 export class UserTeam {
     constructor(
-        public value: String, //spritz/negroni/vino/aqcua/frizzante
-        public id?: String,
+        public value_: String, //spritz/negroni/vino/aqcua/frizzante
+        public id_?: String,
     ) {}
+
+    get value() {
+        return this.value_
+    }
 }
 export class Photo {
     constructor(
-        public value: string,
-        public id?: String,
+        public value_: string,
+        public id_?: String,
     ) {}
 
-    getValue() {
-        return this.value
-    }
+    get value() {return this.value_}
 }
 
 export class User {
@@ -35,6 +37,7 @@ export class User {
         public city_?: City,
         public likedUsers_?: User[] | String[],
         public matches_?: User[] | String[],
+        public profileDescription_?: string,
     ) {}
 
     get id() {return this.id_};
@@ -51,5 +54,6 @@ export class User {
     get city() {return this.city_};
     get likedUsers() {return this.likedUsers_};
     get matches() {return this.matches_};
+    get profileDescription() {return this.profileDescription_};
 }
   
