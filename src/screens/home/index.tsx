@@ -7,6 +7,7 @@ import { ScrollView, Text, View } from "react-native";
 import { AntDesign, Ionicons, SimpleLineIcons } from "@expo/vector-icons";
 import { Section, UserDecSections, UserDescWrapper } from "./components";
 import { theme } from "../theme";
+import AlbumComponent from "@components/musicAlbum";
 
 interface Props {
   currentUser?: User
@@ -167,8 +168,9 @@ const HomeScreen: React.FC<Props> = ({ children, style, ...rest }: any) => {
                     </CustomText>
                   </Section>
 
-                  <Section>
+                  <Section style={{width: "100%"}}>
                     <CustomText size={20} fontFam="DM" color={theme.secondary_dark}>On repeat</CustomText>
+                    <AlbumComponent />
                    
                   </Section>
                 </>

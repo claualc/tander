@@ -70,7 +70,7 @@ export const UserDecSections = styled.View`
 `
 
 export const Section = styled.View`
-    width: "100%";
+    width: 100%;
     align-items: flex-start;
     flex-direction: column;
     align-items: flex-start;
