@@ -1,9 +1,8 @@
 import { Animated, Dimensions, Image, PanResponder, TouchableWithoutFeedback, View } from "react-native";
-import { PhotoChipWrapper, PhotoSwipeChips, UserDataView } from "./index";
+import { PhotoChipWrapper, PhotoSwipeChips, UserDataView } from "./style";
 import { Chip, CustomText } from "@components/index";
 import EmptyImage from "@assets/empty_image.png";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Language } from "@api/domain/Language";
 import { INITIAL_GESTURE_VALS, panRes } from "./PanResponder";
 import { theme } from "@screens/theme";
 import flagDic from "@dict/flag";

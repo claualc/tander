@@ -2,10 +2,10 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Photo, User } from "@domain/User";
 import { Chip, ColorWrapper, CustomText, MainWrapper, Wrapper } from "@components/index";
 import * as userService from "@serv/userService";
-import Card from "./components/Card";
+import Card from "@components/userCard";
 import { ScrollView, Text, View } from "react-native";
 import { AntDesign, Ionicons, SimpleLineIcons } from "@expo/vector-icons";
-import { Section, UserDecSections, UserDescWrapper } from "./components";
+import { Section, UserDecSections, UserDescWrapper } from "./style";
 import { theme } from "../theme";
 import AlbumComponent from "@components/musicAlbum";
 
