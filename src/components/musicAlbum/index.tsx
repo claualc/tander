@@ -8,20 +8,20 @@ import { CustomText } from '@components/index';
 import { theme } from '@screens/theme';
 
 interface Props {
+  artistName: string;
+  albumName: string;
 }
 
-const AlbumComponent = () => {
+const AlbumComponent = ({albumName, artistName}: Props) => {
 
   const [loading, setLoading] = useState<boolean>(true);
   const [data, setData] = useState<Album | null>(null);
 
   useEffect(() => {
     (async () => {
-      const res = await albumAPI.getAlbum( "Belive","Cher");
-      console.log("res component", res)
+      const res = await albumAPI.getAlbum(albumName,artistName);
       setData(res)
       setLoading(false)
-      console.log("data?.name", data?.name)
     })();
   }, [])
 

@@ -83,6 +83,7 @@ const HomeScreen: React.FC<Props> = ({ children, style, ...rest }: any) => {
                     username={user?.username || ""}
                     yearsOld={user?.yearsOld || 0}
                     nationality={user?.city?.country?.nationality || ""}
+                    flagId={user?.city?.country?.id}
                     userTeam={"Spritz"}
                     langKnown={user?.langKnown || []}
                     onScrollUp={() => {
@@ -115,44 +116,44 @@ const HomeScreen: React.FC<Props> = ({ children, style, ...rest }: any) => {
                     <CustomText  size={30}>{" " + users[currentUser]?.yearsOld}</CustomText>  
                   </UserDecSections> 
                   <UserDecSections>
-                    <AntDesign name="book" size={24} color={theme.text_dark_priamry} />
-                    <CustomText>{" " + users[currentUser]?.course?.name}</CustomText>  
+                    <AntDesign name="book" size={24} color={theme.tertiary_dark} />
+                    <CustomText color={theme.tertiary_dark}>{" " + users[currentUser]?.course?.name}</CustomText>  
                   </UserDecSections> 
                   <UserDecSections>
-                    <Ionicons name="earth-outline" size={24} color={theme.text_dark_priamry} />
-                    <CustomText>{` ${users[currentUser]?.city?.name}, ${users[currentUser]?.city?.country?.name}`}</CustomText>  
+                    <Ionicons name="earth-outline" size={24} color={theme.tertiary_dark} />
+                    <CustomText color={theme.tertiary_dark}>{` ${users[currentUser]?.city?.name}, ${users[currentUser]?.city?.country?.name}`}</CustomText>  
                   </UserDecSections> 
                   <UserDecSections>
-                    <SimpleLineIcons name="graduation" size={24} color={theme.text_dark_priamry} />
-                    <CustomText>{" " +  users[currentUser]?.university?.name}</CustomText>  
+                    <SimpleLineIcons name="graduation" size={24} color={theme.tertiary_dark} />
+                    <CustomText color={theme.tertiary_dark}>{" " +  users[currentUser]?.university?.name}</CustomText>  
                   </UserDecSections> 
-                  <Section style={{justifyContent: "flex-start",width:"100%", flexDirection: "row"}}>
+                  <Section style={{justifyContent: "flex-start",width:"100%"}}>
                     
                     <ColorWrapper inColor={theme.secondary}>
-                      <View style={{flex:1, justifyContent: "center", alignItems: "center"}}>
+                      <View style={{flex:1, alignItems: "center"}}>
                         <CustomText size={30}>🤓</CustomText>
                       </View>
-                      <View style={{flex:3, flexDirection: "column",justifyContent: "center", alignItems: "center"}}>
+                      <View style={{flex:4, alignItems: "flex-start"}}>
                         <CustomText size={13} color={theme.secondary}>Here To Help With</CustomText>
-                        <View style={{flex:2, flexDirection: "row", justifyContent: "space-between"}}>
+                        <View style={{flex:2, flexDirection: "row", alignItems: "flex-start"}}>
                         {
                             users[currentUser]?.langKnown?.map((lang, i) => {
-                            return <CustomText key={i} size={25} >{" " + lang.flag + " "}</CustomText>})
+                            return <CustomText key={i} size={20} color={theme.secondary} fontFam="DM">{lang.name + " "}</CustomText>})
                         }
                         </View>
                       </View>
                     </ColorWrapper>
         
                     <ColorWrapper inColor={theme.tertiary}>
-                      <View style={{flex:1}}>
+                      <View style={{flex:1, alignItems: "center"}}>
                         <CustomText size={30}>😎</CustomText>
                       </View>
-                      <View style={{flex:3, justifyContent: "center", alignItems: "center"}}>
+                      <View style={{flex:4,justifyContent: "flex-start", alignItems: "flex-start"}}>
                         <CustomText size={13}  color={theme.tertiary}>Here To learn</CustomText>
                         <View style={{flex:2, flexDirection: "row", justifyContent: "space-between"}}>
                         {
                             users[currentUser]?.langToLearn?.map((lang, i) => {
-                            return <CustomText key={i} size={25} >{" " + lang.flag + " "}</CustomText>})
+                            return <CustomText key={i} size={20} color={theme.tertiary} fontFam="DM" >{lang.name + " "}</CustomText>})
                         }
                         </View>
                       </View>
@@ -169,7 +170,9 @@ const HomeScreen: React.FC<Props> = ({ children, style, ...rest }: any) => {
 
                   <Section style={{width: "100%", marginBottom: "5%"}}>
                     <CustomText size={20} fontFam="DM" color={theme.secondary_dark}>On repeat</CustomText>
-                    <AlbumComponent />
+                    <AlbumComponent
+                      artistName={users[currentUser]?.musicInterest.artistName} 
+                      albumName={users[currentUser]?.musicInterest.albumName} />
                   </Section>
                 </>
                 }

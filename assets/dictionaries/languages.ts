@@ -105,4 +105,7 @@ const languages: {
       "language_code": "ko"
     },
   };
+
+export default languages;
+
   

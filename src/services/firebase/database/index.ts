@@ -21,13 +21,17 @@ const FirestoreService = () => {
             }) : null;
             return promisses ? Promise.all(promisses) : []
         },
-        getListDataFromDocReferences: async (data: any[]): Promise<any> => {
-            const promisses = data ? data.map(
+        getListDataFromDocReferences: async (ref: any[]): Promise<any> => {
+            const promisses = ref ? ref.map(
                 async (d: any) => {
                     const doc = await getDoc(d)
                     return {data: doc.data(), id: doc.id}
             }) : null;
             return promisses ? Promise.all(promisses) : []
+        },
+        getDataFromDocReference: async (ref: any): Promise<any> => {
+            const doc = await getDoc(ref)
+            return {data: doc.data(), id: doc.id};
         },
         findById: async (collect: string, converter: converter<any>, id: any) => {
             const querySnapshot = await getDoc(getDocRefById(collect,converter,id));

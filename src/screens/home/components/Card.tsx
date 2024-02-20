@@ -7,13 +7,14 @@ import { Language } from "@api/domain/Language";
 import { INITIAL_GESTURE_VALS, panRes } from "./PanResponder";
 import { theme } from "@screens/theme";
 import { Photo } from "@api/domain/User";
-
+import flagDic from "@dict/flag";
 
 interface CardProps {
     photosDisplayArray: string[];
     username: String;
     yearsOld: number;
     nationality: String;
+    flagId: string | undefined;
     langKnown: Language[];
     userTeam: String;
     onScrollUp: () => void;
@@ -30,6 +31,7 @@ const Card: React.FC<CardProps> = ({
         username,
         yearsOld,
         nationality,
+        flagId,
         langKnown,
         userTeam,
         onScrollUp,
@@ -157,13 +159,13 @@ const Card: React.FC<CardProps> = ({
                         <CustomText color={theme.text_ligth_primary} size={25} fontFam={"BD"}>{username+" "}</CustomText>
                         <CustomText color={theme.text_ligth_primary} size={25}>{yearsOld}</CustomText>
                     </View>
-                    <Chip textColor={theme.text_ligth_primary} >{nationality}</Chip>
+                    <Chip textColor={theme.text_ligth_primary} >{`${nationality} ${flagId ? flagDic[flagId] : ""}`}</Chip>
                     <Chip textColor={theme.text_ligth_primary} >{userTeam}</Chip>
 
                     <View style={{ width: "100%", display:"flex",flexDirection:"row",justifyContent: "flex-start", alignItems:"center"}}>
                         { 
                             langKnown.map((lang, i) => {
-                            return <Chip textColor={theme.text_ligth_primary} key={i}>{lang.flag}</Chip>})
+                            return <Chip textColor={theme.text_ligth_primary} key={i}>{lang.language_code.toLocaleUpperCase()}</Chip>})
                         }
                     </View>
                 </UserDataView>

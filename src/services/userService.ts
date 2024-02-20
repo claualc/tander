@@ -1,12 +1,13 @@
 import { getDoc, getFirestore, doc, getDocs, DocumentReference, DocumentData } from "firebase/firestore";
 
 import dbServices from "./firebase/database"
-import { Photo, User, UserTeam } from "@domain/User";
+import { MusicInterest, Photo, User, UserTeam } from "@domain/User";
 import { Language } from "@api/domain/Language";
 import { converter } from "@firebaseServ/database/converterDTO";
 import { City } from "@api/domain/Location";
 import * as locationServices from "@serv/locationServices";
 import { Course, Univeristy } from "@api/domain/University";
+import languageService from "./languageService";
 
 interface userServiceI {
     listAll(): Promise<any>;
@@ -21,13 +22,13 @@ const parseUserAsync = async (data: any): Promise<User> => {
     const team = await getDoc(data.team) 
     const daybirth = new Date(data.birth) || new Date()
 
-    let langKnown = await dbServices.getListDataFromDocReferences(data.langKnown)
-    langKnown = langKnown.map((l: any) => new Language(l.data.name, l.id))
-    let langToLearn = await dbServices.getListDataFromDocReferences(data.langToLearn)
-    langToLearn = langToLearn.map((l:any) => new Language(l.data.name, l.id))
+    const langKnown = data.langKnown.map((id: any) => languageService.getById(id))
+    const langToLearn = data.langToLearn.map((id: any) => languageService.getById(id))
+    let {data : musicData, id: musicId} = await dbServices.getDataFromDocReference(data.musicInterest)
+    const musicInterest = new MusicInterest(musicData.artist_name, musicData.album_name, musicId)
     let photos: Photo[] = await dbServices.getListDataFromDocReferences(data.photos)
     photos = photos.map((p:any) => new Photo(p.data.value, p.id))
-    const city: City = await locationServices.getCityObjectFromDocument(data.city)
+    const city: City = await locationServices.getCityById(data.city)
     const matches: String[] = data.matches
     const likedUsersId: String[] = data.likedUsers
 
@@ -36,6 +37,7 @@ const parseUserAsync = async (data: any): Promise<User> => {
         data.username,
         daybirth, // miliseconds from epoch
         new Date().getUTCFullYear() - daybirth.getUTCFullYear(), // miliseconds from epoch
+        musicInterest,
         data.hasSeenWhoLikesMeToday, // always at 12pm resets to false,
         university.data() as Univeristy,
         course.data() as Course,

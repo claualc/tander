@@ -115,8 +115,8 @@ export const Chip: React.FC<React.PropsWithChildren<PropsChip>> = (
 const Cwrapper = styled.View<{color: string}>`
   border-radius: 15px;
   flex: 0;
-  margin: 3px;
-  padding: 5px;
+  margin-top: 10px;
+  padding: 12px;
   flex: 1;
   justify-content: center;
   align-items: center;

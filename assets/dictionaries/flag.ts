@@ -196,4 +196,7 @@ const flag_code: {
     "193": "🇾🇪",
     "194": "🇿🇲",
     "195": "🇿🇼"
+
 }
+
+export default flag_code;

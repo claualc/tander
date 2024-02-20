@@ -2,985 +2,790 @@
 const country: {
     [key: string]:  {
         "name": string,
-          "nationality": string,
-          "flag_code": number | string,
-      }
+        "nationality": string      
+    }
   } = { 
-  
       "1": {
           "name": "Afghanistan",
-          "nationality": "Afghan",
-          "flag_code": "1",
+          "nationality": "Afghan"
       },
       "2": {
           "name": "Albania",
-          "nationality": "Albanian",
-          "flag_code": "2",
+          "nationality": "Albanian"
       },
       "3": {
           "name": "Algeria",
-          "nationality": "Algerian",
-          "flag_code": "3",
+          "nationality": "Algerian"
       },
       "4": {
           "name": "Andorra",
-          "nationality": "Andorran",
-          "flag_code": "4",
+          "nationality": "Andorran"
       },
       "5": {
           "name": "Angola",
-          "nationality": "Angolan",
-          "flag_code": "5",
+          "nationality": "Angolan"
       },
       "6": {
           "name": "Antigua and Barbuda",
-          "nationality": "Antiguan",
-          "flag_code": "6",
+          "nationality": "Antiguan"
       },
       "7": {
           "name": "Argentina",
-          "nationality": "Argentinian",
-          "flag_code": "7",
+          "nationality": "Argentinian"
       },
       "8": {
           "name": "Armenia",
-          "nationality": "Armenian",
-          "flag_code": "8",
+          "nationality": "Armenian"
       },
       "9": {
           "name": "Australia",
-          "nationality": "Australian",
-          "flag_code": "9",
+          "nationality": "Australian"
       },
       "10": {
           "name": "Austria",
-          "nationality": "Austrian",
-          "flag_code": "10",
+          "nationality": "Austrian"
       },
       "11": {
           "name": "Azerbaijan",
-          "nationality": "Azerbaijani",
-          "flag_code": "11",
+          "nationality": "Azerbaijani"
       },
       "12": {
           "name": "Bahamas",
-          "nationality": "Bahamian",
-          "flag_code": "12",
+          "nationality": "Bahamian"
       },
       "13": {
           "name": "Bahrain",
-          "nationality": "Bahraini",
-          "flag_code": "13",
+          "nationality": "Bahraini"
       },
       "14": {
           "name": "Bangladesh",
-          "nationality": "Bangladeshi",
-          "flag_code": "14",
+          "nationality": "Bangladeshi"
       },
       "15": {
           "name": "Barbados",
-          "nationality": "Barbadian",
-          "flag_code": "15",
+          "nationality": "Barbadian"
       },
       "16": {
           "name": "Belarus",
-          "nationality": "Belarusian",
-          "flag_code": "16",
+          "nationality": "Belarusian"
       },
       "17": {
           "name": "Belgium",
-          "nationality": "Belgian",
-          "flag_code": "17",
+          "nationality": "Belgian"
       },
       "18": {
           "name": "Belize",
-          "nationality": "Belizean",
-          "flag_code": "18",
+          "nationality": "Belizean"
       },
       "19": {
           "name": "Benin",
-          "nationality": "Beninese",
-          "flag_code": "19",
+          "nationality": "Beninese"
       },
       "20": {
           "name": "Bhutan",
-          "nationality": "Bhutanese",
-          "flag_code": "20",
+          "nationality": "Bhutanese"
       },
       "21": {
           "name": "Bolivia",
-          "nationality": "Bolivian",
-          "flag_code": "21",
+          "nationality": "Bolivian"
       },
       "22": {
           "name": "Bosnia and Herzegovina",
-          "nationality": "Bosnian",
-          "flag_code": "22",
+          "nationality": "Bosnian"
       },
       "23": {
           "name": "Botswana",
-          "nationality": "Motswana",
-          "flag_code": "23",
+          "nationality": "Motswana"
       },
       "24": {
           "name": "Brazil",
-          "nationality": "Brazilian",
-          "flag_code": "24",
+          "nationality": "Brazilian"
       },
       "25": {
           "name": "Brunei",
-          "nationality": "Bruneian",
-          "flag_code": "25",
+          "nationality": "Bruneian"
       },
       "26": {
           "name": "Bulgaria",
-          "nationality": "Bulgarian",
-          "flag_code": "26",
+          "nationality": "Bulgarian"
       },
       "27": {
           "name": "Burkina Faso",
-          "nationality": "Burkinabe",
-          "flag_code": "27",
+          "nationality": "Burkinabe"
       },
       "28": {
           "name": "Burundi",
-          "nationality": "Burundian",
-          "flag_code": "28",
+          "nationality": "Burundian"
       },
       "29": {
           "name": "Cabo Verde",
-          "nationality": "Cape Verdean",
-          "flag_code": "29",
+          "nationality": "Cape Verdean"
       },
       "30": {
           "name": "Cambodia",
-          "nationality": "Cambodian",
-          "flag_code": "30",
+          "nationality": "Cambodian"
       },
       "31": {
           "name": "Cameroon",
-          "nationality": "Cameroonian",
-          "flag_code": "31",
+          "nationality": "Cameroonian"
       },
       "32": {
           "name": "Canada",
-          "nationality": "Canadian",
-          "flag_code": "32",
+          "nationality": "Canadian"
       },
       "33": {
           "name": "Central African Republic",
-          "nationality": "Central African",
-          "flag_code": "33",
+          "nationality": "Central African"
       },
       "34": {
           "name": "Chad",
-          "nationality": "Chadian",
-          "flag_code": "34",
+          "nationality": "Chadian"
       },
       "35": {
           "name": "Chile",
-          "nationality": "Chilean",
-          "flag_code": "35",
+          "nationality": "Chilean"
       },
       "36": {
           "name": "China",
-          "nationality": "Chinese",
-          "flag_code": "36",
+          "nationality": "Chinese"
       },
       "37": {
           "name": "Colombia",
-          "nationality": "Colombian",
-          "flag_code": "37",
+          "nationality": "Colombian"
       },
       "38": {
           "name": "Comoros",
-          "nationality": "Comoran",
-          "flag_code": "38",
+          "nationality": "Comoran"
       },
       "39": {
           "name": "Congo",
-          "nationality": "Congolese",
-          "flag_code": "39",
+          "nationality": "Congolese"
       },
       "40": {
           "name": "Costa Rica",
-          "nationality": "Costa Rican",
-          "flag_code": "40",
+          "nationality": "Costa Rican"
       },
       "41": {
           "name": "Croatia",
-          "nationality": "Croatian",
-          "flag_code": "41",
+          "nationality": "Croatian"
       },
       "42": {
           "name": "Cuba",
-          "nationality": "Cuban",
-          "flag_code": "42",
+          "nationality": "Cuban"
       },
       "43": {
           "name": "Cyprus",
-          "nationality": "Cypriot",
-          "flag_code": "43",
+          "nationality": "Cypriot"
       },
       "44": {
           "name": "Czech Republic",
-          "nationality": "Czech",
-          "flag_code": "44",
+          "nationality": "Czech"
       },
       "45": {
           "name": "Democratic Republic of the Congo",
-          "nationality": "Congolese",
-          "flag_code": "45",
+          "nationality": "Congolese"
       },
       "46": {
           "name": "Denmark",
-          "nationality": "Danish",
-          "flag_code": "46",
+          "nationality": "Danish"
       },
       "47": {
           "name": "Djibouti",
-          "nationality": "Djiboutian",
-          "flag_code": "47",
+          "nationality": "Djiboutian"
       },
       "48": {
           "name": "Dominica",
-          "nationality": "Dominican",
-          "flag_code": "48",
+          "nationality": "Dominican"
       },
       "49": {
           "name": "Dominican Republic",
-          "nationality": "Dominican",
-          "flag_code": "49",
+          "nationality": "Dominican"
       },
       "50": {
           "name": "East Timor",
-          "nationality": "East Timorese",
-          "flag_code": "50",
+          "nationality": "East Timorese"
       },
       "51": {
           "name": "Ecuador",
-          "nationality": "Ecuadorian",
-          "flag_code": "51",
+          "nationality": "Ecuadorian"
       },
       "52": {
           "name": "Egypt",
-          "nationality": "Egyptian",
-          "flag_code": "52",
+          "nationality": "Egyptian"
       },
       "53": {
           "name": "El Salvador",
-          "nationality": "Salvadoran",
-          "flag_code": "53",
+          "nationality": "Salvadoran"
       },
       "54": {
           "name": "Equatorial Guinea",
-          "nationality": "Equatorial Guinean",
-          "flag_code": "54",
+          "nationality": "Equatorial Guinean"
       },
       "55": {
           "name": "Eritrea",
-          "nationality": "Eritrean",
-          "flag_code": "55",
+          "nationality": "Eritrean"
       },
       "56": {
           "name": "Estonia",
-          "nationality": "Estonian",
-          "flag_code": "56",
+          "nationality": "Estonian"
       },
       "57": {
           "name": "Eswatini",
-          "nationality": "Swazi",
-          "flag_code": "57",
+          "nationality": "Swazi"
       },
       "58": {
           "name": "Ethiopia",
-          "nationality": "Ethiopian",
-          "flag_code": "58",
+          "nationality": "Ethiopian"
       },
       "59": {
           "name": "Fiji",
-          "nationality": "Fijian",
-          "flag_code": "59",
+          "nationality": "Fijian"
       },
       "60": {
           "name": "Finland",
-          "nationality": "Finnish",
-          "flag_code": "60",
+          "nationality": "Finnish"
       },
       "61": {
           "name": "France",
-          "nationality": "French",
-          "flag_code": "61",
+          "nationality": "French"
       },
       "62": {
           "name": "Gabon",
-          "nationality": "Gabonese",
-          "flag_code": "62",
+          "nationality": "Gabonese"
       },
       "63": {
           "name": "Gambia",
-          "nationality": "Gambian",
-          "flag_code": "63",
+          "nationality": "Gambian"
       },
       "64": {
           "name": "Georgia",
-          "nationality": "Georgian",
-          "flag_code": "64",
+          "nationality": "Georgian"
       },
       "65": {
           "name": "Germany",
-          "nationality": "German",
-          "flag_code": "65",
+          "nationality": "German"
       },
       "66": {
           "name": "Ghana",
-          "nationality": "Ghanaian",
-          "flag_code": "66",
+          "nationality": "Ghanaian"
       },
       "67": {
           "name": "Greece",
-          "nationality": "Greek",
-          "flag_code": "67",
+          "nationality": "Greek"
       },
       "68": {
           "name": "Grenada",
-          "nationality": "Grenadian",
-          "flag_code": "68",
+          "nationality": "Grenadian"
       },
       "69": {
           "name": "Guatemala",
-          "nationality": "Guatemalan",
-          "flag_code": "69",
+          "nationality": "Guatemalan"
       },
       "70": {
           "name": "Guinea",
-          "nationality": "Guinean",
-          "flag_code": "70",
+          "nationality": "Guinean"
       },
       "71": {
           "name": "Guinea-Bissau",
-          "nationality": "Bissau-Guinean",
-          "flag_code": "71",
+          "nationality": "Bissau-Guinean"
       },
       "72": {
           "name": "Guyana",
-          "nationality": "Guyanese",
-          "flag_code": "72",
+          "nationality": "Guyanese"
       },
       "73": {
           "name": "Haiti",
-          "nationality": "Haitian",
-          "flag_code": "73",
+          "nationality": "Haitian"
       },
       "74": {
           "name": "Honduras",
-          "nationality": "Honduran",
-          "flag_code": "74",
+          "nationality": "Honduran"
       },
       "75": {
           "name": "Hungary",
-          "nationality": "Hungarian",
-          "flag_code": "75",
+          "nationality": "Hungarian"
       },
       "76": {
           "name": "Iceland",
-          "nationality": "Icelandic",
-          "flag_code": "76",
+          "nationality": "Icelandic"
       },
       "77": {
           "name": "India",
-          "nationality": "Indian",
-          "flag_code": "77",
+          "nationality": "Indian"
       },
       "78": {
           "name": "Indonesia",
-          "nationality": "Indonesian",
-          "flag_code": "78",
+          "nationality": "Indonesian"
       },
       "79": {
           "name": "Iran",
-          "nationality": "Iranian",
-          "flag_code": "79",
+          "nationality": "Iranian"
       },
       "80": {
           "name": "Iraq",
-          "nationality": "Iraqi",
-          "flag_code": "80",
+          "nationality": "Iraqi"
       },
       "81": {
           "name": "Ireland",
-          "nationality": "Irish",
-          "flag_code": "81",
+          "nationality": "Irish"
       },
       "82": {
           "name": "Israel",
-          "nationality": "Israeli",
-          "flag_code": "82",
+          "nationality": "Israeli"
       },
       "83": {
           "name": "Italy",
-          "nationality": "Italian",
-          "flag_code": "83",
+          "nationality": "Italian"
       },
       "84": {
           "name": "Ivory Coast",
-          "nationality": "Ivorian",
-          "flag_code": "84",
+          "nationality": "Ivorian"
       },
       "85": {
           "name": "Jamaica",
-          "nationality": "Jamaican",
-          "flag_code": "85",
+          "nationality": "Jamaican"
       },
       "86": {
           "name": "Japan",
-          "nationality": "Japanese",
-          "flag_code": "86",
+          "nationality": "Japanese"
       },
       "87": {
           "name": "Jordan",
-          "nationality": "Jordanian",
-          "flag_code": "87",
+          "nationality": "Jordanian"
       },
       "88": {
           "name": "Kazakhstan",
-          "nationality": "Kazakhstani",
-          "flag_code": "88",
+          "nationality": "Kazakhstani"
       },
       "89": {
           "name": "Kenya",
-          "nationality": "Kenyan",
-          "flag_code": "89",
+          "nationality": "Kenyan"
       },
       "90": {
           "name": "Kiribati",
-          "nationality": "I-Kiribati",
-          "flag_code": "90",
+          "nationality": "I-Kiribati"
       },
       "91": {
           "name": "Kuwait",
-          "nationality": "Kuwaiti",
-          "flag_code": "91",
+          "nationality": "Kuwaiti"
       },
       "92": {
           "name": "Kyrgyzstan",
-          "nationality": "Kyrgyzstani",
-          "flag_code": "92",
+          "nationality": "Kyrgyzstani"
       },
       "93": {
           "name": "Laos",
-          "nationality": "Laotian",
-          "flag_code": "93",
+          "nationality": "Laotian"
       },
       "94": {
           "name": "Latvia",
-          "nationality": "Latvian",
-          "flag_code": "94",
+          "nationality": "Latvian"
       },
       "95": {
           "name": "Lebanon",
-          "nationality": "Lebanese",
-          "flag_code": "95",
+          "nationality": "Lebanese"
       },
       "96": {
           "name": "Lesotho",
-          "nationality": "Mosotho",
-          "flag_code": "96",
+          "nationality": "Mosotho"
       },
       "97": {
           "name": "Liberia",
-          "nationality": "Liberian",
-          "flag_code": "97",
+          "nationality": "Liberian"
       },
       "98": {
           "name": "Libya",
-          "nationality": "Libyan",
-          "flag_code": "98",
+          "nationality": "Libyan"
       },
       "99": {
           "name": "Liechtenstein",
-          "nationality": "Liechtensteiner",
-          "flag_code": "99",
+          "nationality": "Liechtensteiner"
       },
       "100": {
           "name": "Lithuania",
-          "nationality": "Lithuanian",
-          "flag_code": "100",
+          "nationality": "Lithuanian"
       },
       "101": {
           "name": "Luxembourg",
-          "nationality": "Luxembourger",
-          "flag_code": "101",
+          "nationality": "Luxembourger"
       },
       "102": {
           "name": "North Macedonia",
-          "nationality": "Macedonian",
-          "flag_code": "102",
+          "nationality": "Macedonian"
       },
       "103": {
           "name": "Madagascar",
-          "nationality": "Malagasy",
-          "flag_code": "103",
+          "nationality": "Malagasy"
       },
       "104": {
           "name": "Malawi",
-          "nationality": "Malawian",
-          "flag_code": "104",
+          "nationality": "Malawian"
       },
       "105": {
           "name": "Malaysia",
-          "nationality": "Malaysian",
-          "flag_code": "105",
+          "nationality": "Malaysian"
       },
       "106": {
           "name": "Maldives",
-          "nationality": "Maldivian",
-          "flag_code": "106",
+          "nationality": "Maldivian"
       },
       "107": {
           "name": "Mali",
-          "nationality": "Malian",
-          "flag_code": "107",
+          "nationality": "Malian"
       },
       "108": {
           "name": "Malta",
-          "nationality": "Maltese",
-          "flag_code": "108",
+          "nationality": "Maltese"
       },
       "109": {
           "name": "Marshall Islands",
-          "nationality": "Marshallese",
-          "flag_code": "109",
+          "nationality": "Marshallese"
       },
       "110": {
           "name": "Mauritania",
-          "nationality": "Mauritanian",
-          "flag_code": "110",
+          "nationality": "Mauritanian"
       },
       "111": {
           "name": "Mauritius",
-          "nationality": "Mauritian",
-          "flag_code": "111",
+          "nationality": "Mauritian"
       },
       "112": {
           "name": "Mexico",
-          "nationality": "Mexican",
-          "flag_code": "112",
+          "nationality": "Mexican"
       },
       "113": {
           "name": "Micronesia",
-          "nationality": "Micronesian",
-          "flag_code": "113",
+          "nationality": "Micronesian"
       },
       "114": {
           "name": "Moldova",
-          "nationality": "Moldovan",
-          "flag_code": "114",
+          "nationality": "Moldovan"
       },
       "115": {
           "name": "Monaco",
-          "nationality": "Monegasque",
-          "flag_code": "115",
+          "nationality": "Monegasque"
       },
       "116": {
           "name": "Mongolia",
-          "nationality": "Mongolian",
-          "flag_code": "116",
+          "nationality": "Mongolian"
       },
       "117": {
           "name": "Montenegro",
-          "nationality": "Montenegrin",
-          "flag_code": "117",
+          "nationality": "Montenegrin"
       },
       "118": {
           "name": "Morocco",
-          "nationality": "Moroccan",
-          "flag_code": "118",
+          "nationality": "Moroccan"
       },
       "119": {
           "name": "Mozambique",
-          "nationality": "Mozambican",
-          "flag_code": "119",
+          "nationality": "Mozambican"
       },
       "120": {
           "name": "Myanmar",
-          "nationality": "Burmese",
-          "flag_code": "120",
+          "nationality": "Burmese"
       },
       "121": {
           "name": "Namibia",
-          "nationality": "Namibian",
-          "flag_code": "121",
+          "nationality": "Namibian"
       },
       "122": {
           "name": "Nauru",
-          "nationality": "Nauruan",
-          "flag_code": "122",
+          "nationality": "Nauruan"
       },
       "123": {
           "name": "Nepal",
-          "nationality": "Nepali",
-          "flag_code": "123",
+          "nationality": "Nepali"
       },
       "124": {
           "name": "Netherlands",
-          "nationality": "Dutch",
-          "flag_code": "124",
+          "nationality": "Dutch"
       },
       "125": {
           "name": "New Zealand",
-          "nationality": "New Zealander",
-          "flag_code": "125",
+          "nationality": "New Zealander"
       },
       "126": {
           "name": "Nicaragua",
-          "nationality": "Nicaraguan",
-          "flag_code": "126",
+          "nationality": "Nicaraguan"
       },
       "127": {
           "name": "Niger",
-          "nationality": "Nigerien",
-          "flag_code": "127",
+          "nationality": "Nigerien"
       },
       "128": {
           "name": "Nigeria",
-          "nationality": "Nigerian",
-          "flag_code": "128",
+          "nationality": "Nigerian"
       },
       "129": {
           "name": "North Korea",
-          "nationality": "North Korean",
-          "flag_code": "129",
+          "nationality": "North Korean"
       },
       "130": {
           "name": "Norway",
-          "nationality": "Norwegian",
-          "flag_code": "130",
+          "nationality": "Norwegian"
       },
       "131": {
           "name": "Oman",
-          "nationality": "Omani",
-          "flag_code": "131",
+          "nationality": "Omani"
       },
       "132": {
           "name": "Pakistan",
-          "nationality": "Pakistani",
-          "flag_code": "132",
+          "nationality": "Pakistani"
       },
       "133": {
           "name": "Palau",
-          "nationality": "Palauan",
-          "flag_code": "133",
+          "nationality": "Palauan"
       },
       "134": {
           "name": "Panama",
-          "nationality": "Panamanian",
-          "flag_code": "134",
+          "nationality": "Panamanian"
       },
       "135": {
           "name": "Papua New Guinea",
-          "nationality": "Papua New Guinean",
-          "flag_code": "135",
+          "nationality": "Papua New Guinean"
       },
       "136": {
           "name": "Paraguay",
-          "nationality": "Paraguayan",
-          "flag_code": "136",
+          "nationality": "Paraguayan"
       },
       "137": {
           "name": "Peru",
-          "nationality": "Peruvian",
-          "flag_code": "137",
+          "nationality": "Peruvian"
       },
       "138": {
           "name": "Philippines",
-          "nationality": "Filipino",
-          "flag_code": "138",
+          "nationality": "Filipino"
       },
       "139": {
           "name": "Poland",
-          "nationality": "Polish",
-          "flag_code": "139",
+          "nationality": "Polish"
       },
       "140": {
           "name": "Portugal",
-          "nationality": "Portuguese",
-          "flag_code": "140",
+          "nationality": "Portuguese"
       },
       "141": {
           "name": "Qatar",
-          "nationality": "Qatari",
-          "flag_code": "141",
+          "nationality": "Qatari"
       },
       "142": {
           "name": "Romania",
-          "nationality": "Romanian",
-          "flag_code": "142",
+          "nationality": "Romanian"
       },
       "143": {
           "name": "Russia",
-          "nationality": "Russian",
-          "flag_code": "143",
+          "nationality": "Russian"
       },
       "144": {
           "name": "Rwanda",
-          "nationality": "Rwandan",
-          "flag_code": "144",
+          "nationality": "Rwandan"
       },
       "145": {
           "name": "Saint Kitts and Nevis",
-          "nationality": "Kittitian/Nevisian",
-          "flag_code": "145",
+          "nationality": "Kittitian/Nevisian"
       },
       "146": {
           "name": "Saint Lucia",
-          "nationality": "Saint Lucian",
-          "flag_code": "146",
+          "nationality": "Saint Lucian"
       },
       "147": {
           "name": "Saint Vincent and the Grenadines",
-          "nationality": "Vincentian",
-          "flag_code": "147",
+          "nationality": "Vincentian"
       },
       "148": {
           "name": "Samoa",
-          "nationality": "Samoan",
-          "flag_code": "148",
+          "nationality": "Samoan"
       },
       "149": {
           "name": "San Marino",
-          "nationality": "Sammarinese",
-          "flag_code": "149",
+          "nationality": "Sammarinese"
       },
       "150": {
           "name": "Sao Tome and Principe",
-          "nationality": "Sao Tomean",
-          "flag_code": "150",
+          "nationality": "Sao Tomean"
       },
       "151": {
           "name": "Saudi Arabia",
-          "nationality": "Saudi",
-          "flag_code": "151",
+          "nationality": "Saudi"
       },
       "152": {
           "name": "Senegal",
-          "nationality": "Senegalese",
-          "flag_code": "152",
+          "nationality": "Senegalese"
       },
       "153": {
           "name": "Serbia",
-          "nationality": "Serbian",
-          "flag_code": "153",
+          "nationality": "Serbian"
       },
       "154": {
           "name": "Seychelles",
-          "nationality": "Seychellois",
-          "flag_code": "154",
+          "nationality": "Seychellois"
       },
       "155": {
           "name": "Sierra Leone",
-          "nationality": "Sierra Leonean",
-          "flag_code": "155",
+          "nationality": "Sierra Leonean"
       },
       "156": {
           "name": "Singapore",
-          "nationality": "Singaporean",
-          "flag_code": "156",
+          "nationality": "Singaporean"
       },
       "157": {
           "name": "Slovakia",
-          "nationality": "Slovak",
-          "flag_code": "157",
+          "nationality": "Slovak"
       },
       "158": {
           "name": "Slovenia",
-          "nationality": "Slovenian",
-          "flag_code": "158",
+          "nationality": "Slovenian"
       },
       "159": {
           "name": "Solomon Islands",
-          "nationality": "Solomon Islander",
-          "flag_code": "159",
+          "nationality": "Solomon Islander"
       },
       "160": {
           "name": "Somalia",
-          "nationality": "Somali",
-          "flag_code": "160",
+          "nationality": "Somali"
       },
       "161": {
           "name": "South Africa",
-          "nationality": "South African",
-          "flag_code": "161",
+          "nationality": "South African"
       },
       "162": {
           "name": "South Korea",
-          "nationality": "South Korean",
-          "flag_code": "162",
+          "nationality": "South Korean"
       },
       "163": {
           "name": "South Sudan",
-          "nationality": "South Sudanese",
-          "flag_code": "163",
+          "nationality": "South Sudanese"
       },
       "164": {
           "name": "Spain",
-          "nationality": "Spanish",
-          "flag_code": "164",
+          "nationality": "Spanish"
       },
       "165": {
           "name": "Sri Lanka",
-          "nationality": "Sri Lankan",
-          "flag_code": "165",
+          "nationality": "Sri Lankan"
       },
       "166": {
           "name": "Sudan",
-          "nationality": "Sudanese",
-          "flag_code": "166",
+          "nationality": "Sudanese"
       },
       "167": {
           "name": "Suriname",
-          "nationality": "Surinamese",
-          "flag_code": "167",
+          "nationality": "Surinamese"
       },
       "168": {
           "name": "Sweden",
-          "nationality": "Swedish",
-          "flag_code": "168",
+          "nationality": "Swedish"
       },
       "169": {
           "name": "Switzerland",
-          "nationality": "Swiss",
-          "flag_code": "169",
+          "nationality": "Swiss"
       },
       "170": {
           "name": "Syria",
-          "nationality": "Syrian",
-          "flag_code": "170",
+          "nationality": "Syrian"
       },
       "171": {
           "name": "Taiwan",
-          "nationality": "Taiwanese",
-          "flag_code": "171",
+          "nationality": "Taiwanese"
       },
       "172": {
           "name": "Tajikistan",
-          "nationality": "Tajik",
-          "flag_code": "172",
+          "nationality": "Tajik"
       },
       "173": {
           "name": "Tanzania",
-          "nationality": "Tanzanian",
-          "flag_code": "173",
+          "nationality": "Tanzanian"
       },
       "174": {
           "name": "Thailand",
-          "nationality": "Thai",
-          "flag_code": "174",
+          "nationality": "Thai"
       },
       "175": {
           "name": "Togo",
-          "nationality": "Togolese",
-          "flag_code": "175",
+          "nationality": "Togolese"
       },
       "176": {
           "name": "Tonga",
-          "nationality": "Tongan",
-          "flag_code": "176",
+          "nationality": "Tongan"
       },
       "177": {
           "name": "Trinidad and Tobago",
-          "nationality": "Trinidadian/Tobagonian",
-          "flag_code": "177",
+          "nationality": "Trinidadian/Tobagonian"
       },
       "178": {
           "name": "Tunisia",
-          "nationality": "Tunisian",
-          "flag_code": "178",
+          "nationality": "Tunisian"
       },
       "179": {
           "name": "Turkey",
-          "nationality": "Turkish",
-          "flag_code": "179",
+          "nationality": "Turkish"
       },
       "180": {
           "name": "Turkmenistan",
-          "nationality": "Turkmen",
-          "flag_code": "180",
+          "nationality": "Turkmen"
       },
       "181": {
           "name": "Tuvalu",
-          "nationality": "Tuvaluan",
-          "flag_code": "181",
+          "nationality": "Tuvaluan"
       },
       "182": {
           "name": "Uganda",
-          "nationality": "Ugandan",
-          "flag_code": "182",
+          "nationality": "Ugandan"
       },
       "183": {
           "name": "Ukraine",
-          "nationality": "Ukrainian",
-          "flag_code": "183",
+          "nationality": "Ukrainian"
       },
       "184": {
           "name": "United Arab Emirates",
-          "nationality": "Emirati",
-          "flag_code": "184",
+          "nationality": "Emirati"
       },
       "185": {
           "name": "United Kingdom",
-          "nationality": "British",
-          "flag_code": "185",
+          "nationality": "British"
       },
       "186": {
           "name": "United States",
-          "nationality": "American",
-          "flag_code": "186",
+          "nationality": "American"
       },
       "187": {
           "name": "Uruguay",
-          "nationality": "Uruguayan",
-          "flag_code": "187",
+          "nationality": "Uruguayan"
       },
       "188": {
           "name": "Uzbekistan",
-          "nationality": "Uzbekistani",
-          "flag_code": "188",
+          "nationality": "Uzbekistani"
       },
       "189": {
           "name": "Vanuatu",
-          "nationality": "Ni-Vanuatu",
-          "flag_code": "189",
+          "nationality": "Ni-Vanuatu"
       },
       "190": {
           "name": "Vatican City",
-          "nationality": "Vatican",
-          "flag_code": "190",
+          "nationality": "Vatican"
       },
       "191": {
           "name": "Venezuela",
-          "nationality": "Venezuelan",
-          "flag_code": "191",
+          "nationality": "Venezuelan"
       },
       "192": {
           "name": "Vietnam",
-          "nationality": "Vietnamese",
-          "flag_code": "192",
+          "nationality": "Vietnamese"
       },
       "193": {
           "name": "Yemen",
-          "nationality": "Yemeni",
-          "flag_code": "193",
+          "nationality": "Yemeni"
       },
       "194": {
           "name": "Zambia",
-          "nationality": "Zambian",
-          "flag_code": "194",
+          "nationality": "Zambian"
       },
       "195": {
           "name": "Zimbabwe",
-          "nationality": "Zimbabwean",
-          "flag_code": "195",
+          "nationality": "Zimbabwean"
       },
   }
+
+  export default country;
   

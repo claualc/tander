@@ -21,12 +21,25 @@ export class Photo {
     get value() {return this.value_}
 }
 
+export class MusicInterest {
+    constructor(
+        public artistName_: string,
+        public albumName_: string,
+        public id_: string,
+    ) {}
+
+    get artistName() {return this.artistName_}
+    get albumName() {return this.albumName_}
+    get id() {return this.id_}
+}
+
 export class User {
     constructor(
         public id_: String | null,
         public username_: String,
         public birth_: Date,
         public yearsOld_: number,
+        public musicInterest_: MusicInterest,
         public hasSeenWhoLikesMeToday_?: Boolean, // always at 12pm resets to false
         public university_?: Univeristy,
         public course_?: Course,
@@ -55,5 +68,7 @@ export class User {
     get likedUsers() {return this.likedUsers_};
     get matches() {return this.matches_};
     get profileDescription() {return this.profileDescription_};
+    get musicInterest() {return this.musicInterest_};
+
 }
   
