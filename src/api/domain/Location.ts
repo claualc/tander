@@ -1,10 +1,10 @@
 
 export class Country {
     constructor(
-        private name_: String,
-        private code_: String,
-        private nationality_: String,
-        private id_?: String,
+        private name_: string,
+        private code_: string,
+        private nationality_: string,
+        private id_?: string,
     ) {}
 
     get name() {
@@ -20,9 +20,9 @@ export class Country {
 
 export class City {
     constructor(
-        private name_: String,
+        private name_: string,
         private country_: Country | undefined,
-        private id_?: String,
+        private id_?: string,
     ) {}
 
     get country() {
