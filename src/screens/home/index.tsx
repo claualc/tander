@@ -74,18 +74,8 @@ const HomeScreen: React.FC<Props> = ({ children, style, ...rest }: any) => {
                 {
                   users.map((user, i) => <Card 
                     key={i}
-                    photosDisplayArray={
-                        user?.photos?.length ? 
-                          user?.photos?.map(p => p.value) 
-                          : []
-                    }
                     zIndex={i}
-                    username={user?.username || ""}
-                    yearsOld={user?.yearsOld || 0}
-                    nationality={user?.city?.country?.nationality || ""}
-                    flagId={user?.city?.country?.id}
-                    userTeam={"Spritz"}
-                    langKnown={user?.langKnown || []}
+                    user={user}
                     onScrollUp={() => {
                       console.log("onScrollUp", i)
                       renderOnlyThisCard(i);
@@ -105,7 +95,7 @@ const HomeScreen: React.FC<Props> = ({ children, style, ...rest }: any) => {
                       userSwiped(i);
                     }}
                     isScrolledUp={seeDescription}
-                    render={renderUserCards[i]}
+                    renderController={renderUserCards[i]}
                   /> )
                 } 
                 <UserDescWrapper>

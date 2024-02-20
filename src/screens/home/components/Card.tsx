@@ -6,45 +6,37 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Language } from "@api/domain/Language";
 import { INITIAL_GESTURE_VALS, panRes } from "./PanResponder";
 import { theme } from "@screens/theme";
-import { Photo } from "@api/domain/User";
 import flagDic from "@dict/flag";
+import { User } from "@api/domain/User";
 
 interface CardProps {
-    photosDisplayArray: string[];
-    username: String;
-    yearsOld: number;
-    nationality: String;
-    flagId: string | undefined;
-    langKnown: Language[];
-    userTeam: String;
-    onScrollUp: () => void;
-    onScrollDown: () => void;
-    onSwipeLeft: () => void;
-    onSwipeRigth: () => void;
-    isScrolledUp: boolean;
-    zIndex: number;
-    render: boolean;
+    onScrollUp?: () => void | null;
+    onScrollDown?: () => void | null; 
+    onSwipeLeft?: () => void | null;
+    onSwipeRigth?: () => void | null;
+    isScrolledUp: boolean | undefined;
+    zIndex: number | undefined;
+    renderController: boolean | undefined;
+    user: User;
 }
 
 const Card: React.FC<CardProps> = ({
-        photosDisplayArray,
-        username,
-        yearsOld,
-        nationality,
-        flagId,
-        langKnown,
-        userTeam,
         onScrollUp,
         onScrollDown,
         onSwipeLeft,
         onSwipeRigth,
         isScrolledUp,
         zIndex,
-        render
+        renderController, 
+        user
     }) => {
 
     const [currentPhotoId, setCurrentPhotoId] = useState<number>(0);
-    const [photosBase64, setPhotosBase64] = useState<string[]>(photosDisplayArray);
+    const [photosBase64, setPhotosBase64] = useState<string[]>(
+        user?.photos?.length ? 
+        user?.photos?.map(p => p.value) 
+        : []
+    );
   
     const pan = useRef(new Animated.ValueXY(INITIAL_GESTURE_VALS.pan)).current;
     const scale = useRef(new Animated.ValueXY(INITIAL_GESTURE_VALS.scale)).current; // width (x) and height (y)
@@ -63,20 +55,20 @@ const Card: React.FC<CardProps> = ({
 
     const panResponder = useMemo(
         () => panRes(
-            isScrolledUp,
+            isScrolledUp==undefined ? false : isScrolledUp,
             pan,
             scale,
             tapPhotoLeft,
             tapPhotoRight,
-            onScrollUp,
-            onScrollDown,
-            onSwipeRigth,
-            onSwipeLeft)
+            onScrollUp ? onScrollUp : () => {},
+            onScrollDown ? onScrollDown : () => {},
+            onSwipeRigth ? onSwipeRigth : () => {},
+            onSwipeLeft ? onSwipeLeft : () => {},)
         , [isScrolledUp]
     );
 
 
-    return !render ? <></> : (
+    return !((renderController==undefined) ? true : renderController) ? <></> : (
     <Animated.View {...panResponder.panHandlers}  style={{
         width: Dimensions.get("window").width*INITIAL_GESTURE_VALS.scale.x,
         height:  Dimensions.get("window").height*INITIAL_GESTURE_VALS.scale.y,
@@ -107,7 +99,7 @@ const Card: React.FC<CardProps> = ({
         },
         borderRadius: isScrolledUp ? 0 : 13,
         overflow: "hidden",
-        zIndex: 1000+zIndex,
+        zIndex: 1000+(zIndex||0),
       }}>
         
         <View style={{ 
@@ -156,15 +148,15 @@ const Card: React.FC<CardProps> = ({
                 !isScrolledUp && 
                 <UserDataView>
                     <View style={{ width: "100%", display:"flex",flexDirection:"row",justifyContent: "flex-start", alignItems:"center"}}>
-                        <CustomText color={theme.text_ligth_primary} size={25} fontFam={"BD"}>{username+" "}</CustomText>
-                        <CustomText color={theme.text_ligth_primary} size={25}>{yearsOld}</CustomText>
+                        <CustomText color={theme.text_ligth_primary} size={25} fontFam={"BD"}>{user.username+" "}</CustomText>
+                        <CustomText color={theme.text_ligth_primary} size={25}>{user.yearsOld}</CustomText>
                     </View>
-                    <Chip textColor={theme.text_ligth_primary} >{`${nationality} ${flagId ? flagDic[flagId] : ""}`}</Chip>
-                    <Chip textColor={theme.text_ligth_primary} >{userTeam}</Chip>
+                    <Chip textColor={theme.text_ligth_primary} >{`${user?.city?.country?.nationality || ""} ${user?.city?.country?.id ? flagDic[user?.city?.country?.id] : ""}`}</Chip>
+                    <Chip textColor={theme.text_ligth_primary} >{"Spritz"}</Chip>
 
                     <View style={{ width: "100%", display:"flex",flexDirection:"row",justifyContent: "flex-start", alignItems:"center"}}>
                         { 
-                            langKnown.map((lang, i) => {
+                            user.langKnown?.map((lang, i) => {
                             return <Chip textColor={theme.text_ligth_primary} key={i}>{lang.language_code.toLocaleUpperCase()}</Chip>})
                         }
                     </View>

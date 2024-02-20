@@ -14,9 +14,9 @@ const MYLIKES_SCREEN = "MyLikes";
 
 export const routes = [
     { name: HOME_SCREEN, component: HomeScreen ,icon: "ellipse" },
-    { name: PROFILE_SCREEN, component: ProfileScreen ,icon: "person" },
-    { name: CHAT_SCREEN, component: ChatScreen ,icon: "chatbubbles" },
     { name: MYLIKES_SCREEN, component: MyLikesScreen ,icon: "star" },
+    { name: CHAT_SCREEN, component: ChatScreen ,icon: "chatbubbles" },
+    { name: PROFILE_SCREEN, component: ProfileScreen ,icon: "person" },
   ]
   
 const Stack = createNativeStackNavigator();
