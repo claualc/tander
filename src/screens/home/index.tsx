@@ -119,14 +119,13 @@ const HomeScreen: React.FC<Props> = ({ children, style, ...rest }: any) => {
                     <CustomText>{" " + users[currentUser]?.course?.name}</CustomText>  
                   </UserDecSections> 
                   <UserDecSections>
+                    <Ionicons name="earth-outline" size={24} color={theme.text_dark_priamry} />
+                    <CustomText>{` ${users[currentUser]?.city?.name}, ${users[currentUser]?.city?.country?.name}`}</CustomText>  
+                  </UserDecSections> 
+                  <UserDecSections>
                     <SimpleLineIcons name="graduation" size={24} color={theme.text_dark_priamry} />
                     <CustomText>{" " +  users[currentUser]?.university?.name}</CustomText>  
                   </UserDecSections> 
-                  <UserDecSections>
-                    <Ionicons name="earth-outline" size={24} color={theme.text_dark_priamry} />
-                    <CustomText>{" " +  users[currentUser]?.university?.name}</CustomText>  
-                  </UserDecSections> 
-
                   <Section style={{justifyContent: "flex-start",width:"100%", flexDirection: "row"}}>
                     
                     <ColorWrapper inColor={theme.secondary}>
@@ -134,7 +133,7 @@ const HomeScreen: React.FC<Props> = ({ children, style, ...rest }: any) => {
                         <CustomText size={30}>🤓</CustomText>
                       </View>
                       <View style={{flex:3, flexDirection: "column",justifyContent: "center", alignItems: "center"}}>
-                        <CustomText size={13} color={theme.secondary}>Here To learn</CustomText>
+                        <CustomText size={13} color={theme.secondary}>Here To Help With</CustomText>
                         <View style={{flex:2, flexDirection: "row", justifyContent: "space-between"}}>
                         {
                             users[currentUser]?.langKnown?.map((lang, i) => {
@@ -168,10 +167,9 @@ const HomeScreen: React.FC<Props> = ({ children, style, ...rest }: any) => {
                     </CustomText>
                   </Section>
 
-                  <Section style={{width: "100%"}}>
+                  <Section style={{width: "100%", marginBottom: "5%"}}>
                     <CustomText size={20} fontFam="DM" color={theme.secondary_dark}>On repeat</CustomText>
                     <AlbumComponent />
-                   
                   </Section>
                 </>
                 }

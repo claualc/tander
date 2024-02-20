@@ -61,6 +61,7 @@ export const UserDescWrapper = styled(Wrapper)`
     width: 100%;
     justify-content: flex-start;
     align-items: flex-start;
+    
 `
 
 export const UserDecSections = styled.View`
