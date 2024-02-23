@@ -11,9 +11,7 @@ import {initAsyncFirebaseServices} from '@serv/firebase';
 
 import { ThemeProvider } from 'styled-components/native';
 import { theme } from './theme';
-import ScreensStack, { routes } from './stackNavigator';
-
-
+import ScreensStack, { auth_routes } from './stackNavigator';
 import BottomTabNavigator from '@components/bottomTabNavigator';
 
 // Keep the splash screen visible while we fetch resources
@@ -45,6 +43,7 @@ const App: React.FC = () => {
     return null;
   }
 
+
   return (
     <View style={{
       width: "100%",
@@ -54,18 +53,24 @@ const App: React.FC = () => {
       top: 0
     }}
     onLayout={onLayoutRootView} >  
+
       <ThemeProvider theme={theme}>
           <View style={{
             display: "flex",
             width: "100%",
-            height: `${100-tabHeight}%`,
+            height: false ? `${100-tabHeight}%` : "100%",
             position: "relative",
             backgroundColor: theme.light_background,
             top: 0,
         }}>
-        <ScreensStack/>
+          <ScreensStack />
         </View>
-        <BottomTabNavigator routes={routes} height={tabHeight}/>
+
+        {
+          false ?
+            <BottomTabNavigator routes={auth_routes} height={tabHeight}/>
+            : <></>
+        }
       </ThemeProvider>
     </View>
   );

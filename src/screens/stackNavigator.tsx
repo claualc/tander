@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import HomeScreen from './home';
@@ -6,17 +6,26 @@ import MyLikesScreen from './myLikes';
 import ProfileScreen from './profile';
 import ChatScreen from './chat';
 import { CommonActions, NavigationContainer, createNavigationContainerRef } from '@react-navigation/native';
+import LoginScreen from './login';
+import RegisterScreen from './register';
 
-const HOME_SCREEN = "Home";
-const CHAT_SCREEN = "Chat";
-const PROFILE_SCREEN = "Profile";
-const MYLIKES_SCREEN = "MyLikes";
+export const HOME_SCREEN = "Home";
+export const CHAT_SCREEN = "Chat";
+export const PROFILE_SCREEN = "Profile";
+export const MYLIKES_SCREEN = "MyLikes";
+export const REGISTER_SCREEN = "Register";
+export const LOGIN_SCREEN = "Login";
 
-export const routes = [
+export const auth_routes = [
     { name: HOME_SCREEN, component: HomeScreen ,icon: "ellipse" },
-    { name: MYLIKES_SCREEN, component: MyLikesScreen ,icon: "star" },
-    { name: CHAT_SCREEN, component: ChatScreen ,icon: "chatbubbles" },
     { name: PROFILE_SCREEN, component: ProfileScreen ,icon: "person" },
+    { name: CHAT_SCREEN, component: ChatScreen ,icon: "chatbubbles" },
+    { name: MYLIKES_SCREEN, component: MyLikesScreen ,icon: "star" },
+]
+
+export const unauth_routes = [
+    { name: REGISTER_SCREEN, component: RegisterScreen },
+    { name: LOGIN_SCREEN, component: LoginScreen  },
   ]
   
 const Stack = createNativeStackNavigator();
@@ -29,14 +38,16 @@ export function stackNavigateTo(routeName: string, params?: any) {
   }
 
 const MyStack = () => {
+
     return (
         <NavigationContainer ref={navigatorRef}>
             <Stack.Navigator 
-                initialRouteName={HOME_SCREEN} 
                 screenOptions={{headerShown: false}}>
                 {
-                    routes.map((
-                        {name, component}) => <Stack.Screen key={name} name={name} component={component} />
+                    (false) ? auth_routes.map((
+                        {name,  component}) => <Stack.Screen key={name} name={name} component={component} />
+                    ) : unauth_routes.map((
+                        {name,  component}) => <Stack.Screen key={name} name={name} component={component} />
                     )
                 }
             </Stack.Navigator>

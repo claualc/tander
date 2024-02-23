@@ -2,6 +2,7 @@ import { Animated, Dimensions, Image, PanResponder, TouchableWithoutFeedback, Vi
 import { PhotoChipWrapper, PhotoSwipeChips, UserDataView } from "./style";
 import { Chip, CustomText } from "@components/index";
 import EmptyImage from "@assets/empty_image.png";
+import BlackBottomBlur from "@assets/black_blur_user_card.png";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { INITIAL_GESTURE_VALS, panRes } from "./PanResponder";
 import { theme } from "@screens/theme";
@@ -130,16 +131,21 @@ const Card: React.FC<CardProps> = ({
             {/* 
                 Display the current image selected
             */}
-                <Image resizeMode={"cover"} 
-                    style= {{
-                        flex:1,
-                        width: Dimensions.get("window").width,
-                        height: Dimensions.get("window").height,
-                    }} 
-                    source={{uri: photosBase64[currentPhotoId]}}/> 
-                </> :
-                  <Image style= {{flex:1 , width: "100%", height: "100%"}}    
-                    source={EmptyImage}/> 
+            <Image resizeMode={"cover"} 
+                style= {{
+                    flex:1,
+                    width: "100%",
+                    height: "100%",
+                    zIndex:-1,
+                    position: "absolute"
+                }} 
+                source={{uri: photosBase64[currentPhotoId]}}/> 
+
+            <Image resizeMode={"cover"} style= {{flex:1 , width: "100%", height: "100%", zIndex:0, position: "absolute"}}    
+                    source={BlackBottomBlur}/> 
+            </> :
+                <Image style= {{flex:1 , width: "100%", height: "100%"}}    
+                source={EmptyImage}/> 
         }
             </View>
 
