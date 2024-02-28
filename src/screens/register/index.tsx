@@ -4,9 +4,11 @@ import { View } from 'react-native';
 
 import { theme } from '@screens/theme';
 import { ProgressBar } from './components/ProgressBar';
-import { BackButtonWrapper, CenterWrapping, FormsWrapper, MainWrapper, NextButton, ProgressBarWrapper, Subtitle, Title } from './style';
-import { DATE, NUMERIC, Question, TEXT, questions } from './components/Questions';
+import { BackButtonWrapper, CenterWrapping, Description, FormsWrapper, MainWrapper, NextButton, ProgressBarWrapper, Subtitle, Title } from './style';
+import { DATE, MULTISELECT, NUMERIC, Question, SELECT, TEXT, questions } from './components/Questions';
 import { CustomCodeInput, CustomDateInput, CustomTextInput } from './components/Inputs';
+import CustomSelect from '@components/select';
+import CustomMultiSelect from '@components/multiSelect';
 
 
 const RegisterScreen = () => {
@@ -37,12 +39,15 @@ const RegisterScreen = () => {
   }, [currentQuestion, currentQuestionId, value, answers]);
 
 
+  useEffect(() => console.log(currentQuestion.description && !currentQuestion.descriptionOnTop), [])
+
+
   return <View style={{
     flex: 1,
     flexDirection: 'column', 
     justifyContent: 'flex-start',
     alignItems: 'center', 
-    }}>
+  }}>
 
   <ProgressBarWrapper >
     <ProgressBar percentage={(1-(currentQuestionId+1)/questions.length)*100}></ProgressBar>
@@ -64,6 +69,11 @@ const RegisterScreen = () => {
     <FormsWrapper>
         <Title>{currentQuestion.title}</Title>
         <Subtitle>{currentQuestion.subtitle}</Subtitle>
+
+        {currentQuestion.description && currentQuestion.descriptionOnTop && 
+          <Description>{currentQuestion.description}</Description>
+        }
+       
         {
           (currentQuestion.inputType == TEXT) ?
             <CustomTextInput 
@@ -77,7 +87,67 @@ const RegisterScreen = () => {
             <CustomDateInput 
               onChange={setValue}
               value={value}/>
-          : <></>
+          : (currentQuestion.inputType == SELECT) ?
+              <CustomSelect 
+                onSelect={setValue}
+                value={value}
+                placeholder={"sdjslkdj"} 
+                options={ [{
+                  value: 1,
+                  name: "d"
+                },
+                {
+                  value: 2,
+                  name: "e"
+                },
+                {
+                  value: 3,
+                  name: "f"
+                }]} />
+          : (currentQuestion.inputType == MULTISELECT) ?
+              <CustomMultiSelect 
+                  values_={value}
+                  onSelect={(v) => console.log("aaaaaaa")}
+                  selects={[
+                    {
+                      value: "",
+                      placeholder: "placeholder 1",
+                      options: [{
+                        value: 1,
+                        name: "a"
+                      },
+                      {
+                        value: 2,
+                        name: "b"
+                      },
+                      {
+                        value: 3,
+                        name: "2"
+                      }]
+                    },
+                    {
+                      value: "",
+                      placeholder: "placeholder 2",
+                      options: [{
+                        value: 1,
+                        name: "d"
+                      },
+                      {
+                        value: 2,
+                        name: "e"
+                      },
+                      {
+                        value: 3,
+                        name: "f"
+                      }]
+                    }
+                  ]}/>
+          :  <></>
+        }
+
+        { 
+          currentQuestion.description && !currentQuestion.descriptionOnTop && 
+          <Description>{currentQuestion.description}</Description>
         }
         
     </FormsWrapper>

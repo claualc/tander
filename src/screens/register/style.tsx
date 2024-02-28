@@ -24,6 +24,8 @@ export const MainWrapper = styled.View`
     flex-direction: column;
     padding-left: 8%;
     padding-right: 8%;
+    position: relative;
+    z-index: 0;
 `
 
 export const BackButtonWrapper = styled.View`
@@ -41,6 +43,8 @@ export const FormsWrapper = styled.View`
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
+    z-index: 0;
+    position: relative;
 `
 
 export const CenterWrapping = styled.View`
@@ -49,6 +53,8 @@ export const CenterWrapping = styled.View`
     justify-content: flex-start;
     align-items: center;
     flex-direction: column;
+    z-index: 0;
+    position: relative;
 `
 
 
@@ -65,15 +71,27 @@ export const Title: React.FC<React.PropsWithChildren> = ({
             {children}
         </CustomText>
 
+export const Description: React.FC<React.PropsWithChildren> = ({
+    children
+}) => <CustomText 
+        color={theme.tertiary_dark} 
+        size={16} 
+        style={{
+            marginTop: 10,
+            textAlign: "justify",
+        }}>
+            {children}
+        </CustomText>
+
+
 export const Subtitle: React.FC<React.PropsWithChildren> = ({
     children
 }) => <CustomText 
         style={{
             textAlign: "justify",
-            marginBottom: 6
         }}
         color={theme.tertiary_dark} 
-        size={15}>
+        size={16}>
             {children}
         </CustomText>
 

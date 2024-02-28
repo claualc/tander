@@ -2,7 +2,7 @@ import { theme } from "@screens/theme";
 import { useState } from "react";
 import styled from "styled-components/native";
 
-const convertHexToRGBA = (hexCode: string, opacity = 1) => {  
+export const convertHexToRGBA = (hexCode: string, opacity = 1) => {  
   let hex = hexCode.replace('#', '');
   
   if (hex.length === 3) {

@@ -82,14 +82,13 @@ export const CustomDateInput: React.FC<{
         const year = values[4]+values[5]
         console.log(values)
         if(onLastInput && day > 0 && month>0 && year>0) {
-            console.log("saveeee",values.toString())
-            onChange(values.toString())
+            const finalValue = values.reduce((acc, v) => acc+v, "")
+            onChange(finalValue)
         }
     },[values, onLastInput])
 
 
     return <View style={{
-        flex: 1,
         width: "100%",
         flexDirection: "row",
         justifyContent: "space-evenly",
