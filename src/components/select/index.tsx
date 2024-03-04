@@ -14,7 +14,7 @@ export const getRandomColor = () => {
 }
 
 export interface SelectProps {
-    value?: string;
+    value?: string | number;
     placeholder?: string;
     options: SelectOption[];
 }
@@ -27,7 +27,6 @@ export interface SelectOption {
 interface Props extends SelectProps {
     width?: string;
     onSelect: (v: SelectOption) => void; // v is the valye of the key of the item
-    value: any; // the input value of a select is the id of the item selected
     title?: string;
     color?: string;
 }
@@ -71,7 +70,7 @@ const CustomSelect: React.FC<Props> = ({
                     <CustomText color={color}>{valueName}</CustomText>
                     : <CustomText color={convertHexToRGBA(color_, 0.5)}>{ placeholder || ""}</CustomText>
                 }
-                <Ionicons name="chevron-down-outline" color={color}/>
+                <Ionicons name="chevron-down-outline" color={color} size={20}/>
             </Main>
     </TouchableHighlight> 
 

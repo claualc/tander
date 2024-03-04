@@ -42,8 +42,6 @@ export const FormsWrapper = styled.View`
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
-    z-index: 0;
-    position: relative;
 `
 
 export const CenterWrapping = styled.View`
@@ -52,8 +50,6 @@ export const CenterWrapping = styled.View`
     justify-content: flex-start;
     align-items: center;
     flex-direction: column;
-    z-index: 0;
-    position: relative;
 `
 
 

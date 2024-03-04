@@ -173,10 +173,23 @@ export const questions: Page[]  = [
             id: 8,
             multiPlaceholder: [
                 "Choose a language", // the first placeholder can be different from the rest
-                "Choose a language", 
+                "Choose other language", 
             ],
             descriptionOnTop: true,
-            inputType: MULTISELECT
+            inputType: MULTISELECT,
+            options: [{
+                value: 1,
+                name: "d"
+              },
+              {
+                value: 2,
+                name: "e"
+              },
+              {
+                value: 3,
+                name: "f"
+              }
+            ]
         }]
     },
     {

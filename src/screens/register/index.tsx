@@ -12,8 +12,6 @@ import { CustomCodeInput, CustomDateInput, CustomTextInput } from './components/
 import CustomSelect from '@components/select';
 import CustomMultiSelect from '@components/multiSelect';
 
-
-
 const RegisterScreen = () => {
 
   const [answers, setAnswers] = useState<any[][]>([]);
@@ -38,7 +36,7 @@ const RegisterScreen = () => {
   const disableButton = useMemo(() => {
     return values.reduce(
     (acc, v) => {
-      console.log(v!=undefined, acc)
+      console.log(v!=undefined, acc, "v", v)
       return acc && (
         v == undefined || v==null || v==""
       )}, true)
@@ -126,7 +124,7 @@ const RegisterScreen = () => {
                   options={q.options || []} />
               : (q.inputType == MULTISELECT) ?
                   <CustomMultiSelect 
-                    onSelect={v => setCurrentValues(i,v)}
+                    onSelect={v => setCurrentValues(i, v)}
                     values={values[i]}
                     placeholder={q.multiPlaceholder}
                     options={q.options || []} />
@@ -143,8 +141,8 @@ const RegisterScreen = () => {
     <CenterWrapping>
           <ColorButton
             onPress={() =>{
-              let ans = answers.map((ans, j) =>
-                j == currentPageId ? values : ans)
+              let ans = [...answers]
+              ans.splice(currentPageId, 1, values)
               setAnswers(ans)
               turnFormsPageAhead(true) 
             }}
