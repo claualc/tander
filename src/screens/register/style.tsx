@@ -1,5 +1,4 @@
 import React from 'react';
-import { DimensionValue, Image, TouchableHighlight , View, ImageBackground } from "react-native";
 import styled from "styled-components/native";
 
 
@@ -28,7 +27,7 @@ export const MainWrapper = styled.View`
 `
 
 export const BackButtonWrapper = styled.View`
-    flex: 2;
+    flex: 1;
     width: 100%;
     justify-content: flex-end;
     align-items: flex-start;
@@ -45,7 +44,7 @@ export const FormsWrapper = styled.View`
 `
 
 export const CenterWrapping = styled.View`
-    flex: 6;
+    flex: 2;
     width: 100%;
     justify-content: flex-start;
     align-items: center;

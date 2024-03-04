@@ -7,10 +7,11 @@ import ColorButton from '@components/colorButton';
 
 import { ProgressBar } from './components/ProgressBar';
 import { BackButtonWrapper, CenterWrapping, Description, FormsWrapper, MainWrapper, ProgressBarWrapper, Subtitle, Title } from './style';
-import { DATE, MULTISELECT, NUMERIC, Page, SELECT, TEXT, questions } from './components/Questions';
+import { BULLETPOINTS_SELECT, DATE, MULTISELECT, NUMERIC, Page, SELECT, TEXT, questions } from './components/Questions';
 import { CustomCodeInput, CustomDateInput, CustomTextInput } from './components/Inputs';
 import CustomSelect from '@components/select';
 import CustomMultiSelect from '@components/multiSelect';
+import BulletpointSelect from '@components/bulletpointSelect';
 
 const RegisterScreen = () => {
 
@@ -24,8 +25,6 @@ const RegisterScreen = () => {
     const newVals = values.map((v, j) => id == j ? newVal : v) 
     setValues(newVals)
   }, [values])
-
-
 
   const [currentPageId, setCurrentPageId] = useState<number>(0);
 
@@ -128,6 +127,11 @@ const RegisterScreen = () => {
                     values={values[i]}
                     placeholder={q.multiPlaceholder}
                     options={q.options || []} />
+              : (q.inputType == BULLETPOINTS_SELECT) ?
+                  <BulletpointSelect 
+                    onSelect={v => setCurrentValues(i, v)}
+                    value={values[i]}
+                    options={q.bulletPoints || []} />
               :  <></>
               }
               </View>
@@ -139,15 +143,15 @@ const RegisterScreen = () => {
         
     </FormsWrapper>
     <CenterWrapping>
-          <ColorButton
-            onPress={() =>{
-              let ans = [...answers]
-              ans.splice(currentPageId, 1, values)
-              setAnswers(ans)
-              turnFormsPageAhead(true) 
-            }}
-            title={"Avanti"}
-            disabled={disableButton}/>
+      <ColorButton
+        onPress={() =>{
+          let ans = [...answers]
+          ans.splice(currentPageId, 1, values)
+          setAnswers(ans)
+          turnFormsPageAhead(true) 
+        }}
+        title={"Next"}
+        disabled={disableButton}/>
     </CenterWrapping>
   </MainWrapper>
   </View>

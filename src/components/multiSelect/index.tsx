@@ -6,7 +6,6 @@ import CustomSelect, { SelectOption, getRandomColor } from "@components/select";
 
 import { convertHexToRGBA } from "@components/index";
 
-
 const RoundButton = styled.View<{
     color: string;
 }>`

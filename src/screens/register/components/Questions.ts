@@ -202,19 +202,30 @@ export const questions: Page[]  = [
                 bulletPoints: [
                     {
                         title: "Spritz",
-                        description: "Mi piace uscire per fare l’aperitivo, bere un drink e chiacchierare",
-                        emoji: ""
+                        description: "I like going out for an aperitivo, a drink and small talk.",
+                        emoji: "🍹"
                     },
                     {
                         title: "Negroni",
-                        description: "Sono l’anima della festa. Esco alle 23h e ritorno appena alle 6h!",
-                        emoji: ""
+                        description: "I am the life of the party, all night, every night!",
+                        emoji: "🍸"
                     },
                     {
-                        title: "Vino",
-                        description: "Ho l’anima vecchia, preferisco una buona cena a casa con alcuni amici",
-                        emoji: ""
-                }]
+                        title: "Wine",
+                        description: "I am an old soul, i like a good dinner at home with a few friends.",
+                        emoji: "🍷"
+                    },
+                    {
+                        title: "Water",
+                        description: "I am fine, thank you!",
+                        emoji: "🫗"
+                    },
+                    {
+                        title: "Frizzante",
+                        description: "I am not fine in the least, thank you!",
+                        emoji: "🫧"
+                    }
+                ]
             }
         ]
     },
