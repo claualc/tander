@@ -1,3 +1,4 @@
+import { SelectOption } from "@components/select";
 
 
 export const TEXT = 0; //also used for cellphone number
@@ -10,11 +11,16 @@ export const PHOTO = 6; // options are alerady presented
 
 type inputTypes = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
-export interface Question {
+export interface Page {
     title: string;
     subtitle?: string;
-    placeholder?: string
-        | string[] ; // the array is in the case of multiple selects
+    questions: Question[]
+}
+
+export interface Question {
+    id: number;
+    placeholder?: string; // the array is in the case of multiple selects
+    multiPlaceholder?: string[]; // multiselect
     description?: string
         | string[] ; // the array is in the case of multiple selects
     /*
@@ -28,93 +34,194 @@ export interface Question {
     bulletPoints: options of selections
     for a bulletPoint type 
      */
+    selectCount?: number;
+    selectModalTitle?: string;
     bulletPoints?: {
         description: string;
         title: string;
         emoji: string;
     }[]; 
+    options?: SelectOption[]; // used in select and multiselect
 }
 
-export const questions: Question[]  = [
+// each index of the array is one page
+// of the resgiter forms
+// each page can have more than one question
+export const questions: Page[]  = [
     {
-        title: "Puoi darci il tuo numero?",
-        subtitle: "Non preoccuparti, vorremo appena un modo di ricordarti in caso tu sia disconnesso di questo dispositivo!",
-        inputType: NUMERIC
+        title: "Can we have your number?",
+        subtitle: "Don’t worry, we just need a way to identificate you in case you are disconnected from this or other devices!",
+        questions:  [{
+            id: 0,
+            inputType: NUMERIC
+        }]
     },
     {
-        title: "Inserisci il codice cheabbiamo ti inviato",
-        subtitle: "Se il tuo numero non è +39 351 9401586, ritorna al schermo anteriore",
-        inputType: NUMERIC
+        title: "Inform the code you received",
+        subtitle: "If your number is not +39 351 9401586, return to the previous screen.",
+        questions: [{
+            id: 1,
+            inputType: NUMERIC
+        }]
     },
     {
-        title: "Come ti chiami?",
-        placeholder: "Inserisci il tuo nome",
-        description: "Così è come aparirà sul tuo profilo. Ricordati che come tutto che hai fatto nell’università, rimanerà con te per sempre!",
-        inputType: TEXT
-    },
-    {
-        title: "Quando sei natƏ?",
-        description: "Sul tuo profilo informeremmo appena la tua età, non la tua data di nascità.",
-        inputType: DATE
-    },
-    {
-        title: "Facci sapere che cosa studi",
-        placeholder: [
-            "Scegli la tua università",
-            "Scegli il tuo corso"
+        title: "What’s your name?",
+        questions: [{
+            id: 2,
+            placeholder: "Input your name",
+            description: "This is how your name will appear on your profile. Remember that as everything you do in college, it will be with you forever!",
+            inputType: TEXT}
         ],
-        inputType: SELECT
     },
     {
-        title: "Da dove vieni?",
-        description: [
-            "Prima la tua nazionalità",
-            "Adesso, la tua madrelingua"
-        ],
-        placeholder: [
-            "Scegli un paese",
-            "Scegli la tua madrelingua"
-        ],
-        descriptionOnTop: true,
-        inputType: MULTISELECT
+        title: "How old are you?",
+        questions: [{
+            id: 3,
+            description: "We will show just your age on your profile, not your birthday.",
+            inputType: DATE
+        }],
     },
     {
-        title: "Che lingue vuoi imparare a Milano?",
-        subtitle: "Proveremmo di ti connettare con persone che parlono le lingue che vuoi imparare, ma sentiti libero per parlare con chi vuoi!",
-        placeholder: [
-            "Scegli una lingua",
-        ],
-        descriptionOnTop: true,
-        inputType: MULTISELECT
-    },
-    {
-        title: "Qual’è il tuo team?",
-        subtitle: "Stiamo finendo, questa è la domanda più importante di questa registrazione. Fai attenzione, la scelta è definitiva!",
-        descriptionOnTop: true,
-        inputType: MULTISELECT,
-        bulletPoints: [
+        title: "Let us know what you study",
+        questions: [{
+                id: 4,
+                placeholder: "Choose your university",
+                inputType: SELECT,
+                options: [{
+                    value: 1,
+                    name: "d"
+                  },
+                  {
+                    value: 2,
+                    name: "e"
+                  },
+                  {
+                    value: 3,
+                    name: "f"
+                  }
+                ]
+            }, 
             {
-                title: "Spritz",
-                description: "Mi piace uscire per fare l’aperitivo, bere un drink e chiacchierare",
-                emoji: ""
-            },
+                id: 5,
+                placeholder: "Choose your course",
+                inputType: SELECT,
+                options: [{
+                    value: 1,
+                    name: "d"
+                  },
+                  {
+                    value: 2,
+                    name: "e"
+                  },
+                  {
+                    value: 3,
+                    name: "f"
+                  }
+                ]
+            }],
+    },
+    {
+        title: "Where are you from?",
+        questions: [{
+            id: 6,
+            description: "First your nationality",
+            descriptionOnTop: true,
+            placeholder: "Choose a country",
+            inputType: SELECT,
+            options: [{
+                value: 1,
+                name: "d"
+              },
+              {
+                value: 2,
+                name: "e"
+              },
+              {
+                value: 3,
+                name: "f"
+              }
+            ]
+        }, 
+        {
+            id: 7,
+            description: "Now, the languages you know",
+            descriptionOnTop: true,
+            multiPlaceholder: [
+                "Choose your first language",
+                "Choose other languages"
+            ],
+            inputType: MULTISELECT,
+            options: [{
+                value: 1,
+                name: "d"
+              },
+              {
+                value: 2,
+                name: "e"
+              },
+              {
+                value: 3,
+                name: "f"
+              }
+            ]
+        }],
+    },
+    {
+        title: "What languages you want to learn?",
+        subtitle: "We will try to connect you with people that know the languages you want to learn, but feel free to talk with whoever you want!",
+        questions: [{
+            id: 8,
+            multiPlaceholder: [
+                "Choose a language", // the first placeholder can be different from the rest
+                "Choose a language", 
+            ],
+            descriptionOnTop: true,
+            inputType: MULTISELECT
+        }]
+    },
+    {
+        title: "What is your team?",
+        subtitle: "We’re almost there, this is the most important question of the registration. Pay attention, this choice is definitive!",
+        questions: [
             {
-                title: "Negroni",
-                description: "Sono l’anima della festa. Esco alle 23h e ritorno appena alle 6h!",
-                emoji: ""
-            },
-            {
-                title: "Vino",
-                description: "Ho l’anima vecchia, preferisco una buona cena a casa con alcuni amici",
-                emoji: ""
-
+                id: 9,
+                inputType: BULLETPOINTS_SELECT,
+                bulletPoints: [
+                    {
+                        title: "Spritz",
+                        description: "Mi piace uscire per fare l’aperitivo, bere un drink e chiacchierare",
+                        emoji: ""
+                    },
+                    {
+                        title: "Negroni",
+                        description: "Sono l’anima della festa. Esco alle 23h e ritorno appena alle 6h!",
+                        emoji: ""
+                    },
+                    {
+                        title: "Vino",
+                        description: "Ho l’anima vecchia, preferisco una buona cena a casa con alcuni amici",
+                        emoji: ""
+                }]
             }
         ]
     },
     {
-        title: "Aggiungi alcune foto recente",
-        subtitle: "Preferibilmente della tua faccia...",
-        inputType: PHOTO
+        title: "Show us some pictures",
+        subtitle: "Preferably of your face...",
+        questions:[
+            {
+                id: 10,
+                inputType: PHOTO
+            },{
+                id: 11,
+                inputType: PHOTO
+            },{
+                id: 12,
+                inputType: PHOTO
+            },{
+                id: 13,
+                inputType: PHOTO
+            }
+        ]
     },
-
 ]

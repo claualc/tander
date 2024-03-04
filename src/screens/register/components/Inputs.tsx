@@ -40,7 +40,6 @@ export const CustomCodeInput: React.FC<{
         />
 };
 
-
 const StyledSingleInputText: typeof TextInput = styled.TextInput`
     width: 10%;
     border-bottom-width: 2px;
@@ -86,7 +85,6 @@ export const CustomDateInput: React.FC<{
             onChange(finalValue)
         }
     },[values, onLastInput])
-
 
     return <View style={{
         width: "100%",

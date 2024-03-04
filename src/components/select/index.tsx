@@ -1,9 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
-import { DisplayOptionsCard, Item, Main } from "./style";
-import { theme } from "@screens/theme";
-import { CustomText } from "@components/index";
+import { DimensionValue,TouchableHighlight } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { DimensionValue, Modal, ScrollView, TouchableHighlight, View } from "react-native";
+import { useMemo, useState } from "react";
+
+import { Main } from "./style";
+import { theme } from "@screens/theme";
+import { CustomText, convertHexToRGBA } from "@components/index";
+import SelectModal from "./SelectModal";
 
 export const getRandomColor = () => {
     const colorOptions = [theme.tertiary, theme.secondary, theme.main]
@@ -24,55 +26,53 @@ export interface SelectOption {
 
 interface Props extends SelectProps {
     width?: string;
-    onSelect: (v: any) => void; // v is the valye of the key of the item
+    onSelect: (v: SelectOption) => void; // v is the valye of the key of the item
     value: any; // the input value of a select is the id of the item selected
+    title?: string;
+    color?: string;
 }
 
-const CustomSelect: React.FC<Props> = ({options, placeholder, width, onSelect, value}) => {
+const CustomSelect: React.FC<Props> = ({
+    options, placeholder, width, onSelect, value, title, color}) => {
 
-    const [color, setColor] = useState<string>(getRandomColor());
+    const [color_, setColor_] = useState<string>(color || getRandomColor());
     const [showModal, setShowModal] = useState(false);
+   
     const [valueName, setValueName] = useMemo<string>(() => {
         const op = options.find(op => op.value == value);
         return op ? op.name : ""
     }, [value]);
 
-
     return <>
-    {showModal && <Modal transparent={true} visible={showModal} style={{justifyContent: "center", alignItems: "center"}}>
-            <DisplayOptionsCard color={color}>
-                <ScrollView  style={{width: "100%", flexDirection: "column"}}>
-                            {
-                                options.map((op,i) => <TouchableHighlight
-                                    key={i}
-                                    onPress={() => {
-                                        onSelect(op.value)
-                                        console.log("selected", op.value)
-                                        setShowModal(false)
-                                        }}>
-                                        <Item>
-                                            <CustomText>{op.name}</CustomText>
-                                        </Item>
-                                </TouchableHighlight>
-                                )
-                            }
-                </ScrollView>
-            </DisplayOptionsCard>
-    </Modal>
-        }
+    { showModal && <SelectModal 
+            show={showModal} 
+            onSelect={(v) => {
+                setShowModal(false);
+                onSelect(v);
+            }} 
+            options={options}        
+            modalTitle={title}
+            />
+    }
+
     <TouchableHighlight 
         onPress={() => {
             setShowModal(true)
-            console.log("pressed")}}
+        }}
         style={{
             flexDirection: "row",
             width: width as DimensionValue,
             borderRadius: 100,
-            overflow: "hidden"}}>
-        <Main color={color}>
-            <CustomText color={color}>{ valueName || placeholder || ""}</CustomText>
-            <Ionicons name="chevron-down-outline" color={color}/>
-        </Main>
+            overflow: "hidden"
+        }}>
+            <Main color={color_}>
+                {
+                    valueName ?
+                    <CustomText color={color}>{valueName}</CustomText>
+                    : <CustomText color={convertHexToRGBA(color_, 0.5)}>{ placeholder || ""}</CustomText>
+                }
+                <Ionicons name="chevron-down-outline" color={color}/>
+            </Main>
     </TouchableHighlight> 
 
     </>
