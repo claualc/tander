@@ -1,6 +1,7 @@
 export const theme = {
     main: "#FF40DD",
     secondary: "#A63FFE",
+    light_secondary: "#EDD9FF",
     tertiary: "#4140FE",
     main_background: "#21262E",
     light_background: "#ffffff",

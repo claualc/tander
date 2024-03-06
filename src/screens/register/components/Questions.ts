@@ -1,6 +1,17 @@
 import { SelectOption } from "@components/select";
 
+/*
 
+######
+# This file contains all  the static and dynamic (variables)
+# information to add questions to the resgistration forms.
+
+# as an example of static are the titles and descriptions
+# as an example of dynamic are the variables lists of the selects,
+#  such as the list of countries.
+######
+
+*/
 export const TEXT = 0; //also used for cellphone number
 export const NUMERIC = 1;
 export const DATE = 2;
@@ -18,30 +29,33 @@ export interface Page {
 }
 
 export interface Question {
+    // all questions have the same basic structure
+    // but some attributes are specific of an input type
+
+    // general atributes
     id: number;
     placeholder?: string; // the array is in the case of multiple selects
-    multiPlaceholder?: string[]; // multiselect
-    description?: string
-        | string[] ; // the array is in the case of multiple selects
-    /*
-    descriptionOnTop: normally under the input
-    in some cases, such as multiselect,
-    it is used on top of the input component
-     */
+    description?: string | string[] ; // the array is in the case of multiple selects
     descriptionOnTop?: boolean; 
+    //descriptionOnTop: normally under the input, used on top of the input component
     inputType: inputTypes;
-    /*
-    bulletPoints: options of selections
-    for a bulletPoint type 
-     */
-    selectCount?: number;
+
+    // for multiselect input type
+    multiPlaceholder?: string[]; 
+
+    // for multiselect, select input types
+    options?: SelectOption[];
     selectModalTitle?: string;
+
+    // for bulletpointSelect input types
     bulletPoints?: {
         description: string;
         title: string;
         emoji: string;
     }[]; 
-    options?: SelectOption[]; // used in select and multiselect
+    
+    // for photo input types
+    photoCount?: number;
 }
 
 // each index of the array is one page
@@ -232,19 +246,11 @@ export const questions: Page[]  = [
     {
         title: "Show us some pictures",
         subtitle: "Preferably of your face...",
-        questions:[
+        questions: [
             {
                 id: 10,
-                inputType: PHOTO
-            },{
-                id: 11,
-                inputType: PHOTO
-            },{
-                id: 12,
-                inputType: PHOTO
-            },{
-                id: 13,
-                inputType: PHOTO
+                inputType: PHOTO,
+                photoCount: 4
             }
         ]
     },

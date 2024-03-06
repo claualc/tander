@@ -7,8 +7,8 @@ import ColorButton from '@components/colorButton';
 
 import { ProgressBar } from './components/ProgressBar';
 import { BackButtonWrapper, CenterWrapping, Description, FormsWrapper, MainWrapper, ProgressBarWrapper, Subtitle, Title } from './style';
-import { BULLETPOINTS_SELECT, DATE, MULTISELECT, NUMERIC, Page, SELECT, TEXT, questions } from './components/Questions';
-import { CustomCodeInput, CustomDateInput, CustomTextInput } from './components/Inputs';
+import { BULLETPOINTS_SELECT, DATE, MULTISELECT, NUMERIC, PHOTO, Page, SELECT, TEXT, questions } from './components/Questions';
+import { CustomCodeInput, CustomDateInput, CustomPhotoBatchInputs, CustomTextInput } from './components/Inputs';
 import CustomSelect from '@components/select';
 import CustomMultiSelect from '@components/multiSelect';
 import BulletpointSelect from '@components/bulletpointSelect';
@@ -97,7 +97,6 @@ const RegisterScreen = () => {
           
               { q.description && q.descriptionOnTop && 
                 <Description>{q.description}</Description> }
-       
 
             <View style={{width: "100%", marginBottom: "7%"}}>
               { (q.inputType == TEXT) ?
@@ -122,16 +121,21 @@ const RegisterScreen = () => {
                   title={q.placeholder}
                   options={q.options || []} />
               : (q.inputType == MULTISELECT) ?
-                  <CustomMultiSelect 
-                    onSelect={v => setCurrentValues(i, v)}
-                    values={values[i]}
-                    placeholder={q.multiPlaceholder}
-                    options={q.options || []} />
+                <CustomMultiSelect 
+                  onSelect={v => setCurrentValues(i, v)}
+                  values={values[i]}
+                  placeholder={q.multiPlaceholder}
+                  options={q.options || []} />
               : (q.inputType == BULLETPOINTS_SELECT) ?
-                  <BulletpointSelect 
-                    onSelect={v => setCurrentValues(i, v)}
-                    value={values[i]}
-                    options={q.bulletPoints || []} />
+                <BulletpointSelect 
+                  onSelect={v => setCurrentValues(i, v)}
+                  value={values[i]}
+                  options={q.bulletPoints || []} />
+              : (q.inputType == PHOTO) ?
+                <CustomPhotoBatchInputs 
+                  count={q.photoCount || 0}
+                  onChange={v => setCurrentValues(i, v)}
+                  values={values[i]} />
               :  <></>
               }
               </View>
