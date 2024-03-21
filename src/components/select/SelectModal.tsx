@@ -70,6 +70,8 @@ const SelectModal: React.FC<{
                     <ScrollView  style={{width: "100%", flexDirection: "column"}}>
                         {
                             options.map((op,i) => <TouchableHighlight
+                                activeOpacity={0.6}
+                                underlayColor="#0000"
                                 key={i}
                                 onPress={() => {
                                         setValue(op)

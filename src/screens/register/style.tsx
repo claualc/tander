@@ -83,6 +83,7 @@ export const Subtitle: React.FC<React.PropsWithChildren> = ({
 }) => <CustomText 
         style={{
             textAlign: "justify",
+            marginBottom: "3%"
         }}
         color={theme.tertiary_dark} 
         size={16}>

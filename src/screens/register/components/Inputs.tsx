@@ -28,19 +28,49 @@ export const CustomTextInput: React.FC<{
         />
 };
 
+const StyledSingleCodeInput: typeof TextInput = styled.TextInput`
+    width: 7%;
+    border-bottom-width: 2px;
+    border-bottom-color: ${p => p.theme.tertiary_dark};
+    margin-top: 12px;
+    font-size: 25px;
+    text-align: center;
+`
+
+const SpecialCodeInputCaracter = styled(Text)`
+    margin-top: 12px;
+    font-size: 26px;
+    text-align: center;
+    color: ${p => p.theme.tertiary_dark};
+`
+
+export const cellphoneMask = (value?: string) => {
+    return value && value?.length ?
+    value?.length > 8 ?
+    `+${value?.substring(0,2) || ""} ${value?.substring(2,5) || ""} ${value?.substring(5,8) || ""} ${value?.substring(8) || ""}`
+        : value?.length > 5 ?
+        `+${value?.substring(0,2) || ""} ${value?.substring(2,5) || ""} ${value?.substring(5) || ""}`
+            : value?.length > 2 ?
+                `+${value?.substring(0,2) || ""} ${value?.substring(2) || ""}`
+                : `+${value}` : ""
+}
+
 export const CustomCodeInput: React.FC<{
     value: string;
     placeholder?: string;
-    onChange: (v: string) => void
-}> = ({value, onChange, placeholder}) => {
+    onChange: (v: string) => void;
+    isPhoneNumber?: boolean;
+    maxLength?: number;
+}> = ({value, onChange, placeholder, isPhoneNumber = false, maxLength = 10000}) => {
 
     return <StyledInputText
         selectionColor={theme.tertiary_dark}
-        onChangeText={onChange}
-        value={value}
+        onChangeText={(v: string) => {
+            onChange(v.replace(/[^0-9]/g, "").toString()) }}
+        value={isPhoneNumber ? cellphoneMask(value) : value}
         placeholder={placeholder || ""}
-        keyboardType="numeric"
-        />
+        maxLength={ isPhoneNumber ? 16 : maxLength}
+        keyboardType="numeric" />
 };
 
 const StyledSingleInputText: typeof TextInput = styled.TextInput`
@@ -52,7 +82,7 @@ const StyledSingleInputText: typeof TextInput = styled.TextInput`
     text-align: center;
 `
 
-const DateTiltedBar = styled(Text)`
+const SpecialCaracter = styled(Text)`
     margin-top: 12px;
     font-size: 32;
     text-align: center;
@@ -119,7 +149,7 @@ export const CustomDateInput: React.FC<{
                     />
                 {
                 (i % 2 == 1 && i !==5) 
-                    ? <DateTiltedBar>/</DateTiltedBar>
+                    ? <SpecialCaracter>/</SpecialCaracter>
                     : <></> 
                 }
                 </>
@@ -150,7 +180,6 @@ const AddDeletePhotoButton = styled.View<{
     align-items: center;
     transform: ${ p => p.photoSelected ? null : "rotate(45deg)" };
 `;
-
 
 export const CustomPhotoBatchInputs: React.FC<{
     values: (string | null)[];

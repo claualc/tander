@@ -58,6 +58,8 @@ const CustomSelect: React.FC<Props> = ({
         onPress={() => {
             setShowModal(true)
         }}
+        activeOpacity={0.6}
+        underlayColor="#0000"
         style={{
             flexDirection: "row",
             width: width as DimensionValue,
