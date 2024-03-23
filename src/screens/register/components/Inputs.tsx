@@ -89,47 +89,41 @@ const SpecialCaracter = styled(Text)`
     color: ${p => p.theme.tertiary_dark};
 `
 
+const inputDateLength = 8;
 export const CustomDateInput: React.FC<{
     value: string;
     placeholder?: string;
     onChange: (v: string) => void
 }> = ({value, onChange, placeholder}) => {
 
-    const [values, setValues] = useState<any[]>(new Array(6).fill(null))
-    // to detect the last input focus
-    const [onLastInput, setOnLastInput] = useState<boolean>(false) 
+    const [values, setValues] = useState<any[]>(new Array(inputDateLength).fill(null))
     const inputsRefs = useRef<any>([]);
     
     useEffect(() => {
-        inputsRefs.current = inputsRefs.current.slice(0, 6);
+        inputsRefs.current = inputsRefs.current.slice(0, inputDateLength);
         if (value) {
             setValues(() => value.split("").map(v => v))
         }
     }, []);
-
-    useEffect(() => {
-        // to save the final value
-        const day = values[0]+values[1]
-        const month = values[2]+values[3]
-        const year = values[4]+values[5]
-        console.log(values)
-        if(onLastInput && day > 0 && month>0 && year>0) {
-            const finalValue = values.reduce((acc, v) => acc+v, "")
-            onChange(finalValue)
-        }
-    },[values, onLastInput])
 
     return <View style={{
         width: "100%",
         flexDirection: "row",
         justifyContent: "space-evenly",
         alignItems: "flex-start"
-              
     }}>
     {
         values.map((v,i) => {
             return <>
                 <StyledSingleInputText
+                    onKeyPress={e => {
+                        const deletePressed = e.nativeEvent.key == "Backspace"
+                        const currentValueEmtpy = values[i] == "" || 
+                            values[i] == undefined || values[i] == null
+
+                            if (deletePressed && currentValueEmtpy && i > 0)
+                                inputsRefs.current[i-1].focus()
+                    }}
                     key={i}
                     ref={(el: any) => {inputsRefs.current[i] = el}} 
                     selectionColor={theme.tertiary_dark}
@@ -137,18 +131,18 @@ export const CustomDateInput: React.FC<{
                         const arr = values.map((v,j) => j==i ? newVal :v)
                         setValues(arr)
                         // to jumpt ot the next input
-                        if (i+1 != 6 && arr[i]!="") {
+                        if (i+1 != inputDateLength && arr[i]!="") {
                             inputsRefs.current[i+1].focus()
                         } 
-                        setOnLastInput(i==5)
-                    }}
+                        onChange(arr.reduce((acc, v) => acc+v,""))
+                    }} 
                     value={values[i]}
                     placeholder={placeholder || "0"}
                     keyboardType="numeric"
                     maxLength={1}
                     />
                 {
-                (i % 2 == 1 && i !==5) 
+                (i % 2 == 1 && i <5) 
                     ? <SpecialCaracter>/</SpecialCaracter>
                     : <></> 
                 }

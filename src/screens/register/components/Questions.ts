@@ -108,15 +108,31 @@ export const setQuestions: (phoneNumber?: string) => Page[]  = (phoneNumber) => 
                 description: "We will show just your age on your profile, not your birthday.",
                 inputType: DATE,
                 validate: (v: string) => {
+                    const nonNull = v.split("").length==8
                     const day = Number(v.slice(0,2))
                     const month = Number(v.slice(2,4))
-                    const year = Number(v.slice(4,6))
+                    const year = Number(v.slice(4,8))
+                    console.log("\n\n", `${year},${month},${day}`)
 
-                    const currentYear = new Date().getFullYear() 
-                    console.log(day, month, year)
-                    return (day>=1 && day<=31) &&
-                            (month>= 1 && month<=12) &&
-                            (year>=(currentYear-100) && year<=currentYear)
+                    if (nonNull) {
+                        const todayDate = new Date()
+                        const inputDate = new Date(`${year}-${month}-${day}T01:01:01`)
+
+                        const isValidDatee = (
+                            inputDate.getDate() == day && 
+                            inputDate.getMonth()+1 == month 
+                            && inputDate.getFullYear() == year)
+                            
+                        console.log("input date parsed", `${inputDate.getDate()}-${inputDate.getMonth()+1}-${inputDate.getFullYear()}`)
+                        console.log("inputDate",inputDate)
+                        console.log("todayDate",todayDate)
+                        console.log("todayDate>inputDate",todayDate>inputDate)
+                        console.log("isValidDate",isValidDatee)
+
+                        return isValidDatee && (todayDate>inputDate) 
+                    }
+                
+                    return false
                 }
             }],
         },
