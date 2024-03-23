@@ -31,8 +31,17 @@ interface Props extends SelectProps {
     color?: string;
 }
 
+
+/* the value is they key in the object
+   while the valueName is the visual name gave 
+   to that key in the modal
+
+   const options = {
+      [value]: "<valueName> | <name>"
+   }
+*/
 const CustomSelect: React.FC<Props> = ({
-    options, placeholder, width, onSelect, value, title, color}) => {
+    options, placeholder, width, onSelect, value, title, color }) => {
 
     const [color_, setColor_] = useState<string>(color || getRandomColor());
     const [showModal, setShowModal] = useState(false);
@@ -69,10 +78,10 @@ const CustomSelect: React.FC<Props> = ({
             <Main color={color_}>
                 {
                     valueName ?
-                    <CustomText color={color}>{valueName}</CustomText>
+                    <CustomText color={color_}>{valueName}</CustomText>
                     : <CustomText color={convertHexToRGBA(color_, 0.5)}>{ placeholder || ""}</CustomText>
                 }
-                <Ionicons name="chevron-down-outline" color={color} size={20}/>
+                <Ionicons name="chevron-down-outline" color={color_} size={20}/>
             </Main>
     </TouchableHighlight> 
 

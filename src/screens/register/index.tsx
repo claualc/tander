@@ -8,10 +8,12 @@ import ColorButton from '@components/colorButton';
 import { ProgressBar } from './components/ProgressBar';
 import { BackButtonWrapper, CenterWrapping, Description, FormsWrapper, MainWrapper, ProgressBarWrapper, Subtitle, Title } from './style';
 import { BULLETPOINTS_SELECT, DATE, MULTISELECT, NUMERIC, NUMERIC_PHONE, PHOTO, Page, Question, SELECT, TEXT, setQuestions } from './components/Questions';
-import { CustomCodeInput, CustomDateInput, CustomPhotoBatchInputs, CustomTextInput } from './components/Inputs';
+import CustomPhotoBatchInputs from "./components/CustomPhotoBatchInputs";
 import CustomSelect from '@components/select';
 import CustomMultiSelect from '@components/multiSelect';
 import BulletpointSelect from '@components/bulletpointSelect';
+import CustomDateInput from './components/CustomDateInput';
+import { CustomTextInput, CustomCodeInput } from './components/CustomSimpleInputs';
 
 const totalQuestionCount: number = setQuestions().length;
 
@@ -27,7 +29,11 @@ const RegisterScreen = () => {
     
   const setCurrentValues = useCallback((id: number, newVal: any) => {
     // arrays r compared by reference not by value
-    const newVals = values.map((v, j) => id == j ? newVal : v) 
+    let newVals = values.map(v => v) // copy object to new referene
+    newVals[id] = newVal
+    
+    console.log( values,"->",newVals)
+    console.log("newVal", newVal, "id", id)
     setValues(newVals)
   }, [values])
 
@@ -43,6 +49,7 @@ const RegisterScreen = () => {
     let page = setQuestions(
       answers[0] ? answers[0][0] : null
     )[currentPageId]
+
     setValues( !actualValues ?
       new Array(page.questions.length).fill(null) : actualValues)
     return page
@@ -76,8 +83,9 @@ const RegisterScreen = () => {
     }
   }, [currentPage, currentPageId, values, answers]);
 
-  useEffect(() => console.log("values", values), [values])
-  useEffect(() => console.log("answers", answers), [answers])
+  const [count, setCount] = useState(0)
+
+  // useEffect(() => console.log("answers", answers), [answers])
 
   return <View style={{
     flex: 1,
@@ -161,6 +169,7 @@ const RegisterScreen = () => {
               : (q.inputType == MULTISELECT) ?
                 <CustomMultiSelect 
                   onSelect={v => {
+                    console.log("\n\nonChange", v)
                     setCurrentValues(i, v)
                     checkValidAnswer(v, q)
                   }}

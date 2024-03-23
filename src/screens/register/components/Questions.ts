@@ -1,5 +1,5 @@
 import { SelectOption } from "@components/select";
-import { cellphoneMask } from "./Inputs";
+import { cellphoneMask, validateDate, validatePhoneNumber } from "./utils";
 
 /*
 
@@ -79,7 +79,7 @@ export const setQuestions: (phoneNumber?: string) => Page[]  = (phoneNumber) => 
             questions:  [{
                 id: 0,
                 inputType: NUMERIC_PHONE,
-                validate: (v: string) => {return v.split("").length == 12}
+                validate: validatePhoneNumber
             }]
         },
         {
@@ -107,33 +107,7 @@ export const setQuestions: (phoneNumber?: string) => Page[]  = (phoneNumber) => 
                 id: 3,
                 description: "We will show just your age on your profile, not your birthday.",
                 inputType: DATE,
-                validate: (v: string) => {
-                    const nonNull = v.split("").length==8
-                    const day = Number(v.slice(0,2))
-                    const month = Number(v.slice(2,4))
-                    const year = Number(v.slice(4,8))
-                    console.log("\n\n", `${year},${month},${day}`)
-
-                    if (nonNull) {
-                        const todayDate = new Date()
-                        const inputDate = new Date(`${year}-${month}-${day}T01:01:01`)
-
-                        const isValidDatee = (
-                            inputDate.getDate() == day && 
-                            inputDate.getMonth()+1 == month 
-                            && inputDate.getFullYear() == year)
-                            
-                        console.log("input date parsed", `${inputDate.getDate()}-${inputDate.getMonth()+1}-${inputDate.getFullYear()}`)
-                        console.log("inputDate",inputDate)
-                        console.log("todayDate",todayDate)
-                        console.log("todayDate>inputDate",todayDate>inputDate)
-                        console.log("isValidDate",isValidDatee)
-
-                        return isValidDatee && (todayDate>inputDate) 
-                    }
-                
-                    return false
-                }
+                validate: validateDate
             }],
         },
         {

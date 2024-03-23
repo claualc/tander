@@ -1,7 +1,7 @@
 import { TouchableOpacity, View } from "react-native";
 import styled from "styled-components/native";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import CustomSelect, { SelectOption, getRandomColor } from "@components/select";
 
 import { convertHexToRGBA } from "@components/index";
@@ -28,7 +28,7 @@ const LessSymbol = styled.View<{
 `
 
 const CustomMultiSelect: React.FC<{
-    values?: (string | number)[]; // the selected values
+    values?: (string | number)[];
     onSelect: (v: (string | number)[] ) => void;
     placeholder?: string[];
     options: SelectOption[];
@@ -37,10 +37,12 @@ const CustomMultiSelect: React.FC<{
     const [color, setColor] = useState(getRandomColor());
     const [values_, setValues_] = useState(values || []);
 
+    useEffect(() => onSelect(values_), [values_]);
+
+
     const setSpecificValue = useCallback((i: number, newVal: any) => {
         let updated = [...values_]
         updated.splice(i, 1, newVal)
-        onSelect(updated)
         setValues_(updated)
     }, [values_])
 
@@ -48,10 +50,13 @@ const CustomMultiSelect: React.FC<{
         let updated = [...values_]
         updated.splice(i, 1)
         setValues_(updated)
-        onSelect(updated)
     }, [values_])
 
-    useEffect(() => {console.log("values_",values_)}, [values_])
+    const filterOptions = useMemo(() => {
+        // to filter the already selected options
+        return options.filter(op => !values_.includes(op.value))
+    }, [values_]);
+
 
     return <>
     {
@@ -85,14 +90,20 @@ const CustomMultiSelect: React.FC<{
             })
         }
 
-        <CustomSelect 
-            onSelect={(v) => {
-                setSpecificValue(values_.length, v.value)
-            }} 
-            placeholder={ placeholder.length ? values_?.length ?
-                placeholder[1] : placeholder[0] : ""}
-            value={undefined} 
-            options={options} />
+        {
+            filterOptions.length != 0 &&
+                <CustomSelect 
+                    onSelect={(v) => {
+                        setSpecificValue(values_.length, v.value)
+                    }} 
+                    color={color}
+                    placeholder={ placeholder.length ? values_?.length ?
+                        placeholder[1] : placeholder[0] : ""}
+                    value={undefined} 
+                    options={filterOptions} />
+        }
+
+        
     </>
 }
 
