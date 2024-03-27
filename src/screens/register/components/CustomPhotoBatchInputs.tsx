@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { ScrollView, View, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import styled from "styled-components/native";
@@ -38,13 +38,11 @@ const CustomPhotoBatchInputs: React.FC<{
     const [imgs_, setImgs_] = useState<(string | null)[]>(() => {
         let completeArray = values ||  [];
         completeArray.splice( completeArray.length, count- completeArray.length, null)  
-        console.log(completeArray)
         return completeArray  
     });
 
     const setSpecificImg = useCallback((i: number, newVal: string) => {
         let updated = [...imgs_]
-        console.log("i", i)
         updated.splice(i, 1, newVal)
         onChange(updated.map(v => (v || "")))
         setImgs_(updated)
@@ -77,7 +75,7 @@ const CustomPhotoBatchInputs: React.FC<{
     return <ScrollView 
             style={{
                 width: "100%", 
-                height: "75%", 
+                height: "90%", 
             }}
             contentContainerStyle={{
                 justifyContent: "space-between",

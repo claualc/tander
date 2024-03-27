@@ -12,9 +12,6 @@ import { yellow } from "@mui/material/colors";
 export const Card = styled.View`
     background-color: white;
     width: 88%;
-    min-height: 70px;
-    max-height: 80%;
-    height: fit-content;
     border-radius: 20px;
     overflow: hidden;
     align-items: center;
@@ -23,12 +20,12 @@ export const Card = styled.View`
 
 export const Item = styled.View`
     width: "100%";
-    height: ${`${Dimensions.get('window').height*0.06}px`};
     padding-left: 1%;
     border-bottom-color: ${p => p.theme.secondary_background};
     border-bottom-width: 0.7px;
     justify-content: center;
 `
+
 
 const SelectModal: React.FC<{
     show: boolean;
@@ -46,26 +43,32 @@ const SelectModal: React.FC<{
             alignItems: "center", 
             justifyContent: "center", 
         }}>
-            <Card>
+           
+            <Card style={{minHeight: 140, maxHeight: "80%"}}>
                 {
                     //modal header
                 }
                 <View style={{
                     elevation: 4,
                     width: "110%",
+                    aspectRatio: "5/1",
                     // background color must be set
-                    backgroundColor: 'white',
+                    backgroundColor: "white",
                     paddingLeft: "10%",
                     paddingTop: "5%",
                     paddingBottom: "5%",
+                    position: "relative",
+                    justifyContent: "center",
+                    top: -10
                 }}>
                     <CustomText fontFam="DM" size={19}>{modalTitle || ""}</CustomText>
                 </View>
-                
+
                 <View style={{
                     width: "100%",
                     paddingLeft: "5%",
                     paddingRight: "5%",
+                    maxHeight: "70%"
                 }}>
                     <ScrollView  style={{width: "100%", flexDirection: "column"}}>
                         {
@@ -79,6 +82,7 @@ const SelectModal: React.FC<{
                                     }}>
                                     <Item>
                                         <CustomText  
+                                            style={{marginBottom: 10, marginTop: 15}}
                                             fontFam={ itemSelected  == i ? "XB" : "RG"} 
                                             >{op.name}</CustomText>
                                     </Item>
@@ -87,16 +91,20 @@ const SelectModal: React.FC<{
                         }
                     </ScrollView>
                 </View>
+
                 <View style={{
                     width: "100%",
+                    aspectRatio: "5/1", // need a fix height
                     flexDirection: "column",
                     padding: 10,
                     // background color must be set
                     justifyContent: "center",
                     alignItems: "center",
+                    position: "relative",
+                    bottom: 0
                 }}>
                     <ColorButton
-                        disabled={value == null}
+                        disabled={options.length > 0 ? value == null : false}
                         onPress={() => {
                             if (value != null)
                                 onSelect(value)
@@ -104,6 +112,7 @@ const SelectModal: React.FC<{
                         width="50%"
                         title={"Done"} />
                 </View>
+            
             </Card>
         </BlurView>
     </Modal>

@@ -7,7 +7,7 @@ import ColorButton from '@components/colorButton';
 
 import { ProgressBar } from './components/ProgressBar';
 import { BackButtonWrapper, CenterWrapping, Description, FormsWrapper, MainWrapper, ProgressBarWrapper, Subtitle, Title } from './style';
-import { BULLETPOINTS_SELECT, DATE, MULTISELECT, NUMERIC, NUMERIC_PHONE, PHOTO, Page, Question, SELECT, TEXT, setQuestions } from './components/Questions';
+import { BULLETPOINTS_SELECT, DATE, MULTISELECT, NUMERIC, NUMERIC_PHONE, PHOTO, Page, PageId, Question, SELECT, TEXT, setQuestions } from './components/Questions';
 import CustomPhotoBatchInputs from "./components/CustomPhotoBatchInputs";
 import CustomSelect from '@components/select';
 import CustomMultiSelect from '@components/multiSelect';
@@ -15,14 +15,19 @@ import BulletpointSelect from '@components/bulletpointSelect';
 import CustomDateInput from './components/CustomDateInput';
 import { CustomTextInput, CustomCodeInput } from './components/CustomSimpleInputs';
 
+import * as userServices from "@serv/userService";
+import { CreateUserDTO } from '@api/domain/User';
+
 const totalQuestionCount: number = setQuestions().length;
 
 const RegisterScreen = () => {
 
-  const [answers, setAnswers] = useState<any[][]>([]);
-
+  const [answers, setAnswers_] = useState<any[][]>([]);
   const [validAnswer, setValidAnswer] = useState(false);
-
+  const [currentPageId, setCurrentPageId] = useState<number>(0);
+  const [confirmationCode, setConfirmationCode] = useState<number>(0);
+  const [sendForms, setSendForms] = useState<boolean>(false);
+  
   // the values of the answers of the current load page
   // they will be shown in the input
   const [values , setValues] = useState<any[]>(new Array(setQuestions()[0].questions.length).fill(null));
@@ -31,29 +36,70 @@ const RegisterScreen = () => {
     // arrays r compared by reference not by value
     let newVals = values.map(v => v) // copy object to new referene
     newVals[id] = newVal
-    
-    console.log( values,"->",newVals)
-    console.log("newVal", newVal, "id", id)
+
     setValues(newVals)
   }, [values])
 
-  const checkValidAnswer = useCallback((v: any, q: Question) => {
-    setValidAnswer(
-      q.validate ? q.validate(v) : v!=null )
-  }, [validAnswer])
-
-  const [currentPageId, setCurrentPageId] = useState<number>(0);
 
   const currentPage = useMemo<Page>(() => {
     let actualValues = answers[currentPageId]
+
+    const phoneNumber = answers[0] ? answers[0][0] : null;
     let page = setQuestions(
-      answers[0] ? answers[0][0] : null
+      phoneNumber, // phoneNumber
     )[currentPageId]
+
+    if (page.id == PageId.PHONE_NUM_CODE_VERIF) {
+      // function to get a random number of 4 digits
+      let minm = 1000; 
+      let maxm = 9999; 
+      const code = Math.floor(Math .random() * (maxm - minm + 1)) + minm;
+      setConfirmationCode(code)
+      // FCMService.schedulePushNotification(
+      //   "Tander",
+      //   `${code} is your confirmation code!`,
+      //   {})
+      // console.log(code)
+    }
 
     setValues( !actualValues ?
       new Array(page.questions.length).fill(null) : actualValues)
+
     return page
   }, [currentPageId]);
+
+  const checkValidAnswer = useCallback((v: any, q: Question) => {
+    let isValid = q.validate ? q.validate(v) : v!=null
+
+    // specifics for pages
+
+    // question 1: confirmation of phone number
+    // if (q.id == 1) {
+    //   isValid = isValid && confirmationCode == v
+    // }
+
+    setValidAnswer(isValid)
+  }, [validAnswer])
+
+  useEffect(() => {
+    if (sendForms) {
+      console.log("..:: REGISTRATION: endend")
+      const userDTO: CreateUserDTO = {
+        username: answers[1][0], // username
+        birth :answers[2][0], // birthdate
+        phoneNumber: Number(answers[0][0]), // phonenumber
+        university :answers[3][0], //university_
+        course :answers[3][1], // course
+        langToLearn :answers[4][1], // langTolearn
+        langKnown :answers[5][0], // langKnown
+        photos :answers[7][0], //photos
+        team :answers[6][0], //userTeam
+        country :answers[4][0], //country,
+      }
+      
+      userServices.create(userDTO)
+    }
+  }, [sendForms]);
 
 
   const disableButton = useMemo(() => {
@@ -61,11 +107,14 @@ const RegisterScreen = () => {
     const noNullVal = values.reduce(
       (acc, v) => {
         return acc && ( 
-          v!=null && v!="" && (v.length ? true : (v.length != 0)))
+          v!=null && (
+            (typeof v == 'string' && v!="") || typeof v != 'string'
+          ) && (v.length ? true : (v.length != 0)))
       }, true)
 
     return !(noNullVal && validAnswer)
   }, [values, validAnswer])
+
 
   const turnFormsPageAhead = useCallback((goAhead: boolean) => {
     // default go ahead
@@ -77,15 +126,18 @@ const RegisterScreen = () => {
     if (nextId<0) {
       console.log("GO BACK TO LOGIN")
     } else if (nextId==totalQuestionCount) {
-      console.log("REGISTRATION ENDED", answers)
+      setSendForms(true)
     } else {
       setCurrentPageId(nextId)
     }
-  }, [currentPage, currentPageId, values, answers]);
 
-  const [count, setCount] = useState(0)
+  }, [currentPageId, answers]);
 
-  // useEffect(() => console.log("answers", answers), [answers])
+  const setAnswers = useCallback((v: typeof values) => {
+    let ans = [...answers]
+    ans[currentPageId] = v
+    setAnswers_(ans)
+  },[answers, currentPageId]);
 
   return <View style={{
     flex: 1,
@@ -95,7 +147,7 @@ const RegisterScreen = () => {
   }}>
 
   <ProgressBarWrapper >
-    <ProgressBar percentage={(1-(currentPageId+1)/currentPage.questions.length)*100}></ProgressBar>
+    <ProgressBar percentage={(1-(currentPageId+1)/(totalQuestionCount+1))*100}></ProgressBar>
   </ProgressBarWrapper>
 
   <MainWrapper>
@@ -117,10 +169,10 @@ const RegisterScreen = () => {
         {
           // to list all te questions of a page
           currentPage.questions.map(
-            (q, i) => <>
+            (q, i) => <View key={i} style={{width: "100%"}}>
           
             { q.description && q.descriptionOnTop && 
-                <Description>{q.description}</Description> }
+                <Description>{ q.description }</Description> }
 
             <View style={{width: "100%", marginBottom: "7%"}}>
               { (q.inputType == TEXT) ?
@@ -169,10 +221,10 @@ const RegisterScreen = () => {
               : (q.inputType == MULTISELECT) ?
                 <CustomMultiSelect 
                   onSelect={v => {
-                    console.log("\n\nonChange", v)
                     setCurrentValues(i, v)
                     checkValidAnswer(v, q)
                   }}
+                  maxSelects={q.maxSelects}
                   values={values[i]}
                   placeholder={q.multiPlaceholder}
                   options={q.options || []} />
@@ -198,16 +250,14 @@ const RegisterScreen = () => {
 
               {q.description && !q.descriptionOnTop && 
                 <Description>{q.description}</Description> }
-            </>)
+            </View>)
           }
         
     </FormsWrapper>
     <CenterWrapping>
       <ColorButton
         onPress={() =>{
-          let ans = [...answers]
-          ans.splice(currentPageId, 1, values)
-          setAnswers(ans)
+          setAnswers(values)
           turnFormsPageAhead(true) 
         }}
         title={"Next"}

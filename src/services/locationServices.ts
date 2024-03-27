@@ -4,7 +4,7 @@ import cityDic from "@dict/city";
 import countryDic from "@dict/country";
 import flagDic from "@dict/flag";
 
-export const getCityById = async (id: string) => {
+const getCityById = async (id: string) => {
     const cityDTO = cityDic[id];
     return new City(
         cityDTO.name,
@@ -13,7 +13,7 @@ export const getCityById = async (id: string) => {
     );
 }
 
-export const getCountryById = (id: string) => {
+const getCountryById = (id: string) => {
     const countryDTO = countryDic[id]
     return new Country(
         countryDTO.name, 
@@ -21,3 +21,15 @@ export const getCountryById = (id: string) => {
         countryDTO.nationality,
         id);
 }
+
+const listAllCountry = () => {
+    return Object.keys(countryDic).map(getCountryById)
+}
+
+const locationService = {
+    getCityById,
+    getCountryById,
+    listAllCountry,
+}
+
+export default locationService;

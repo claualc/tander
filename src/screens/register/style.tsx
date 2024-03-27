@@ -1,10 +1,8 @@
 import React from 'react';
 import styled from "styled-components/native";
 
-
 import { CustomText } from '@components/index';
 import { theme } from '@screens/theme';
-import Gradient from "@assets/linear_gradient_background.png";
 
 export const ProgressBarWrapper = styled.View`
     flex: 2;
@@ -44,7 +42,7 @@ export const FormsWrapper = styled.View`
 `
 
 export const CenterWrapping = styled.View`
-    flex: 2;
+    flex: 1.5;
     width: 100%;
     justify-content: flex-start;
     align-items: center;

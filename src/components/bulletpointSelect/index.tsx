@@ -49,8 +49,8 @@ const BulletpointSelect: React.FC<{
     return <View 
             style={{
                 width: "100%",
-                height: "100%",
-                justifyContent: "flex-start"
+                height: "90%",
+                justifyContent: "flex-start",
             }}>
                 <ScrollView>
                 { options.map((op, i) => {

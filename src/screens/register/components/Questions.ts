@@ -1,5 +1,10 @@
 import { SelectOption } from "@components/select";
-import { cellphoneMask, validateDate, validatePhoneNumber } from "./utils";
+import { validateDate, validatePhoneNumber } from "./utils";
+import university from "@assets/dictionaries/university";
+import course from "@assets/dictionaries/course";
+import locationService from "@serv/locationServices";
+import languageService from "@serv/languageService";
+import studentService from "@serv/studenService";
 
 /*
 
@@ -25,7 +30,20 @@ export const NUMERIC_PHONE = 7;
 
 type inputTypes = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
+export enum PageId {
+    PHONE_NUM_INPUT,
+    PHONE_NUM_CODE_VERIF,
+    USERNAME,
+    AGE,
+    STUDENT_INFO,
+    COUNTRY_INFO,
+    LANG_TO_LEARN_INFO,
+    TEAM,
+    PHOTOS
+}
+
 export interface Page {
+    id: PageId;
     title: string;
     subtitle?: string;
     questions: Question[]
@@ -48,9 +66,11 @@ export interface Question {
 
     // for multiselect input type
     multiPlaceholder?: string[]; 
+    maxSelects?: number;
 
     // for multiselect and select input types
     options?: SelectOption[];
+    dynamicOptions?: (v: any) => SelectOption[];
     selectModalTitle?: string;
 
     // for bulletpointSelect input types
@@ -66,6 +86,10 @@ export interface Question {
     photoCount?: number;
 }
 
+let teste = {
+    "kdsjfasd": "kjdshasdjf",
+    "dlkjdas": "dslkjlkj"
+}
 // each index of the array is one page
 // of the resgiter forms
 // each page can have more than one question
@@ -73,7 +97,18 @@ export const setQuestions: (phoneNumber?: string) => Page[]  = (phoneNumber) => 
     
     //closure to customize some of the questions with dynamic variables
 
+    let languages =  languageService.listAll().map(l => ({
+        "name": l.name,
+        "value": l.language_code
+    }) as SelectOption)
+
+    let countries = locationService.listAllCountry().map(c => ({
+        "name": `${c.flag_code} ${c.name}`,
+        "value": c.id
+    }) as SelectOption)
+
     let page: Page[] = [{
+            id: PageId.PHONE_NUM_INPUT,
             title: "Can we have your number?",
             subtitle: "Don’t worry, we just need a way to identificate you in case you are disconnected from this or other devices!",
             questions:  [{
@@ -82,17 +117,19 @@ export const setQuestions: (phoneNumber?: string) => Page[]  = (phoneNumber) => 
                 validate: validatePhoneNumber
             }]
         },
+        // {
+        //     id: PageId.PHONE_NUM_CODE_VERIF,
+        //     title: "Inform the code you received",
+        //     subtitle: `If your number is not ${cellphoneMask(phoneNumber)}, return to the previous screen.`,
+        //     questions: [{
+        //         id: 1,
+        //         inputType: NUMERIC,
+        //         maxCodeLength: 4,
+        //         validate: (v: string) => {return v.split("").length == 4}
+        //     }]
+        // },
         {
-            title: "Inform the code you received",
-            subtitle: `If your number is not ${cellphoneMask(phoneNumber)}, return to the previous screen.`,
-            questions: [{
-                id: 1,
-                inputType: NUMERIC,
-                maxCodeLength: 4,
-                validate: (v: string) => {return v.split("").length == 4}
-            }]
-        },
-        {
+            id: PageId.USERNAME,
             title: "What’s your name?",
             questions: [{
                 id: 2,
@@ -102,6 +139,7 @@ export const setQuestions: (phoneNumber?: string) => Page[]  = (phoneNumber) => 
             ],
         },
         {
+            id: PageId.AGE,
             title: "How old are you?",
             questions: [{
                 id: 3,
@@ -111,45 +149,34 @@ export const setQuestions: (phoneNumber?: string) => Page[]  = (phoneNumber) => 
             }],
         },
         {
+            id: PageId.STUDENT_INFO,
             title: "Let us know what you study",
             questions: [{
                     id: 4,
                     placeholder: "Choose your university",
                     inputType: SELECT,
-                    options: [{
-                        value: 1,
-                        name: "d"
-                    },
-                    {
-                        value: 2,
-                        name: "e"
-                    },
-                    {
-                        value: 3,
-                        name: "f"
-                    }
-                    ]
+                    options: studentService
+                        .listAllUniversity()
+                        .map(u => ({
+                            "name": u.name,
+                            "value": u.id
+                        }) as SelectOption)
                 }, 
                 {
                     id: 5,
                     placeholder: "Choose your course",
                     inputType: SELECT,
-                    options: [{
-                        value: 1,
-                        name: "d"
-                    },
-                    {
-                        value: 2,
-                        name: "e"
-                    },
-                    {
-                        value: 3,
-                        name: "f"
+                    options: studentService
+                        .listAllCourse()
+                        .map(c => ({
+                            "name": c.name,
+                            "value": c.id
+                        }) as SelectOption)
                     }
-                    ]
-                }],
+            ],
         },
         {
+            id: PageId.COUNTRY_INFO,
             title: "Where are you from?",
             questions: [{
                 id: 6,
@@ -157,71 +184,39 @@ export const setQuestions: (phoneNumber?: string) => Page[]  = (phoneNumber) => 
                 descriptionOnTop: true,
                 placeholder: "Choose a country",
                 inputType: SELECT,
-                options: [{
-                    value: 1,
-                    name: "d"
-                },
-                {
-                    value: 2,
-                    name: "e"
-                },
-                {
-                    value: 3,
-                    name: "f"
-                }
-                ]
+                options: countries
             }, 
             {
                 id: 7,
                 description: "Now, the languages you know",
                 descriptionOnTop: true,
+                maxSelects: 4,
                 multiPlaceholder: [
                     "Choose your first language",
-                    "Choose other languages"
+                    "Choose other language"
                 ],
                 inputType: MULTISELECT,
-                options: [{
-                    value: 1,
-                    name: "d"
-                },
-                {
-                    value: 2,
-                    name: "e"
-                },
-                {
-                    value: 3,
-                    name: "f"
-                }
-                ]
+                options: languages
             }],
         },
         {
+            id: PageId.LANG_TO_LEARN_INFO,
             title: "What languages you want to learn?",
             subtitle: "We will try to connect you with people that know the languages you want to learn, but feel free to talk with whoever you want!",
             questions: [{
                 id: 8,
+                maxSelects: 4,
                 multiPlaceholder: [
                     "Choose a language", // the first placeholder can be different from the rest
                     "Choose other language", 
                 ],
                 descriptionOnTop: true,
                 inputType: MULTISELECT,
-                options: [{
-                    value: 1,
-                    name: "d"
-                },
-                {
-                    value: 2,
-                    name: "e"
-                },
-                {
-                    value: 3,
-                    name: "f"
-                }
-                ]
+                options: languages
             }]
         },
         {
+            id: PageId.TEAM,
             title: "What is your team?",
             subtitle: "We’re almost there, this is the most important question of the registration. Pay attention, this choice is definitive!",
             questions: [
@@ -259,6 +254,7 @@ export const setQuestions: (phoneNumber?: string) => Page[]  = (phoneNumber) => 
             ]
         },
         {
+            id: PageId.PHOTOS,
             title: "Show us some pictures",
             subtitle: "Preferably of your face...",
             questions: [

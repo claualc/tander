@@ -1,22 +1,17 @@
-import { getDoc, getFirestore, doc, getDocs, DocumentReference, DocumentData } from "firebase/firestore";
+import { DocumentReference, getDoc } from "firebase/firestore";
 
 import dbServices from "./firebase/database"
-import { MusicInterest, Photo, User, UserTeam } from "@domain/User";
-import { Language } from "@api/domain/Language";
+import { CreateUserDTO, MusicInterest, Photo, User, UserTeam } from "@domain/User";
 import { converter } from "@firebaseServ/database/converterDTO";
 import { City } from "@api/domain/Location";
-import * as locationServices from "@serv/locationServices";
+import locationServices from "@serv/locationServices";
 import { Course, Univeristy } from "@api/domain/University";
 import languageService from "./languageService";
 
-interface userServiceI {
-    listAll(): Promise<any>;
-    getById(id: string | String | number | Number): Promise<User>;
-}
+const COLLECTION_ID = "user"; // main collection
+const SUBCOLLECTION_PHOTO_ID = "photo"; // collection related to main
 
-const COLLECTION_ID = "user"; //collection
-
-const parseUserAsync = async (data: any): Promise<User> => {
+const parseUserFromFirestoreAsync = async (data: any): Promise<User> => {
     const university = await getDoc(data.university)
     const course = await getDoc(data.course) 
     const team = await getDoc(data.team) 
@@ -36,9 +31,11 @@ const parseUserAsync = async (data: any): Promise<User> => {
         data.id,
         data.username,
         daybirth, // miliseconds from epoch
+        data.phoneNumber,
         new Date().getUTCFullYear() - daybirth.getUTCFullYear(), // miliseconds from epoch
         musicInterest,
         data.hasSeenWhoLikesMeToday, // always at 12pm resets to false,
+        data.FCMPushNotificationsToken,
         university.data() as Univeristy,
         course.data() as Course,
         langToLearn,
@@ -54,11 +51,13 @@ const parseUserAsync = async (data: any): Promise<User> => {
     return user
 }
 
-const userFirebaseConverter: converter<User> = {
-    toFirestore: (item) => ({...item}),
+const userFirebaseConverter: converter<CreateUserDTO> = {
+    toFirestore: (item) => {
+        return {...item}
+    },
     fromFirestore: async (snap, opt) => {
         const data = snap.data(opt)!;
-        return await parseUserAsync(data);
+        return await parseUserFromFirestoreAsync(data);
     }
 }
 
@@ -68,4 +67,34 @@ export const listAll = async () => {
 
 export const getById = async (id: string | String | number | Number) => {
     return await dbServices.findById(COLLECTION_ID,userFirebaseConverter,id)
+}
+
+export const create = async (user: CreateUserDTO) => {
+    const {photos, ...rest} = user;
+
+    const userRef = await dbServices.create(
+        COLLECTION_ID, rest, userFirebaseConverter )
+    
+    console.log("created user id", userRef.id)
+
+    const promises = photos?.map(async (p) => {
+            await createUserPhoto({
+                value: "data:image/png;base64,"+p, 
+                userRef: userRef
+        })
+    })
+
+    const photoREfs = await Promise.all(promises)
+
+}
+
+export const createUserPhoto = async (photo: {
+    value: string;
+    userRef: DocumentReference;
+}) => {
+    const result = await dbServices.create(
+        SUBCOLLECTION_PHOTO_ID, photo )
+    
+    console.log("created photo", result.id)
+    return result
 }

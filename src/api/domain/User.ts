@@ -1,10 +1,10 @@
 import { Language } from "./Language";
-import { City } from "./Location";
+import { City, Country } from "./Location";
 import { Univeristy, Course} from "./University";
 
 export class UserTeam {
     constructor(
-        public value_: String, //spritz/negroni/vino/aqcua/frizzante
+        public value_: number, //1 spritz/2 negroni/3 vino/4 aqcua/5 frizzante
         public id_?: String,
     ) {}
 
@@ -35,11 +35,13 @@ export class MusicInterest {
 
 export class User {
     constructor(
-        public id_: String | null,
+        public id_: string | null,
         public username_: String,
         public birth_: Date,
-        public yearsOld_: number,
+        public phoneNumber_: number,
+        public yearsOld_: number | null,
         public musicInterest_: MusicInterest,
+        public FCMPushNotificationsToken_: string,
         public hasSeenWhoLikesMeToday_?: Boolean, // always at 12pm resets to false
         public university_?: Univeristy,
         public course_?: Course,
@@ -51,12 +53,14 @@ export class User {
         public likedUsers_?: User[] | String[],
         public matches_?: User[] | String[],
         public profileDescription_?: string,
+        public country_?: Country | null,
     ) {}
 
     get id() {return this.id_};
     get username() {return this.username_};
     get yearsOld() {return this.yearsOld_};
     get birth() {return this.birth_};
+    get phoneNumber() {return this.phoneNumber_};
     get hasSeenWhoLikesMeToday() {return this.hasSeenWhoLikesMeToday_};
     get university() {return this.university_};
     get course() {return this.course_};
@@ -68,7 +72,19 @@ export class User {
     get likedUsers() {return this.likedUsers_};
     get matches() {return this.matches_};
     get profileDescription() {return this.profileDescription_};
+    get FCMPushNotificationsToken() {return this.FCMPushNotificationsToken_};
     get musicInterest() {return this.musicInterest_};
-
 }
-  
+
+export interface CreateUserDTO {
+    username: string;
+    birth: string; //DDMMYYYY
+    phoneNumber: number;
+    university: string; //id
+    course: string; //id
+    langToLearn: string[]; //language code
+    langKnown: string[]; //language code
+    photos: string[]; // base64 value
+    team: number; //id
+    country: number; //id
+}

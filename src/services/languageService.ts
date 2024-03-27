@@ -15,7 +15,7 @@ const getById =  (id: string | number) => {
 }
 
 const listAll = () => {
-    return Object.keys(languageDic).map(id => getById(id))
+    return Object.keys(languageDic).map(getById)
 }
 
 const languageService = {

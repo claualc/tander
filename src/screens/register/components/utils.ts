@@ -7,6 +7,24 @@
 
 export const validatePhoneNumber = (v: string) => v.split("").length == 12;
 
+export const generateRandomString = (length: number) => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result
+}
+
+export const getDateFromString = (v: string) => {
+    // v of tipe 121212
+    const day = Number(v.slice(0,2))
+    const month = Number(v.slice(2,4))
+    const year = Number(v.slice(4,8))
+    return new Date(`${year}-${month}-${day}T01:01:01`)
+}
+
 export const validateDate = (v: string) => {
     const nonNull = v.split("").length==8
     const day = Number(v.slice(0,2))
@@ -26,6 +44,10 @@ export const validateDate = (v: string) => {
     }
 
     return false
+}
+
+export const get2FirstDigitsYear = (v: string[]) => {
+    return v.toString().split("").length>=13 ? v.slice(4,6).reduce((acc,v) => acc+v, "") : ""
 }
 
 export const cellphoneMask = (value?: string) => {

@@ -25,24 +25,24 @@ const LessSymbol = styled.View<{
     justify-content: center;
     align-items: center;
     background-color: ${p => p.color};
-`
+` 
 
 const CustomMultiSelect: React.FC<{
     values?: (string | number)[];
     onSelect: (v: (string | number)[] ) => void;
     placeholder?: string[];
     options: SelectOption[];
-}> = ({values, options, placeholder = [],onSelect}) => {
+    maxSelects?: number;
+}> = ({values=[], options, placeholder = [],onSelect, maxSelects=20}) => {
 
     const [color, setColor] = useState(getRandomColor());
-    const [values_, setValues_] = useState(values || []);
+    const [values_, setValues_] = useState<any[]>(values || []);
 
-    useEffect(() => onSelect(values_), [values_]);
-
+    useEffect(() => onSelect(values_), [values_])
 
     const setSpecificValue = useCallback((i: number, newVal: any) => {
         let updated = [...values_]
-        updated.splice(i, 1, newVal)
+        updated[i] = newVal
         setValues_(updated)
     }, [values_])
 
@@ -54,14 +54,13 @@ const CustomMultiSelect: React.FC<{
 
     const filterOptions = useMemo(() => {
         // to filter the already selected options
-        return options.filter(op => !values_.includes(op.value))
+        return values_?.length > 0 ? options.filter(op => !values_?.includes(op.value) ) : options
     }, [values_]);
-
 
     return <>
     {
-        values_.map((value, i) => {
-            return <View 
+        values_!=null && values_?.map((value, i) => {
+            return value != null && <View 
                     style={{
                         width: "100%", 
                         justifyContent: "center",
@@ -91,13 +90,15 @@ const CustomMultiSelect: React.FC<{
         }
 
         {
-            filterOptions.length != 0 &&
+            (values_.filter(v=>v!=null).length < maxSelects) &&
                 <CustomSelect 
                     onSelect={(v) => {
-                        setSpecificValue(values_.length, v.value)
+                        setSpecificValue(values_?.length, v.value)
                     }} 
                     color={color}
                     placeholder={ placeholder.length ? values_?.length ?
+                        placeholder[1] : placeholder[0] : ""}
+                    title={ placeholder.length ? values_?.length ?
                         placeholder[1] : placeholder[0] : ""}
                     value={undefined} 
                     options={filterOptions} />

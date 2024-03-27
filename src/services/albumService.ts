@@ -35,7 +35,7 @@ export const getAlbum = async (albumName: string, artistBName: string) => {
 
     } catch(e: any) {
         console.log("ERROR albumAPI.getAlbum", e)
-        throw new Error("Something went wrong");
+        throw new Error("..:: AlbumService: Something went wrong");
     }
    
 }

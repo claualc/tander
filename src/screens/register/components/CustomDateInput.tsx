@@ -3,10 +3,12 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components/native";
 
 import { theme } from "@screens/theme";
+import { get2FirstDigitsYear } from "./utils";
+import { CustomText } from "@components/index";
 
 
 const StyledSingleInputText: typeof TextInput = styled.TextInput`
-    width: 10%;
+    width: 9%;
     border-bottom-width: 2px;
     border-bottom-color: ${p => p.theme.tertiary_dark};
     margin-top: 12px;
@@ -42,7 +44,7 @@ const CustomDateInput: React.FC<{
         width: "100%",
         flexDirection: "row",
         justifyContent: "space-evenly",
-        alignItems: "flex-start"
+        alignItems: "flex-end"
     }}>
     {
         values.map((v,i) => {
@@ -81,6 +83,16 @@ const CustomDateInput: React.FC<{
                 </>
         })
     }
+        <View style={{margin:0, justifyContent: "center", alignItems: "center"}}>
+        {
+            get2FirstDigitsYear(values) == "" ?
+                <CustomText size={28}>😐</CustomText>
+                : get2FirstDigitsYear(values) == "20" ?
+                <CustomText size={28}>👶</CustomText>
+                : <CustomText size={28}>🫣</CustomText>
+        }
+        </View>
+     
     </View> 
 };
 

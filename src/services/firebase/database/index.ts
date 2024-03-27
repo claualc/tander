@@ -1,6 +1,7 @@
-import { getFirestore, getDocs, doc, query, collection, DocumentData, QueryDocumentSnapshot, SnapshotOptions, getDoc } from "firebase/firestore";
+import { getFirestore, getDocs, doc, query, collection, DocumentData, QueryDocumentSnapshot, SnapshotOptions, getDoc, setDoc, addDoc } from "firebase/firestore";
 import { converter } from "./converterDTO";
 import firebase from "@firebaseServ/index";
+import { generateRandomString } from "@screens/register/components/utils";
 
 
 
@@ -37,6 +38,19 @@ const FirestoreService = () => {
             const querySnapshot = await getDoc(getDocRefById(collect,converter,id));
             return querySnapshot.data();
         },
+        create: async (collectionName: string, data: any, converter?: converter<any>) => {
+            let ref, result;
+            let id_ = generateRandomString(20)+"_"; // _ symbol to know it was generated from app
+            
+            ref = converter ?
+                await doc(db, collectionName, id_).withConverter(converter)
+                : await doc(db, collectionName, id_);
+
+            result = await setDoc(ref, data);
+           
+            return doc(db, collectionName, id_);
+        },
+       
         getDocRefById,
         listAll: async (collect: string, converter: converter<any>) => {
 

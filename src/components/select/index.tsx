@@ -1,6 +1,6 @@
 import { DimensionValue,TouchableHighlight } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { Main } from "./style";
 import { theme } from "@screens/theme";
@@ -45,11 +45,12 @@ const CustomSelect: React.FC<Props> = ({
 
     const [color_, setColor_] = useState<string>(color || getRandomColor());
     const [showModal, setShowModal] = useState(false);
-   
-    const [valueName, setValueName] = useMemo<string>(() => {
+    const [valueName, setValueName] = useState<string>("");
+
+    useEffect(() => {
         const op = options.find(op => op.value == value);
-        return op ? op.name : ""
-    }, [value]);
+        setValueName(op ? op.name : "")
+    }, [value])
 
     return <>
     { showModal && <SelectModal 
@@ -73,7 +74,8 @@ const CustomSelect: React.FC<Props> = ({
             flexDirection: "row",
             width: width as DimensionValue,
             borderRadius: 100,
-            overflow: "hidden"
+            overflow: "hidden",
+            marginTop: "3%"
         }}>
             <Main color={color_}>
                 {

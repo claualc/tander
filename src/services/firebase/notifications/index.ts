@@ -5,6 +5,9 @@ import { Alert, Platform } from 'react-native';
 
 
 const FCMService = () => {
+
+    let pushNotificationToken: string;
+
     return {
         initAsyncService: async () => {
             let token;
@@ -53,6 +56,8 @@ const FCMService = () => {
                 token = (await Notifications.getExpoPushTokenAsync({
                      projectId: process.env.EXPO_PUBLIC_EXPO_PROJECT_ID  })).data
                 
+                pushNotificationToken = token;
+                
                 console.log("..:: FCMService initiated")
                 console.log("      status:", existingStatus)
 
@@ -68,12 +73,14 @@ const FCMService = () => {
             body: string, 
             data: Object) => {
             await Notifications.scheduleNotificationAsync({
+            
               content: {
                 title, body, data
                 },
               trigger: { seconds: 2 },
             });
         },
+        getDeviceToken: () => pushNotificationToken
     }
 };
 
