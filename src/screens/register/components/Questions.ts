@@ -1,10 +1,9 @@
 import { SelectOption } from "@components/select";
-import { validateDate, validatePhoneNumber } from "./utils";
-import university from "@assets/dictionaries/university";
-import course from "@assets/dictionaries/course";
+import { validateDate, validatePhoneNumber } from "@components/utils";
 import locationService from "@serv/locationServices";
 import languageService from "@serv/languageService";
 import studentService from "@serv/studenService";
+import { listAllUserTeam } from "@serv/userService";
 
 /*
 
@@ -86,10 +85,6 @@ export interface Question {
     photoCount?: number;
 }
 
-let teste = {
-    "kdsjfasd": "kjdshasdjf",
-    "dlkjdas": "dslkjlkj"
-}
 // each index of the array is one page
 // of the resgiter forms
 // each page can have more than one question
@@ -97,9 +92,18 @@ export const setQuestions: (phoneNumber?: string) => Page[]  = (phoneNumber) => 
     
     //closure to customize some of the questions with dynamic variables
 
+    // the index in the array is the id of the userTeam
+    const userTeamDescriptions = [
+        "I like going out for an aperitivo, a drink and small talk.", 
+        "I am the life of the party, all night, every night!",
+        "I am an old soul, i like a good dinner at home with a few friends.",
+        "I am fine, thank you!",
+        "I am not fine in the least, thank you!",
+    ]
+
     let languages =  languageService.listAll().map(l => ({
         "name": l.name,
-        "value": l.language_code
+        "value": l.id
     }) as SelectOption)
 
     let countries = locationService.listAllCountry().map(c => ({
@@ -223,33 +227,13 @@ export const setQuestions: (phoneNumber?: string) => Page[]  = (phoneNumber) => 
                 {
                     id: 9,
                     inputType: BULLETPOINTS_SELECT,
-                    bulletPoints: [
-                        {
-                            title: "Spritz",
-                            description: "I like going out for an aperitivo, a drink and small talk.",
-                            emoji: "🍹"
-                        },
-                        {
-                            title: "Negroni",
-                            description: "I am the life of the party, all night, every night!",
-                            emoji: "🍸"
-                        },
-                        {
-                            title: "Wine",
-                            description: "I am an old soul, i like a good dinner at home with a few friends.",
-                            emoji: "🍷"
-                        },
-                        {
-                            title: "Water",
-                            description: "I am fine, thank you!",
-                            emoji: "🫗"
-                        },
-                        {
-                            title: "Frizzante",
-                            description: "I am not fine in the least, thank you!",
-                            emoji: "🫧"
-                        }
-                    ]
+                    bulletPoints: listAllUserTeam().map(
+                        (team, id) => ({
+                            "title": team.name,
+                            "description": userTeamDescriptions[id],
+                            "emoji": team.icon
+                        }),
+                    )
                 }
             ]
         },

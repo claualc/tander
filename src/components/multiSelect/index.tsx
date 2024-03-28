@@ -3,8 +3,7 @@ import styled from "styled-components/native";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import CustomSelect, { SelectOption, getRandomColor } from "@components/select";
-
-import { convertHexToRGBA } from "@components/index";
+import { convertHexToRGBA } from "../utils";
 
 const RoundButton = styled.View<{
     color: string;

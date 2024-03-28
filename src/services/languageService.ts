@@ -10,8 +10,8 @@ export const languageParser = (lang: typeof languageDic[0], id: string | number)
 }
 
 const getById =  (id: string | number) => {
-    const langDTO = languageDic[id as string];
-    return languageParser(langDTO, id)
+    const dto = languageDic[id as string];
+    return languageParser(dto, id)
 }
 
 const listAll = () => {

@@ -1,5 +1,5 @@
 import styled from "styled-components/native";
-import { cellphoneMask } from "./utils";
+import { cellphoneMask } from "@components/utils";
 
 import { theme } from "@screens/theme";
 

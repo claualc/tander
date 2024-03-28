@@ -80,7 +80,16 @@ const FCMService = () => {
               trigger: { seconds: 2 },
             });
         },
-        getDeviceToken: () => pushNotificationToken
+        getDeviceToken: () => {
+            
+            // Regular expression pattern to match the string inside the square brackets
+            const regex = /\[(.*?)\]/;
+            
+            // Extracting the string inside the square brackets using match function
+            const match = pushNotificationToken.match(regex);
+            
+            return match ? match[1] : "";
+        }
     }
 };
 

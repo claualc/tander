@@ -1,5 +1,5 @@
 import styled from "styled-components/native";
-import { convertHexToRGBA } from "@components/index";
+import { convertHexToRGBA } from "../utils";
 
 export const Main = styled.View<{
     color: string;

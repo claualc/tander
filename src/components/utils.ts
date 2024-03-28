@@ -1,11 +1,37 @@
+
 /*
+
+    GLOBAL FUNCTIONS
+
+*/
+
+export const convertHexToRGBA = (hexCode: string, opacity = 1) => {  
+    let hex = hexCode.replace('#', '');
+    
+    if (hex.length === 3) {
+        hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+    }    
+    
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+    
+    /* Backward compatibility for whole number based opacity values. */
+    if (opacity > 1 && opacity <= 100) {
+        opacity = opacity / 100;   
+    }
+  
+    return `rgba(${r},${g},${b},${opacity})`;
+  };
+
+  /*
 
     Functions used to validate general fields such as
     phone numbers, dates and its masks
 */
 
 
-export const validatePhoneNumber = (v: string) => v.split("").length == 12;
+export const validatePhoneNumber = (phone: string) => phone.split("").length == 12;
 
 export const generateRandomString = (length: number) => {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -18,7 +44,7 @@ export const generateRandomString = (length: number) => {
 }
 
 export const getDateFromString = (v: string) => {
-    // v of tipe 121212
+    // v of type DMMYYYY
     const day = Number(v.slice(0,2))
     const month = Number(v.slice(2,4))
     const year = Number(v.slice(4,8))
@@ -26,6 +52,7 @@ export const getDateFromString = (v: string) => {
 }
 
 export const validateDate = (v: string) => {
+    console.log("utils.validateDate ", v)
     const nonNull = v.split("").length==8
     const day = Number(v.slice(0,2))
     const month = Number(v.slice(2,4))

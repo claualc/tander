@@ -4,8 +4,9 @@ import { useEffect, useMemo, useState } from "react";
 
 import { Main } from "./style";
 import { theme } from "@screens/theme";
-import { CustomText, convertHexToRGBA } from "@components/index";
+import { CustomText } from "@components/index";
 import SelectModal from "./SelectModal";
+import { convertHexToRGBA } from "../utils";
 
 export const getRandomColor = () => {
     const colorOptions = [theme.tertiary, theme.secondary, theme.main]

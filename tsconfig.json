@@ -11,7 +11,7 @@
         "@api/*": ["src/api/*"],
         "@domain/*": ["src/api/domain/*"],
         "@assets/*":["assets/*"],
-        "@dict/*":["assets/dictionaries/*"]
+        "@dict/*":["assets/dictionaries/*"],
       },
     },
 }

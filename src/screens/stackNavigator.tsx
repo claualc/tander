@@ -1,6 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import { RootView } from '@components/index';
+import BottomTabNavigator from '@components/bottomTabNavigator';
+
+// sreens
 import HomeScreen from './home';
 import MyLikesScreen from './myLikes';
 import ProfileScreen from './profile';
@@ -8,6 +12,7 @@ import ChatScreen from './chat';
 import { CommonActions, NavigationContainer, createNavigationContainerRef } from '@react-navigation/native';
 import LoginScreen from './login';
 import RegisterScreen from './register';
+import { LoggedUserContext, UserContextType } from './context';
 
 export const HOME_SCREEN = "Home";
 export const CHAT_SCREEN = "Chat";
@@ -16,6 +21,8 @@ export const MYLIKES_SCREEN = "MyLikes";
 export const REGISTER_SCREEN = "Register";
 export const LOGIN_SCREEN = "Login";
 
+
+// routes
 export const auth_routes = [
     { name: HOME_SCREEN, component: HomeScreen ,icon: "ellipse" },
     { name: PROFILE_SCREEN, component: ProfileScreen ,icon: "person" },
@@ -27,7 +34,8 @@ export const unauth_routes = [
     { name: REGISTER_SCREEN, component: RegisterScreen },
     { name: LOGIN_SCREEN, component: LoginScreen  },
   ]
-  
+
+// stack component
 const Stack = createNativeStackNavigator();
 const navigatorRef = createNavigationContainerRef()
 
@@ -35,24 +43,33 @@ export function stackNavigateTo(routeName: string, params?: any) {
     if (navigatorRef.isReady()) {
         navigatorRef.dispatch(CommonActions.navigate(routeName, params));
     }
-  }
+}
 
 const MyStack = () => {
 
-    return (
-        <NavigationContainer ref={navigatorRef}>
-            <Stack.Navigator 
-                screenOptions={{headerShown: false}}>
-                {
-                    (false) ? auth_routes.map((
-                        {name,  component}) => <Stack.Screen key={name} name={name} component={component} />
-                    ) : unauth_routes.map((
-                        {name,  component}) => <Stack.Screen key={name} name={name} component={component} />
-                    )
-                }
-            </Stack.Navigator>
-        </NavigationContainer>
-    );
+    const { currentUser, setCurrentUser } = React.useContext(LoggedUserContext) as UserContextType;
+
+    return <>
+        <RootView>
+            <NavigationContainer ref={navigatorRef}>
+                <Stack.Navigator 
+                    screenOptions={{headerShown: false}}>
+                        {
+                            currentUser ? auth_routes.map((
+                                {name,  component}) => <Stack.Screen key={name} name={name} component={component} />
+                            ) : unauth_routes.map((
+                                {name,  component}) => <Stack.Screen key={name} name={name} component={component} />
+                            )
+                        }
+                </Stack.Navigator>
+            </NavigationContainer>
+        </RootView>
+        {
+            currentUser ?
+              <BottomTabNavigator routes={auth_routes} />
+              : <></>
+        }
+    </>
 }
 
 export default MyStack;

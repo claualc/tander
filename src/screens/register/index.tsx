@@ -16,11 +16,15 @@ import CustomDateInput from './components/CustomDateInput';
 import { CustomTextInput, CustomCodeInput } from './components/CustomSimpleInputs';
 
 import * as userServices from "@serv/userService";
-import { CreateUserDTO } from '@api/domain/User';
+import { LoggedUserContext, UserContextType } from '@screens/context';
+import { CreateUserDTO } from '@serv/userService/CreateUserDto';
+import { User } from '@api/domain/User';
 
 const totalQuestionCount: number = setQuestions().length;
 
 const RegisterScreen = () => {
+
+  const { currentUser, setCurrentUser } = React.useContext(LoggedUserContext) as UserContextType;
 
   const [answers, setAnswers_] = useState<any[][]>([]);
   const [validAnswer, setValidAnswer] = useState(false);
@@ -83,21 +87,31 @@ const RegisterScreen = () => {
 
   useEffect(() => {
     if (sendForms) {
-      console.log("..:: REGISTRATION: endend")
-      const userDTO: CreateUserDTO = {
-        username: answers[1][0], // username
-        birth :answers[2][0], // birthdate
-        phoneNumber: Number(answers[0][0]), // phonenumber
-        university :answers[3][0], //university_
-        course :answers[3][1], // course
-        langToLearn :answers[4][1], // langTolearn
-        langKnown :answers[5][0], // langKnown
-        photos :answers[7][0], //photos
-        team :answers[6][0], //userTeam
-        country :answers[4][0], //country,
-      }
       
-      userServices.create(userDTO)
+      (async () => {
+        try {
+          console.log("..:: RegisterScreen signup: endend")
+          const userDTO: CreateUserDTO = {
+            username: answers[1][0], // username
+            birth :answers[2][0], // birthdate
+            phoneNumber: Number(answers[0][0]), // phonenumber
+            university :answers[3][0], //university_
+            course :answers[3][1], // course
+            langToLearn :answers[4][1], // langTolearn
+            langKnown :answers[5][0], // langKnown
+            photos :answers[7][0], //photos
+            team :answers[6][0], //userTeam
+            country :answers[4][0] //country,
+          }
+
+          const user = await userServices.create(userDTO);
+          setCurrentUser(user);
+        } catch(e) {
+          console.log("..:: RegisterScreen signup ERROR: user data was collected but not registered in API")
+          console.log(e)
+        }
+       
+      })();
     }
   }, [sendForms]);
 

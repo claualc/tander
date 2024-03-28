@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components/native";
 
 import { theme } from "@screens/theme";
-import { get2FirstDigitsYear } from "./utils";
+import { get2FirstDigitsYear } from "@components/utils";
 import { CustomText } from "@components/index";
 
 

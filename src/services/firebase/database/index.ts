@@ -1,8 +1,7 @@
-import { getFirestore, getDocs, doc, query, collection, DocumentData, QueryDocumentSnapshot, SnapshotOptions, getDoc, setDoc, addDoc } from "firebase/firestore";
+import { getFirestore, getDocs, doc, query, collection, DocumentData, QueryDocumentSnapshot, SnapshotOptions, getDoc, setDoc, addDoc, DocumentReference, updateDoc } from "firebase/firestore";
 import { converter } from "./converterDTO";
 import firebase from "@firebaseServ/index";
-import { generateRandomString } from "@screens/register/components/utils";
-
+import { generateRandomString } from "@components/utils";
 
 
 const FirestoreService = () => {
@@ -10,9 +9,24 @@ const FirestoreService = () => {
     const db = getFirestore(firebase.getApp());
     console.log("..:: FirestoreService initiated");
 
-    const getDocRefById = (collect: string, converter: converter<any>, id: any) => {
-        return doc(db ,collect,id).withConverter(converter);
+    /*
+        Document: firebase object containting the domain object.
+        Ref: id to refer to the document in the Firebase API
+            with metadata of how to obtain it
+            
+        The converter is defined with the reference
+            and applied when gtting the document
+    */
+
+    const getRefById = async (collectionName: string, id: any, converter?: converter<any>) => {
+        return converter ? 
+            await doc(db ,collectionName, id).withConverter(converter)
+            : await doc(db ,collectionName, id)
     }    
+
+    const getDocById = async (collectionName: string, id: any, converter?: converter<any>) => {
+        return await getDoc(await getRefById(collectionName, id, converter));
+    }
 
     return {
         getDataArrayDoc: async (data: any[]): Promise<any> => {
@@ -35,23 +49,41 @@ const FirestoreService = () => {
             return {data: doc.data(), id: doc.id};
         },
         findById: async (collect: string, converter: converter<any>, id: any) => {
-            const querySnapshot = await getDoc(getDocRefById(collect,converter,id));
+            const querySnapshot = await getDocById(collect,id, converter);
             return querySnapshot.data();
         },
+        getObjectByRef: async (ref: DocumentReference<DocumentData, DocumentData>) => {
+            const doc = await getDoc(ref)
+            return doc.data();
+        },
+        getRefById,
         create: async (collectionName: string, data: any, converter?: converter<any>) => {
-            let ref, result;
             let id_ = generateRandomString(20)+"_"; // _ symbol to know it was generated from app
             
-            ref = converter ?
-                await doc(db, collectionName, id_).withConverter(converter)
-                : await doc(db, collectionName, id_);
-
-            result = await setDoc(ref, data);
+            let ref = await getRefById(collectionName, id_, converter);
+            
+            try {
+                await setDoc(ref, data);
+            } catch(e) {
+                console.log("..:: FirestoreService.create ERROR")
+                console.log(e)
+            } 
            
-            return doc(db, collectionName, id_);
+            return ref;
         },
-       
-        getDocRefById,
+        update: async (collectionName: string, data: any, id: any, converter?: converter<any>) => {
+            
+            let ref = await getRefById(collectionName, id, converter);
+            
+            try {
+                await updateDoc(ref, data);
+            } catch(e) {
+                console.log("..:: FirestoreService.update ERROR")
+                console.log(e)
+            } 
+           
+            return ref;
+        },
         listAll: async (collect: string, converter: converter<any>) => {
 
             const q = query(collection(db, collect)

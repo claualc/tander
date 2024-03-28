@@ -10,9 +10,11 @@ const getUniversityById = (id: string) => {
 }
 
 const getCourseById = (id: number) => {
-    return courseDic[id];
+    const dto =  courseDic[id];
+    return new Course(
+        dto.name, id
+    );
 }
-
 
 const listAllUniversity = () => {
     return Object.keys(universityDic).map(getUniversityById)

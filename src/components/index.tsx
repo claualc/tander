@@ -1,25 +1,28 @@
 import { theme } from "@screens/theme";
 import { useState } from "react";
 import styled from "styled-components/native";
+import { convertHexToRGBA } from "@components/utils";
 
-export const convertHexToRGBA = (hexCode: string, opacity = 1) => {  
-  let hex = hexCode.replace('#', '');
-  
-  if (hex.length === 3) {
-      hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
-  }    
-  
-  const r = parseInt(hex.substring(0, 2), 16);
-  const g = parseInt(hex.substring(2, 4), 16);
-  const b = parseInt(hex.substring(4, 6), 16);
-  
-  /* Backward compatibility for whole number based opacity values. */
-  if (opacity > 1 && opacity <= 100) {
-      opacity = opacity / 100;   
-  }
 
-  return `rgba(${r},${g},${b},${opacity})`;
-};
+/* 
+  ROOT COMPONENTS:
+    - top components in the html
+*/
+export const BOTTOM_TABNAV_HEIGTH = 12; //%
+
+export const RootView = styled.View`
+  display: flex;
+  width: 100%;
+  height: ${false ? `${100-BOTTOM_TABNAV_HEIGTH}%` : "100%"};
+  position: "relative";
+  background-color: ${p => p.theme.light_background};
+  top: 0;
+`
+
+/* 
+  OTHER GLOBAL COMPONENTS:
+    - Simple, complex components must be in a folder
+*/
 
 export const MainWrapper = styled.View`
   justify-content: center;
@@ -51,7 +54,7 @@ const typographyTypes = {
   MD: 'Format-Sans-MD',
   RG: 'Format-Sans-RG',
   XB: 'Format-Sans-XB',
-  BD: 'Format-Sans-BD',
+  BD: 'Format-Sans-BD'
 }
 
 export const CustomText = styled.Text<{
@@ -65,22 +68,6 @@ export const CustomText = styled.Text<{
   color: ${p => p.color || "black"};
   font-size: ${props => props.size ? `${props.size}px` : "17px"};
 `;
-
-interface borderProps {
-  width?: number,
-  height?: number,
-  shadowOpacity?: number,
-  shadowRadius?: number,
-  elevation?: number,
-  borderRadius?: number,
-  shadowOffset?: {
-    width?: number,
-    height?: number,
-  },
-  shadowColor?: string,
-  children?: any, 
-  offBorder?: boolean;
-}
 
 interface PropsChip {
   width?: number;
@@ -100,17 +87,14 @@ const ChipWrapper = styled.View<PropsChip>`
   opacity: 0.65;
 `
 
-const TextChip = styled(CustomText)`
-`
 export const Chip: React.FC<React.PropsWithChildren<PropsChip>> = (
   {children, textColor, ...rest}) => (
   <ChipWrapper {...rest}>
-    <TextChip color={textColor}>
+    <CustomText color={textColor}>
       {children}
-    </TextChip>
+    </CustomText>
   </ChipWrapper>
 );
-
 
 const Cwrapper = styled.View<{color: string}>`
   border-radius: 15px;

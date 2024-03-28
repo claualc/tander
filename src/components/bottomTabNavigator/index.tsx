@@ -2,9 +2,9 @@
 import React, { useState } from 'react';
 import { stackNavigateTo } from '@screens/stackNavigator';
 import { IconBarTab, MainView } from './style';
+import { BOTTOM_TABNAV_HEIGTH } from '@components/index';
 
 interface Props {
-    height: number,
     routes: {
         name: string,
         component: React.FC,
@@ -12,12 +12,12 @@ interface Props {
     }[]
 }
 
-const BottomTabNavigator: React.FC<Props> = ({ routes, height}) => {
+const BottomTabNavigator: React.FC<Props> = ({routes}) => {
 
   const [focusedScreen, setFocusedScreen] = useState(0);
 
   return (
-    <MainView height={height}>
+    <MainView height={BOTTOM_TABNAV_HEIGTH}>
 
     { routes.map(({name, icon}, i) => (
         <IconBarTab 

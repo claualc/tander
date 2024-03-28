@@ -13,13 +13,13 @@ import { ThemeProvider } from 'styled-components/native';
 import { theme } from './theme';
 import ScreensStack, { auth_routes } from './stackNavigator';
 import BottomTabNavigator from '@components/bottomTabNavigator';
+import ContextProvider from './context';
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
 
 const App: React.FC = () => {
 
-  const [tabHeight, setTabHeight] = useState(12);
   const [appIsReady, setAppIsReady] = useState(false);
   const [fontsLoaded] = Font.useFonts({
     // demibold: btwn regular and bold
@@ -55,22 +55,9 @@ const App: React.FC = () => {
     onLayout={onLayoutRootView} >  
 
       <ThemeProvider theme={theme}>
-          <View style={{
-            display: "flex",
-            width: "100%",
-            height: false ? `${100-tabHeight}%` : "100%",
-            position: "relative",
-            backgroundColor: theme.light_background,
-            top: 0,
-        }}>
-          <ScreensStack />
-        </View>
-
-        {
-          false ?
-            <BottomTabNavigator routes={auth_routes} height={tabHeight}/>
-            : <></>
-        }
+        <ContextProvider>
+            <ScreensStack />
+        </ContextProvider>
       </ThemeProvider>
     </View>
   );
