@@ -18,13 +18,12 @@ import { CustomTextInput, CustomCodeInput } from './components/CustomSimpleInput
 import * as userServices from "@serv/userService";
 import { LoggedUserContext, UserContextType } from '@screens/context';
 import { CreateUserDTO } from '@serv/userService/CreateUserDto';
-import { User } from '@api/domain/User';
 
 const totalQuestionCount: number = setQuestions().length;
 
 const RegisterScreen = () => {
 
-  const { currentUser, setCurrentUser } = React.useContext(LoggedUserContext) as UserContextType;
+  const { setLoading, setLoggedUser } = React.useContext(LoggedUserContext) as UserContextType;
 
   const [answers, setAnswers_] = useState<any[][]>([]);
   const [validAnswer, setValidAnswer] = useState(false);
@@ -91,6 +90,7 @@ const RegisterScreen = () => {
       (async () => {
         try {
           console.log("..:: RegisterScreen signup: endend")
+          setLoading(true)
           const userDTO: CreateUserDTO = {
             username: answers[1][0], // username
             birth :answers[2][0], // birthdate
@@ -105,7 +105,8 @@ const RegisterScreen = () => {
           }
 
           const user = await userServices.create(userDTO);
-          setCurrentUser(user);
+          setLoggedUser(user);
+          setLoading(false)
         } catch(e) {
           console.log("..:: RegisterScreen signup ERROR: user data was collected but not registered in API")
           console.log(e)

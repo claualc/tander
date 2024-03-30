@@ -5,21 +5,26 @@ import * as userService from "@serv/userService";
 
 export type UserContextType = {
     loggedUser: User | null;
-    setLoggedUser: React.Dispatch<React.SetStateAction<User | null>>
+    stateLoading: boolean;
+    setLoggedUser: React.Dispatch<React.SetStateAction<User | null>>;
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const LoggedUserContext = createContext<UserContextType | null>(null);
 
 const ContextProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
 
-    const [loggedUser, setLoggedUser] = useState<User | null>(null);
+  const [loggedUser, setLoggedUser] = useState<User | null>(null);
+  const [stateLoading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
-      (async () => {
-        const id = "KXUyHdBjnp4RSWN4APOW_"
-        const user =await userService.getById(id);
-        setLoggedUser(user)
-      })()
+      // (async () => {
+      //   setLoading(true)
+      //   const id = "KXUyHdBjnp4RSWN4APOW_"
+      //   const user =await userService.getById(id);
+      //   setLoggedUser(user)
+      //   setLoading(false)
+      // })()
     },[])
 
     useEffect(() => {
@@ -27,7 +32,7 @@ const ContextProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
       console.log(loggedUser)
     },[loggedUser])
 
-    return <LoggedUserContext.Provider value={{ loggedUser, setLoggedUser }}>
+    return <LoggedUserContext.Provider value={{ loggedUser, setLoggedUser, stateLoading, setLoading }}>
     {children}
   </LoggedUserContext.Provider>
 }

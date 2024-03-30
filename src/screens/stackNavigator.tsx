@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { RootScreenView } from '@components/index';
 import BottomTabNavigator from '@components/bottomTabNavigator';
+import LoadingComponent from '@components/loading';
 
 // sreens
 import HomeScreen from './home';
@@ -47,9 +48,10 @@ export function stackNavigateTo(routeName: string, params?: any) {
 
 const MyStack = () => {
 
-    const { loggedUser, setLoggedUser } = React.useContext(LoggedUserContext) as UserContextType;
+    const { loggedUser, stateLoading , setLoggedUser } = React.useContext(LoggedUserContext) as UserContextType;
 
-    return <>
+    return stateLoading ?  
+            <LoadingComponent /> : <>
             <RootScreenView showBottomNavigatior={!!loggedUser}>
                 <NavigationContainer ref={navigatorRef}>
                         <Stack.Navigator 
