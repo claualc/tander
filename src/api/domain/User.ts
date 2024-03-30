@@ -88,7 +88,8 @@ export class User {
 
     // from user
     get id() {return this.id_};
-    get username() {return this.username_};
+    get username() {return this.username_}; 
+    get shortusername() {return this.username_.split(" ")[0]}; 
     get birth() {return this.birth_};
     get yearsOld() {return this.yearsOld_};
     get phoneNumber() {return this.phoneNumber_};

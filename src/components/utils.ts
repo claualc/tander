@@ -57,7 +57,7 @@ export const validateDate = (v: string) => {
     const month = Number(v.slice(2,4))
     const year = Number(v.slice(4,8))
 
-    if (nonNull) {
+    if (nonNull && year != 0) {
         const todayDate = new Date()
         const inputDate = new Date(`${year}-${month}-${day}T01:01:01`)
 

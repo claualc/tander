@@ -4,7 +4,7 @@ import { isLeftTap, isRightTap, isScrollDown, isScrollUp, isSwipeLeft, isSwipeRi
 
 export const INITIAL_GESTURE_VALS = {
     pan: {x:0, y:0},
-    scale: {x:0.85, y: 0.80},
+    scale: {x:0.85, y: 0.82},
 }
 
 export const panRes = (
@@ -73,7 +73,7 @@ export const panRes = (
                             pan,
                             {toValue: {
                                 x: INITIAL_GESTURE_VALS.pan.x,
-                                y: INITIAL_GESTURE_VALS.pan.y -0.15*height
+                                y: INITIAL_GESTURE_VALS.pan.y -0.12*height
                             }, useNativeDriver: true}, // Back to zero
                         )
                     ]

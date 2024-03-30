@@ -152,7 +152,7 @@ const Card: React.FC<CardProps> = ({
                 !isScrolledUp && 
                 <UserDataView>
                     <View style={{ width: "100%", display:"flex",flexDirection:"row",justifyContent: "flex-start", alignItems:"center"}}>
-                        <CustomText color={theme.text_ligth_primary} size={25} fontFam={"BD"}>{user.username+" "}</CustomText>
+                        <CustomText color={theme.text_ligth_primary} size={25} fontFam={"BD"}>{user.shortusername+" "}</CustomText>
                         <CustomText color={theme.text_ligth_primary} size={25}>{user.yearsOld}</CustomText>
                     </View>
                     <Chip textColor={theme.text_ligth_primary} >{`${user.countryFlag} ${user.countryName}`}</Chip>

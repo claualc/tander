@@ -54,7 +54,7 @@ const CustomPhotoBatchInputs: React.FC<{
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [3, 4],
-        quality: 1,
+        quality: 0.7,
         base64: true
         });
 

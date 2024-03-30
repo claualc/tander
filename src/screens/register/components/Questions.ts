@@ -139,7 +139,12 @@ export const setQuestions: (phoneNumber?: string) => Page[]  = (phoneNumber) => 
                 id: 2,
                 placeholder: "Input your name",
                 description: "This is how your name will appear on your profile. Remember that as everything you do in college, it will be with you forever!",
-                inputType: TEXT}
+                inputType: TEXT,
+                validate: (v: string) => {
+                    var pattern = /\d/;
+                    return !pattern.test(v)
+                }
+                }
             ],
         },
         {

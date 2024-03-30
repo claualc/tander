@@ -101,7 +101,7 @@ const HomeScreen: React.FC = () => {
 
                    {/* ######### BASIC INFO SECTION */}
                   <UserDecSections>
-                    <CustomText size={30} fontFam="BD">{users[uIndex].username || ""}</CustomText>
+                    <CustomText size={30} fontFam="BD">{users[uIndex].shortusername || ""}</CustomText>
                     <CustomText  size={30}>{" " + users[uIndex].yearsOld}</CustomText>
                   </UserDecSections>
                   <UserDecSections>
@@ -151,12 +151,13 @@ const HomeScreen: React.FC = () => {
                   </Section>
 
                   {/* ######### BIO  */}
-                  <Section>
+                  {users[uIndex].bio && <Section>
                     <CustomText size={20} fontFam="DM" color={theme.secondary_dark}>Qualcosa di me</CustomText>
                     <CustomText size={17}  style={{marginTop: 10}}>
                       {users[uIndex].bio}
                     </CustomText>
                   </Section>
+                  }
 
                   {/* ######### ALBUM SECTION  */
                     (users[uIndex].musicInterest) ? <Section style={{width: "100%"}}>

@@ -12,7 +12,7 @@ const StyledSingleInputText: typeof TextInput = styled.TextInput`
     border-bottom-width: 2px;
     border-bottom-color: ${p => p.theme.tertiary_dark};
     margin-top: 12px;
-    font-size: 25;
+    font-size: 25px;
     text-align: center;
 `
 
@@ -85,11 +85,13 @@ const CustomDateInput: React.FC<{
     }
         <View style={{margin:0, justifyContent: "center", alignItems: "center"}}>
         {
-            get2FirstDigitsYear(values) == "" ?
+            get2FirstDigitsYear(values) == "" || get2FirstDigitsYear(values) == "00" ?
                 <CustomText size={28}>😐</CustomText>
                 : get2FirstDigitsYear(values) == "20" ?
                 <CustomText size={28}>👶</CustomText>
-                : <CustomText size={28}>🫣</CustomText>
+                : get2FirstDigitsYear(values) == "19" ?
+                <CustomText size={28}>🫣</CustomText>
+                : <CustomText size={28}>💀</CustomText>
         }
         </View>
      
