@@ -6,7 +6,7 @@ import { Album } from '@api/domain/Album';
 import { Image } from 'react-native';
 import { CustomText } from '@components/index';
 import { theme } from '@screens/theme';
-import { MusicInterest } from '@/api/domain/User';
+import { MusicInterest } from '@api/domain/User';
 
 interface Props {
   albumInfo?: MusicInterest;

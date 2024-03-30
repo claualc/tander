@@ -24,8 +24,9 @@ const FirestoreService = () => {
             : await doc(db ,collectionName, id)
     }    
 
-    const getDocById = async (collectionName: string, id: any, converter?: converter<any>) => {
-        return await getDoc(await getRefById(collectionName, id, converter));
+    const getObjectByRef = async (ref: DocumentReference<DocumentData, DocumentData>) => {
+        const doc = await getDoc(ref)
+        return doc.data();
     }
 
     return {
@@ -48,14 +49,11 @@ const FirestoreService = () => {
             const doc = await getDoc(ref)
             return {data: doc.data(), id: doc.id};
         },
-        findById: async (collect: string, converter: converter<any>, id: any) => {
-            const querySnapshot = await getDocById(collect,id, converter);
-            return querySnapshot.data();
+        getObjectById: async (collectionName: string, id: any, converter?: converter<any>) => {
+            const ref = await getRefById(collectionName,id, converter);
+            return await getObjectByRef(ref)
         },
-        getObjectByRef: async (ref: DocumentReference<DocumentData, DocumentData>) => {
-            const doc = await getDoc(ref)
-            return doc.data();
-        },
+        getObjectByRef,
         getRefById,
         create: async (collectionName: string, data: any, converter?: converter<any>) => {
             let id_ = generateRandomString(20)+"_"; // _ symbol to know it was generated from app

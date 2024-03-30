@@ -18,13 +18,13 @@ const ContextProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
   const [stateLoading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
-      // (async () => {
-      //   setLoading(true)
-      //   const id = "KXUyHdBjnp4RSWN4APOW_"
-      //   const user =await userService.getById(id);
-      //   setLoggedUser(user)
-      //   setLoading(false)
-      // })()
+    //  (async () => {
+    //    setLoading(true)
+    //    const id = "2MQiz3eGoAf6eaU58zIG_"
+    //    const user =await userService.getById(id);
+    //    setLoggedUser(user)
+    //    setLoading(false)
+    //  })()
     },[])
 
     useEffect(() => {
