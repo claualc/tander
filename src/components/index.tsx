@@ -8,15 +8,13 @@ import { convertHexToRGBA } from "@components/utils";
   ROOT COMPONENTS:
     - top components in the html
 */
-export const BOTTOM_TABNAV_HEIGTH = 12; //%
+export const BOTTOM_TABNAV_HEIGTH = 10; //%
 
-export const RootView = styled.View`
-  display: flex;
+export const RootScreenView = styled.View<{
+  showBottomNavigatior: boolean
+}>`
   width: 100%;
-  height: ${false ? `${100-BOTTOM_TABNAV_HEIGTH}%` : "100%"};
-  position: "relative";
-  background-color: ${p => p.theme.light_background};
-  top: 0;
+  height: ${p =>  p.showBottomNavigatior? `${100-BOTTOM_TABNAV_HEIGTH}%` : "100%"};
 `
 
 /* 
@@ -24,12 +22,14 @@ export const RootView = styled.View`
     - Simple, complex components must be in a folder
 */
 
-export const MainWrapper = styled.View`
+export const ScreenView = styled.View`
   justify-content: center;
   align-items: center;
   width: 100%;
   height: 100%;
-  background-color: ${props => props.theme.light_background};
+  //background-color: blue;
+
+  //background-color: ${props => props.theme.light_background};
   z-index: -1000;
 `;
 

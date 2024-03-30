@@ -52,7 +52,6 @@ export const getDateFromString = (v: string) => {
 }
 
 export const validateDate = (v: string) => {
-    console.log("utils.validateDate ", v)
     const nonNull = v.split("").length==8
     const day = Number(v.slice(0,2))
     const month = Number(v.slice(2,4))

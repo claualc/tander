@@ -20,12 +20,19 @@ const SUBCOLLECTION_PHOTO_ID = "photo"; // collection related to main
 
 const parseUserFromFirestoreAsync = async (data: any): Promise<User> => {
     const daybirth = getDateFromString(data.birth as string)
+    // console.log("daybirth",daybirth)
     const country = locationServices.getCountryById(data.country)
+    // console.log("country",country)
     const university = studentService.getUniversityById(data.university)
+    // console.log("university",university)
     const course = studentService.getCourseById(data.course)
+    // console.log("course",course)
     const langKnown = data.langKnown.map((id: string) => languageService.getById(id))
+    // console.log("langKnown",langKnown)
     const langToLearn = data.langToLearn.map((id: string) => languageService.getById(id))
+    // console.log("langToLearn",langToLearn)
     const team = getUserTeamById(data.team)
+    // console.log("team",team)
 
     let musicInterest;
     if (data.musicInterest) {
@@ -34,6 +41,7 @@ const parseUserFromFirestoreAsync = async (data: any): Promise<User> => {
             musicInterest = new MusicInterest(musicData.artist_name, musicData.album_name, musicId)
         }
     }
+    // console.log("musicInterest",musicInterest)
 
     let photos = await dbServices.getListDataFromDocReferences(data.photos)
     photos = photos.map((p: any) => new Photo(p.data.value, p.id))
@@ -58,7 +66,8 @@ const parseUserFromFirestoreAsync = async (data: any): Promise<User> => {
         likedUsersId,
         matches,
         data.profileDescription,
-        musicInterest
+        musicInterest,
+        data.bio as string
     )
 
     return user as User
@@ -76,11 +85,11 @@ const userConverter: converter<CreateUserDTO> = {
 }
 
 export const listAll = async () => {
-    return await dbServices.listAll(COLLECTION_ID, userConverter);
+    return await dbServices.listAll(COLLECTION_ID, userConverter) as User[];
 }
 
 export const getById = async (id: string | String | number | Number) => {
-    return await dbServices.findById(COLLECTION_ID,userConverter,id)
+    return await dbServices.findById(COLLECTION_ID,userConverter,id) as User;
 }
 
 const update = async (user: CreateUserDTO, id: string) => {

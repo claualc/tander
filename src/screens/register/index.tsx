@@ -6,7 +6,7 @@ import { theme } from '@screens/theme';
 import ColorButton from '@components/colorButton';
 
 import { ProgressBar } from './components/ProgressBar';
-import { BackButtonWrapper, CenterWrapping, Description, FormsWrapper, MainWrapper, ProgressBarWrapper, Subtitle, Title } from './style';
+import { BackButtonWrapper, CenterWrapping, Description, FormsWrapper, ScreenView, ProgressBarWrapper, Subtitle, Title } from './style';
 import { BULLETPOINTS_SELECT, DATE, MULTISELECT, NUMERIC, NUMERIC_PHONE, PHOTO, Page, PageId, Question, SELECT, TEXT, setQuestions } from './components/Questions';
 import CustomPhotoBatchInputs from "./components/CustomPhotoBatchInputs";
 import CustomSelect from '@components/select';
@@ -164,7 +164,7 @@ const RegisterScreen = () => {
     <ProgressBar percentage={(1-(currentPageId+1)/(totalQuestionCount+1))*100}></ProgressBar>
   </ProgressBarWrapper>
 
-  <MainWrapper>
+  <ScreenView>
     <BackButtonWrapper>
         <Ionicons 
               onPress={() => {
@@ -277,7 +277,7 @@ const RegisterScreen = () => {
         title={"Next"}
         disabled={disableButton}/>
     </CenterWrapping>
-  </MainWrapper>
+  </ScreenView>
   </View>
 }
 

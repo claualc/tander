@@ -8,7 +8,7 @@ const StyledInputText = styled.TextInput`
     border-bottom-width: 1px;
     border-bottom-color: ${p => p.theme.tertiary_dark};
     margin-top: 12px;
-    font-size: 18;
+    font-size: 22px;
 `
 
 export const CustomTextInput: React.FC<{

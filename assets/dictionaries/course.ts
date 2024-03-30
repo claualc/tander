@@ -8,6 +8,9 @@ const course: {
     },
     {
         name: "Design",
+    },
+    {
+        name: "Civil Engineering",
     }
 ]
 

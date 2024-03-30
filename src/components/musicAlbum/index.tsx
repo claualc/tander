@@ -6,24 +6,26 @@ import { Album } from '@api/domain/Album';
 import { Image } from 'react-native';
 import { CustomText } from '@components/index';
 import { theme } from '@screens/theme';
+import { MusicInterest } from '@/api/domain/User';
 
 interface Props {
-  artistName: string;
-  albumName: string;
+  albumInfo?: MusicInterest;
 }
 
-const AlbumComponent = ({albumName, artistName}: Props) => {
+const AlbumComponent = ({albumInfo}: Props) => {
 
   const [loading, setLoading] = useState<boolean>(true);
   const [data, setData] = useState<Album | null>(null);
 
   useEffect(() => {
-    (async () => {
-      const res = await albumAPI.getAlbum(albumName,artistName);
-      setData(res)
-      setLoading(false)
-    })();
-  }, [])
+        (async () => {
+          if (albumInfo) {
+          const res = await albumAPI.getAlbum(albumInfo.albumName,albumInfo.artistName);
+          setData(res)
+          setLoading(false)
+        }
+      })();
+      }, [])
 
 
   return (

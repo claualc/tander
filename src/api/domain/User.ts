@@ -57,15 +57,16 @@ export class User {
     public matches_?: User[] | String[];
     public profileDescription_?: string;
     public musicInterest_?: MusicInterest;
+    public bio_?: string; // profile description
 
     constructor(
-        id: string | null, username: string, birth: Date, phoneNumber: number, FCMPushNotificationsToken: string, country: Country, university: Univeristy, course: Course, langToLearn: Language[], langKnown: Language[], team: UserTeam, hasSeenWhoLikesMeToday?: Boolean, photos?: Photo[], likedUsers?: User[] | String[], matches?: User[] | String[], profileDescription?: string, musicInterest?: MusicInterest
+        id: string | null, username: string, birth: Date, phoneNumber: number, FCMPushNotificationsToken: string, country: Country, university: Univeristy, course: Course, langToLearn: Language[], langKnown: Language[], team: UserTeam, hasSeenWhoLikesMeToday?: Boolean, photos?: Photo[], likedUsers?: User[] | String[], matches?: User[] | String[], profileDescription?: string, musicInterest?: MusicInterest, bio?: string
     ) {
         this.id_ = id;
         this.username_ = username;
         this.birth_ = birth;
-        this.phoneNumber_ = phoneNumber;
         this.yearsOld_ = new Date().getUTCFullYear() - birth.getUTCFullYear();
+        this.phoneNumber_ = phoneNumber;
         this.FCMPushNotificationsToken_ = FCMPushNotificationsToken;
         this.country_ = country;
         this.university_ = university;
@@ -82,24 +83,36 @@ export class User {
         this.matches_ = matches;
         this.profileDescription_ = profileDescription;
         this.musicInterest_ = musicInterest;
+        this.bio_ = bio;
     }
 
+    // from user
     get id() {return this.id_};
     get username() {return this.username_};
-    get yearsOld() {return this.yearsOld_};
     get birth() {return this.birth_};
+    get yearsOld() {return this.yearsOld_};
     get phoneNumber() {return this.phoneNumber_};
-    get hasSeenWhoLikesMeToday() {return this.hasSeenWhoLikesMeToday_};
+    get FCMPushNotificationsToken() {return this.FCMPushNotificationsToken_};
+    get country() {return this.country_};
     get university() {return this.university_};
     get course() {return this.course_};
     get langToLearn() {return this.langToLearn_};
     get langKnown() {return this.langKnown_};
-    get photos() {return this.photos_};
     get team() {return this.team_};
+    get photos() {return this.photos_};
     //get city() {return this.city_};
+    get hasSeenWhoLikesMeToday() {return this.hasSeenWhoLikesMeToday_};
     get likedUsers() {return this.likedUsers_};
     get matches() {return this.matches_};
     get profileDescription() {return this.profileDescription_};
-    get FCMPushNotificationsToken() {return this.FCMPushNotificationsToken_};
     get musicInterest() {return this.musicInterest_};
+    get bio() {return this.bio_};
+
+    // from attributes
+    get countryName() {return this.country.name}
+    get countryFlag() {return this.country.flag_code}
+    get courseName() {return this.course.name}
+    get universityName() {return this.university.informalName}
+    get artistInterestName() {return this.musicInterest?.artistName}
+    get albumInterestName() {return this.musicInterest?.albumName}
 }

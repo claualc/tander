@@ -1,6 +1,5 @@
 
 import React, { useState } from 'react';
-import { stackNavigateTo } from '@screens/stackNavigator';
 import { IconBarTab, MainView } from './style';
 import { BOTTOM_TABNAV_HEIGTH } from '@components/index';
 
@@ -9,10 +8,11 @@ interface Props {
         name: string,
         component: React.FC,
         icon: any
-    }[]
+    }[],
+    onSelect: (screenName: string) => void;
 }
 
-const BottomTabNavigator: React.FC<Props> = ({routes}) => {
+const BottomTabNavigator: React.FC<Props> = ({routes, onSelect}) => {
 
   const [focusedScreen, setFocusedScreen] = useState(0);
 
@@ -24,7 +24,7 @@ const BottomTabNavigator: React.FC<Props> = ({routes}) => {
             key={i}
             onPress={() => {
                 setFocusedScreen(i)
-                stackNavigateTo(name);
+                onSelect(name);
             }}
             focused={focusedScreen == i} 
             name={icon} 

@@ -11,8 +11,7 @@ import {initAsyncFirebaseServices} from '@serv/firebase';
 
 import { ThemeProvider } from 'styled-components/native';
 import { theme } from './theme';
-import ScreensStack, { auth_routes } from './stackNavigator';
-import BottomTabNavigator from '@components/bottomTabNavigator';
+import ScreensStack from './stackNavigator';
 import ContextProvider from './context';
 
 // Keep the splash screen visible while we fetch resources
@@ -48,7 +47,7 @@ const App: React.FC = () => {
     <View style={{
       width: "100%",
       height: "100%",
-      backgroundColor: "red", // to help debug inconsistencies
+      backgroundColor: "purple", // to help debug inconsistencies
       position: 'absolute',
       top: 0
     }}

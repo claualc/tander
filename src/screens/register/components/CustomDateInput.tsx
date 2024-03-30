@@ -18,7 +18,7 @@ const StyledSingleInputText: typeof TextInput = styled.TextInput`
 
 const SpecialCaracter = styled(Text)`
     margin-top: 12px;
-    font-size: 32;
+    font-size: 32px;
     text-align: center;
     color: ${p => p.theme.tertiary_dark};
 `

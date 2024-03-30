@@ -12,7 +12,7 @@ export const ProgressBarWrapper = styled.View`
     flex-direction: column;
 `
 
-export const MainWrapper = styled.View`
+export const ScreenView = styled.View`
     flex: 23;
     width: 100%;
     justify-content: flex-start;

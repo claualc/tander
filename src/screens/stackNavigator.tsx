@@ -1,7 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { RootView } from '@components/index';
+import { RootScreenView } from '@components/index';
 import BottomTabNavigator from '@components/bottomTabNavigator';
 
 // sreens
@@ -47,26 +47,26 @@ export function stackNavigateTo(routeName: string, params?: any) {
 
 const MyStack = () => {
 
-    const { currentUser, setCurrentUser } = React.useContext(LoggedUserContext) as UserContextType;
+    const { loggedUser, setLoggedUser } = React.useContext(LoggedUserContext) as UserContextType;
 
     return <>
-        <RootView>
-            <NavigationContainer ref={navigatorRef}>
-                <Stack.Navigator 
-                    screenOptions={{headerShown: false}}>
-                        {
-                            currentUser ? auth_routes.map((
-                                {name,  component}) => <Stack.Screen key={name} name={name} component={component} />
-                            ) : unauth_routes.map((
-                                {name,  component}) => <Stack.Screen key={name} name={name} component={component} />
-                            )
-                        }
-                </Stack.Navigator>
-            </NavigationContainer>
-        </RootView>
+            <RootScreenView showBottomNavigatior={!!loggedUser}>
+                <NavigationContainer ref={navigatorRef}>
+                        <Stack.Navigator 
+                            screenOptions={{headerShown: false}}>
+                                {
+                                    loggedUser ? auth_routes.map((
+                                        {name,  component}) => <Stack.Screen key={name} name={name} component={component} />
+                                    ) : unauth_routes.map((
+                                        {name,  component}) => <Stack.Screen key={name} name={name} component={component} />
+                                    )
+                                }
+                        </Stack.Navigator>
+                </NavigationContainer>
+            </RootScreenView>
         {
-            currentUser ?
-              <BottomTabNavigator routes={auth_routes} />
+            loggedUser ?
+              <BottomTabNavigator onSelect={(v) => {stackNavigateTo(v)}} routes={auth_routes} />
               : <></>
         }
     </>

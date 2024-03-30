@@ -13,6 +13,7 @@ export const UserDecSections = styled.View`
     width: "100%";
     align-items: flex-start;
     flex-direction: row;
+    margin-top: 3px;
 `
 
 export const Section = styled.View`

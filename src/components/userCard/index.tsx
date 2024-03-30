@@ -6,7 +6,6 @@ import BlackBottomBlur from "@assets/black_blur_user_card.png";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { INITIAL_GESTURE_VALS, panRes } from "./PanResponder";
 import { theme } from "@screens/theme";
-import flagDic from "@dict/flag";
 import { User } from "@api/domain/User";
 
 interface CardProps {
@@ -156,7 +155,7 @@ const Card: React.FC<CardProps> = ({
                         <CustomText color={theme.text_ligth_primary} size={25} fontFam={"BD"}>{user.username+" "}</CustomText>
                         <CustomText color={theme.text_ligth_primary} size={25}>{user.yearsOld}</CustomText>
                     </View>
-                    <Chip textColor={theme.text_ligth_primary} >{`${user?.city?.country?.nationality || ""} ${user?.city?.country?.id ? flagDic[user?.city?.country?.id] : ""}`}</Chip>
+                    <Chip textColor={theme.text_ligth_primary} >{`${user.countryFlag} ${user.countryName}`}</Chip>
                     <Chip textColor={theme.text_ligth_primary} >{"Spritz"}</Chip>
 
                     <View style={{ width: "100%", display:"flex",flexDirection:"row",justifyContent: "flex-start", alignItems:"center"}}>
