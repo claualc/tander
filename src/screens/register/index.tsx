@@ -7,7 +7,7 @@ import ColorButton from '@components/colorButton';
 
 import { ProgressBar } from './components/ProgressBar';
 import { BackButtonWrapper, CenterWrapping, Description, FormsWrapper, ScreenView, ProgressBarWrapper, Subtitle, Title } from './style';
-import { BULLETPOINTS_SELECT, DATE, MULTISELECT, NUMERIC, NUMERIC_PHONE, PHOTO, Page, PageId, Question, SELECT, TEXT, setQuestions } from './components/Questions';
+import { Page, PageId, Question, inputTypes, setQuestions } from './components/Questions';
 import CustomPhotoBatchInputs from "./components/CustomPhotoBatchInputs";
 import CustomSelect from '@components/select';
 import CustomMultiSelect from '@components/multiSelect';
@@ -17,9 +17,9 @@ import { CustomTextInput, CustomCodeInput } from './components/CustomSimpleInput
 
 import * as userServices from "@serv/userService";
 import { LoggedUserContext, UserContextType } from '@screens/context';
-import { CreateUserDTO } from '@serv/userService/CreateUserDto';
+import { CreateUserDTO } from '@serv/userService/DTO';
 
-const totalQuestionCount: number = setQuestions().length;
+const totalQuestionCount: number = setQuestions().page.length;
 
 const RegisterScreen = () => {
 
@@ -33,7 +33,7 @@ const RegisterScreen = () => {
   
   // the values of the answers of the current load page
   // they will be shown in the input
-  const [values , setValues] = useState<any[]>(new Array(setQuestions()[0].questions.length).fill(null));
+  const [values , setValues] = useState<any[]>(new Array(setQuestions().page[0].questions.length).fill(null));
     
   const setCurrentValues = useCallback((id: number, newVal: any) => {
     // arrays r compared by reference not by value
@@ -50,7 +50,7 @@ const RegisterScreen = () => {
     const phoneNumber = answers[0] ? answers[0][0] : null;
     let page = setQuestions(
       phoneNumber, // phoneNumber
-    )[currentPageId]
+    ).page[currentPageId]
 
     if (page.id == PageId.PHONE_NUM_CODE_VERIF) {
       // function to get a random number of 4 digits
@@ -190,7 +190,7 @@ const RegisterScreen = () => {
                 <Description>{ q.description }</Description> }
 
             <View style={{width: "100%", marginBottom: "7%"}}>
-              { (q.inputType == TEXT) ?
+              { (q.inputType == inputTypes.TEXT) ?
                 <CustomTextInput 
                   onChange={v => {
                     setCurrentValues(i,v)
@@ -198,7 +198,7 @@ const RegisterScreen = () => {
                   }}
                   placeholder={q.placeholder} 
                   value={values[i]}/>
-              : (q.inputType == NUMERIC) ?
+              : (q.inputType == inputTypes.NUMERIC) ?
                 <CustomCodeInput 
                   onChange={(v) => {
                     setCurrentValues(i,v)
@@ -207,7 +207,7 @@ const RegisterScreen = () => {
                   maxLength={q.maxCodeLength}
                   placeholder={q.placeholder} 
                   value={values[i]}/> 
-              : (q.inputType == NUMERIC_PHONE) ?
+              : (q.inputType == inputTypes.NUMERIC_PHONE) ?
                 <CustomCodeInput 
                   onChange={v => {
                     setCurrentValues(i,v)
@@ -216,14 +216,14 @@ const RegisterScreen = () => {
                   placeholder={q.placeholder} 
                   isPhoneNumber={true}
                   value={values[i]}/> 
-              : (q.inputType == DATE) ?
+              : (q.inputType == inputTypes.DATE) ?
                 <CustomDateInput 
                   onChange={v => {
                     setCurrentValues(i,v)
                     checkValidAnswer(v, q)
                   }}
                   value={values[i]}/>
-              : (q.inputType == SELECT) ?
+              : (q.inputType == inputTypes.SELECT) ?
                 <CustomSelect 
                   onSelect={v => {
                     setCurrentValues(i,v.value)
@@ -233,7 +233,7 @@ const RegisterScreen = () => {
                   placeholder={q.placeholder} 
                   title={q.placeholder}
                   options={q.options || []} />
-              : (q.inputType == MULTISELECT) ?
+              : (q.inputType == inputTypes.MULTISELECT) ?
                 <CustomMultiSelect 
                   onSelect={v => {
                     setCurrentValues(i, v)
@@ -243,7 +243,7 @@ const RegisterScreen = () => {
                   values={values[i]}
                   placeholder={q.multiPlaceholder}
                   options={q.options || []} />
-              : (q.inputType == BULLETPOINTS_SELECT) ?
+              : (q.inputType == inputTypes.BULLETPOINTS_SELECT) ?
                 <BulletpointSelect 
                   onSelect={v => {
                     setCurrentValues(i, v)
@@ -251,7 +251,7 @@ const RegisterScreen = () => {
                   }}
                   value={values[i]}
                   options={q.bulletPoints || []} />
-              : (q.inputType == PHOTO) ?
+              : (q.inputType == inputTypes.PHOTO) ?
                 <CustomPhotoBatchInputs 
                   count={q.photoCount || 0}
                   onChange={v => {

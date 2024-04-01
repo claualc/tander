@@ -27,9 +27,7 @@ export const ScreenView = styled.View`
   align-items: center;
   width: 100%;
   height: 100%;
-  //background-color: blue;
-
-  //background-color: ${props => props.theme.light_background};
+  background-color: ${props => props.theme.light_background};
   z-index: -1000;
 `;
 

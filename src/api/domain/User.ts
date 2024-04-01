@@ -51,7 +51,7 @@ export class User {
     public team_: UserTeam;
 
     public hasSeenWhoLikesMeToday_?: Boolean; // always at 12pm resets to false
-    public photos_?: Photo[];
+    public photos_: Photo[];
     // public city_?: City;
     public likedUsers_?: User[] | String[];
     public matches_?: User[] | String[];
@@ -60,7 +60,7 @@ export class User {
     public bio_?: string; // profile description
 
     constructor(
-        id: string | null, username: string, birth: Date, phoneNumber: number, FCMPushNotificationsToken: string, country: Country, university: Univeristy, course: Course, langToLearn: Language[], langKnown: Language[], team: UserTeam, hasSeenWhoLikesMeToday?: Boolean, photos?: Photo[], likedUsers?: User[] | String[], matches?: User[] | String[], profileDescription?: string, musicInterest?: MusicInterest, bio?: string
+        id: string | null, username: string, birth: Date, phoneNumber: number, FCMPushNotificationsToken: string, country: Country, university: Univeristy, course: Course, langToLearn: Language[], langKnown: Language[], team: UserTeam, photos: Photo[], hasSeenWhoLikesMeToday?: Boolean, likedUsers?: User[] | String[], matches?: User[] | String[], profileDescription?: string, musicInterest?: MusicInterest, bio?: string
     ) {
         this.id_ = id;
         this.username_ = username;

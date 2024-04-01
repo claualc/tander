@@ -61,8 +61,8 @@ const parseUserFromFirestoreAsync = async (data: any): Promise<User> => {
         langToLearn,
         langKnown,
         team,
-        data.hasSeenWhoLikesMeToday, // always at 12pm resets to false,
         photos,
+        data.hasSeenWhoLikesMeToday, // always at 12pm resets to false,
         likedUsersId,
         matches,
         data.profileDescription,
@@ -189,8 +189,8 @@ export const getUserPhotos = async (chunkRefs: string[]) => {
         let lsv = (await dbServices.getObjectById(SUBCOLLECTION_PHOTOCHUNKS_ID,chunk2)) as PhotoChunkDTO;
 
         return new Photo(
-            msv.value+lsv.value,
-            msv.photoLogicalId
+            msv?.value+lsv?.value,
+            msv?.photoLogicalId
         )
 
     })

@@ -2,8 +2,8 @@ import { TouchableOpacity, View } from "react-native";
 import styled from "styled-components/native";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import CustomSelect, { SelectOption, getRandomColor } from "@components/select";
-import { convertHexToRGBA } from "../utils";
+import CustomSelect, { SelectOption } from "@components/select";
+import { convertHexToRGBA, getRandomColor } from "../utils";
 
 const RoundButton = styled.View<{
     color: string;
@@ -38,6 +38,8 @@ const CustomMultiSelect: React.FC<{
     const [values_, setValues_] = useState<any[]>(values || []);
 
     useEffect(() => onSelect(values_), [values_])
+
+    useEffect(() => console.log("values",values, "values_", values_),[values,values_])
 
     const setSpecificValue = useCallback((i: number, newVal: any) => {
         let updated = [...values_]

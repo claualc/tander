@@ -4,6 +4,7 @@ import locationService from "@serv/locationServices";
 import languageService from "@serv/languageService";
 import studentService from "@serv/studenService";
 import { listAllUserTeam } from "@serv/userService";
+import { Language } from "@/api/domain/Language";
 
 /*
 
@@ -17,32 +18,40 @@ import { listAllUserTeam } from "@serv/userService";
 ######
 
 */
-export const TEXT = 0; //also used for cellphone number
-export const NUMERIC = 1;
-export const DATE = 2;
-export const SELECT = 3; // with a select element, single answer
-export const MULTISELECT = 4; // with a select element, multiples answers
-export const BULLETPOINTS_SELECT = 5; // options are alerady presented
-export const PHOTO = 6; // options are alerady presented
-export const NUMERIC_PHONE = 7;
 
+export enum inputTypes {
+    TEXT,  //also used for cellphone number
+    NUMERIC, 
+    DATE, 
+    SELECT,  // with a select element, single answer
+    MULTISELECT,  // with a select element, multiples answers
+    BULLETPOINTS_SELECT,  // options are alerady presented
+    PHOTO,  // options are alerady presented
+    NUMERIC_PHONE, 
 
-type inputTypes = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
+    // not used in registration, but in profile managment
+    SELECT_ASYNC_VALUE, 
+}
 
 export enum PageId {
+    NONE, // default 0 value
     PHONE_NUM_INPUT,
     PHONE_NUM_CODE_VERIF,
     USERNAME,
     AGE,
     STUDENT_INFO,
-    COUNTRY_INFO,
+    COUNTRY_INFO, // langKnown + country
     LANG_TO_LEARN_INFO,
     TEAM,
-    PHOTOS
+    PHOTOS,
+
+    // not used in registration, but in profile managment
+    LANG_TO_KNOW_INFO,
+    MUSIC_INTEREST
 }
 
 export interface Page {
-    id: PageId;
+    id: number;
     title: string;
     subtitle?: string;
     questions: Question[]
@@ -85,10 +94,17 @@ export interface Question {
     photoCount?: number;
 }
 
+
+export const formsCheckIfValidValue = (v: any, q: Question) => {
+    return q.validate ? q.validate(v) : v!=null }
+
 // each index of the array is one page
 // of the resgiter forms
 // each page can have more than one question
-export const setQuestions: (phoneNumber?: string) => Page[]  = (phoneNumber) => {
+export const setQuestions: (phoneNumber?: string) => {
+    page: Page[],
+    languages: SelectOption[]
+}  = (phoneNumber) => {
     
     //closure to customize some of the questions with dynamic variables
 
@@ -117,7 +133,7 @@ export const setQuestions: (phoneNumber?: string) => Page[]  = (phoneNumber) => 
             subtitle: "Don’t worry, we just need a way to identificate you in case you are disconnected from this or other devices!",
             questions:  [{
                 id: 0,
-                inputType: NUMERIC_PHONE,
+                inputType: inputTypes.NUMERIC_PHONE,
                 validate: validatePhoneNumber
             }]
         },
@@ -139,7 +155,7 @@ export const setQuestions: (phoneNumber?: string) => Page[]  = (phoneNumber) => 
                 id: 2,
                 placeholder: "Input your name",
                 description: "This is how your name will appear on your profile. Remember that as everything you do in college, it will be with you forever!",
-                inputType: TEXT,
+                inputType: inputTypes.TEXT,
                 validate: (v: string) => {
                     var pattern = /\d/;
                     return !pattern.test(v)
@@ -153,7 +169,7 @@ export const setQuestions: (phoneNumber?: string) => Page[]  = (phoneNumber) => 
             questions: [{
                 id: 3,
                 description: "We will show just your age on your profile, not your birthday.",
-                inputType: DATE,
+                inputType: inputTypes.DATE,
                 validate: validateDate
             }],
         },
@@ -163,7 +179,7 @@ export const setQuestions: (phoneNumber?: string) => Page[]  = (phoneNumber) => 
             questions: [{
                     id: 4,
                     placeholder: "Choose your university",
-                    inputType: SELECT,
+                    inputType: inputTypes.SELECT,
                     options: studentService
                         .listAllUniversity()
                         .map(u => ({
@@ -174,7 +190,7 @@ export const setQuestions: (phoneNumber?: string) => Page[]  = (phoneNumber) => 
                 {
                     id: 5,
                     placeholder: "Choose your course",
-                    inputType: SELECT,
+                    inputType: inputTypes.SELECT,
                     options: studentService
                         .listAllCourse()
                         .map(c => ({
@@ -192,7 +208,7 @@ export const setQuestions: (phoneNumber?: string) => Page[]  = (phoneNumber) => 
                 description: "First your nationality",
                 descriptionOnTop: true,
                 placeholder: "Choose a country",
-                inputType: SELECT,
+                inputType: inputTypes.SELECT,
                 options: countries
             }, 
             {
@@ -204,7 +220,7 @@ export const setQuestions: (phoneNumber?: string) => Page[]  = (phoneNumber) => 
                     "Choose your first language",
                     "Choose other language"
                 ],
-                inputType: MULTISELECT,
+                inputType: inputTypes.MULTISELECT,
                 options: languages
             }],
         },
@@ -220,7 +236,7 @@ export const setQuestions: (phoneNumber?: string) => Page[]  = (phoneNumber) => 
                     "Choose other language", 
                 ],
                 descriptionOnTop: true,
-                inputType: MULTISELECT,
+                inputType: inputTypes.MULTISELECT,
                 options: languages
             }]
         },
@@ -231,7 +247,7 @@ export const setQuestions: (phoneNumber?: string) => Page[]  = (phoneNumber) => 
             questions: [
                 {
                     id: 9,
-                    inputType: BULLETPOINTS_SELECT,
+                    inputType: inputTypes.BULLETPOINTS_SELECT,
                     bulletPoints: listAllUserTeam().map(
                         (team, id) => ({
                             "title": team.name,
@@ -249,12 +265,15 @@ export const setQuestions: (phoneNumber?: string) => Page[]  = (phoneNumber) => 
             questions: [
                 {
                     id: 10,
-                    inputType: PHOTO,
+                    inputType: inputTypes.PHOTO,
                     photoCount: 4
                 }
             ]
         },
     ]
 
-    return page;
+    return {
+        page,
+        languages
+    };
 }

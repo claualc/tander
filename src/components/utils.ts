@@ -5,6 +5,8 @@
 
 */
 
+import { theme } from "@screens/theme";
+
 export const convertHexToRGBA = (hexCode: string, opacity = 1) => {  
     let hex = hexCode.replace('#', '');
     
@@ -29,6 +31,12 @@ export const convertHexToRGBA = (hexCode: string, opacity = 1) => {
     Functions used to validate general fields such as
     phone numbers, dates and its masks
 */
+
+export const getRandomColor = () => {
+    const colorOptions = [theme.tertiary, theme.secondary, theme.main]
+    const randomId = Math.floor(Math.random() * (colorOptions.length-1))
+    return colorOptions[randomId]
+}
 
 
 export const validatePhoneNumber = (phone: string) => phone.split("").length == 12;
