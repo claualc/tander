@@ -4,7 +4,7 @@ import locationService from "@serv/locationServices";
 import languageService from "@serv/languageService";
 import studentService from "@serv/studenService";
 import { listAllUserTeam } from "@serv/userService";
-import { Language } from "@/api/domain/Language";
+import { FormsPage, FormsQuestion, inputTypes } from "@components/forms/components/formDTOs";
 
 /*
 
@@ -19,21 +19,7 @@ import { Language } from "@/api/domain/Language";
 
 */
 
-export enum inputTypes {
-    TEXT,  //also used for cellphone number
-    NUMERIC, 
-    DATE, 
-    SELECT,  // with a select element, single answer
-    MULTISELECT,  // with a select element, multiples answers
-    BULLETPOINTS_SELECT,  // options are alerady presented
-    PHOTO,  // options are alerady presented
-    NUMERIC_PHONE, 
-
-    // not used in registration, but in profile managment
-    SELECT_ASYNC_VALUE, 
-}
-
-export enum PageId {
+export enum ResgisterFormPageId {
     NONE, // default 0 value
     PHONE_NUM_INPUT,
     PHONE_NUM_CODE_VERIF,
@@ -44,66 +30,19 @@ export enum PageId {
     LANG_TO_LEARN_INFO,
     TEAM,
     PHOTOS,
-
     // not used in registration, but in profile managment
     LANG_TO_KNOW_INFO,
     MUSIC_INTEREST
 }
 
-export interface Page {
-    id: number;
-    title: string;
-    subtitle?: string;
-    questions: Question[]
-}
-
-export interface Question {
-    // all questions have the same basic structure
-    // but some attributes are specific of an input type
-
-    // general atributes
-    id: number;
-    placeholder?: string; // the array is in the case of multiple selects
-    description?: string | string[] ; // the array is in the case of multiple selects
-    descriptionOnTop?: boolean; 
-    //descriptionOnTop: normally under the input, used on top of the input component
-    inputType: inputTypes;
-
-    // for code input types
-    maxCodeLength?: number;
-
-    // for multiselect input type
-    multiPlaceholder?: string[]; 
-    maxSelects?: number;
-
-    // for multiselect and select input types
-    options?: SelectOption[];
-    dynamicOptions?: (v: any) => SelectOption[];
-    selectModalTitle?: string;
-
-    // for bulletpointSelect input types
-    bulletPoints?: {
-        description: string;
-        title: string;
-        emoji: string;
-    }[]; 
-
-    validate?: (v: any) => boolean;
-    
-    // for photo input types
-    photoCount?: number;
-}
-
-
-export const formsCheckIfValidValue = (v: any, q: Question) => {
+export const formsCheckIfValidValue = (v: any, q: FormsQuestion) => {
     return q.validate ? q.validate(v) : v!=null }
 
 // each index of the array is one page
 // of the resgiter forms
 // each page can have more than one question
-export const setQuestions: (phoneNumber?: string) => {
-    page: Page[],
-    languages: SelectOption[]
+export const registerQuestions: (phoneNumber?: string) => {
+    page: FormsPage[],
 }  = (phoneNumber) => {
     
     //closure to customize some of the questions with dynamic variables
@@ -127,8 +66,8 @@ export const setQuestions: (phoneNumber?: string) => {
         "value": c.id
     }) as SelectOption)
 
-    let page: Page[] = [{
-            id: PageId.PHONE_NUM_INPUT,
+    let page: FormsPage[] = [{
+            id: ResgisterFormPageId.PHONE_NUM_INPUT,
             title: "Can we have your number?",
             subtitle: "Don’t worry, we just need a way to identificate you in case you are disconnected from this or other devices!",
             questions:  [{
@@ -138,7 +77,7 @@ export const setQuestions: (phoneNumber?: string) => {
             }]
         },
         // {
-        //     id: PageId.PHONE_NUM_CODE_VERIF,
+        //     id: ResgisterFormPageId.PHONE_NUM_CODE_VERIF,
         //     title: "Inform the code you received",
         //     subtitle: `If your number is not ${cellphoneMask(phoneNumber)}, return to the previous screen.`,
         //     questions: [{
@@ -149,7 +88,7 @@ export const setQuestions: (phoneNumber?: string) => {
         //     }]
         // },
         {
-            id: PageId.USERNAME,
+            id: ResgisterFormPageId.USERNAME,
             title: "What’s your name?",
             questions: [{
                 id: 2,
@@ -164,7 +103,7 @@ export const setQuestions: (phoneNumber?: string) => {
             ],
         },
         {
-            id: PageId.AGE,
+            id: ResgisterFormPageId.AGE,
             title: "How old are you?",
             questions: [{
                 id: 3,
@@ -174,7 +113,7 @@ export const setQuestions: (phoneNumber?: string) => {
             }],
         },
         {
-            id: PageId.STUDENT_INFO,
+            id: ResgisterFormPageId.STUDENT_INFO,
             title: "Let us know what you study",
             questions: [{
                     id: 4,
@@ -201,7 +140,7 @@ export const setQuestions: (phoneNumber?: string) => {
             ],
         },
         {
-            id: PageId.COUNTRY_INFO,
+            id: ResgisterFormPageId.COUNTRY_INFO,
             title: "Where are you from?",
             questions: [{
                 id: 6,
@@ -225,7 +164,7 @@ export const setQuestions: (phoneNumber?: string) => {
             }],
         },
         {
-            id: PageId.LANG_TO_LEARN_INFO,
+            id: ResgisterFormPageId.LANG_TO_LEARN_INFO,
             title: "What languages you want to learn?",
             subtitle: "We will try to connect you with people that know the languages you want to learn, but feel free to talk with whoever you want!",
             questions: [{
@@ -241,7 +180,7 @@ export const setQuestions: (phoneNumber?: string) => {
             }]
         },
         {
-            id: PageId.TEAM,
+            id: ResgisterFormPageId.TEAM,
             title: "What is your team?",
             subtitle: "We’re almost there, this is the most important question of the registration. Pay attention, this choice is definitive!",
             questions: [
@@ -259,7 +198,7 @@ export const setQuestions: (phoneNumber?: string) => {
             ]
         },
         {
-            id: PageId.PHOTOS,
+            id: ResgisterFormPageId.PHOTOS,
             title: "Show us some pictures",
             subtitle: "Preferably of your face...",
             questions: [
@@ -274,6 +213,5 @@ export const setQuestions: (phoneNumber?: string) => {
 
     return {
         page,
-        languages
     };
 }

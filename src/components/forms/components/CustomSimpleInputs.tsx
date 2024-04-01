@@ -2,7 +2,6 @@ import styled from "styled-components/native";
 import { cellphoneMask } from "@components/utils";
 
 import { theme } from "@screens/theme";
-import { useEffect } from "react";
 
 const StyledInputText = styled.TextInput`
     width: 100%;

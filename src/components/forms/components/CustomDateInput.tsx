@@ -76,20 +76,19 @@ const CustomDateInput: React.FC<{
                     maxLength={1}
                     />
                 {
-                (i % 2 == 1 && i <5) 
-                    ? <SpecialCaracter>/</SpecialCaracter>
-                    : <></> 
+                (i % 2 == 1 && i <5) &&
+                    <SpecialCaracter key={i+1000000}>/</SpecialCaracter>
                 }
                 </>
         })
     }
         <View style={{margin:0, justifyContent: "center", alignItems: "center"}}>
         {
-            get2FirstDigitsYear(values) == "" || get2FirstDigitsYear(values) == "00" ?
+            get2FirstDigitsYear(values) == null || get2FirstDigitsYear(values) == 0 ?
                 <CustomText size={28}>😐</CustomText>
-                : get2FirstDigitsYear(values) == "20" ?
+                : get2FirstDigitsYear(values) == 20 ?
                 <CustomText size={28}>👶</CustomText>
-                : get2FirstDigitsYear(values) == "19" ?
+                : get2FirstDigitsYear(values) == 19 ?
                 <CustomText size={28}>🫣</CustomText>
                 : <CustomText size={28}>💀</CustomText>
         }

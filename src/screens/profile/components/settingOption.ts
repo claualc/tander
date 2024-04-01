@@ -1,5 +1,5 @@
 import { User } from "@api/domain/User";
-import { Page, PageId, inputTypes, setQuestions } from "@screens/register/components/Questions";
+import { Page, PageId, inputTypes, setQuestions } from "@/components/forms/components/Questions";
 
 
 /*

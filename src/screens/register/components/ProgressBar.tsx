@@ -1,4 +1,4 @@
-import { DimensionValue, Image, View } from "react-native";
+import { Image } from "react-native";
 import styled from "styled-components/native";
 import Gradient from "@assets/linear_gradient_background.png";
 
@@ -6,19 +6,18 @@ import Gradient from "@assets/linear_gradient_background.png";
 export const ProgressBar: React.FC<{
     percentage: number // from 0 to 100
 }> = ({percentage}) => {
-    return <ProgresBarWrapper>
+    return <Main>
      <Image style={{
             width: "100%",
             height: "100%",
             position: "relative",
         }}
-        source={Gradient}>
-    </Image>  
+        source={Gradient} />
     <Progress width={percentage}/>
-    </ProgresBarWrapper>
+    </Main>
 };
 
-const ProgresBarWrapper = styled.View`
+const Main = styled.View`
     width: 100%;
     height: 8px;
 `
@@ -30,4 +29,12 @@ const Progress = styled.View<{width: number}>`
     position: absolute;
     top: 0;
     right: 0;
+`
+
+export const ProgressBarWrapper = styled.View`
+    flex: 2;
+    width: 100%;
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: column;
 `

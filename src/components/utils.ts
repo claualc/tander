@@ -81,7 +81,7 @@ export const validateDate = (v: string) => {
 }
 
 export const get2FirstDigitsYear = (v: string[]) => {
-    return v.toString().split("").length>=13 ? v.slice(4,6).reduce((acc,v) => acc+v, "") : ""
+    return v.toString().split("").length>=13 ? Number(v.slice(4,6).reduce((acc,v) => acc+v, "")) : null
 }
 
 export const cellphoneMask = (value?: string) => {

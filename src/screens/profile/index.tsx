@@ -2,14 +2,10 @@ import { useContext, useEffect, useState } from "react";
 import { Image, ScrollView, View } from "react-native";
 import { theme } from "../theme";
 
-
 import { CustomText, ScreenView } from "@components/index";
 import { LoggedUserContext, UserContextType } from "@screens/context";
 import { Avatar, CenteredView, DescriptionView, Item, MainWrapper } from "./styles";
-import { settingOptions } from "./components/settingOption";
-import { PageId } from "../register/components/Questions";
-
-
+import { ResgisterFormPageId } from "@screens/register/components/RegisterForms";
 
 /*
     This screen allows the user to modify its 
@@ -19,18 +15,16 @@ import { PageId } from "../register/components/Questions";
     with the format of the questions of the 
     resgistration forms.
     Here, the user cna update the desired info.
-
  */
 
 const ProfileScreen = () => {
 
   const { loggedUser } = useContext(LoggedUserContext) as UserContextType;
-  const [answers, setAnswers] = useState<any>();
 
   // user attribute to modify
-  const [userAttribute, setUserAttribute] = useState<PageId>(PageId.NONE);
+  const [userAttribute, setUserAttribute] = useState<ResgisterFormPageId>(ResgisterFormPageId.NONE);
 
-  return (userAttribute != PageId.NONE) ?
+  return (userAttribute != ResgisterFormPageId.NONE) ?
     <></>
     : <ScreenView style={{flexDirection: "column"}}>
     <MainWrapper 
@@ -56,28 +50,27 @@ const ProfileScreen = () => {
         </DescriptionView>
         <CenteredView style={{height: "100%", paddingRight: "6%",paddingLeft: "6%", justifyContent: "flex-start"}}>
           <Item 
-            onPress={() => {setUserAttribute(PageId.PHONE_NUM_INPUT)}}
+            onPress={() => {setUserAttribute(ResgisterFormPageId.PHONE_NUM_INPUT)}}
             icon={"phone"}
             title={"Cellphone number"} />
 
           <Item 
-            onPress={() => {setUserAttribute(PageId.STUDENT_INFO)}}
+            onPress={() => {setUserAttribute(ResgisterFormPageId.STUDENT_INFO)}}
             icon={"graduation"}
             title={"University and course"} />
 
           <Item 
-            onPress={() => {setUserAttribute(PageId.LANG_TO_LEARN_INFO)}}
+            onPress={() => {setUserAttribute(ResgisterFormPageId.LANG_TO_LEARN_INFO)}}
             icon={"globe"}
             title={"Known languages"} />
 
           <Item 
-            onPress={() => {setUserAttribute(PageId.LANG_TO_KNOW_INFO)}}
+            onPress={() => {setUserAttribute(ResgisterFormPageId.LANG_TO_KNOW_INFO)}}
             icon={"bubble"}
             title={"Learning languages"} />
 
-
           <Item 
-            onPress={() => {setUserAttribute(PageId.MUSIC_INTEREST)}}
+            onPress={() => {setUserAttribute(ResgisterFormPageId.MUSIC_INTEREST)}}
             icon={"music-tone-alt"}
             title={"A little about me"}
             noBorder={true} />

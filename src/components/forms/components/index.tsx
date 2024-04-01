@@ -4,14 +4,6 @@ import styled from "styled-components/native";
 import { CustomText } from '@components/index';
 import { theme } from '@screens/theme';
 
-export const ProgressBarWrapper = styled.View`
-    flex: 2;
-    width: 100%;
-    justify-content: flex-end;
-    align-items: center;
-    flex-direction: column;
-`
-
 export const ScreenView = styled.View`
     flex: 23;
     width: 100%;
