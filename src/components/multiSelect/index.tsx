@@ -35,22 +35,26 @@ const CustomMultiSelect: React.FC<{
 }> = ({values=[], options, placeholder = [],onSelect, maxSelects=20}) => {
 
     const [color, setColor] = useState(getRandomColor());
-    const [values_, setValues_] = useState<any[]>(values || []);
+    const [values_, setValues_] = useState<any[]>([]);
 
-    useEffect(() => onSelect(values_), [values_])
-
-    useEffect(() => console.log("values",values, "values_", values_),[values,values_])
+    useEffect(() => {
+        if (values && values.length) {
+            setValues_(values)
+        }
+    }, [values])
 
     const setSpecificValue = useCallback((i: number, newVal: any) => {
         let updated = [...values_]
         updated[i] = newVal
         setValues_(updated)
+        onSelect(updated)
     }, [values_])
 
     const deleteValue = useCallback((i: number) => {
         let updated = [...values_]
         updated.splice(i, 1)
         setValues_(updated)
+        onSelect(updated)
     }, [values_])
 
     const filterOptions = useMemo(() => {

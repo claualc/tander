@@ -1,15 +1,18 @@
 import { DocumentReference } from "firebase/firestore";
+import { User } from "@api/domain/User";
+import { getDDMMYYYYFromDate } from "@components/utils";
 
 export interface CreateUserDTO {
     username: string;
     birth: string; //DDMMYYYY
-    phoneNumber: number;
+    phoneNumber: string;
     university: string; //id
-    course: string; //id
+    course: number; //id
     langToLearn: string[]; //language code
     langKnown: string[]; //language code
     team: number; //id
-    country: number; //id
+    country: string; //id
+
     photos?: string[]; // base64 value
     photoChunkRefs?: string[]; 
     /* ex 
@@ -20,8 +23,16 @@ export interface CreateUserDTO {
     */
 
     FCMPushNotificationsToken?: string;
+    bio?: string;
+
+    musicInterest?: MusicInterestDTO;
+    musicInterestRef?: string; 
 }
 
+export interface MusicInterestDTO {
+    album_name: string;
+    artist_name: string;
+}
 
 /*
     Firebase has a limit of 1048487 bytes
@@ -37,6 +48,34 @@ export interface PhotoChunkDTO {
     userRef: DocumentReference;
     photoLogicalId: string;
     id: number;
+}
+
+export const convertUserToCreateDTO = (user: User) => {
+
+    let dto: CreateUserDTO = {
+        username: user.username,
+        birth: getDDMMYYYYFromDate(user.birth), //DDMMYYYY
+        phoneNumber: user.phoneNumber,
+        university: user.university.id, //id
+        course: user.course.id, //id
+        langToLearn: user.langToLearn.map(l => l.id), //language code
+        langKnown: user.langKnown.map(l => l.id), //language code
+        team: user.team.id , //id
+        country: user.country.id , //id
+        FCMPushNotificationsToken: user.FCMPushNotificationsToken,
+        bio: user.bio || "",
+        musicInterestRef: ""
+    }
+
+    // if (user.musicInterest) 
+    //     dto = {
+    //         ...dto,
+    //         musicInterest: {
+    //             album_name: user.musicInterest.albumName || "" ,
+    //             artist_name: user.musicInterest.artistName || "",
+    //         }
+    //     }
+    return dto
 }
 
  

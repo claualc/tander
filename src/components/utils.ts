@@ -38,7 +38,6 @@ export const getRandomColor = () => {
     return colorOptions[randomId]
 }
 
-
 export const validatePhoneNumber = (phone: string) => phone.split("").length == 12;
 
 export const generateRandomString = (length: number) => {
@@ -56,7 +55,13 @@ export const getDateFromString = (v: string) => {
     const day = Number(v.slice(0,2))
     const month = Number(v.slice(2,4))
     const year = Number(v.slice(4,8))
-    return new Date(`${year}-${month}-${day}T01:01:01`)
+    return new Date(`${year}-${month}-${day}T01:00:00.000Z`)
+}
+
+export const getDDMMYYYYFromDate = (v: Date) => {
+    let str = v.toISOString().split("T")[0]
+    let arr = str.split("-")
+    return `${arr[2]}${arr[1]}${arr[0]}`
 }
 
 export const validateDate = (v: string) => {
@@ -85,12 +90,11 @@ export const get2FirstDigitsYear = (v: string[]) => {
 }
 
 export const cellphoneMask = (value?: string) => {
-    return value && value?.length ?
-    value?.length > 8 ?
-    `+${value?.substring(0,2) || ""} ${value?.substring(2,5) || ""} ${value?.substring(5,8) || ""} ${value?.substring(8) || ""}`
-        : value?.length > 5 ?
-        `+${value?.substring(0,2) || ""} ${value?.substring(2,5) || ""} ${value?.substring(5) || ""}`
-            : value?.length > 2 ?
-                `+${value?.substring(0,2) || ""} ${value?.substring(2) || ""}`
+    let length = !!value ? value.split("").length : 0
+    let val = length > 0 ? length > 8 ?
+        `+${value?.substring(0,2) || ""} ${value?.substring(2,5) || ""} ${value?.substring(5,8) || ""} ${value?.substring(8) || ""}`
+            : length > 5 ? `+${value?.substring(0,2) || ""} ${value?.substring(2,5) || ""} ${value?.substring(5) || ""}`
+                : length > 2 ? `+${value?.substring(0,2) || ""} ${value?.substring(2) || ""}`
                 : `+${value}` : ""
+    return val
 }

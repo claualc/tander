@@ -8,10 +8,10 @@ import { Forms } from '@components/forms';
 import { registerQuestions } from './components/RegisterForms';
 import { View } from 'react-native';
 import { ProgressBar, ProgressBarWrapper } from './components/ProgressBar';
-import { ScreenView } from '@components/index';
 
 
 const initQuest = registerQuestions()
+const pages = Object.keys(initQuest.pages).map((p )=> initQuest.pages[Number(p)])
 
 const RegisterScreen = () => {
 
@@ -25,7 +25,7 @@ const RegisterScreen = () => {
       const userDTO: CreateUserDTO = {
         username: inputs[1][0], // username
         birth :inputs[2][0], // birthdate
-        phoneNumber: Number(inputs[0][0]), // phonenumber
+        phoneNumber: inputs[0][0], // phonenumber
         university :inputs[3][0], //university_
         course :inputs[3][1], // course
         langToLearn :inputs[4][1], // langTolearn
@@ -53,7 +53,7 @@ const RegisterScreen = () => {
         }}>
 
         <ProgressBarWrapper >
-            <ProgressBar percentage={(1-(progress+1)/(initQuest.page.length+1))*100}></ProgressBar>
+            <ProgressBar percentage={(1-(progress+1)/(pages.length+1))*100}></ProgressBar>
         </ProgressBarWrapper>
 
         <View style={{
@@ -68,16 +68,14 @@ const RegisterScreen = () => {
           zIndex: 0,
         }}>
           <Forms 
-              totalPagesCount={initQuest.page.length}
-              initPage={initQuest.page[0]}
+              totalPagesCount={pages.length}
               onSend={onSend}
-              onChangeQuestions={registerQuestions}
+              pages={pages}
               onNextPage={(n) => setProgress(n)}
               onClose={() => console.log("go back tologin")}
             />
         </View>
-
-  </View>
+    </View>
 }
 
 export default RegisterScreen;

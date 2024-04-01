@@ -40,7 +40,7 @@ export class User {
     public id_: string | null;
     public username_: string;
     public birth_: Date;
-    public phoneNumber_: number;
+    public phoneNumber_: string;
     public yearsOld_: number | null;
     public FCMPushNotificationsToken_: string;
     public country_: Country;
@@ -60,7 +60,7 @@ export class User {
     public bio_?: string; // profile description
 
     constructor(
-        id: string | null, username: string, birth: Date, phoneNumber: number, FCMPushNotificationsToken: string, country: Country, university: Univeristy, course: Course, langToLearn: Language[], langKnown: Language[], team: UserTeam, photos: Photo[], hasSeenWhoLikesMeToday?: Boolean, likedUsers?: User[] | String[], matches?: User[] | String[], profileDescription?: string, musicInterest?: MusicInterest, bio?: string
+        id: string | null, username: string, birth: Date, phoneNumber: string, FCMPushNotificationsToken: string, country: Country, university: Univeristy, course: Course, langToLearn: Language[], langKnown: Language[], team: UserTeam, photos: Photo[], hasSeenWhoLikesMeToday?: Boolean, likedUsers?: User[] | String[], matches?: User[] | String[], profileDescription?: string, musicInterest?: MusicInterest, bio?: string
     ) {
         this.id_ = id;
         this.username_ = username;

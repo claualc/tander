@@ -1,13 +1,13 @@
 import { DimensionValue,TouchableHighlight } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Main } from "./style";
 import { CustomText } from "@components/index";
 import SelectModal from "./SelectModal";
 import { convertHexToRGBA, getRandomColor } from "@components/utils";
 
-export interface SelectProps {
+export interface SelectLogicalProps {
     value?: string | number;
     placeholder?: string;
     options: SelectOption[];
@@ -18,7 +18,7 @@ export interface SelectOption {
     value: string | number;
 }
 
-interface Props extends SelectProps {
+export interface SelectComponentProps extends SelectLogicalProps {
     width?: string;
     onSelect: (v: SelectOption) => void; // v is the valye of the key of the item
     title?: string;
@@ -34,7 +34,7 @@ interface Props extends SelectProps {
       [value]: "<valueName> | <name>"
    }
 */
-const CustomSelect: React.FC<Props> = ({
+const CustomSelect: React.FC<SelectComponentProps> = ({
     options, placeholder, width, onSelect, value, title, color }) => {
 
     const [color_, setColor_] = useState<string>(color || getRandomColor());
@@ -77,7 +77,9 @@ const CustomSelect: React.FC<Props> = ({
                     <CustomText color={color_}>{valueName}</CustomText>
                     : <CustomText color={convertHexToRGBA(color_, 0.5)}>{ placeholder || ""}</CustomText>
                 }
-                <Ionicons name="chevron-down-outline" color={color_} size={20}/>
+                {
+                    <Ionicons name="chevron-down-outline" color={color_} size={20}/>
+                }
             </Main>
     </TouchableHighlight> 
 

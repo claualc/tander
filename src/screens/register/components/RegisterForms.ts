@@ -20,9 +20,12 @@ import { FormsPage, FormsQuestion, inputTypes } from "@components/forms/componen
 */
 
 export enum ResgisterFormPageId {
-    NONE, // default 0 value
+/*
+    The enum order determines too 
+    the order of the pages
+*/
     PHONE_NUM_INPUT,
-    PHONE_NUM_CODE_VERIF,
+    // PHONE_NUM_CODE_VERIF,
     USERNAME,
     AGE,
     STUDENT_INFO,
@@ -30,9 +33,6 @@ export enum ResgisterFormPageId {
     LANG_TO_LEARN_INFO,
     TEAM,
     PHOTOS,
-    // not used in registration, but in profile managment
-    LANG_TO_KNOW_INFO,
-    MUSIC_INTEREST
 }
 
 export const formsCheckIfValidValue = (v: any, q: FormsQuestion) => {
@@ -42,7 +42,9 @@ export const formsCheckIfValidValue = (v: any, q: FormsQuestion) => {
 // of the resgiter forms
 // each page can have more than one question
 export const registerQuestions: (phoneNumber?: string) => {
-    page: FormsPage[],
+    pages: {
+        [key: number]: FormsPage
+    },
 }  = (phoneNumber) => {
     
     //closure to customize some of the questions with dynamic variables
@@ -66,8 +68,10 @@ export const registerQuestions: (phoneNumber?: string) => {
         "value": c.id
     }) as SelectOption)
 
-    let page: FormsPage[] = [{
-            id: ResgisterFormPageId.PHONE_NUM_INPUT,
+    let pages: {
+        [key: number]: FormsPage
+    } = {
+        [ResgisterFormPageId.PHONE_NUM_INPUT]: {
             title: "Can we have your number?",
             subtitle: "Don’t worry, we just need a way to identificate you in case you are disconnected from this or other devices!",
             questions:  [{
@@ -87,8 +91,7 @@ export const registerQuestions: (phoneNumber?: string) => {
         //         validate: (v: string) => {return v.split("").length == 4}
         //     }]
         // },
-        {
-            id: ResgisterFormPageId.USERNAME,
+        [ResgisterFormPageId.USERNAME]: {
             title: "What’s your name?",
             questions: [{
                 id: 2,
@@ -102,8 +105,7 @@ export const registerQuestions: (phoneNumber?: string) => {
                 }
             ],
         },
-        {
-            id: ResgisterFormPageId.AGE,
+        [ResgisterFormPageId.AGE]: {
             title: "How old are you?",
             questions: [{
                 id: 3,
@@ -112,8 +114,7 @@ export const registerQuestions: (phoneNumber?: string) => {
                 validate: validateDate
             }],
         },
-        {
-            id: ResgisterFormPageId.STUDENT_INFO,
+        [ResgisterFormPageId.STUDENT_INFO]: {
             title: "Let us know what you study",
             questions: [{
                     id: 4,
@@ -139,8 +140,7 @@ export const registerQuestions: (phoneNumber?: string) => {
                     }
             ],
         },
-        {
-            id: ResgisterFormPageId.COUNTRY_INFO,
+        [ResgisterFormPageId.COUNTRY_INFO]: {
             title: "Where are you from?",
             questions: [{
                 id: 6,
@@ -163,8 +163,7 @@ export const registerQuestions: (phoneNumber?: string) => {
                 options: languages
             }],
         },
-        {
-            id: ResgisterFormPageId.LANG_TO_LEARN_INFO,
+        [ResgisterFormPageId.LANG_TO_LEARN_INFO]: {
             title: "What languages you want to learn?",
             subtitle: "We will try to connect you with people that know the languages you want to learn, but feel free to talk with whoever you want!",
             questions: [{
@@ -179,8 +178,7 @@ export const registerQuestions: (phoneNumber?: string) => {
                 options: languages
             }]
         },
-        {
-            id: ResgisterFormPageId.TEAM,
+        [ResgisterFormPageId.TEAM]: {
             title: "What is your team?",
             subtitle: "We’re almost there, this is the most important question of the registration. Pay attention, this choice is definitive!",
             questions: [
@@ -197,8 +195,7 @@ export const registerQuestions: (phoneNumber?: string) => {
                 }
             ]
         },
-        {
-            id: ResgisterFormPageId.PHOTOS,
+        [ResgisterFormPageId.PHOTOS]: {
             title: "Show us some pictures",
             subtitle: "Preferably of your face...",
             questions: [
@@ -209,9 +206,9 @@ export const registerQuestions: (phoneNumber?: string) => {
                 }
             ]
         },
-    ]
+    }
 
     return {
-        page,
+        pages,
     };
 }

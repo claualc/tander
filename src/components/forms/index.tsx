@@ -13,6 +13,7 @@ import ColorButton from "@components/colorButton";
 import CustomMultiSelect from "@components/multiSelect";
 import CustomSelect from "@components/select";
 import { FormsPage, FormsQuestion, inputTypes } from "./components/formDTOs";
+import CustomAsyncSelect from "@components/selectAsync";
 
 
 export const checkFormsInputValid = (v: any, q: FormsQuestion) => {
@@ -22,15 +23,13 @@ export const checkFormsInputValid = (v: any, q: FormsQuestion) => {
 
 export const Forms: React.FC<{
     totalPagesCount: number;
-    onChangeQuestions: (v?: any) => {
-        page: FormsPage[];
-    };
+    pages:  FormsPage[];
     onSend: (inputs: any[][]) => Promise<void>;
-    initPage: FormsPage;
     onNextPage?: (nextIndex: number) => void;
     onClose?: () => void;
-    onInitPage?: (p: FormsPage) => {}; // custom behavour that can be added when a certain type of pages inits
-}> = ({totalPagesCount, onChangeQuestions, onSend, onNextPage, onClose}) => {
+    defaultAnswers?: any[][];
+    //onInitPage?: (p: FormsPage) => {}; // custom behavour that can be added when a certain type of pages inits
+}> = ({totalPagesCount, pages, onSend, onNextPage, onClose, defaultAnswers}) => {
 
     const [answers, setAnswers_] = useState<any[][]>([]);
     const [validAnswer, setValidAnswer] = useState(false);
@@ -39,8 +38,16 @@ export const Forms: React.FC<{
 
     // the values of the answers of the current load page
     // they will be shown in the input
-    const [values , setValues] = useState<any[]>(new Array(onChangeQuestions().page[0].questions.length).fill(null));
-        
+    const [values , setValues] = useState<any[]>(new Array(pages[0].questions.length).fill(null));
+
+    useEffect(() => {
+        if (defaultAnswers) {
+            setAnswers([...defaultAnswers])
+            setValues([...defaultAnswers[0]])
+        }
+    }, [defaultAnswers])
+
+
     const setCurrentValues = useCallback((id: number, newVal: any) => {
         // arrays r compared by reference not by value
         let newVals = values.map(v => v) // copy object to new referene
@@ -53,10 +60,12 @@ export const Forms: React.FC<{
         let actualValues = answers[currentPageId]
 
         const phoneNumber = answers[0] ? answers[0][0] : null;
-        let page = onChangeQuestions(
-            phoneNumber, // phoneNumber
-        ).page[currentPageId]
+        // let page = onChangeQuestions(
+        //     phoneNumber, // phoneNumber
+        // ).pages[currentPageId]
+        let page = pages[currentPageId]
 
+        // onInitPage
         // if (page.id == PageId.PHONE_NUM_CODE_VERIF) {
         // // function to get a random number of 4 digits
         // let minm = 1000; 
@@ -71,7 +80,7 @@ export const Forms: React.FC<{
         // }
 
         setValues( !actualValues ?
-        new Array(page.questions.length).fill(null) : actualValues)
+            new Array(page.questions.length).fill(null) : actualValues)
 
         return page
     }, [currentPageId]);
@@ -154,73 +163,84 @@ export const Forms: React.FC<{
                     <View style={{width: "100%", marginBottom: "7%"}}>
                     { (q.inputType == inputTypes.TEXT) ?
                         <CustomTextInput 
-                        onChange={v => {
-                            setCurrentValues(i,v)
-                            checkValidAnswer(v, q)
-                        }}
-                        placeholder={q.placeholder} 
-                        value={values[i]}/>
+                            onChange={v => {
+                                setCurrentValues(i,v)
+                                checkValidAnswer(v, q)
+                            }}
+                            placeholder={q.placeholder} 
+                            value={values[i]}
+                            maxCharacters={q.maxCharacters}/>
                     : (q.inputType == inputTypes.NUMERIC) ?
                         <CustomCodeInput 
-                        onChange={(v) => {
-                            setCurrentValues(i,v)
-                            checkValidAnswer(v, q)
-                        }}
-                        maxLength={q.maxCodeLength}
-                        placeholder={q.placeholder} 
-                        value={values[i]}/> 
+                            onChange={(v) => {
+                                setCurrentValues(i,v)
+                                checkValidAnswer(v, q)
+                            }}
+                            maxLength={q.maxCodeLength}
+                            placeholder={q.placeholder} 
+                            value={values[i]}/> 
                     : (q.inputType == inputTypes.NUMERIC_PHONE) ?
                         <CustomCodeInput 
-                        onChange={v => {
-                            setCurrentValues(i,v)
-                            checkValidAnswer(v, q)
-                        }}
-                        placeholder={q.placeholder} 
-                        isPhoneNumber={true}
-                        value={values[i]}/> 
+                            onChange={v => {
+                                setCurrentValues(i,v)
+                                checkValidAnswer(v, q)
+                            }}
+                            placeholder={q.placeholder} 
+                            isPhoneNumber={true}
+                            value={values[i]}/> 
                     : (q.inputType == inputTypes.DATE) ?
                         <CustomDateInput 
-                        onChange={v => {
-                            setCurrentValues(i,v)
-                            checkValidAnswer(v, q)
-                        }}
-                        value={values[i]}/>
+                            onChange={v => {
+                                setCurrentValues(i,v)
+                                checkValidAnswer(v, q)
+                            }}
+                            value={values[i]}/>
                     : (q.inputType == inputTypes.SELECT) ?
                         <CustomSelect 
-                        onSelect={v => {
-                            setCurrentValues(i,v.value)
-                            checkValidAnswer(v, q)
-                        }}
-                        value={values[i]}
-                        placeholder={q.placeholder} 
-                        title={q.placeholder}
-                        options={q.options || []} />
+                            onSelect={v => {
+                                setCurrentValues(i,v.value)
+                                checkValidAnswer(v, q)
+                            }}
+                            value={values[i]}
+                            placeholder={q.placeholder} 
+                            title={q.placeholder}
+                            options={q.options || []} />
                     : (q.inputType == inputTypes.MULTISELECT) ?
                         <CustomMultiSelect 
-                        onSelect={v => {
-                            setCurrentValues(i, v)
-                            checkValidAnswer(v, q)
-                        }}
-                        maxSelects={q.maxSelects}
-                        values={values[i]}
-                        placeholder={q.multiPlaceholder}
-                        options={q.options || []} />
+                            onSelect={v => {
+                                setCurrentValues(i, v)
+                                checkValidAnswer(v, q)
+                            }}
+                            maxSelects={q.maxSelects}
+                            values={values[i]}
+                            placeholder={q.multiPlaceholder}
+                            options={q.options || []} />
                     : (q.inputType == inputTypes.BULLETPOINTS_SELECT) ?
                         <BulletpointSelect 
-                        onSelect={v => {
-                            setCurrentValues(i, v)
-                            checkValidAnswer(v, q)
-                        }}
-                        value={values[i]}
-                        options={q.bulletPoints || []} />
+                            onSelect={v => {
+                                setCurrentValues(i, v)
+                                checkValidAnswer(v, q)
+                            }}
+                            value={values[i]}
+                            options={q.bulletPoints || []} />
                     : (q.inputType == inputTypes.PHOTO) ?
                         <CustomPhotoBatchInputs 
-                        count={q.photoCount || 0}
-                        onChange={v => {
-                            setCurrentValues(i, v)
-                            checkValidAnswer(v, q)
-                        }}
-                        values={values[i]} />
+                            count={q.photoCount || 0}
+                            onChange={v => {
+                                setCurrentValues(i, v)
+                                checkValidAnswer(v, q)
+                            }}
+                            values={values[i]} />
+                    : (q.inputType == inputTypes.ASYNC_SELECT) ?
+                        <CustomAsyncSelect 
+                            onSelect={v => {
+                                setCurrentValues(i,v.value)
+                                checkValidAnswer(v, q)
+                            }}
+                            value={values[i]}
+                            placeholder={q.placeholder} 
+                            title={q.placeholder}
+                            searchOptions={q.searchOptions}/>
                     :  <></>
                     }
                     </View>

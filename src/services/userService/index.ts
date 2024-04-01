@@ -1,4 +1,4 @@
-import { DocumentReference, getDoc } from "firebase/firestore";
+import { DocumentReference } from "firebase/firestore";
 
 import locationServices from "@serv/locationServices";
 import languageService from "@serv/languageService";
@@ -13,15 +13,15 @@ import dbServices from "@firebaseServ/database"
 import { MusicInterest, Photo, User, UserTeam } from "@domain/User";
 import userTeamDic from "@assets/dictionaries/userTeam";
 
-import { CreateUserDTO,  PhotoChunkDTO } from "./DTO";
+import { CreateUserDTO,  PhotoChunkDTO, MusicInterestDTO } from "./DTO";
 
 const COLLECTION_ID = "user"; // main collection
-const SUBCOLLECTION_PHOTO_ID = "photo"; // collection related to main
+const SUBCOLLECTION_MUSIC_INTEREST = "music_interest"; // collection related to main
 const SUBCOLLECTION_PHOTOCHUNKS_ID = "photo_chunks"; // collection related to main
 
-const parseUserFromFirestoreAsync = async (data: any): Promise<User> => {
+const parseUserFromFirestoreAsync = async (data: any, id: string): Promise<User> => {
     const daybirth = getDateFromString(data.birth as string)
-    // console.log("daybirth",daybirth)
+    // console.log(data.birth,"daybirth",daybirth)
     const country = locationServices.getCountryById(data.country)
     // console.log("country",country)
     const university = studentService.getUniversityById(data.university)
@@ -36,13 +36,9 @@ const parseUserFromFirestoreAsync = async (data: any): Promise<User> => {
     // console.log("team",team)
 
     let musicInterest;
-    if (data.musicInterest) {
-        let {data : musicData, id: musicId} = await dbServices.getDataFromDocReference(data.musicInterest)
-        if (musicData &&  musicId) {
-            musicInterest = new MusicInterest(musicData.artist_name, musicData.album_name, musicId)
-        }
+    if (data.musicInterestRef) {
+        musicInterest = await getUserMusicInterest(data.musicInterestRef)
     }
-    // console.log("musicInterest",musicInterest)
 
     let photos = await getUserPhotos(data.photoChunkRefs)
     
@@ -50,10 +46,10 @@ const parseUserFromFirestoreAsync = async (data: any): Promise<User> => {
     const likedUsersId: String[] = data.likedUsers
 
     const user = new User(
-        data.id,
+        id,
         data.username as string,
         daybirth,
-        data.phoneNumber as number,
+        data.phoneNumber as string,
         data.FCMPushNotificationsToken as string,
         country,
         university,
@@ -79,8 +75,8 @@ const userConverter: converter<CreateUserDTO> = {
     },
     fromFirestore: async (snap, opt) => {
         const data = snap.data(opt)!;
-        console.log("..:: FirebaseService.fromFirestore (user)")
-        return await parseUserFromFirestoreAsync(data);
+        console.log("..:: FirebaseService.fromFirestore (user)", snap.id)
+        return await parseUserFromFirestoreAsync(data, snap.id);
     }
 }
 
@@ -93,22 +89,23 @@ export const getById = async (id: string | String | number | Number) => {
     return await dbServices.getObjectById(COLLECTION_ID,id, userConverter) as User;
 }
 
-const update = async (user: CreateUserDTO, id: string) => {
+export const update = async (user: CreateUserDTO, id: string) => {
     const ref = await dbServices.getRefById(COLLECTION_ID,id,userConverter);
     await dbServices.update(COLLECTION_ID, user, ref.id, userConverter)
 
     console.log("..:: FirebaseService.update (user)", ref.id)
-    return ref
+    const userUpdated = await dbServices.getObjectByRef(ref)
+    return userUpdated as User
 }
 
 export const create = async (dto: CreateUserDTO) => {
-    const {photos, ...user} = dto;
+    const {photos, musicInterest, ...user} = dto;
     user.FCMPushNotificationsToken = FCMService.getDeviceToken()
 
     const userRef = await dbServices.create(
         COLLECTION_ID, user, userConverter )
     
-    
+    let photoChunkRefs;
     if (photos?.length) {
         const photoRefsPromise = photos?.map(
             async (p) => await createUserPhoto({
@@ -117,12 +114,19 @@ export const create = async (dto: CreateUserDTO) => {
             })
         )
 
-        const photoChunkRefs = await Promise.all(photoRefsPromise)
-        await update({
-            ...user,
-            photoChunkRefs
-        }, userRef.id)
+        photoChunkRefs = await Promise.all(photoRefsPromise)
     }
+
+    let musicInterestRef;
+    /*
+        Logic to create the music interest
+    */
+
+    await update({
+        ...user,
+        photoChunkRefs,
+        musicInterestRef
+    }, userRef.id)
 
     const userCreated = await dbServices.getObjectByRef(userRef)
     console.log("..:: FirebaseService.create (user)", userRef.id)
@@ -151,14 +155,6 @@ export const createUserPhoto = async (photo: {
         id: 0
     }
 
-    //  // Middle Value
-    //  let MVdto: PhotoChunkDTO = {
-    //     value: middleValue,
-    //     userRef,
-    //     photoLogicalId: id,
-    //     id: 1
-    // }
-
     // Less Significat Value
     let LSVdto: PhotoChunkDTO = {
         value: lessSignificatValue,
@@ -169,9 +165,6 @@ export const createUserPhoto = async (photo: {
 
     const MSVphotoRef = await dbServices.create(
         SUBCOLLECTION_PHOTOCHUNKS_ID, MSVdto )
-
-    // const MVphotoRef = await dbServices.create(
-    //     SUBCOLLECTION_PHOTOCHUNKS_ID, MSVdto )
 
     const LSVphotoRef = await dbServices.create(
         SUBCOLLECTION_PHOTOCHUNKS_ID, LSVdto )
@@ -196,6 +189,18 @@ export const getUserPhotos = async (chunkRefs: string[]) => {
     })
 
     return await Promise.all(photos)
+}
+
+export const getUserMusicInterest = async (musicInterestId: string) => {
+    let obj = ( await dbServices.getObjectById(
+            SUBCOLLECTION_MUSIC_INTEREST,
+            musicInterestId)
+        ) as MusicInterestDTO;
+    return new MusicInterest(
+        obj.artist_name,
+        obj.album_name,
+        musicInterestId,
+    )
 }
 
 export const getUserTeamById = (id: number) => {

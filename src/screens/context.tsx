@@ -18,18 +18,21 @@ const ContextProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
   const [stateLoading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
-      //  (async () => {
-      //    setLoading(true)
-      //    const id = "Xak6maKrr0mRL2NokYig_"
-      //    const user =await userService.getById(id);
-      //    setLoggedUser(user)
-      //    setLoading(false)
-      //  })()
+       (async () => {
+         setLoading(true)
+         const id = "Xak6maKrr0mRL2NokYig_"
+         const user =await userService.getById(id);
+         setLoggedUser(user)
+         setLoading(false)
+       })()
     },[])
 
     useEffect(() => {
-      console.log("..:: LoggedUserContext:")
-      console.log(loggedUser)
+      if (loggedUser) {
+        console.log("..:: LoggedUserContext:")
+        // let {photos, ...rest} = loggedUser
+        // console.log(rest)
+      }
     },[loggedUser])
 
     return <LoggedUserContext.Provider value={{ loggedUser, setLoggedUser, stateLoading, setLoading }}>

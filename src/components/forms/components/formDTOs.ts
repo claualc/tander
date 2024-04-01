@@ -11,11 +11,10 @@ export enum inputTypes {
     NUMERIC_PHONE, 
 
     // not used in registration, but in profile managment
-    SELECT_ASYNC_VALUE, 
+    ASYNC_SELECT, 
 }
 
 export interface FormsPage {
-    id: number;
     title: string;
     subtitle?: string;
     questions: FormsQuestion[]
@@ -35,6 +34,12 @@ export interface FormsQuestion {
 
     // for code input types
     maxCodeLength?: number;
+
+    // for text input types
+    maxCharacters?: number;
+
+    // for async select input types
+    searchOptions?: (v: string) => Promise<SelectOption[]>;
 
     // for multiselect input type
     multiPlaceholder?: string[]; 

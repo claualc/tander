@@ -2,6 +2,8 @@ import styled from "styled-components/native";
 import { cellphoneMask } from "@components/utils";
 
 import { theme } from "@screens/theme";
+import { View } from "react-native";
+import { CustomText } from "@components/index";
 
 const StyledInputText = styled.TextInput`
     width: 100%;
@@ -14,15 +16,24 @@ const StyledInputText = styled.TextInput`
 export const CustomTextInput: React.FC<{
     value: string;
     placeholder?: string;
-    onChange: (v: string) => void
-}> = ({value, onChange, placeholder}) => {
+    onChange: (v: string) => void;
+    maxCharacters?: number;
+}> = ({value, onChange, placeholder, maxCharacters}) => {
 
-    return <StyledInputText
+    return <>
+        <StyledInputText
         selectionColor={theme.tertiary_dark}
         onChangeText={onChange}
         value={value}
+        maxLength={maxCharacters}
         placeholder={placeholder || ""}
         />
+        {
+            maxCharacters && <View style={{width: "100%", aspectRatio: "10/1", alignItems: "flex-end"}}>
+                <CustomText color={theme.tertiary_dark}>{`${value? value.length : 0}/${maxCharacters}`}</CustomText>
+            </View>
+        }
+        </>
 };
 
 export const CustomCodeInput: React.FC<{
