@@ -7,16 +7,15 @@ import studentService from "@serv/studenService";
 import { generateRandomString, getDateFromString } from "@components/utils";
 
 import { converter } from "@firebaseServ/database/converterDTO";
-import FCMService from "@firebaseServ/notifications";
 import dbServices from "@firebaseServ/database"
 
-import { MusicInterest, Photo, User, UserTeam } from "@domain/User";
+import { Photo, User, UserTeam } from "@domain/User";
 import userTeamDic from "@assets/dictionaries/userTeam";
 
-import { CreateUserDTO,  PhotoChunkDTO, MusicInterestDTO } from "./DTO";
+import { CreateUserDTO,  PhotoChunkDTO } from "./DTO";
+import albumService from "@serv/albumService";
 
 const COLLECTION_ID = "user"; // main collection
-const SUBCOLLECTION_MUSIC_INTEREST = "music_interest"; // collection related to main
 const SUBCOLLECTION_PHOTOCHUNKS_ID = "photo_chunks"; // collection related to main
 
 const parseUserFromFirestoreAsync = async (data: any, id: string): Promise<User> => {
@@ -36,8 +35,8 @@ const parseUserFromFirestoreAsync = async (data: any, id: string): Promise<User>
     // console.log("team",team)
 
     let musicInterest;
-    if (data.musicInterestRef) {
-        musicInterest = await getUserMusicInterest(data.musicInterestRef)
+    if (data.musicInterest) {
+        musicInterest = await albumService.getMusicInterestFromDTO(data.musicInterest)
     }
 
     let photos = await getUserPhotos(data.photoChunkRefs)
@@ -80,7 +79,6 @@ const userConverter: converter<CreateUserDTO> = {
     }
 }
 
-
 export const listAll = async () => {
     return await dbServices.listAll(COLLECTION_ID, userConverter) as User[];
 }
@@ -99,13 +97,12 @@ export const update = async (user: CreateUserDTO, id: string) => {
 }
 
 export const create = async (dto: CreateUserDTO) => {
-    const {photos, musicInterest, ...user} = dto;
-    user.FCMPushNotificationsToken = FCMService.getDeviceToken()
+    const {photos, ...userUncompleteDTO} = dto;
 
     const userRef = await dbServices.create(
-        COLLECTION_ID, user, userConverter )
+        COLLECTION_ID, userUncompleteDTO, userConverter )
     
-    let photoChunkRefs;
+    let photoChunkRefs: string[] = [];
     if (photos?.length) {
         const photoRefsPromise = photos?.map(
             async (p) => await createUserPhoto({
@@ -117,15 +114,9 @@ export const create = async (dto: CreateUserDTO) => {
         photoChunkRefs = await Promise.all(photoRefsPromise)
     }
 
-    let musicInterestRef;
-    /*
-        Logic to create the music interest
-    */
-
     await update({
-        ...user,
+        ...userUncompleteDTO,
         photoChunkRefs,
-        musicInterestRef
     }, userRef.id)
 
     const userCreated = await dbServices.getObjectByRef(userRef)
@@ -185,22 +176,8 @@ export const getUserPhotos = async (chunkRefs: string[]) => {
             msv?.value+lsv?.value,
             msv?.photoLogicalId
         )
-
     })
-
     return await Promise.all(photos)
-}
-
-export const getUserMusicInterest = async (musicInterestId: string) => {
-    let obj = ( await dbServices.getObjectById(
-            SUBCOLLECTION_MUSIC_INTEREST,
-            musicInterestId)
-        ) as MusicInterestDTO;
-    return new MusicInterest(
-        obj.artist_name,
-        obj.album_name,
-        musicInterestId,
-    )
 }
 
 export const getUserTeamById = (id: number) => {

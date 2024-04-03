@@ -1,41 +1,42 @@
-import { Dimensions, Modal, ScrollView, TouchableHighlight, View } from "react-native";
+import { Image, Modal, ScrollView, TouchableHighlight, View } from "react-native";
 import styled from "styled-components/native";
 
 import { CustomText } from "@components/index";
 import { SelectOption } from ".";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { BlurView } from "expo-blur";
 import ColorButton from "../colorButton";
-import { yellow } from "@mui/material/colors";
-
-// actual shape of select modal 
-export const Card = styled.View`
-    background-color: white;
-    width: 88%;
-    border-radius: 20px;
-    overflow: hidden;
-    align-items: center;
-    flex-direction: column;
-`
-
-export const Item = styled.View`
-    width: "100%";
-    padding-left: 1%;
-    border-bottom-color: ${p => p.theme.secondary_background};
-    border-bottom-width: 0.7px;
-    justify-content: center;
-`
+import { getRandomColor } from "../utils";
+import SearchBar from "@components/searchBar";
+import { search } from "./utils";
+import { Card, Item, Loading } from "./style";
 
 
+/*
+    The display of the itens of the modal
+    can be customize trhouf the children property
+    Where it substitues the option list
+*/
 const SelectModal: React.FC<{
     show: boolean;
     onSelect: (v: SelectOption) => void;
     modalTitle?: string;
     options: SelectOption[];
-}> = ({show, modalTitle, options, onSelect}) => {
+    color?: string;
+    withSearchBar?: boolean;
+}> = ({show, modalTitle, options, onSelect, color, withSearchBar}) => {
 
+    const [color_, setColor_] = useState<string>(color || getRandomColor());
     const [value, setValue] = useState<SelectOption | null>(null);
     const [itemSelected, setItemSelected] = useState<number>(-1);
+
+    const [searchValue, setSearchValue] = useState<string>("");
+
+    const optionList = useMemo<SelectOption[]>(() => {
+            return withSearchBar ?
+                search(searchValue, options)
+                : options
+    }, [options, searchValue, withSearchBar])
 
     return <Modal transparent={true} visible={show} style={{justifyContent: "center", alignItems: "center"}}>
         <BlurView intensity={40} style={{
@@ -51,7 +52,7 @@ const SelectModal: React.FC<{
                 <View style={{
                     elevation: 4,
                     width: "110%",
-                    aspectRatio: "5/1",
+                    //aspectRatio: "5/1",
                     // background color must be set
                     backgroundColor: "white",
                     paddingLeft: "10%",
@@ -59,34 +60,41 @@ const SelectModal: React.FC<{
                     paddingBottom: "5%",
                     position: "relative",
                     justifyContent: "center",
-                    top: -10
                 }}>
                     <CustomText fontFam="DM" size={19}>{modalTitle || ""}</CustomText>
+                    {
+                        withSearchBar && <View style={{paddingTop: "2%"}}>
+                            <SearchBar
+                                value={searchValue}
+                                onValueChange={setSearchValue}
+                                color={color_}
+                                width="90%"  />
+                        </View>
+                    }
                 </View>
 
                 <View style={{
-                    width: "100%",
-                    paddingLeft: "5%",
-                    paddingRight: "5%",
-                    maxHeight: "70%"
-                }}>
-                    <ScrollView  style={{width: "100%", flexDirection: "column"}}>
+                        width: "100%",
+                        paddingLeft: "5%",
+                        paddingRight: "5%",
+                        maxHeight: "70%"
+                    }}>
+                        
+                    <ScrollView style={{width: "100%", flexDirection: "column"}}>
                         {
-                            options.map((op,i) => <TouchableHighlight
-                                activeOpacity={0.6}
-                                underlayColor="#0000"
-                                key={i}
-                                onPress={() => {
+                            (optionList.length == 0) ?
+                            <Loading/>
+                            : optionList.map((op,i) => (
+                                <Item
+                                    key={i}
+                                    op={op}
+                                    selected={itemSelected  == i}
+                                    onPress={() => {
+                                        console.log("on pressed")
                                         setValue(op)
                                         setItemSelected(i)
-                                    }}>
-                                    <Item>
-                                        <CustomText  
-                                            style={{marginBottom: 10, marginTop: 15}}
-                                            fontFam={ itemSelected  == i ? "XB" : "RG"} 
-                                            >{op.name}</CustomText>
-                                    </Item>
-                            </TouchableHighlight>
+                                    }} />
+                                )
                             )
                         }
                     </ScrollView>
@@ -106,8 +114,13 @@ const SelectModal: React.FC<{
                     <ColorButton
                         disabled={options.length > 0 ? value == null : false}
                         onPress={() => {
-                            if (value != null)
+                            if (value != null) {
                                 onSelect(value)
+                                // reset all
+                                setValue(null)
+                                setItemSelected(-1);
+                                setSearchValue("");
+                            }
                         }} 
                         width="50%"
                         title={"Done"} />

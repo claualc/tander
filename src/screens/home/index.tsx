@@ -1,18 +1,17 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Photo, User } from "@domain/User";
-import { BOTTOM_TABNAV_HEIGTH, Chip, ColorWrapper, CustomText, ScreenView, Wrapper } from "@components/index";
-import * as userService from "@serv/userService";
-import Card from "@components/userCard";
-import { Dimensions, ScrollView, Text, View } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import { ScrollView, Text, View } from "react-native";
 import { AntDesign, Ionicons, SimpleLineIcons } from "@expo/vector-icons";
-import { Section, UserDecSections, UserDescWrapper } from "./style";
-import { theme } from "../theme";
+
+import { theme } from "@screens/theme";
+import { User } from "@domain/User";
+import Card from "@components/userCard";
+import { CustomText, ScreenView } from "@components/index";
 import AlbumComponent from "@components/musicAlbum";
 
+import * as userService from "@serv/userService";
+import { LanguageView, Section, UserDecSections, UserDescWrapper } from "./style";
 
 const USER_CARDS_BATCH_COUNT = 10;
-const TRUE_ARRAY = new Array(USER_CARDS_BATCH_COUNT).fill(true);
-const FALSE_ARRAY = new Array(USER_CARDS_BATCH_COUNT).fill(false);
 
 const HomeScreen: React.FC = () => {
 
@@ -119,35 +118,17 @@ const HomeScreen: React.FC = () => {
 
                   {/* ######### LANGUAGES SECTION */}
                   <Section style={{justifyContent: "flex-start",width:"100%"}}>
-                    <ColorWrapper inColor={theme.secondary}>
-                      <View style={{flex:1, alignItems: "center"}}>
-                        <CustomText size={30}>🤓</CustomText>
-                      </View>
-                      <View style={{flex:4, alignItems: "flex-start"}}>
-                        <CustomText size={13} color={theme.secondary}>Here To Help With</CustomText>
-                        <View style={{flex:2, flexDirection: "row", alignItems: "flex-start"}}>
-                        {
-                            users[uIndex].langKnown.map((lang, i) => {
-                            return <CustomText key={i} size={20} color={theme.secondary} fontFam="DM">{lang.name + " "}</CustomText>})
-                        }
-                        </View>
-                      </View>
-                    </ColorWrapper>
-
-                    <ColorWrapper inColor={theme.tertiary}>
-                      <View style={{flex:1, alignItems: "center"}}>
-                        <CustomText size={30}>😎</CustomText>
-                      </View>
-                      <View style={{flex:4,justifyContent: "flex-start", alignItems: "flex-start"}}>
-                        <CustomText size={13}  color={theme.tertiary}>Here To learn</CustomText>
-                        <View style={{flex:2, flexDirection: "row", justifyContent: "space-between"}}>
-                        {
-                            users[uIndex].langToLearn.map((lang, i) => {
-                            return <CustomText key={i} size={20} color={theme.tertiary} fontFam="DM" >{lang.name + " "}</CustomText>})
-                        }
-                        </View>
-                      </View>
-                    </ColorWrapper>
+                    <LanguageView 
+                      lang={users[uIndex].langKnown} 
+                      emoji={"🤓"} 
+                      color={theme.tertiary}
+                      title={"Here To Help With"}  />
+                    
+                    <LanguageView 
+                      lang={users[uIndex].langToLearn} 
+                      emoji={"😎"}  
+                      color={theme.secondary}
+                      title={"Here To learn"}  />
                   </Section>
 
                   {/* ######### BIO  */}
@@ -163,7 +144,10 @@ const HomeScreen: React.FC = () => {
                     (users[uIndex].musicInterest) ? <Section style={{width: "100%"}}>
                     <CustomText size={20} fontFam="DM" color={theme.secondary_dark}>On repeat</CustomText>
                         <AlbumComponent
-                          albumInfo={users[uIndex].musicInterest} />
+                          artistName={users[uIndex].MIArtistName || ""}
+                          albumName={users[uIndex].MIAlbumName || ""} 
+                          imageUrl={users[uIndex].MIImgURL || ""}
+                          />
                   </Section>
                   : <></>
                   }

@@ -16,7 +16,7 @@ export class UserTeam {
 export class Photo {
     constructor(
         public value_: string,
-        public id_: String,
+        public id_: string,
     ) {}
 
     get value() {return this.value_}
@@ -27,12 +27,12 @@ export class MusicInterest {
     constructor(
         public artistName_: string,
         public albumName_: string,
-        public id_: string,
+        public imgURL_?: string,
     ) {}
 
     get artistName() {return this.artistName_}
     get albumName() {return this.albumName_}
-    get id() {return this.id_}
+    get imgURL() {return this.imgURL_}
 }
 
 export class User {
@@ -107,6 +107,9 @@ export class User {
     get matches() {return this.matches_};
     get profileDescription() {return this.profileDescription_};
     get musicInterest() {return this.musicInterest_};
+    get MIAlbumName() {return this.musicInterest_?.albumName};
+    get MIArtistName() {return this.musicInterest_?.artistName};
+    get MIImgURL() {return this.musicInterest_?.imgURL};
     get bio() {return this.bio_};
 
     // from attributes

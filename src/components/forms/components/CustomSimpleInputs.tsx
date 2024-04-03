@@ -22,11 +22,11 @@ export const CustomTextInput: React.FC<{
 
     return <>
         <StyledInputText
-        selectionColor={theme.tertiary_dark}
-        onChangeText={onChange}
-        value={value}
-        maxLength={maxCharacters}
-        placeholder={placeholder || ""}
+            selectionColor={theme.tertiary_dark}
+            onChangeText={onChange}
+            value={value}
+            maxLength={maxCharacters}
+            placeholder={placeholder || ""}
         />
         {
             maxCharacters && <View style={{width: "100%", aspectRatio: "10/1", alignItems: "flex-end"}}>

@@ -7,12 +7,13 @@ import { convertHexToRGBA, getRandomColor } from "../utils";
 
 const RoundButton = styled.View<{
     color: string;
+    width: string;
 }>`
-    flex: 1;
-    margin: 15%;
     justify-content: center;
     align-items: center;
     background-color: ${p => p.color};
+    width: ${p => p.width};
+    aspect-ratio: 1;
 `
 
 // to centralize "-"
@@ -70,11 +71,11 @@ const CustomMultiSelect: React.FC<{
                         width: "100%", 
                         justifyContent: "center",
                         alignItems: "center",
-                        flexDirection: "row"
+                        flexDirection: "row",
                     }}
                     key={i}>
                 <CustomSelect 
-                    width="80%"
+                    width="85%"
                     color={color}
                     onSelect={(v) => {
                         setSpecificValue(i, v.value)
@@ -82,10 +83,11 @@ const CustomMultiSelect: React.FC<{
                     value={value} 
                     options={options} />
                 <TouchableOpacity 
-                    style={{width: "20%", aspectRatio: "1/1"}}
+                    style={{flexDirection: "row",alignItems: "center", justifyContent: "flex-end",width: "15%", aspectRatio: "1/1"}}
                     onPress={() => deleteValue(i)}>
                         <RoundButton 
                             style={{borderRadius: 100}} 
+                            width="90%"
                             color={convertHexToRGBA(color, 0.2)}>
                             <LessSymbol color={color}/>
                         </RoundButton>
@@ -96,6 +98,7 @@ const CustomMultiSelect: React.FC<{
 
         {
             (values_.filter(v=>v!=null).length < maxSelects) &&
+                <View style={{marginTop: "2%"}}>
                 <CustomSelect 
                     onSelect={(v) => {
                         setSpecificValue(values_?.length, v.value)
@@ -107,6 +110,7 @@ const CustomMultiSelect: React.FC<{
                         placeholder[1] : placeholder[0] : ""}
                     value={undefined} 
                     options={filterOptions} />
+                </View>
         }
 
         

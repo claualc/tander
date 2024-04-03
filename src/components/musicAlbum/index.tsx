@@ -1,46 +1,47 @@
 
-import * as albumAPI from '@serv/albumService';
+import albumService, * as albumAPI from '@serv/albumService';
 import React, { useEffect, useState } from 'react';
 import { AlbumCInfoWrapper, AlbumCoverWrapper, ErrorCard, LoadingCard, MainCard } from './style';
 import { Album } from '@api/domain/Album';
 import { Image } from 'react-native';
 import { CustomText } from '@components/index';
 import { theme } from '@screens/theme';
-import { MusicInterest } from '@api/domain/User';
+import { cutText } from '../utils';
 
 interface Props {
-  albumInfo?: MusicInterest;
+  albumName: string;
+  artistName: string;
+  imageUrl?: string;
 }
 
-const AlbumComponent = ({albumInfo}: Props) => {
+const AlbumComponent = ({albumName, artistName, imageUrl}: Props) => {
 
   const [loading, setLoading] = useState<boolean>(true);
   const [data, setData] = useState<Album | null>(null);
 
   useEffect(() => {
         (async () => {
-          if (albumInfo) {
-          const res = await albumAPI.getAlbum(albumInfo.albumName,albumInfo.artistName);
-          setData(res)
-          setLoading(false)
-        }
+          if (albumName && artistName && imageUrl) {
+            setData(new Album(albumName, imageUrl, artistName))
+            setLoading(false)
+          }
       })();
       }, [])
 
 
   return (
     loading ?
-      <LoadingCard></LoadingCard>
+      <LoadingCard />
       : data ?
       <MainCard>
         <AlbumCoverWrapper>
           <Image
             style={{flex: 1}}
-            source={{uri: data.image_url}}
+            source={{uri: data.imageUrl}}
           />
         </AlbumCoverWrapper>
         <AlbumCInfoWrapper>
-          <CustomText fontFam='BD' color={theme.secondary_dark}>{data.name}</CustomText>
+          <CustomText fontFam='BD' color={theme.secondary_dark}>{cutText(data.name, 40)}</CustomText>
           <CustomText fontFam='RG' color={theme.tertiary_dark}>{data.artist.name}</CustomText>
         </AlbumCInfoWrapper>
       </MainCard>

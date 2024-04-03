@@ -4,8 +4,6 @@ import { User } from "@api/domain/User";
 import languageService from "@serv/languageService";
 import { SelectOption } from "@components/select";
 
-import * as albumservice from "@serv/albumService";
-
 /*
     Which values the user is able to modify
 */
@@ -75,7 +73,8 @@ export const profileOptions: () => {
                 ],
                 descriptionOnTop: true,
                 inputType: inputTypes.MULTISELECT,
-                options: languages
+                options: languages,
+                includeSearchBar: true
             }]
         }, 
         [ProfileFormPageId.LANG_TO_LEARN_INFO]: {
@@ -86,6 +85,7 @@ export const profileOptions: () => {
             user_attibute: "musicInterest",
             title: "Let us know more about you!",
             subtitle: "You have 200 characters to tell us a little bit more about you and let us know you better!",
+            allFieldsRequired: false,
             questions: [{
                 id: 100,
                 placeholder: "A little about me",
@@ -94,17 +94,9 @@ export const profileOptions: () => {
             },
             {
                 id: 101,
-                maxSelects: 4,
                 description: "Choose also a song that is always on repeat on your playlists!",
                 descriptionOnTop: true,
-                placeholder: "Search a song",
-                inputType: inputTypes.ASYNC_SELECT,
-                searchOptions: async (v: string) => {
-                    let artistNames = await albumservice.searchArtists()
-                    return artistNames.map((a,i) => ({
-                        name: a, value: a
-                    } as SelectOption))
-                }
+                inputType: inputTypes.MUSIC_ASYNC_SELECT,
             }]
         }
     }

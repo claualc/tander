@@ -10,6 +10,7 @@ import { Forms } from "@components/forms";
 
 import * as userService from "@serv/userService";
 import { convertUserToCreateDTO } from "@serv/userService/DTO";
+import albumService, { MusicInterestDTO } from "@serv/albumService";
 /*
     This screen allows the user to modify its 
     personal information.
@@ -50,7 +51,10 @@ const ProfileScreen = () => {
         ans=[loggedUser?.langToLearn.map(l => l.id)]
         break;
       case ProfileFormPageId.MORE_ABOUT_USER:
-        ans=[loggedUser?.bio, loggedUser?.musicInterest]
+        ans=[
+          loggedUser?.bio,
+          !loggedUser?.musicInterest ? null :
+            albumService.convertMusicInterectToDTO(loggedUser?.musicInterest)]
         break;
     }
     return [ans]
@@ -60,7 +64,6 @@ const ProfileScreen = () => {
 
       setLoading(true)
       setUserAttribute(ProfileFormPageId.NONE)
-      console.log("update values", inputs)
 
       if (loggedUser?.id) {
       let dto = convertUserToCreateDTO(loggedUser);
@@ -69,7 +72,6 @@ const ProfileScreen = () => {
         case ProfileFormPageId.PHOTOS:
           break;
         case ProfileFormPageId.PHONE_NUM_INPUT:
-          console.log("updatingg phone number")
           dto.phoneNumber = inputs[0][0]
           break;
         case ProfileFormPageId.STUDENT_INFO:
@@ -84,11 +86,10 @@ const ProfileScreen = () => {
           break;
         case ProfileFormPageId.MORE_ABOUT_USER:
           dto.bio= inputs[0][0]
-          dto.musicInterestRef=""
+          dto.musicInterest=inputs[0][1] as MusicInterestDTO
           break;
       }
       console.log("dto", dto)
-
       const updatedU = await userService.update(dto, loggedUser.id)
       let {photos_, ...rest} = updatedU
       console.log("updated u", rest)

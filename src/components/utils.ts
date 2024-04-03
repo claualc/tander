@@ -26,7 +26,11 @@ export const convertHexToRGBA = (hexCode: string, opacity = 1) => {
     return `rgba(${r},${g},${b},${opacity})`;
   };
 
-  /*
+export const cutText = (s: string, max: number) => {
+    return s.length > max ? `${s.slice(0, max-3)}...` : s;
+}
+
+/*
 
     Functions used to validate general fields such as
     phone numbers, dates and its masks

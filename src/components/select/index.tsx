@@ -1,11 +1,11 @@
-import { DimensionValue,TouchableHighlight } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 
-import { Main } from "./style";
 import { CustomText } from "@components/index";
 import SelectModal from "./SelectModal";
 import { convertHexToRGBA, getRandomColor } from "@components/utils";
+import { CustomSelectTouchable } from "./style";
+import { MusicInterestDTO } from "@serv/userService/DTO";
 
 export interface SelectLogicalProps {
     value?: string | number;
@@ -15,7 +15,9 @@ export interface SelectLogicalProps {
 
 export interface SelectOption {
     name: string;
-    value: string | number;
+    value: string | number | MusicInterestDTO;
+    imageUrl?: string;
+    description?: string;
 }
 
 export interface SelectComponentProps extends SelectLogicalProps {
@@ -24,7 +26,6 @@ export interface SelectComponentProps extends SelectLogicalProps {
     title?: string;
     color?: string;
 }
-
 
 /* the value is they key in the object
    while the valueName is the visual name gave 
@@ -55,33 +56,25 @@ const CustomSelect: React.FC<SelectComponentProps> = ({
             }} 
             options={options}        
             modalTitle={title}
+            color={color_}
             />
     }
 
-    <TouchableHighlight 
+    <CustomSelectTouchable
         onPress={() => {
             setShowModal(true)
         }}
-        activeOpacity={0.6}
-        underlayColor="#0000"
-        style={{
-            flexDirection: "row",
-            width: width as DimensionValue,
-            borderRadius: 100,
-            overflow: "hidden",
-            marginTop: "3%"
-        }}>
-            <Main color={color_}>
-                {
-                    valueName ?
-                    <CustomText color={color_}>{valueName}</CustomText>
-                    : <CustomText color={convertHexToRGBA(color_, 0.5)}>{ placeholder || ""}</CustomText>
-                }
-                {
-                    <Ionicons name="chevron-down-outline" color={color_} size={20}/>
-                }
-            </Main>
-    </TouchableHighlight> 
+        width={width}
+        color={color_}>
+            {
+                valueName ?
+                <CustomText color={color_}>{valueName}</CustomText>
+                : <CustomText color={convertHexToRGBA(color_, 0.5)}>{ placeholder || ""}</CustomText>
+            }
+            {
+                <Ionicons name="chevron-down-outline" color={color_} size={20}/>
+            }
+    </CustomSelectTouchable>
 
     </>
 }

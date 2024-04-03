@@ -1,6 +1,7 @@
 import { DocumentReference } from "firebase/firestore";
 import { User } from "@api/domain/User";
 import { getDDMMYYYYFromDate } from "@components/utils";
+import albumService, { MusicInterestDTO } from "@serv/albumService";
 
 export interface CreateUserDTO {
     username: string;
@@ -22,16 +23,10 @@ export interface CreateUserDTO {
         ]
     */
 
-    FCMPushNotificationsToken?: string;
-    bio?: string;
+    FCMPushNotificationsToken: string | null;
+    bio: string | null;
 
-    musicInterest?: MusicInterestDTO;
-    musicInterestRef?: string; 
-}
-
-export interface MusicInterestDTO {
-    album_name: string;
-    artist_name: string;
+    musicInterest: MusicInterestDTO | null;
 }
 
 /*
@@ -52,6 +47,11 @@ export interface PhotoChunkDTO {
 
 export const convertUserToCreateDTO = (user: User) => {
 
+    let musicInterest = null;
+    if (user.musicInterest) {
+        musicInterest = albumService.convertMusicInterectToDTO(user.musicInterest)
+    }
+    
     let dto: CreateUserDTO = {
         username: user.username,
         birth: getDDMMYYYYFromDate(user.birth), //DDMMYYYY
@@ -63,18 +63,9 @@ export const convertUserToCreateDTO = (user: User) => {
         team: user.team.id , //id
         country: user.country.id , //id
         FCMPushNotificationsToken: user.FCMPushNotificationsToken,
-        bio: user.bio || "",
-        musicInterestRef: ""
+        bio: user.bio || null,
+        musicInterest,
     }
-
-    // if (user.musicInterest) 
-    //     dto = {
-    //         ...dto,
-    //         musicInterest: {
-    //             album_name: user.musicInterest.albumName || "" ,
-    //             artist_name: user.musicInterest.artistName || "",
-    //         }
-    //     }
     return dto
 }
 

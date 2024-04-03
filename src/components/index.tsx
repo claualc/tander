@@ -2,7 +2,8 @@ import { theme } from "@screens/theme";
 import { useState } from "react";
 import styled from "styled-components/native";
 import { convertHexToRGBA } from "@components/utils";
-
+import React from "react";
+import { Ionicons } from "@expo/vector-icons";
 
 /* 
   ROOT COMPONENTS:
@@ -11,7 +12,7 @@ import { convertHexToRGBA } from "@components/utils";
 export const BOTTOM_TABNAV_HEIGTH = 10; //%
 
 export const RootScreenView = styled.View<{
-  showBottomNavigatior: boolean
+  showBottomNavigatior: boolean;
 }>`
   width: 100%;
   height: ${p =>  p.showBottomNavigatior? `${100-BOTTOM_TABNAV_HEIGTH}%` : "100%"};
@@ -31,12 +32,12 @@ export const ScreenView = styled.View`
   z-index: -1000;
 `;
 
-interface Dimensions {
+interface DimensionsI {
   widthPx?: number;
   heightPx?: number;
 }
 
-export const Wrapper = styled.View<Dimensions>`
+export const Wrapper = styled.View<DimensionsI>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -52,7 +53,7 @@ const typographyTypes = {
   MD: 'Format-Sans-MD',
   RG: 'Format-Sans-RG',
   XB: 'Format-Sans-XB',
-  BD: 'Format-Sans-BD'
+  BD: 'Format-Sans-BD',
 }
 
 export const CustomText = styled.Text<{
@@ -117,11 +118,8 @@ function getRandomInt(max: number) {
 export const ColorWrapper: React.FC<React.PropsWithChildren<PropsColoWrapper>> = ({children, inColor}) => {
   const [color, setColor] = useState(() => {
     const randomColorChooses = [theme.tertiary, theme.secondary]
-    return inColor || randomColorChooses[getRandomInt(randomColorChooses.length)]
+    return inColor || randomColorChooses[getRandomInt(randomColorChooses.length)];
   })
 
   return <Cwrapper color={convertHexToRGBA(color, 0.2)}>{children}</Cwrapper>
 }
-
-
-

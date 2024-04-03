@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useState, useCallback, useMemo, useEffect } from "react";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 
 import { theme } from "@screens/theme";
 import CustomDateInput from "@components/forms/components/CustomDateInput";
@@ -13,11 +13,11 @@ import ColorButton from "@components/colorButton";
 import CustomMultiSelect from "@components/multiSelect";
 import CustomSelect from "@components/select";
 import { FormsPage, FormsQuestion, inputTypes } from "./components/formDTOs";
-import CustomAsyncSelect from "@components/selectAsync";
+import MusicInterectAsyncSelect from "@components/musicInterectAsyncSelect";
 
 
 export const checkFormsInputValid = (v: any, q: FormsQuestion) => {
-    let isValid = q.validate ? q.validate(v) : v!=null
+    let isValid = q.validate ? q.validate(v) : true // allways valid if not validation
     return isValid;
 }
 
@@ -35,6 +35,7 @@ export const Forms: React.FC<{
     const [validAnswer, setValidAnswer] = useState(false);
     const [currentPageId, setCurrentPageId] = useState<number>(0);
     const [sendForms, setSendForms] = useState<boolean>(false);
+    const [allFieldsRequired, setAllFieldsRequired] = useState<boolean>(pages[0].allFieldsRequired == undefined ? true : pages[0].allFieldsRequired);
 
     // the values of the answers of the current load page
     // they will be shown in the input
@@ -46,7 +47,6 @@ export const Forms: React.FC<{
             setValues([...defaultAnswers[0]])
         }
     }, [defaultAnswers])
-
 
     const setCurrentValues = useCallback((id: number, newVal: any) => {
         // arrays r compared by reference not by value
@@ -64,6 +64,7 @@ export const Forms: React.FC<{
         //     phoneNumber, // phoneNumber
         // ).pages[currentPageId]
         let page = pages[currentPageId]
+        setAllFieldsRequired(page.allFieldsRequired == undefined ? true : page.allFieldsRequired)
 
         // onInitPage
         // if (page.id == PageId.PHONE_NUM_CODE_VERIF) {
@@ -110,8 +111,11 @@ export const Forms: React.FC<{
             ) && (v.length ? true : (v.length != 0)))
         }, true)
 
-        return !(noNullVal && validAnswer)
-    }, [values, validAnswer])
+        return !(
+            (allFieldsRequired ? noNullVal : true) 
+            && validAnswer
+        )
+    }, [values, validAnswer, allFieldsRequired])
 
     const turnFormsPageAhead = useCallback((goAhead: boolean) => {
         // default go ahead
@@ -136,7 +140,7 @@ export const Forms: React.FC<{
         setAnswers_(ans)
     },[answers, currentPageId]);
 
-    return <>
+    return <ScrollView style={{width: "100%"}}>
             <BackButtonWrapper>
                 <Ionicons 
                     onPress={() => {
@@ -208,7 +212,7 @@ export const Forms: React.FC<{
                     : (q.inputType == inputTypes.MULTISELECT) ?
                         <CustomMultiSelect 
                             onSelect={v => {
-                                setCurrentValues(i, v)
+                                setCurrentValues(i, v) // array of values
                                 checkValidAnswer(v, q)
                             }}
                             maxSelects={q.maxSelects}
@@ -231,16 +235,13 @@ export const Forms: React.FC<{
                                 checkValidAnswer(v, q)
                             }}
                             values={values[i]} />
-                    : (q.inputType == inputTypes.ASYNC_SELECT) ?
-                        <CustomAsyncSelect 
+                    : (q.inputType == inputTypes.MUSIC_ASYNC_SELECT) ?
+                        <MusicInterectAsyncSelect 
                             onSelect={v => {
-                                setCurrentValues(i,v.value)
+                                setCurrentValues(i, v.value)
                                 checkValidAnswer(v, q)
                             }}
-                            value={values[i]}
-                            placeholder={q.placeholder} 
-                            title={q.placeholder}
-                            searchOptions={q.searchOptions}/>
+                            value={values[i]} />
                     :  <></>
                     }
                     </View>
@@ -261,5 +262,5 @@ export const Forms: React.FC<{
                 title={"Next"}
                 disabled={disableButton}/>
             </CenterWrapping>
-    </>
+    </ScrollView>
 }

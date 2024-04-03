@@ -17,15 +17,18 @@ const ContextProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
   const [loggedUser, setLoggedUser] = useState<User | null>(null);
   const [stateLoading, setLoading] = useState<boolean>(false);
 
-    useEffect(() => {
-       (async () => {
-         setLoading(true)
-         const id = "Xak6maKrr0mRL2NokYig_"
-         const user =await userService.getById(id);
-         setLoggedUser(user)
-         setLoading(false)
-       })()
-    },[])
+  useEffect(() => {
+      (async () => {
+        setLoading(true)
+        const id = "Xak6maKrr0mRL2NokYig_"
+        const user =await userService.getById(id);
+
+        let {photos_, ...rest} = user
+        console.log(rest)
+        setLoggedUser(user)
+        setLoading(false)
+      })()
+  },[])
 
     useEffect(() => {
       if (loggedUser) {

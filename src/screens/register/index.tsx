@@ -8,6 +8,7 @@ import { Forms } from '@components/forms';
 import { registerQuestions } from './components/RegisterForms';
 import { View } from 'react-native';
 import { ProgressBar, ProgressBarWrapper } from './components/ProgressBar';
+import FCMService from "@firebaseServ/notifications";
 
 
 const initQuest = registerQuestions()
@@ -32,7 +33,10 @@ const RegisterScreen = () => {
         langKnown :inputs[5][0], // langKnown
         photos :inputs[7][0], //photos
         team :inputs[6][0], //userTeam
-        country :inputs[4][0] //country,
+        country :inputs[4][0], //country,
+        bio: "",
+        musicInterest: null,
+        FCMPushNotificationsToken: FCMService.getDeviceToken()
       }
 
       const user = await userServices.create(userDTO);
