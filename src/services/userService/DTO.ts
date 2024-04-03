@@ -1,5 +1,5 @@
 import { DocumentReference } from "firebase/firestore";
-import { User } from "@api/domain/User";
+import { Photo, User } from "@api/domain/User";
 import { getDDMMYYYYFromDate } from "@components/utils";
 import albumService, { MusicInterestDTO } from "@serv/albumService";
 
@@ -14,7 +14,7 @@ export interface CreateUserDTO {
     team: number; //id
     country: string; //id
 
-    photos?: string[]; // base64 value
+    photos?: Photo[]; // base64 value
     photoChunkRefs?: string[]; 
     /* ex 
         [ 
@@ -38,13 +38,6 @@ export interface CreateUserDTO {
 
     Each DTO is a chunk of a photo value
 */
-export interface PhotoChunkDTO {
-    value: string;
-    userRef: DocumentReference;
-    photoLogicalId: string;
-    id: number;
-}
-
 export const convertUserToCreateDTO = (user: User) => {
 
     let musicInterest = null;

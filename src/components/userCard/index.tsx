@@ -138,7 +138,9 @@ const Card: React.FC<CardProps> = ({
                     zIndex:-1,
                     position: "absolute"
                 }} 
-                source={{uri:  `data:image/jpeg;base64,${photosBase64[currentPhotoId]}`}}/> 
+                source={photosBase64[currentPhotoId] ?
+                    {uri: `data:image/jpeg;base64,${photosBase64[currentPhotoId]}`}
+                    : EmptyImage}/> 
 
             <Image resizeMode={"cover"} style= {{flex:1 , width: "100%", height: "100%", zIndex:0, position: "absolute"}}    
                     source={BlackBottomBlur}/> 

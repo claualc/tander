@@ -2,9 +2,10 @@ import { useState, useCallback, useEffect } from "react";
 import { ScrollView, View, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import styled from "styled-components/native";
-import * as ImagePicker from 'expo-image-picker';
 
 import { theme } from "@screens/theme";
+import { Photo } from "@api/domain/User";
+import photoServices from "@serv/photoServices";
 
 const PhotoFrame = styled.TouchableHighlight`
     width: 93%;
@@ -29,38 +30,37 @@ const AddDeletePhotoButton = styled.View<{
     transform: ${ p => p.photoSelected ? null : "rotate(45deg)" };
 `;
 
+
 const CustomPhotoBatchInputs: React.FC<{
-    values: (string | null)[];
+    values: Photo[];
     count: number; // number of inputs to render
-    onChange: (v: (string)[]) => void
+    onChange: (v: (Photo | null)[]) => void
 }> = ({values, onChange, count}) => {
 
-    const [imgs_, setImgs_] = useState<(string | null)[]>(() => {
-        let completeArray = values ||  [];
-        completeArray.splice( completeArray.length, count- completeArray.length, null)  
-        return completeArray  
-    });
+    const [imgs_, setImgs_] = useState<(Photo | null)[]>([]);
 
-    const setSpecificImg = useCallback((i: number, newVal: string) => {
+    const updateValues = useCallback((values: (Photo | null)[]) => {
+        onChange(values)
+    }, [imgs_]);
+
+    useEffect(() => {
+        if (values){
+            setImgs_(values)  
+        }
+    }, [values])
+
+    const setSpecificImg = useCallback((i: number, newVal: Photo) => {
         let updated = [...imgs_]
         updated.splice(i, 1, newVal)
-        onChange(updated.map(v => (v || "")))
+        updateValues(updated)
         setImgs_(updated)
     }, [imgs_])
 
     const pickImage = useCallback(async (i: number) => {
         // No permissions request is necessary for launching the image library
-        let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [3, 4],
-        quality: 0.7,
-        base64: true
-        });
-
-
-        if (result.assets?.length && result.assets[0].base64) {
-            setSpecificImg(i ,result.assets[0].base64);
+        const photo = await photoServices.pickPhotoFromGallery()
+        if (photo) {
+            setSpecificImg(i ,photo);
         }
     }, [imgs_]);
 
@@ -68,7 +68,7 @@ const CustomPhotoBatchInputs: React.FC<{
         // No permissions request is necessary for launching the image library
         let updated = [...imgs_]
         updated.splice(i, 1, null)
-        onChange(updated.map(v => (v || "")))
+        updateValues(updated)
         setImgs_(updated)
     }, [imgs_]);
 
@@ -93,7 +93,7 @@ const CustomPhotoBatchInputs: React.FC<{
                             position: "relative"}}>
                             <PhotoFrame 
                                 underlayColor={"#0000"}
-                                onPress={() => (imgs_[i] == null) ? pickImage(i) : deleteImg(i)}
+                                onPress={() => (!imgs_[i]?.value) ? pickImage(i) : deleteImg(i)}
                                 style={{
                                     borderRadius: 25,
                                 }}>
@@ -102,7 +102,7 @@ const CustomPhotoBatchInputs: React.FC<{
                                     <Image 
                                         resizeMode="contain"
                                         style={{flex:1}} 
-                                        source={{uri: `data:image/jpeg;base64,${imgs_[i]}`}}/>
+                                        source={{uri: `data:image/jpeg;base64,${imgs_[i]?.value}`}}/>
                                     : <></>
                                 }
                                 

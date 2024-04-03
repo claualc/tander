@@ -5,7 +5,7 @@ import { CustomText } from "@components/index";
 import SelectModal from "./SelectModal";
 import { convertHexToRGBA, getRandomColor } from "@components/utils";
 import { CustomSelectTouchable } from "./style";
-import { MusicInterestDTO } from "@serv/userService/DTO";
+import { MusicInterestDTO } from "@serv/albumService";
 
 export interface SelectLogicalProps {
     value?: string | number;

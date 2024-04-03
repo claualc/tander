@@ -4,7 +4,7 @@ import locationServices from "@serv/locationServices";
 import languageService from "@serv/languageService";
 import studentService from "@serv/studenService";
 
-import { generateRandomString, getDateFromString } from "@components/utils";
+import { getDateFromString } from "@components/utils";
 
 import { converter } from "@firebaseServ/database/converterDTO";
 import dbServices from "@firebaseServ/database"
@@ -12,11 +12,11 @@ import dbServices from "@firebaseServ/database"
 import { Photo, User, UserTeam } from "@domain/User";
 import userTeamDic from "@assets/dictionaries/userTeam";
 
-import { CreateUserDTO,  PhotoChunkDTO } from "./DTO";
+import { CreateUserDTO } from "./DTO";
 import albumService from "@serv/albumService";
+import photoServices from "@serv/photoServices";
 
 const COLLECTION_ID = "user"; // main collection
-const SUBCOLLECTION_PHOTOCHUNKS_ID = "photo_chunks"; // collection related to main
 
 const parseUserFromFirestoreAsync = async (data: any, id: string): Promise<User> => {
     const daybirth = getDateFromString(data.birth as string)
@@ -39,7 +39,7 @@ const parseUserFromFirestoreAsync = async (data: any, id: string): Promise<User>
         musicInterest = await albumService.getMusicInterestFromDTO(data.musicInterest)
     }
 
-    let photos = await getUserPhotos(data.photoChunkRefs)
+    let photos = await photoServices.getUserPhotos(data.photoChunkRefs)
     
     const matches: String[] = data.matches
     const likedUsersId: String[] = data.likedUsers
@@ -87,9 +87,12 @@ export const getById = async (id: string | String | number | Number) => {
     return await dbServices.getObjectById(COLLECTION_ID,id, userConverter) as User;
 }
 
-export const update = async (user: CreateUserDTO, id: string) => {
-    const ref = await dbServices.getRefById(COLLECTION_ID,id,userConverter);
-    await dbServices.update(COLLECTION_ID, user, ref.id, userConverter)
+export const update = async (user: CreateUserDTO, userId: string) => {
+    let {photos: newPhotos, ...dto} = user;
+
+    const ref = await dbServices.getRefById(COLLECTION_ID, userId,userConverter);
+    
+    await dbServices.update(COLLECTION_ID, dto, ref.id, userConverter)
 
     console.log("..:: FirebaseService.update (user)", ref.id)
     const userUpdated = await dbServices.getObjectByRef(ref)
@@ -104,9 +107,9 @@ export const create = async (dto: CreateUserDTO) => {
     
     let photoChunkRefs: string[] = [];
     if (photos?.length) {
-        const photoRefsPromise = photos?.map(
-            async (p) => await createUserPhoto({
-                value: p, 
+        const photoRefsPromise = photos.filter((v:any) =>  v != null)?.map(
+            async (p) => await photoServices.createUserPhoto({
+                photo: p, 
                 userRef: userRef
             })
         )
@@ -122,62 +125,6 @@ export const create = async (dto: CreateUserDTO) => {
     const userCreated = await dbServices.getObjectByRef(userRef)
     console.log("..:: FirebaseService.create (user)", userRef.id)
     return userCreated as User
-}
-
-const CHUNK_SYMBOL_SEPARATOR = "."
-export const createUserPhoto = async (photo: {
-    value: String;
-    userRef: DocumentReference;
-}) => {
-
-    let {value, userRef} = photo
-
-    let half = Math.floor(value.length/2)
-    let mostSignificatValue = value.slice(0, half)
-    let lessSignificatValue = value.slice(half)
-
-    let id = generateRandomString(20);
-
-    // Most Significat Value
-    let MSVdto: PhotoChunkDTO = {
-        value: mostSignificatValue,
-        userRef,
-        photoLogicalId: id,
-        id: 0
-    }
-
-    // Less Significat Value
-    let LSVdto: PhotoChunkDTO = {
-        value: lessSignificatValue,
-        userRef,
-        photoLogicalId: id,
-        id: 2
-    }
-
-    const MSVphotoRef = await dbServices.create(
-        SUBCOLLECTION_PHOTOCHUNKS_ID, MSVdto )
-
-    const LSVphotoRef = await dbServices.create(
-        SUBCOLLECTION_PHOTOCHUNKS_ID, LSVdto )
-    
-    console.log("..:: FirebaseService.createUserPhoto (photo)", [MSVphotoRef.id, LSVphotoRef.id])
-    return `${MSVphotoRef.id}${CHUNK_SYMBOL_SEPARATOR}${LSVphotoRef.id}`
-}
-
-export const getUserPhotos = async (chunkRefs: string[]) => {
-
-    let photos = chunkRefs.map(async (photoChunk) => {
-        let [chunk1, chunk2] = photoChunk.split(CHUNK_SYMBOL_SEPARATOR);
-
-        let msv = (await dbServices.getObjectById(SUBCOLLECTION_PHOTOCHUNKS_ID,chunk1)) as PhotoChunkDTO;
-        let lsv = (await dbServices.getObjectById(SUBCOLLECTION_PHOTOCHUNKS_ID,chunk2)) as PhotoChunkDTO;
-
-        return new Photo(
-            msv?.value+lsv?.value,
-            msv?.photoLogicalId
-        )
-    })
-    return await Promise.all(photos)
 }
 
 export const getUserTeamById = (id: number) => {

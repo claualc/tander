@@ -58,8 +58,10 @@ const MyStack = () => {
 
     const { loggedUser, stateLoading , setLoggedUser } = React.useContext(LoggedUserContext) as UserContextType;
 
-    return stateLoading ?  
-            <LoadingComponent /> : <>
+    return <>
+            {
+                stateLoading && <LoadingComponent /> 
+            }
             <RootScreenView showBottomNavigatior={!!loggedUser}>
                 <NavigationContainer ref={navigatorRef}>
                         <Stack.Navigator 

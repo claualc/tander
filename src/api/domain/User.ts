@@ -17,9 +17,11 @@ export class Photo {
     constructor(
         public value_: string,
         public id_: string,
+        public chunkIds_: string, // chunkId1.chunkid2
     ) {}
 
     get value() {return this.value_}
+    get chunkIds() {return this.chunkIds_}
     get id() {return this.id_}
 }
 
@@ -101,6 +103,7 @@ export class User {
     get langKnown() {return this.langKnown_};
     get team() {return this.team_};
     get photos() {return this.photos_};
+    set photos(p: Photo[]) {this.photos_ = p};
     //get city() {return this.city_};
     get hasSeenWhoLikesMeToday() {return this.hasSeenWhoLikesMeToday_};
     get likedUsers() {return this.likedUsers_};

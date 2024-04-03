@@ -1,6 +1,6 @@
 import styled from "styled-components/native";
 import { Ionicons, SimpleLineIcons } from "@expo/vector-icons";
-import { View } from "react-native";
+import { Image, TouchableHighlight, View } from "react-native";
 
 import { CustomText } from "@components/index";
 import { theme } from "@screens/theme";
@@ -24,13 +24,48 @@ export const MainWrapper = styled.View`
   position: relative;
 `
 
-export const Avatar = styled.View`
+const AvaterWrapper: typeof TouchableHighlight = styled.TouchableHighlight`
     width: 35%;
     aspect-ratio: 1;
     overflow: hidden;
     border-color: ${p => p.theme.main};
     border-width: 2.5px;
+    border-radius: 1000px;
 `;
+
+
+const EditButton = styled.View`
+    width: 11%;
+    text-align: center;
+    aspect-ratio: 1;
+    background-color: ${p => p.theme.main};
+    justify-content: center;
+    align-items: center;
+    
+`;
+
+export const Avatar: React.FC<{
+  onPress: () => void;
+  imgURL?: string;
+}> = ({imgURL, onPress}) => {
+  return <View>
+    <AvaterWrapper 
+      style={{
+        elevation: 10,
+        backgroundColor: "#0000",
+        shadowColor: "black",
+        shadowOffset: { height: 10, width:10} }}
+        onPress={onPress}>
+        <Image 
+            resizeMode="cover"
+            style={{flex:1}} 
+            source={{uri:  `data:image/jpeg;base64,${imgURL || ""}`}}/>
+    </AvaterWrapper>
+    {/* <EditButton>
+      <Ionicons name="brush-outline" size={20}/>
+    </EditButton> */}
+  </View>
+}
 
 export const DescriptionView = styled.View`
     width: 100%;
@@ -66,6 +101,12 @@ export const Button = styled.TouchableHighlight<{
   transform:  rotate(-90deg);
 `
 
+const Centered = styled.View`
+  text-align: center;
+  width: 100%;
+  height: 100%;
+`
+
 interface Props {
   title: string;
   onPress: () => void;
@@ -89,7 +130,7 @@ export const Item: React.FC<Props> = ({title, icon, onPress, noBorder=false}: Pr
             style={{borderRadius: 100}}
             color={color} 
             onPress={onPress}>
-            <Ionicons name="chevron-down-outline" color={color} size={20}/>
+                <Ionicons style={{position: "relative", left: "0%", top: "20%"}} name="chevron-down-outline" color={color} size={20}/>
           </Button>
       </View>
 

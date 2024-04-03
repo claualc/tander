@@ -1,4 +1,4 @@
-import { getFirestore, getDocs, doc, query, collection, DocumentData, QueryDocumentSnapshot, SnapshotOptions, getDoc, setDoc, addDoc, DocumentReference, updateDoc } from "firebase/firestore";
+import { getFirestore, getDocs, doc, query, collection, DocumentData, QueryDocumentSnapshot, SnapshotOptions, getDoc, setDoc, addDoc, DocumentReference, updateDoc, deleteDoc } from "firebase/firestore";
 import { converter } from "./converterDTO";
 import firebase from "@firebaseServ/index";
 import { generateRandomString } from "@components/utils";
@@ -94,6 +94,9 @@ const FirestoreService = () => {
                     return await d.data()});
             return Promise.all(docsData)
         },
+        delete: async (collectionName: string, id: string) => {
+            await deleteDoc(doc(db, collectionName, id));
+        }
     }
 }
 

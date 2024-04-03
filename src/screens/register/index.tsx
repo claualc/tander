@@ -25,7 +25,7 @@ const RegisterScreen = () => {
       setLoading(true)
       const userDTO: CreateUserDTO = {
         username: inputs[1][0], // username
-        birth :inputs[2][0], // birthdate
+        birth: inputs[2][0], // birthdate
         phoneNumber: inputs[0][0], // phonenumber
         university :inputs[3][0], //university_
         course :inputs[3][1], // course

@@ -14,6 +14,7 @@ import CustomMultiSelect from "@components/multiSelect";
 import CustomSelect from "@components/select";
 import { FormsPage, FormsQuestion, inputTypes } from "./components/formDTOs";
 import MusicInterectAsyncSelect from "@components/musicInterectAsyncSelect";
+import { Photo } from "@api/domain/User";
 
 
 export const checkFormsInputValid = (v: any, q: FormsQuestion) => {
@@ -256,7 +257,8 @@ export const Forms: React.FC<{
             <CenterWrapping>
             <ColorButton
                 onPress={() =>{
-                    setAnswers(values)
+                    let v = values;
+                    setAnswers(v)
                     turnFormsPageAhead(true) 
                 }}
                 title={"Next"}
