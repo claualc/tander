@@ -7,6 +7,29 @@ export const INITIAL_GESTURE_VALS = {
     scale: {x:0.85, y: 0.82},
 }
 
+export interface coordsI {
+    x: number ;
+    y: number;
+}
+
+const randomInside = (arr: number[]) => {
+    let [min,max] = arr
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+const getRandomCoordinateY = () => {
+    let heightTop = [20,30];
+    return randomInside(heightTop)
+}
+
+const getRandomCoordinateX = (moveRigth:boolean) => {
+    let swipedRigt = [50,70]
+    let swipedLeft = [10,30]
+    
+    return moveRigth ? 
+            randomInside(swipedRigt)
+            : randomInside(swipedLeft)
+}
 export const panRes = (
     isScrolledUp: boolean,
     pan: Animated.ValueXY,
@@ -17,6 +40,8 @@ export const panRes = (
     whenScrollDown: () => void,
     onSwipeLeft: () => void,
     onSwipeRigth: () => void,
+    setGifCoords: React.Dispatch<React.SetStateAction<coordsI | null>>,
+    gifCoords: coordsI | null
     ) => PanResponder.create({
 
     onMoveShouldSetPanResponder: () => true,
@@ -27,9 +52,22 @@ export const panRes = (
                 x: ges.dx,
                 y: ges.dy,
             });
+
+            let dx = 5
+            const moveLeft = ges.dx < -dx 
+            const moveRigth = ges.dx > dx 
+
+            if (!gifCoords?.x && !gifCoords?.y) {
+                setGifCoords({
+                    x: getRandomCoordinateX(moveRigth),
+                    y: getRandomCoordinateY()
+                });
+            }
         }
       },
       onPanResponderRelease: (ev, ges) => {
+
+            setGifCoords(null)
 
             let animations: any[] = []
             const width = Dimensions.get('screen').width;

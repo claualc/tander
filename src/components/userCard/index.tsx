@@ -1,10 +1,10 @@
 import { Animated, Dimensions, Image, PanResponder, TouchableWithoutFeedback, View } from "react-native";
-import { PhotoChipWrapper, PhotoSwipeChips, UserDataView } from "./style";
+import { AnimationView, PhotoChipWrapper, PhotoSwipeChips, UserDataView } from "./style";
 import { Chip, CustomText } from "@components/index";
 import EmptyImage from "@assets/empty_image.png";
 import BlackBottomBlur from "@assets/black_blur_user_card.png";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { INITIAL_GESTURE_VALS, panRes } from "./PanResponder";
+import { INITIAL_GESTURE_VALS, coordsI, panRes } from "./PanResponder";
 import { theme } from "@screens/theme";
 import { User } from "@api/domain/User";
 
@@ -30,12 +30,16 @@ const Card: React.FC<CardProps> = ({
         user
     }) => {
 
+        
+    const [animationGifCoords, setAnimationGifCoords] = useState<coordsI | null >(null);
     const [currentPhotoId, setCurrentPhotoId] = useState<number>(0);
     const [photosBase64, setPhotosBase64] = useState<string[]>(
         user?.photos?.length ? 
         user?.photos?.map(p => p.value) 
         : []
     );
+
+    useEffect(() => {console.log("animationGifCoords",animationGifCoords)},[animationGifCoords])
   
     const pan = useRef(new Animated.ValueXY(INITIAL_GESTURE_VALS.pan)).current;
     const scale = useRef(new Animated.ValueXY(INITIAL_GESTURE_VALS.scale)).current; // width (x) and height (y)
@@ -62,12 +66,18 @@ const Card: React.FC<CardProps> = ({
             onScrollUp ? onScrollUp : () => {},
             onScrollDown ? onScrollDown : () => {},
             onSwipeRigth ? onSwipeRigth : () => {},
-            onSwipeLeft ? onSwipeLeft : () => {},)
+            onSwipeLeft ? onSwipeLeft : () => {},
+            setAnimationGifCoords,
+            animationGifCoords)
         , [isScrolledUp]
     );
 
-
     return !((renderController==undefined) ? true : renderController) ? <></> : (
+    <>
+    {
+        animationGifCoords &&
+        <AnimationView x={animationGifCoords?.x} y={animationGifCoords?.y} />
+    }
     <Animated.View {...panResponder.panHandlers}  style={{
         width: Dimensions.get("window").width*INITIAL_GESTURE_VALS.scale.x,
         height:  Dimensions.get("window").height*INITIAL_GESTURE_VALS.scale.y,
@@ -171,6 +181,7 @@ const Card: React.FC<CardProps> = ({
 
             
     </Animated.View>
+    </>
     
     );
 }

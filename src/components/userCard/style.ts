@@ -42,3 +42,16 @@ export const UserDataView = styled.View`
     z-index: 3;
     flex: 1;
 `
+
+export const AnimationView = styled.View<{
+    x: number;
+    y: number;
+}>`
+    width: 20%;
+    height: 20%;
+    z-index: 100000;
+    background-color: yellow;
+    position: absolute;
+    top: ${p => p.y+"%" };
+    left: ${p => p.x+"%" };;
+`

@@ -64,8 +64,9 @@ const HomeScreen: React.FC = () => {
 
   return (
     <ScreenView>
+
          <ScrollView
-              style={{ height: "100%", width: "100%" }}
+              style={{ height: "100%", width: "100%", zIndex:1 }}
               contentContainerStyle={{flexGrow:1, justifyContent: "flex-end", alignItems: "center", paddingBottom: "10%"}}
               scrollEnabled={true}>
                 {
