@@ -9,6 +9,8 @@ import { registerQuestions } from './components/RegisterForms';
 import { View } from 'react-native';
 import { ProgressBar, ProgressBarWrapper } from './components/ProgressBar';
 import FCMService from "@firebaseServ/notifications";
+import createUserService from '@serv/userService/create';
+import CreateUserService from '@serv/userService/create';
 
 
 const initQuest = registerQuestions()
@@ -39,7 +41,7 @@ const RegisterScreen = () => {
         FCMPushNotificationsToken: FCMService.getDeviceToken()
       }
 
-      const user = await userServices.create(userDTO);
+      const user = await CreateUserService.execute(userDTO);
       setLoggedUser(user);
       setLoading(false)
     } catch(e) {

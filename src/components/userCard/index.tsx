@@ -39,7 +39,7 @@ const Card: React.FC<CardProps> = ({
         : []
     );
 
-    useEffect(() => {console.log("animationGifCoords",animationGifCoords)},[animationGifCoords])
+    //useEffect(() => {console.log("animationGifCoords",animationGifCoords)},[animationGifCoords])
   
     const pan = useRef(new Animated.ValueXY(INITIAL_GESTURE_VALS.pan)).current;
     const scale = useRef(new Animated.ValueXY(INITIAL_GESTURE_VALS.scale)).current; // width (x) and height (y)

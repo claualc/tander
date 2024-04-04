@@ -1,5 +1,3 @@
-import { DocumentReference } from "firebase/firestore";
-
 import locationServices from "@serv/locationServices";
 import languageService from "@serv/languageService";
 import studentService from "@serv/studenService";
@@ -9,14 +7,14 @@ import { getDateFromString } from "@components/utils";
 import { converter } from "@firebaseServ/database/converterDTO";
 import dbServices from "@firebaseServ/database"
 
-import { Photo, User, UserTeam } from "@domain/User";
+import { User, UserTeam } from "@domain/User";
 import userTeamDic from "@assets/dictionaries/userTeam";
 
-import { CreateUserDTO } from "./DTO";
+import { CreateUserDTO, SimpleUserDTO } from "./DTO";
 import albumService from "@serv/albumService";
 import photoServices from "@serv/photoServices";
 
-const COLLECTION_ID = "user"; // main collection
+export const COLLECTION_ID = "user"; // main collection
 
 const parseUserFromFirestoreAsync = async (data: any, id: string): Promise<User> => {
     const daybirth = getDateFromString(data.birth as string)
@@ -68,7 +66,7 @@ const parseUserFromFirestoreAsync = async (data: any, id: string): Promise<User>
     return user as User
 }
 
-const userConverter: converter<CreateUserDTO> = {
+export const userConverter: converter<CreateUserDTO> = {
     toFirestore: (item) => {
         return {...item}
     },
@@ -79,8 +77,30 @@ const userConverter: converter<CreateUserDTO> = {
     }
 }
 
+const userConverterSimplified: converter<SimpleUserDTO> = {
+    toFirestore: (item) => {
+        return {...item}
+    },
+    fromFirestore: async (snap, opt) => {
+        const data = snap.data(opt)!;
+        console.log("..:: FirebaseService.fromFirestore (userSimplified)", snap.id)
+
+        const dto: SimpleUserDTO = {
+            username: data.username,
+            profilePhoto: (await photoServices.getUserPhotos([data.photoChunkRefs[0]]))[0], 
+            id: snap.id,
+            FCMPushNotificationsToken: data.FCMPushNotificationsToken as string
+        }
+        return dto;
+    }
+}
+
 export const listAll = async () => {
-    return await dbServices.listAll(COLLECTION_ID, userConverter) as User[];
+    return (await dbServices.listAll(COLLECTION_ID, userConverter)) as User[];
+}
+
+export const listAllBasicInfo = async () => {
+    return (await dbServices.listAll(COLLECTION_ID, userConverterSimplified)) as SimpleUserDTO[];
 }
 
 export const getById = async (id: string | String | number | Number) => {
@@ -97,34 +117,6 @@ export const update = async (user: CreateUserDTO, userId: string) => {
     console.log("..:: FirebaseService.update (user)", ref.id)
     const userUpdated = await dbServices.getObjectByRef(ref)
     return userUpdated as User
-}
-
-export const create = async (dto: CreateUserDTO) => {
-    const {photos, ...userUncompleteDTO} = dto;
-
-    const userRef = await dbServices.create(
-        COLLECTION_ID, userUncompleteDTO, userConverter )
-    
-    let photoChunkRefs: string[] = [];
-    if (photos?.length) {
-        const photoRefsPromise = photos.filter((v:any) =>  v != null)?.map(
-            async (p) => await photoServices.createUserPhoto({
-                photo: p, 
-                userRef: userRef
-            })
-        )
-
-        photoChunkRefs = await Promise.all(photoRefsPromise)
-    }
-
-    await update({
-        ...userUncompleteDTO,
-        photoChunkRefs,
-    }, userRef.id)
-
-    const userCreated = await dbServices.getObjectByRef(userRef)
-    console.log("..:: FirebaseService.create (user)", userRef.id)
-    return userCreated as User
 }
 
 export const getUserTeamById = (id: number) => {

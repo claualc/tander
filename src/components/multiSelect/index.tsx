@@ -34,25 +34,28 @@ const CustomMultiSelect: React.FC<{
     options: SelectOption[];
     maxSelects?: number;
     withSearchBar?: boolean;
-}> = ({values=[], options, placeholder = [],onSelect, maxSelects=20, withSearchBar= false}) => {
+}> = ({values, options, placeholder = [],onSelect, maxSelects=20, withSearchBar= false}) => {
 
     const [color, setColor] = useState(getRandomColor());
 
-    const setSpecificValue = useCallback((i: number, newVal: any) => {
-        let updated = values ? [...values] : []
-        updated.splice(i, 1,newVal)
+    const setSpecificValue = useCallback((i: number, newVal: any, values: any[]) => {
+        let updated = [...values]
+        updated[i] = newVal
         onSelect(updated)
-    }, [values])
+    }, [])
 
-    const deleteValue = useCallback((i: number) => {
-        let updated = values ? [...values] : []
+    const deleteValue = useCallback((i: number,  values: any[]) => {
+        let updated = [...values]
         updated.splice(i, 1)
         onSelect(updated)
-    }, [values])
+    }, [])
 
     const filterOptions = useMemo(() => {
         // to filter the already selected options
-        return values?.length > 0 ? options.filter(op => !values?.includes(op.value as (string | number)) ) : options
+        if (values)
+            return values?.length > 0 ? options.filter(op => !values?.includes(op.value as (string | number)) ) : options
+        else 
+            return options
     }, [values]);
 
     return <>
@@ -70,13 +73,13 @@ const CustomMultiSelect: React.FC<{
                     width="85%"
                     color={color}
                     onSelect={(v) => {
-                        setSpecificValue(i, v.value)
+                        setSpecificValue(i, v.value, values)
                     }} 
                     value={value} 
                     options={options} />
                 <TouchableOpacity 
                     style={{flexDirection: "row",alignItems: "center", justifyContent: "flex-end",width: "15%", aspectRatio: "1/1"}}
-                    onPress={() => deleteValue(i)}>
+                    onPress={() => deleteValue(i, values)}>
                         <RoundButton 
                             style={{borderRadius: 100}} 
                             width="90%"
@@ -93,7 +96,10 @@ const CustomMultiSelect: React.FC<{
                 <View style={{marginTop: "2%"}}>
                 <CustomSelect 
                     onSelect={(v) => {
-                        setSpecificValue(values?.length, v.value)
+                        if (values && values.length)
+                            setSpecificValue(values?.length, v.value, values)
+                        else 
+                            setSpecificValue(0, v.value, [])
                     }} 
                     withSearchBar={withSearchBar}
                     color={color}

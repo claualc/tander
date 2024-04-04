@@ -38,8 +38,8 @@ export const panRes = (
     tapPhotoRight: () => void,
     whenScrollUp: () => void,
     whenScrollDown: () => void,
-    onSwipeLeft: () => void,
     onSwipeRigth: () => void,
+    onSwipeLeft: () => void,
     setGifCoords: React.Dispatch<React.SetStateAction<coordsI | null>>,
     gifCoords: coordsI | null
     ) => PanResponder.create({

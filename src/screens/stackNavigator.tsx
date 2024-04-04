@@ -62,12 +62,12 @@ const MyStack = () => {
             {
                 stateLoading && <LoadingComponent /> 
             }
-            <RootScreenView showBottomNavigatior={!!loggedUser}>
+            <RootScreenView showBottomNavigatior={!!loggedUser.id}>
                 <NavigationContainer ref={navigatorRef}>
                         <Stack.Navigator 
                             screenOptions={{headerShown: false}}>
                                 {
-                                    loggedUser ? auth_routes.map((
+                                    !!loggedUser.id ? auth_routes.map((
                                         {name,  component}) => <Stack.Screen key={name} name={name} component={component} />
                                     ) : unauth_routes.map((
                                         {name,  component}) => <Stack.Screen key={name} name={name} component={component} />
@@ -77,7 +77,7 @@ const MyStack = () => {
                 </NavigationContainer>
             </RootScreenView>
         {
-            loggedUser ?
+            !!loggedUser.id ?
               <BottomTabNavigator onSelect={(v) => {stackNavigateTo(v)}} routes={auth_routes} />
               : <></>
         }

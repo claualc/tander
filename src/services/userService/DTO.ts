@@ -3,6 +3,13 @@ import { Photo, User } from "@api/domain/User";
 import { getDDMMYYYYFromDate } from "@components/utils";
 import albumService, { MusicInterestDTO } from "@serv/albumService";
 
+export interface SimpleUserDTO {
+    username: string;
+    profilePhoto: Photo; 
+    id: string;
+    FCMPushNotificationsToken: string;
+}
+
 export interface CreateUserDTO {
     username: string;
     birth: string; //DDMMYYYY

@@ -28,7 +28,7 @@ const SelectModal: React.FC<{
 
     const [color_, setColor_] = useState<string>(color || getRandomColor());
     const [value, setValue] = useState<SelectOption | null>(null);
-    const [itemSelected, setItemSelected] = useState<number>(-1);
+    const [itemSelected, setItemSelected] = useState<string>("");
 
     const [searchValue, setSearchValue] = useState<string>("");
 
@@ -88,10 +88,10 @@ const SelectModal: React.FC<{
                                 <Item
                                     key={i}
                                     op={op}
-                                    selected={itemSelected  == i}
+                                    selected={itemSelected  == op.name}
                                     onPress={() => {
                                         setValue(op)
-                                        setItemSelected(i)
+                                        setItemSelected(op.name)
                                     }} />
                                 )
                             )
@@ -117,7 +117,7 @@ const SelectModal: React.FC<{
                                 onSelect(value)
                                 // reset all
                                 setValue(null)
-                                setItemSelected(-1);
+                                setItemSelected("");
                                 setSearchValue("");
                             }
                         }} 

@@ -53,7 +53,6 @@ export const Forms: React.FC<{
         // arrays r compared by reference not by value
         let newVals = [...values] // copy object to new referene
         newVals[id] = newVal
-
         setValues(newVals)
     }, [values])
 
@@ -203,7 +202,6 @@ export const Forms: React.FC<{
                     : (q.inputType == inputTypes.SELECT) ?
                         <CustomSelect 
                             onSelect={v => {
-                                console.log("on select simple", v.value)
                                 setCurrentValues(i,v.value)
                                 checkValidAnswer(v, q)
                             }}
@@ -215,8 +213,8 @@ export const Forms: React.FC<{
                     : (q.inputType == inputTypes.MULTISELECT) ?
                         <CustomMultiSelect 
                             onSelect={v => {
-                                console.log("on select mutli", v[0])
-                                setCurrentValues(i, v) // array of values
+                                let val = [...v]
+                                setCurrentValues(i, val) // array of values
                                 checkValidAnswer(v, q)
                             }}
                             withSearchBar={q.includeSearchBar}

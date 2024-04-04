@@ -19,6 +19,7 @@ export const ScreenView = styled.View`
 export const BackButtonWrapper = styled.View`
     flex: 1;
     width: 100%;
+    margin-top: 5%;
     justify-content: flex-end;
     align-items: flex-start;
     flex-direction: column;

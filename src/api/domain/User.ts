@@ -38,8 +38,7 @@ export class MusicInterest {
 }
 
 export class User {
-
-    public id_: string | null;
+    public id_: string;
     public username_: string;
     public birth_: Date;
     public phoneNumber_: string;
@@ -62,7 +61,7 @@ export class User {
     public bio_?: string; // profile description
 
     constructor(
-        id: string | null, username: string, birth: Date, phoneNumber: string, FCMPushNotificationsToken: string, country: Country, university: Univeristy, course: Course, langToLearn: Language[], langKnown: Language[], team: UserTeam, photos: Photo[], hasSeenWhoLikesMeToday?: Boolean, likedUsers?: User[] | String[], matches?: User[] | String[], profileDescription?: string, musicInterest?: MusicInterest, bio?: string
+        id: string, username: string, birth: Date, phoneNumber: string, FCMPushNotificationsToken: string, country: Country, university: Univeristy, course: Course, langToLearn: Language[], langKnown: Language[], team: UserTeam, photos: Photo[], hasSeenWhoLikesMeToday?: Boolean, likedUsers?: User[] | String[], matches?: User[] | String[], profileDescription?: string, musicInterest?: MusicInterest, bio?: string
     ) {
         this.id_ = id;
         this.username_ = username;

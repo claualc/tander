@@ -90,7 +90,7 @@ const getChunksToguether = (chunkId1: string, chunkId2: string) => {
 
 const getUserPhotos = async (chunkRefs: string[]) => {
 
-    let photos = chunkRefs.map(async (photoChunk) => {
+    let photos = chunkRefs?.map(async (photoChunk) => {
         let [chunk1, chunk2] = photoChunk.split(CHUNK_SYMBOL_SEPARATOR);
 
         let msv = (await dbServices.getObjectById(COLLECTION_ID,chunk1)) as PhotoChunkDTO;

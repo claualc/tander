@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { AntDesign, Ionicons, SimpleLineIcons } from "@expo/vector-icons";
 
@@ -8,12 +8,15 @@ import Card from "@components/userCard";
 import { CustomText, ScreenView } from "@components/index";
 import AlbumComponent from "@components/musicAlbum";
 
-import * as userService from "@serv/userService";
 import { LanguageView, Section, UserDecSections, UserDescWrapper } from "./style";
+import { LoggedUserContext, UserContextType } from "@screens/context";
+import matchServices from "@serv/matchServices";
 
 const USER_CARDS_BATCH_COUNT = 10;
 
 const HomeScreen: React.FC = () => {
+
+  const { loggedUser } = useContext(LoggedUserContext) as UserContextType; 
 
   /*
      Screen like tinder homme
@@ -27,15 +30,20 @@ const HomeScreen: React.FC = () => {
 
   useEffect(() => {
     (async () => {
-      const users: User[] = await userService.listAll()
-      const user: User = users[0]
-      setuIndex(users.length? users.length-1 : 0)
-      setUsers(users)
-      setRenderUserCards(users.map(p => true))
-      setSwipedUserCards(users.map(p => false))
-      
+      if (loggedUser.id ) {
+      const users: User[] = await matchServices.listUsersForMatching(loggedUser.id)
+      console.log("      HomseScreen: ", users.length, "potential matches found")
+      if (users.length) {
+        setuIndex(users.length? users.length-1 : 0)
+        setUsers(users)
+        setRenderUserCards(users.map(p => true))
+        setSwipedUserCards(users.map(p => false))
+      } else {
+        console.log("no matches found")
+      }
+      }
     })();
-  }, []);
+  }, [loggedUser]);
 
   const [uIndex, setuIndex] = useState<number>(0);
   const [users, setUsers] = useState<User[]>([]);
@@ -75,7 +83,7 @@ const HomeScreen: React.FC = () => {
                     zIndex={i}
                     user={user}
                     onScrollUp={() => {
-                      console.log("onScrollUp", i)
+                      console.log("onScrollUp")
                       renderOnlyThisCard(i);
                       setSeeDescription(true)}}
                     onScrollDown={() => {
@@ -84,12 +92,12 @@ const HomeScreen: React.FC = () => {
                       setSeeDescription(false)}}
                     onSwipeLeft={() => {
                       console.log("onSwipeLeft")
-                    console.log("USER LIKED")
+                      matchServices.userUnLiked(loggedUser,user)
                       userSwiped(i);
                     }}
                     onSwipeRigth={() => {
-                    console.log("onSwipeRigth")
-                      console.log("USER DiSLIKED")
+                      console.log("onSwipeRigth")
+                      matchServices.userLiked(loggedUser,user)
                       userSwiped(i);
                     }}
                     isScrolledUp={seeDescription}

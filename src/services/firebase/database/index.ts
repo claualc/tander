@@ -1,8 +1,7 @@
-import { getFirestore, getDocs, doc, query, collection, DocumentData, QueryDocumentSnapshot, SnapshotOptions, getDoc, setDoc, addDoc, DocumentReference, updateDoc, deleteDoc } from "firebase/firestore";
+import { getFirestore, getDocs, doc, query, collection, DocumentData,  getDoc, setDoc,  DocumentReference, updateDoc, deleteDoc, QueryFieldFilterConstraint, QueryCompositeFilterConstraint } from "firebase/firestore";
 import { converter } from "./converterDTO";
 import firebase from "@firebaseServ/index";
 import { generateRandomString } from "@components/utils";
-
 
 const FirestoreService = () => {
     console.log("..:: FirestoreService ...")
@@ -82,13 +81,13 @@ const FirestoreService = () => {
            
             return ref;
         },
-        listAll: async (collect: string, converter: converter<any>) => {
+        listAll: async (collect: string, converter?: converter<any>, filter?: QueryCompositeFilterConstraint | QueryFieldFilterConstraint) => {
 
-            const q = query(collection(db, collect)
-                                ).withConverter(converter)
+            let f: any = filter
+            let q = f ? query(collection(db, collect), f) : query(collection(db, collect))
+            q = converter ? q.withConverter(converter) : q
 
             const querySnapshot = await getDocs(q);
-            
             const docsData =  querySnapshot.docs.map(
                 async (d) => {
                     return await d.data()});
