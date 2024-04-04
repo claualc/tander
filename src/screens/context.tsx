@@ -6,14 +6,17 @@ import * as userService from "@serv/userService";
 export type UserContextType = {
     loggedUser: User;
     stateLoading: boolean;
+    showBottomNav: boolean;
     setLoggedUser: React.Dispatch<React.SetStateAction<User>>;
     setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+    setShowBottomNav: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const LoggedUserContext = createContext<UserContextType | null>(null);
 
 const ContextProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
 
+  const [showBottomNav, setShowBottomNav] = useState<boolean>(true);
   const [loggedUser, setLoggedUser] = useState<User>({} as User);
   const [stateLoading, setLoading] = useState<boolean>(false);
 
@@ -33,12 +36,17 @@ const ContextProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
     useEffect(() => {
       if (loggedUser) {
         console.log("..:: LoggedUserContext:", loggedUser.id)
-        // let {photos, ...rest} = loggedUser
-        // console.log(rest)
       }
     },[loggedUser])
 
-    return <LoggedUserContext.Provider value={{ loggedUser, setLoggedUser, stateLoading, setLoading }}>
+    return <LoggedUserContext.Provider value={{
+        showBottomNav, 
+        setShowBottomNav,
+        loggedUser,
+        setLoggedUser,
+        stateLoading,
+        setLoading 
+      }}>
     {children}
   </LoggedUserContext.Provider>
 }

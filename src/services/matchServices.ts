@@ -1,10 +1,15 @@
-import { User } from "@api/domain/User";
+import { Photo, User } from "@api/domain/User";
 import { converter } from "@firebaseServ/database/converterDTO";
 
 import * as userServices from "@serv/userService";
 import dbService from "./firebase/database";
 import { and, or, where } from "firebase/firestore";
 import { generateRandomString } from "@components/utils";
+import { SimpleUserDTO } from "./userService/DTO";
+
+export interface UserMAtchInfoDTO extends SimpleUserDTO {
+    match: MatchFactory;
+}
 
 export enum MatchState {
     WIP,
@@ -177,10 +182,41 @@ export const listUsersForMatching = async (userId: string) => {
     return Promise.all(usersProm)
 }
 
+export const listMatches = async (userId: string) => {
+
+    const matches = await dbService.listAll(
+        COLLECTION_ID,
+        matchFactoryConverter, 
+            and(
+                or(where("userId1", "==", userId), where("userId2", "==", userId)),
+                where("state", "==", MatchState.TRUE)
+            )
+    ) as  MatchFactory[]
+
+    const usersDto =  matches.map(async (m) => {
+        let targetUserMatched = (m.userId1 == userId) ? m.userId2 : m.userId1
+        let user = await userServices.getByIdSimpleDTO(targetUserMatched)
+        return {...user, match: m} as UserMAtchInfoDTO
+    }) 
+
+    return Promise.all(usersDto)
+}
+
+export const update = async (matchFac: MatchFactory, id: string) => {
+
+    let ref = await dbService.update(COLLECTION_ID, matchFac, id, matchFactoryConverter)
+    const matchUpdated = await dbService.getObjectByRef(ref)
+
+    console.log("..:: MatchServices.update (match)", id)
+    return matchUpdated
+}
+
 export default {
     createUserMatchFactories,
     listMatchesByState,
     listUsersForMatching,
+    listMatches,
     userLiked,
-    userUnLiked
+    userUnLiked,
+    update
 }

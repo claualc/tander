@@ -4,19 +4,21 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { RootScreenView } from '@components/index';
 import BottomTabNavigator from '@components/bottomTabNavigator';
 import LoadingComponent from '@components/loading';
+import { LoggedUserContext, UserContextType } from './context';
 
 // sreens
 import HomeScreen from './home';
 import MyLikesScreen from './myLikes';
 import ProfileScreen from './profile';
-import ChatScreen from './chat';
+import ChatScreen from './chatHome';
 import { CommonActions, NavigationContainer, createNavigationContainerRef } from '@react-navigation/native';
 import LoginScreen from './login';
 import RegisterScreen from './register';
-import { LoggedUserContext, UserContextType } from './context';
+import ChatMessagingScreen from './userChat';
 
 const HOME_SCREEN = "Home";
-const CHAT_SCREEN = "Chat";
+const CHAT_SCREEN = "Chat"; // chat home in tab navigator
+const CHAT_MESSAGING_SCREEN = "ChatMessaging"; // actual chat
 const PROFILE_SCREEN = "Profile";
 const MYLIKES_SCREEN = "MyLikes";
 const REGISTER_SCREEN = "Register";
@@ -29,14 +31,16 @@ export const routeNames = {
     MYLIKES_SCREEN,
     REGISTER_SCREEN,
     LOGIN_SCREEN,
+    CHAT_MESSAGING_SCREEN,
 }
 
 // routes
 export const auth_routes = [
-    { name: HOME_SCREEN, component: HomeScreen ,icon: "ellipse" },
-    { name: CHAT_SCREEN, component: ChatScreen ,icon: "chatbubbles" },
-    { name: MYLIKES_SCREEN, component: MyLikesScreen ,icon: "star" },
-    { name: PROFILE_SCREEN, component: ProfileScreen ,icon: "person" },
+    { name: HOME_SCREEN, component: HomeScreen ,icon: "ellipse", showInTab: true },
+    { name: CHAT_SCREEN, component: ChatScreen ,icon: "chatbubbles", showInTab: true  },
+    { name: MYLIKES_SCREEN, component: MyLikesScreen ,icon: "star", showInTab: true  },
+    { name: PROFILE_SCREEN, component: ProfileScreen ,icon: "person", showInTab: true  },
+    { name: CHAT_MESSAGING_SCREEN, component: ChatMessagingScreen ,icon: null, showInTab: false  },
 ]
 
 export const unauth_routes = [
@@ -54,15 +58,23 @@ export function stackNavigateTo(routeName: string, params?: any) {
     }
 }
 
+
+export function stackGetParams() {
+    if (navigatorRef.isReady()) {
+        return navigatorRef.getCurrentRoute()?.params
+    }
+    return null
+}
+
 const MyStack = () => {
 
-    const { loggedUser, stateLoading , setLoggedUser } = React.useContext(LoggedUserContext) as UserContextType;
+    const { loggedUser, stateLoading, showBottomNav } = React.useContext(LoggedUserContext) as UserContextType;
 
     return <>
             {
                 stateLoading && <LoadingComponent /> 
             }
-            <RootScreenView showBottomNavigatior={!!loggedUser.id}>
+            <RootScreenView showBottomNavigatior={!!loggedUser.id && showBottomNav}>
                 <NavigationContainer ref={navigatorRef}>
                         <Stack.Navigator 
                             screenOptions={{headerShown: false}}>
@@ -77,8 +89,8 @@ const MyStack = () => {
                 </NavigationContainer>
             </RootScreenView>
         {
-            !!loggedUser.id ?
-              <BottomTabNavigator onSelect={(v) => {stackNavigateTo(v)}} routes={auth_routes} />
+            !!loggedUser.id && showBottomNav ?
+              <BottomTabNavigator onSelect={(v) => {stackNavigateTo(v)}} routes={auth_routes.filter(f => f.showInTab)} />
               : <></>
         }
     </>

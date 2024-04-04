@@ -4,7 +4,7 @@ import { theme } from "../theme";
 
 import { CustomText, ScreenView } from "@components/index";
 import { LoggedUserContext, UserContextType } from "@screens/context";
-import { Avatar, CenteredView, DescriptionView, Item, MainWrapper } from "./styles";
+import { CenteredView, DescriptionView, Item, MainWrapper } from "./styles";
 import { ProfileFormPageId, profileOptions } from "./components/settingOption";
 import { Forms } from "@components/forms";
 
@@ -13,6 +13,7 @@ import { convertUserToCreateDTO } from "@serv/userService/DTO";
 import albumService, { MusicInterestDTO } from "@serv/albumService";
 import photoServices from "@serv/photoServices";
 import { Photo, User } from "@api/domain/User";
+import Avatar from "@components/avatar";
 /*
     This screen allows the user to modify its 
     personal information.
@@ -123,12 +124,14 @@ const ProfileScreen = () => {
           elevation: 10,
           shadowColor: "black",
           shadowOffset: { height: 10, width:0} }}>
-          
           <Avatar 
+            borderColor={theme.main}
+            width="35%"
             imgURL={loggedUser?.photos[0]?.value}
-            onPress={() => {setUserAttribute(ProfileFormPageId.PHOTOS)}}
-            />
-        <CustomText size={27}>{`${loggedUser?.shortusername}, ${loggedUser?.yearsOld} `}</CustomText>
+            onPress={() => {setUserAttribute(ProfileFormPageId.PHOTOS)}} />
+          <View style={{marginTop: "3%"}}>
+            <CustomText size={22}>{`${loggedUser?.shortusername}, ${loggedUser?.yearsOld} `}</CustomText>
+          </View>
       </MainWrapper>
 
       <View style={{flex: 3, width: "100%", alignItems: "center"}}>

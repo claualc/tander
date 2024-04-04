@@ -1,9 +1,11 @@
-import { DocumentReference } from "firebase/firestore";
 import { Photo, User } from "@api/domain/User";
 import { getDDMMYYYYFromDate } from "@components/utils";
 import albumService, { MusicInterestDTO } from "@serv/albumService";
 
 export interface SimpleUserDTO {
+    /**
+     * combinationn of user info with match info
+     */
     username: string;
     profilePhoto: Photo; 
     id: string;
