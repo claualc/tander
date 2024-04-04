@@ -131,13 +131,14 @@ export const registerQuestions: (phoneNumber?: string) => {
                     id: 5,
                     placeholder: "Choose your course",
                     inputType: inputTypes.SELECT,
+                    includeSearchBar: true,
                     options: studentService
                         .listAllCourse()
                         .map(c => ({
                             "name": c.name,
                             "value": c.id
                         }) as SelectOption)
-                    }
+                    },
             ],
         },
         [ResgisterFormPageId.COUNTRY_INFO]: {
@@ -148,6 +149,7 @@ export const registerQuestions: (phoneNumber?: string) => {
                 descriptionOnTop: true,
                 placeholder: "Choose a country",
                 inputType: inputTypes.SELECT,
+                includeSearchBar: true,
                 options: countries
             }, 
             {
@@ -160,6 +162,7 @@ export const registerQuestions: (phoneNumber?: string) => {
                     "Choose other language"
                 ],
                 inputType: inputTypes.MULTISELECT,
+                includeSearchBar: true,
                 options: languages
             }],
         },
@@ -175,6 +178,7 @@ export const registerQuestions: (phoneNumber?: string) => {
                 ],
                 descriptionOnTop: true,
                 inputType: inputTypes.MULTISELECT,
+                includeSearchBar: true,
                 options: languages
             }]
         },

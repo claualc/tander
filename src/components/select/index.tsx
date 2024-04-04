@@ -25,6 +25,7 @@ export interface SelectComponentProps extends SelectLogicalProps {
     onSelect: (v: SelectOption) => void; // v is the valye of the key of the item
     title?: string;
     color?: string;
+    withSearchBar?: boolean;
 }
 
 /* the value is they key in the object
@@ -36,7 +37,7 @@ export interface SelectComponentProps extends SelectLogicalProps {
    }
 */
 const CustomSelect: React.FC<SelectComponentProps> = ({
-    options, placeholder, width, onSelect, value, title, color }) => {
+    options, placeholder, width, onSelect, value, title, color, withSearchBar=false }) => {
 
     const [color_, setColor_] = useState<string>(color || getRandomColor());
     const [showModal, setShowModal] = useState(false);
@@ -54,6 +55,7 @@ const CustomSelect: React.FC<SelectComponentProps> = ({
                 setShowModal(false);
                 onSelect(v);
             }} 
+            withSearchBar={withSearchBar}
             options={options}        
             modalTitle={title}
             color={color_}

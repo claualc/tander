@@ -33,39 +33,31 @@ const CustomMultiSelect: React.FC<{
     placeholder?: string[];
     options: SelectOption[];
     maxSelects?: number;
-}> = ({values=[], options, placeholder = [],onSelect, maxSelects=20}) => {
+    withSearchBar?: boolean;
+}> = ({values=[], options, placeholder = [],onSelect, maxSelects=20, withSearchBar= false}) => {
 
     const [color, setColor] = useState(getRandomColor());
-    const [values_, setValues_] = useState<any[]>([]);
-
-    useEffect(() => {
-        if (values && values.length) {
-            setValues_(values)
-        }
-    }, [values])
 
     const setSpecificValue = useCallback((i: number, newVal: any) => {
-        let updated = [...values_]
-        updated[i] = newVal
-        setValues_(updated)
+        let updated = values ? [...values] : []
+        updated.splice(i, 1,newVal)
         onSelect(updated)
-    }, [values_])
+    }, [values])
 
     const deleteValue = useCallback((i: number) => {
-        let updated = [...values_]
+        let updated = values ? [...values] : []
         updated.splice(i, 1)
-        setValues_(updated)
         onSelect(updated)
-    }, [values_])
+    }, [values])
 
     const filterOptions = useMemo(() => {
         // to filter the already selected options
-        return values_?.length > 0 ? options.filter(op => !values_?.includes(op.value) ) : options
-    }, [values_]);
+        return values?.length > 0 ? options.filter(op => !values?.includes(op.value as (string | number)) ) : options
+    }, [values]);
 
     return <>
     {
-        values_!=null && values_?.map((value, i) => {
+        values!=null && values?.map((value, i) => {
             return value != null && <View 
                     style={{
                         width: "100%", 
@@ -97,16 +89,17 @@ const CustomMultiSelect: React.FC<{
         }
 
         {
-            (values_.filter(v=>v!=null).length < maxSelects) &&
+            (!values || (values && values.filter(v=>v!=null).length < maxSelects)) &&
                 <View style={{marginTop: "2%"}}>
                 <CustomSelect 
                     onSelect={(v) => {
-                        setSpecificValue(values_?.length, v.value)
+                        setSpecificValue(values?.length, v.value)
                     }} 
+                    withSearchBar={withSearchBar}
                     color={color}
-                    placeholder={ placeholder.length ? values_?.length ?
+                    placeholder={ placeholder.length ? values?.length ?
                         placeholder[1] : placeholder[0] : ""}
-                    title={ placeholder.length ? values_?.length ?
+                    title={ placeholder.length ? values?.length ?
                         placeholder[1] : placeholder[0] : ""}
                     value={undefined} 
                     options={filterOptions} />

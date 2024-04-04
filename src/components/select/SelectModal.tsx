@@ -90,7 +90,6 @@ const SelectModal: React.FC<{
                                     op={op}
                                     selected={itemSelected  == i}
                                     onPress={() => {
-                                        console.log("on pressed")
                                         setValue(op)
                                         setItemSelected(i)
                                     }} />

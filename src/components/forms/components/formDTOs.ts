@@ -38,8 +38,6 @@ export interface FormsQuestion {
 
     // for text input types
     maxCharacters?: number;
-
-    // for async select input types
     includeSearchBar?: boolean;
 
     // for multiselect input type
