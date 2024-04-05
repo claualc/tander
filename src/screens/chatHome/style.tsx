@@ -1,7 +1,8 @@
 import { CustomText } from "@components/index";
-import { View } from "react-native";
+import { Dimensions, Image, TouchableHighlight, View } from "react-native";
 import styled from "styled-components/native";
 import { theme } from "@screens/theme";
+import SmallLoading from "@assets/loading_small.gif";
 
 export const Title: React.FC<React.PropsWithChildren> = ({children}) => {
     return <View style={{width: "100%", flex: 2,flexDirection:"row", alignItems: "flex-end"}}>
@@ -13,17 +14,24 @@ const NoContentView = styled.View`
     width: 100%;
     flex:1;
     justify-content: flex-start;
-    padding-top: 40%;
+    padding-top: 15%;
     align-items: center;
 `
 
-export const NoContent: React.FC<React.PropsWithChildren> = ({children}) => {
+export const NoContent: React.FC<React.PropsWithChildren<{
+    loading: boolean;
+}>> = ({children, loading}) => {
     return <NoContentView>
-        <CustomText color={theme.tertiary_dark}>{children}</CustomText>
+        {
+            loading ? <View style={{ aspectRatio:1, height: Dimensions.get("screen").width*0.2, zIndex: 10 }}>
+                <Image source={SmallLoading} style={{ flex: 1 }} />
+            </View> :
+            <CustomText color={theme.tertiary_dark}>{children}</CustomText>
+        }
       </NoContentView>
 }
 
-export const ItemChatView = styled.View`
+const ItemChatView = styled.View`
     width: 100%;
     aspect-ratio: 3.5/1;
     justify-content: flex-start;
@@ -31,6 +39,21 @@ export const ItemChatView = styled.View`
     padding: 2%;
     align-items: center;
 `
+
+export const ItemChat: React.FC<React.PropsWithChildren<{
+    onPress: () => void
+}>> = ({children, onPress}) => {
+    return <TouchableHighlight
+        activeOpacity={0.6}
+        onPress={onPress}
+        underlayColor="#0000"
+        style={{
+            width: "100%",
+        }}>
+            <ItemChatView>{children}</ItemChatView>
+
+    </TouchableHighlight>
+}
 
 export const ItemChatImg = styled.View`
     width: 100%;

@@ -1,21 +1,26 @@
 import dbService from "./firebase/database";
 import { converter } from "./firebase/database/converterDTO";
-import matchServices, { MatchFactory } from "./matchServices";
+import matchServices, { MatchFactory, UserMAtchInfoDTO } from "./matchServices";
+
+export enum MsgStates {
+    SENDING,
+    SENT
+}
 
 export interface MessageDTO {
-    id: string;
+    id: number;
     value: string;
-    loggedUserId: string;
-    matchUserId: string;
+    user: string;
     timestamp: string; // ISO with millisecond
+    state: MsgStates
 }
 
 export interface messagesObject {
-    [key: string]: MessageDTO; // the key is the timestamp of the message ISO
+    [key: string]: MessageDTO[]; // the key is the YYY-MM-DD
 }
 
 export interface ChatDTO {
-    id?: string;
+    id: string;
     matchFactoryId: string;
     messages: messagesObject;
     messageCount: number;
@@ -43,13 +48,16 @@ export const chatConverter: converter<ChatDTO> = {
 const create = async (matchFac: MatchFactory) => {
 
     let newChat: ChatDTO = {
+        id: "", // unread
         matchFactoryId: matchFac.id,
         messages: {} as messagesObject, // ISO
         messageCount: 0
     }
 
+    let {id, ...rest} = newChat
+
     // createChat
-    let chatRef = await dbService.create(COLLECTION_ID,newChat, chatConverter)
+    let chatRef = await dbService.create(COLLECTION_ID,rest, chatConverter)
 
     let updatedFac = matchFac
     updatedFac.chatId = chatRef.id
@@ -61,6 +69,52 @@ const create = async (matchFac: MatchFactory) => {
     return chat
 }
 
+const getById = async (chatId: string) => {
+    let chat = await dbService.getObjectById(COLLECTION_ID,chatId, chatConverter)
+    return chat as ChatDTO
+}
+
+export const addNewMsgToMsgObject = (messages: messagesObject, newMsg: MessageDTO) => {
+    let dayKey: string = newMsg.timestamp.split("T")[0]
+    let dayMessages: MessageDTO[] = messages[dayKey] || []
+    messages[dayKey] =  [...dayMessages, newMsg]
+    return messages
+}
+
+const sendMessage = async (value: string, chat: ChatDTO, match: UserMAtchInfoDTO) => {
+    // to play with msgs
+    let otheruser = "Xak6maKrr0mRL2NokYig_"
+    const today = new Date();
+    let yesterday = new Date();
+    yesterday.setDate(today.getDate())
+    //
+
+
+    const upToDateChat = await getById(chat.id)
+    let newMsg: MessageDTO = {
+        id: upToDateChat.messageCount+1,
+        value: value,
+        user: match.loggedUser.id,
+        timestamp: yesterday.toISOString(),
+        state: MsgStates.SENDING
+    }
+
+    let updatedChat: ChatDTO = upToDateChat
+    updatedChat.messages = addNewMsgToMsgObject(updatedChat.messages, newMsg)
+
+    updatedChat.messageCount = updatedChat.messageCount + 1
+
+    let send = async () => {
+        await dbService.update(COLLECTION_ID, updatedChat,chat.id)
+        console.log("..:: ChatService.sendMessage (msg sent)")
+    }
+    send();
+
+    return newMsg
+}
+
 export default {
-    create
+    create,
+    getById,
+    sendMessage,
 }

@@ -68,6 +68,10 @@ export const getDDMMYYYYFromDate = (v: Date) => {
     return `${arr[2]}${arr[1]}${arr[0]}`
 }
 
+export const getYYYYMMDDFromDate = (v: Date) => {
+    return v.toISOString().split("T")[0]
+}
+
 export const validateDate = (v: string) => {
     const nonNull = v.split("").length==8
     const day = Number(v.slice(0,2))

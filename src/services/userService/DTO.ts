@@ -71,4 +71,21 @@ export const convertUserToCreateDTO = (user: User) => {
     return dto
 }
 
+
+export const convertUserToSimpleDTO = (user: User) => {
+
+    let musicInterest = null;
+    if (user.musicInterest) {
+        musicInterest = albumService.convertMusicInterectToDTO(user.musicInterest)
+    }
+    
+    let dto: SimpleUserDTO = {
+        username: user.username,
+        FCMPushNotificationsToken: user.FCMPushNotificationsToken,
+        profilePhoto: user.photos[0],
+        id: user.id
+    }
+    return dto
+}
+
  

@@ -21,14 +21,15 @@ export const Card = styled.View`
 */
 export const CustomSelectView: React.FC<React.PropsWithChildren<{
     color: string;
-    onPress?: () => void;
     width?: string;
-}>> = ({children, color, width}) => {
+    aspectRatio?: string;
+}>> = ({children, color, width, aspectRatio}) => {
 
     return  <View 
                 style={{
                     flexDirection: "row",
                     width: width as DimensionValue || "100%",
+                    aspectRatio: aspectRatio,
                     borderRadius: 100,
                     overflow: "hidden",
                     backgroundColor: convertHexToRGBA(color, 0.2),

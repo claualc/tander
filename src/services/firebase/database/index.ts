@@ -69,7 +69,6 @@ const FirestoreService = () => {
             return ref;
         },
         update: async (collectionName: string, data: any, id: any, converter?: converter<any>) => {
-            
             let ref = await getRefById(collectionName, id, converter);
             
             try {

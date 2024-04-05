@@ -5,10 +5,12 @@ import * as userServices from "@serv/userService";
 import dbService from "./firebase/database";
 import { and, or, where } from "firebase/firestore";
 import { generateRandomString } from "@components/utils";
-import { SimpleUserDTO } from "./userService/DTO";
+import { SimpleUserDTO, convertUserToSimpleDTO } from "./userService/DTO";
 
-export interface UserMAtchInfoDTO extends SimpleUserDTO {
+export interface UserMAtchInfoDTO {
     match: MatchFactory;
+    targetUser: SimpleUserDTO;
+    loggedUser: SimpleUserDTO;
 }
 
 export enum MatchState {
@@ -182,21 +184,23 @@ export const listUsersForMatching = async (userId: string) => {
     return Promise.all(usersProm)
 }
 
-export const listMatches = async (userId: string) => {
+export const listMatches = async (loggedUser: User) => {
+
+    let loggedUserDTO = convertUserToSimpleDTO(loggedUser)
 
     const matches = await dbService.listAll(
         COLLECTION_ID,
         matchFactoryConverter, 
             and(
-                or(where("userId1", "==", userId), where("userId2", "==", userId)),
+                or(where("userId1", "==", loggedUser.id), where("userId2", "==", loggedUser.id)),
                 where("state", "==", MatchState.TRUE)
             )
     ) as  MatchFactory[]
 
     const usersDto =  matches.map(async (m) => {
-        let targetUserMatched = (m.userId1 == userId) ? m.userId2 : m.userId1
+        let targetUserMatched = (m.userId1 == loggedUser.id) ? m.userId2 : m.userId1
         let user = await userServices.getByIdSimpleDTO(targetUserMatched)
-        return {...user, match: m} as UserMAtchInfoDTO
+        return {targetUser: user, match: m, loggedUser:loggedUserDTO} as UserMAtchInfoDTO
     }) 
 
     return Promise.all(usersDto)
