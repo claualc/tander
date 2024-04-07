@@ -23,12 +23,17 @@ const ContextProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
   useEffect(() => {
       (async () => {
         setLoading(true)
-          // const id = "Q7ZTHx87chHUsmCxlvLS_"
-          // const user =await userService.getById(id);
+          //const id = "Q7ZTHx87chHUsmCxlvLS_"
+          const id = process.env.EXPO_PUBLIC_USER_ID
+          console.log("id", id)
 
-          // let {photos_, ...rest} = user
-          // console.log(rest)
-          // setLoggedUser(user)
+          if (id) {
+          const user =await userService.getById(id);
+
+          let {photos_, ...rest} = user
+          console.log(rest)
+          setLoggedUser(user)
+        }
         setLoading(false)
       })()
   },[])

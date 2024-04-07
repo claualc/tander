@@ -1,10 +1,11 @@
 import { CustomText, ScreenView } from "@components/index";
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { routeNames, stackGetParams, stackNavigateTo } from "../stackNavigator";
 import { ChatContent, ChatInput, HeaderInfo, Message, NoContent, SendMessageButton, TextInputChat, TimesStampInfo } from "./style";
 import { LoggedUserContext, UserContextType } from "../context";
 import { UserMAtchInfoDTO } from "@serv/matchServices";
-import chatServices, { ChatDTO, addNewMsgToMsgObject, messagesObject } from "@serv/chatServices";
+import chatServices from "@serv/chatServices";
+import { ChatDTO, MsgStates } from "@serv/chatServices/DTOs";
 import { ScrollView, View } from "react-native";
 
 export interface ChatParams {
@@ -12,23 +13,49 @@ export interface ChatParams {
   chat: ChatDTO;
 }
 
+interface MessageUI {
+  // the key is the day
+  ofLoggedUser: boolean;
+  firstMsgInBatch: boolean;
+  value: string;
+}
+
 const ChatMessagingScreen = () => {
 
   const { loggedUser, setShowBottomNav } = useContext(LoggedUserContext) as UserContextType; 
 
   const [matchInfo, setMAtchInfo] = useState<UserMAtchInfoDTO>();
-  const [chatDTO, setChatDTO] = useState<ChatDTO>();
+  const [chatDTO, setChatDTO] = useState<ChatDTO>({} as ChatDTO);
 
   const [newMesage, setNewMessage] = useState<string>("");
-  const [messages, setMessages] = useState<messagesObject>({});
+
+  const messages: {[key: string]: MessageUI[]} = useMemo(() => {
+    let updatedReadMsgsChatDTO: ChatDTO = chatDTO || {} as ChatDTO
+    let msgs=  chatDTO?.messages ?
+      Object.keys(chatDTO?.messages).reduce(
+        (acc,day: string) => {
+          let msgs = chatDTO?.messages[day]
+          let daylyMsgs: MessageUI[] = msgs.map((msg, id) => {
+            updatedReadMsgsChatDTO.messages[day][id].state = MsgStates.READ
+            return {
+            ofLoggedUser: msg.user == loggedUser.id,
+            firstMsgInBatch: id==0 || msgs[id-1].user != msgs[id].user,
+            value: msg.value
+            } as MessageUI 
+          })
+        return {
+          ...acc,
+          [day]: daylyMsgs
+        }
+    }, {}) : {}
+    setChatDTO(updatedReadMsgsChatDTO)
+    return msgs
+  }, [chatDTO])
 
 
   const sendMessage = useCallback(async () => {
     if (chatDTO && matchInfo && newMesage) {
-      let msg = await chatServices.sendMessage(newMesage, chatDTO, matchInfo)
-      setMessages(
-        addNewMsgToMsgObject(messages, msg)
-      )
+      await chatServices.sendMessage(newMesage, chatDTO, matchInfo)
       setNewMessage("");
     }
   }, [newMesage, chatDTO, matchInfo, messages])
@@ -36,17 +63,28 @@ const ChatMessagingScreen = () => {
   const goBack = useCallback(() => {
     setShowBottomNav(true)
     stackNavigateTo(routeNames.CHAT_SCREEN)
-  }, []);
+    if (chatDTO?.id)
+      chatServices.update(chatDTO)
+  }, [chatDTO]);
+
+  const chatScroll: any = useRef();
 
   useEffect(() => {
-    //stackNavigateTo(routeNames.CHAT_SCREEN)
-    setShowBottomNav(false)
-    const params = stackGetParams() as ChatParams
-    setMAtchInfo(params?.matchInfo)
-    setChatDTO(params?.chat)
-    setMessages(params?.chat.messages)
-    return () => goBack()
+    let closeChatListener: () => void;
+    (async() => {
+       //stackNavigateTo(routeNames.CHAT_SCREEN)
+        setShowBottomNav(false)
+        const params = stackGetParams() as ChatParams
+        setMAtchInfo(params?.matchInfo)
+        setChatDTO(params?.chat)
+        closeChatListener = await chatServices.chatListener(params?.chat.id,setChatDTO)
+    })();
+    return () => {
+      goBack()
+      closeChatListener()
+    }
   }, [])
+
   return <ScreenView style={{zIndex: 0}}>
     <HeaderInfo 
       photoUrl={matchInfo?.targetUser.profilePhoto.value}
@@ -57,16 +95,18 @@ const ChatMessagingScreen = () => {
       {
          !Object.keys(messages).length ?
           <NoContent />
-         : <ScrollView style={{width: "100%"}}>
+         : <ScrollView 
+              ref={(el: any) => {chatScroll.current = el}}
+              style={{width: "100%"}} 
+              onContentSizeChange={() => chatScroll.current.scrollToEnd({animated: true})}>
           {
             Object.keys(messages).map((day, i) => {
-              let daylyMsgs = messages[day]
               return <View key={i}>
                 <TimesStampInfo value={day}/>
-                { daylyMsgs.map((msg, id) => <Message
+                {  messages[day].map((msg, id) => <Message
                       key={id}
-                      ofLoggedUser={msg.user == loggedUser.id}
-                      firstMsgInBatch={id==0 || daylyMsgs[id-1].user != daylyMsgs[id].user}
+                      ofLoggedUser={msg.ofLoggedUser}
+                      firstMsgInBatch={msg.firstMsgInBatch}
                       value={msg.value} />
                   )}
               </View>

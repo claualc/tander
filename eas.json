@@ -7,7 +7,15 @@
       "preview": {
         "distribution": "internal"
       },
-      "production": {}
+      "production": {},
+      "dev1": {
+        "developmentClient": true,
+        "env": "dev2"
+      },
+      "dev2": {
+        "developmentClient": true,
+        "env": "dev2"
+      }
     }
   }
   

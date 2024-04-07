@@ -6,11 +6,13 @@ import dbService from "./firebase/database";
 import { and, or, where } from "firebase/firestore";
 import { generateRandomString } from "@components/utils";
 import { SimpleUserDTO, convertUserToSimpleDTO } from "./userService/DTO";
+import { MessageDTO } from "./chatServices/DTOs";
 
 export interface UserMAtchInfoDTO {
     match: MatchFactory;
     targetUser: SimpleUserDTO;
     loggedUser: SimpleUserDTO;
+    unreadMsgs: boolean;
 }
 
 export enum MatchState {
@@ -27,6 +29,7 @@ export interface MatchFactory {
     userLikes1: (boolean | null);
     userLikes2: (boolean | null);
     chatId: string | null;
+    lastMsg?: MessageDTO;
 }
 
 const COLLECTION_ID = "match_factory";
@@ -185,7 +188,6 @@ export const listUsersForMatching = async (userId: string) => {
 }
 
 export const listMatches = async (loggedUser: User) => {
-
     let loggedUserDTO = convertUserToSimpleDTO(loggedUser)
 
     const matches = await dbService.listAll(
@@ -200,7 +202,8 @@ export const listMatches = async (loggedUser: User) => {
     const usersDto =  matches.map(async (m) => {
         let targetUserMatched = (m.userId1 == loggedUser.id) ? m.userId2 : m.userId1
         let user = await userServices.getByIdSimpleDTO(targetUserMatched)
-        return {targetUser: user, match: m, loggedUser:loggedUserDTO} as UserMAtchInfoDTO
+        let unreadMsgs = false;
+        return {targetUser: user, match: m, loggedUser:loggedUserDTO, unreadMsgs} as UserMAtchInfoDTO
     }) 
 
     return Promise.all(usersDto)

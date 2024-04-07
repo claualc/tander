@@ -1,30 +1,8 @@
-import dbService from "./firebase/database";
-import { converter } from "./firebase/database/converterDTO";
-import matchServices, { MatchFactory, UserMAtchInfoDTO } from "./matchServices";
-
-export enum MsgStates {
-    SENDING,
-    SENT
-}
-
-export interface MessageDTO {
-    id: number;
-    value: string;
-    user: string;
-    timestamp: string; // ISO with millisecond
-    state: MsgStates
-}
-
-export interface messagesObject {
-    [key: string]: MessageDTO[]; // the key is the YYY-MM-DD
-}
-
-export interface ChatDTO {
-    id: string;
-    matchFactoryId: string;
-    messages: messagesObject;
-    messageCount: number;
-}
+import { collection, onSnapshot } from "firebase/firestore";
+import dbService from "@firebaseServ/database";
+import { converter } from "@firebaseServ/database/converterDTO";
+import matchServices, { MatchFactory, UserMAtchInfoDTO } from "@serv/matchServices";
+import { ChatDTO, messagesObject, MessageDTO, MsgStates } from "./DTOs";
 
 const COLLECTION_ID = "chat";
 
@@ -70,6 +48,7 @@ const create = async (matchFac: MatchFactory) => {
 }
 
 const getById = async (chatId: string) => {
+    console.log(" ..:: Chatservices.getById")
     let chat = await dbService.getObjectById(COLLECTION_ID,chatId, chatConverter)
     return chat as ChatDTO
 }
@@ -82,24 +61,17 @@ export const addNewMsgToMsgObject = (messages: messagesObject, newMsg: MessageDT
 }
 
 const sendMessage = async (value: string, chat: ChatDTO, match: UserMAtchInfoDTO) => {
-    // to play with msgs
-    let otheruser = "Xak6maKrr0mRL2NokYig_"
-    const today = new Date();
-    let yesterday = new Date();
-    yesterday.setDate(today.getDate())
-    //
+    console.log("sendMessage", chat)
 
-
-    const upToDateChat = await getById(chat.id)
     let newMsg: MessageDTO = {
-        id: upToDateChat.messageCount+1,
+        id: chat.messageCount+1,
         value: value,
         user: match.loggedUser.id,
-        timestamp: yesterday.toISOString(),
-        state: MsgStates.SENDING
+        timestamp: new Date().toISOString(),
+        state: MsgStates.UNREAD
     }
 
-    let updatedChat: ChatDTO = upToDateChat
+    let updatedChat: ChatDTO = chat
     updatedChat.messages = addNewMsgToMsgObject(updatedChat.messages, newMsg)
 
     updatedChat.messageCount = updatedChat.messageCount + 1
@@ -113,8 +85,39 @@ const sendMessage = async (value: string, chat: ChatDTO, match: UserMAtchInfoDTO
     return newMsg
 }
 
+const chatListener = async (id: string, onChatChange: (v: ChatDTO) => void) => {
+    let ref = await dbService.getRefById(COLLECTION_ID,id);
+    const unsub = onSnapshot(
+        ref, (doc) => {
+            console.log("..:: Chatservice.listener (new msg)")
+            const chat: ChatDTO= doc.data();
+            onChatChange({...chat, id: ref.id})
+        });
+    return unsub;
+}
+
+
+const getLastMsgChat = async (id: string) => {
+    let doc = await dbService.getObjectById(COLLECTION_ID,id, chatConverter) as ChatDTO;
+    
+    let days = Object.keys(doc.messages)
+    let lastMsgDay = days.length-1
+    let msgsOfDay = doc.messages[days[lastMsgDay]]
+
+    // returns the last msg in the array
+    return doc?.messages ? msgsOfDay[msgsOfDay.length-1] : {} as MessageDTO;
+}
+
+const update = async(chat: ChatDTO) => {
+    console.log("update,chatDTO", chat)
+    await dbService.update(COLLECTION_ID, chat, chat.id)
+}
+
 export default {
     create,
     getById,
     sendMessage,
+    chatListener,
+    getLastMsgChat,
+    update
 }

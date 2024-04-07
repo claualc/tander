@@ -24,7 +24,7 @@ export const Avatar: React.FC<{
         width={width}
         borderColor={borderColor}
         style={{
-          elevation: 10,
+          elevation: 8,
           backgroundColor: "#0000",
           shadowColor: "black",
           shadowOffset: { height: 10, width:10} }}
