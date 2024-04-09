@@ -2,7 +2,7 @@ import React from 'react';
 import styled from "styled-components/native";
 
 import { CustomText } from '@components/index';
-import { theme } from '@screens/theme';
+import { gobalFont, theme } from '@screens/theme';
 
 export const ScreenView = styled.View`
     flex: 23;
@@ -18,7 +18,6 @@ export const ScreenView = styled.View`
 
 export const BackButtonWrapper = styled.View`
     flex: 1;
-    width: 100%;
     margin-top: 5%;
     justify-content: flex-end;
     align-items: flex-start;
@@ -28,15 +27,16 @@ export const BackButtonWrapper = styled.View`
 export const FormsWrapper = styled.View`
     flex: 8;
     width: 100%;
-    padding: 0;
+    padding: 2% 2% 0% 2%;
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
 `
 
 export const CenterWrapping = styled.View`
-    flex: 1.5;
+    flex: 2;
     width: 100%;
+    padding: 0% 0% 0% 0%;
     justify-content: flex-start;
     align-items: center;
     flex-direction: column;
@@ -47,7 +47,7 @@ export const Title: React.FC<React.PropsWithChildren> = ({
     children
 }) => <CustomText 
         color={theme.main_dark} 
-        size={30} 
+        size={gobalFont.size.title} 
         fontFam='DM'
         style={{
             marginBottom: 6,
@@ -56,13 +56,16 @@ export const Title: React.FC<React.PropsWithChildren> = ({
             {children}
         </CustomText>
 
-export const Description: React.FC<React.PropsWithChildren> = ({
-    children
+export const Description: React.FC<React.PropsWithChildren<{
+    bottomDescription?: boolean;
+}>> = ({
+    children, bottomDescription= false
 }) => <CustomText 
         color={theme.tertiary_dark} 
-        size={16} 
+        size={gobalFont.size.default} 
         style={{
-            marginTop: 10,
+            marginTop: gobalFont.size.default,
+            marginBottom: bottomDescription ? gobalFont.size.default*1.5:gobalFont.size.default*0.2,
             textAlign: "justify",
         }}>
             {children}
@@ -77,7 +80,7 @@ export const Subtitle: React.FC<React.PropsWithChildren> = ({
             marginBottom: "3%"
         }}
         color={theme.tertiary_dark} 
-        size={16}>
+        size={gobalFont.size.default}>
             {children}
         </CustomText>
 

@@ -12,7 +12,7 @@ import {initAsyncFirebaseServices} from '@serv/firebase';
 import { ThemeProvider } from 'styled-components/native';
 import { theme } from './theme';
 import ScreensStack from './stackNavigator';
-import ContextProvider from './context';
+import UserContext from './contexts/user';
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -54,9 +54,9 @@ const App: React.FC = () => {
     onLayout={onLayoutRootView} >  
 
       <ThemeProvider theme={theme}>
-        <ContextProvider>
+        <UserContext>
             <ScreensStack />
-        </ContextProvider>
+        </UserContext>
       </ThemeProvider>
     </View>
   );

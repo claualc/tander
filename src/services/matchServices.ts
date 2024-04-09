@@ -2,11 +2,12 @@ import { Photo, User } from "@api/domain/User";
 import { converter } from "@firebaseServ/database/converterDTO";
 
 import * as userServices from "@serv/userService";
-import dbService from "./firebase/database";
+import dbService, { PaginationInfo } from "./firebase/database";
 import { and, or, where } from "firebase/firestore";
 import { generateRandomString } from "@components/utils";
 import { SimpleUserDTO, convertUserToSimpleDTO } from "./userService/DTO";
 import { MessageDTO } from "./chatServices/DTOs";
+import notifications from "./firebase/notifications";
 
 export interface UserMAtchInfoDTO {
     match: MatchFactory;
@@ -115,7 +116,7 @@ const onUserMatchAction = async (user: User, fact: MatchFactory, liked: boolean)
 
     console.log("..:: onUserMatchAction (fac)", fact)
     /**
-     * MAtch actions can only take place is matches with state on WIP
+     * Match actions can only take place is matches with state on WIP
      */
     let updated = fact
     
@@ -133,6 +134,20 @@ const onUserMatchAction = async (user: User, fact: MatchFactory, liked: boolean)
         updated.state = MatchState.TRUE
         console.log("    USERS MATCHED!!")
         // send notifications
+        let userMatchedId = (user.id == fact.userId1) ? fact.userId2 : fact.userId1;
+        let userMatched = await userServices.getByIdSimpleDTO(userMatchedId)
+
+        let matchNotMessages = [
+            "You’ve got a new match! Start practicing now 🤓",
+            "Are you pretty or smart? Anyways, you’ve got a new match!"
+        ]
+        
+        notifications.schedulePushNotification(
+            "Tander",
+            matchNotMessages[Math.round(Math.random())],
+            "",
+            userMatched.FCMPushNotificationsToken
+        )
 
     } else if ((userLikes1 === false && userLikes2 === true)
         || (userLikes1 === true && userLikes2 === false) 
@@ -164,14 +179,23 @@ const userUnLiked = async (loggedUser: User, userLiked: User) => {
     console.log("..:: MatchServices.userUnLiked")
 }
 
-export const listUsersForMatching = async (userId: string) => {
+export const listUsersForMatching = async (userId: string, count: number, lastLoadedUserId?: string) => {
 
+    let p: PaginationInfo = {
+        limit: count,
+    } 
+    console.log("lastLoadedUserId",lastLoadedUserId)
+    if (lastLoadedUserId) {
+        const lastUserRef = await userServices.getRefId(lastLoadedUserId)
+        p = {
+            ...p,
+            lastVisible: lastUserRef
+        } as PaginationInfo
+    }
     const matches = await dbService.listAll(
         COLLECTION_ID,
         matchFactoryConverter, 
-            and(
-                or(where("userId1", "==", userId), where("userId2", "==", userId)),
-            )
+        or(where("userId1", "==", userId), where("userId2", "==", userId)),
     ) as  MatchFactory[]
 
     const usersProm = matches

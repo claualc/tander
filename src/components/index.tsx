@@ -1,4 +1,4 @@
-import { theme } from "@screens/theme";
+import { gobalFont, theme } from "@screens/theme";
 import { useState } from "react";
 import styled from "styled-components/native";
 import { convertHexToRGBA } from "@components/utils";
@@ -65,7 +65,7 @@ export const CustomText = styled.Text<{
       ? typographyTypes[props.fontFam] 
       : typographyTypes["RG"]};
   color: ${p => p.color || "black"};
-  font-size: ${props => props.size ? `${props.size}px` : "17px"};
+  font-size: ${props => props.size ? `${props.size}px` : `${gobalFont.size.default}px`};
 `;
 
 interface PropsChip {

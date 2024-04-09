@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components/native";
 import { Dimensions, ScrollView, TouchableOpacity, View } from "react-native";
 import { CustomText } from "@components/index";
-import { theme } from "@screens/theme";
+import { DEVICE_WINDOW_TYPE, SCREEN_TYPES, gobalFont, theme } from "@screens/theme";
 
 export interface BulletpointSelectOption {
     description: string;
@@ -12,17 +12,19 @@ export interface BulletpointSelectOption {
 
 const Item = styled.View`
     width: 100%;
-    aspect-ratio: 5/1;
+    aspect-ratio: ${DEVICE_WINDOW_TYPE == SCREEN_TYPES.SMALL ? "5/1": "7/1"};
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    margin-top: 7%;
+    margin-top: ${`${gobalFont.size.default*0.8}px`};
 `
 
 const Bullet = styled.View<{
     selected?: boolean;
 }>`
-    aspect-ratio: 1/1;
+    height:100%;
+    border-radius: 25px;
+    aspect-ratio: 1;
     background-color: ${p => p.selected ? p.theme.tertiary : p.theme.secondary_background};
     flex-direction: row;
     align-items: center;
@@ -49,10 +51,9 @@ const BulletpointSelect: React.FC<{
     return <View 
             style={{
                 width: "100%",
-                height: "90%",
                 justifyContent: "flex-start",
             }}>
-                <ScrollView>
+                <ScrollView >
                 { options.map((op, i) => {
                     return <TouchableOpacity
                             key={i}
@@ -61,15 +62,15 @@ const BulletpointSelect: React.FC<{
                                 onSelect(i)
                             }}>
                         <Item>
-                            <Bullet style={{flex: 1,borderRadius: 25}} selected={i==val}>
-                                <CustomText size={30}>{op.emoji}</CustomText>
+                            <Bullet selected={i==val}>
+                                <CustomText 
+                                    size={ DEVICE_WINDOW_TYPE == SCREEN_TYPES.SMALL ? 
+                                        30 :  DEVICE_WINDOW_TYPE == SCREEN_TYPES.MEDIUM ? 
+                                            38 : gobalFont.size.title }>{op.emoji}</CustomText>
                             </Bullet>
                             <Description style={{flex: 4}}>
-                                <CustomText 
-                                    size={16}   
-                                    color={i==val ? theme.tertiary :theme.tertiary_dark}>
-                                    <CustomText
-                                        size={16}           
+                                <CustomText color={i==val ? theme.tertiary :theme.tertiary_dark}>
+                                    <CustomText 
                                         color={i==val ? theme.tertiary :theme.tertiary_dark}
                                         fontFam="BD">
                                             {op.title} 

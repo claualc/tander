@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="080f9415-bbd9-479b-a26b-218640b3e980" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.env.production" beforeDir="false" afterPath="$PROJECT_DIR$/.env.production" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/musicInterectAsyncSelect/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/musicInterectAsyncSelect/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/select/SelectModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/select/SelectModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/select/style.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/select/style.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/chatHome/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/chatHome/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/context.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/home/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/home/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/myLikes/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/profile/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/profile/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/register/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/register/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/stackNavigator/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/stackNavigator/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/stackNavigator/routes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/stackNavigator/routes.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/userChat/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/userChat/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/axios/albumService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/axios/albumService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/firebase/database/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/firebase/database/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/firebase/notifications/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/firebase/notifications/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/matchServices.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/matchServices.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/userService/create.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/userService/create.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/userService/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/userService/index.ts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="2erTs3gCfuQKPtBy6aBPA53q3kO" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "cidr.known.project.marker": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="080f9415-bbd9-479b-a26b-218640b3e980" name="Changes" comment="" />
+      <created>1712661903621</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1712661903621</updated>
+    </task>
+    <servers />
+  </component>
+</project>

@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 
 
 import * as userServices from "@serv/userService";
-import { LoggedUserContext, UserContextType } from '@screens/context';
+import { LoggedUserContext, UserContextType } from '@screens/contexts/user';
 import { CreateUserDTO } from '@serv/userService/DTO';
 import { Forms } from '@components/forms';
 import { registerQuestions } from './components/RegisterForms';

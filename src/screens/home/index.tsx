@@ -9,14 +9,14 @@ import { CustomText, ScreenView } from "@components/index";
 import AlbumComponent from "@components/musicAlbum";
 
 import { LanguageView, Section, UserDecSections, UserDescWrapper } from "./style";
-import { LoggedUserContext, UserContextType } from "@screens/context";
+import { LoggedUserContext, UserContextType } from "@screens/contexts/user";
 import matchServices from "@serv/matchServices";
-
-const USER_CARDS_BATCH_COUNT = 10;
+import { MatchContext, MatchContextType } from "../contexts/match";
 
 const HomeScreen: React.FC = () => {
 
   const { loggedUser } = useContext(LoggedUserContext) as UserContextType; 
+  const { potentialMatches } = useContext(MatchContext) as MatchContextType; 
 
   /*
      Screen like tinder homme
@@ -31,16 +31,14 @@ const HomeScreen: React.FC = () => {
   useEffect(() => {
     (async () => {
       if (loggedUser.id ) {
-      const users: User[] = await matchServices.listUsersForMatching(loggedUser.id)
-      console.log("      HomseScreen: ", users.length, "potential matches found")
-      if (users.length) {
-        setuIndex(users.length? users.length-1 : 0)
-        setUsers(users)
-        setRenderUserCards(users.map(p => true))
-        setSwipedUserCards(users.map(p => false))
-      } else {
-        console.log("no matches found")
-      }
+        let potentialMatchesCount = potentialMatches?.length
+        if (potentialMatches && potentialMatchesCount) {
+          setuIndex(potentialMatchesCount-1)
+          setUsers(potentialMatches)
+          setRenderUserCards(new Array(potentialMatchesCount).fill(true))
+          setSwipedUserCards(new Array(potentialMatchesCount).fill(false))
+        } else 
+          console.log("no matches found")
       }
     })();
   }, [loggedUser]);

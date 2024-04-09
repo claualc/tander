@@ -3,7 +3,7 @@ import { Image, ScrollView, View } from "react-native";
 import { theme } from "../theme";
 
 import { CustomText, ScreenView } from "@components/index";
-import { LoggedUserContext, UserContextType } from "@screens/context";
+import { LoggedUserContext, UserContextType } from "@screens/contexts/user";
 import { CenteredView, DescriptionView, Item, MainWrapper } from "./styles";
 import { ProfileFormPageId, profileOptions } from "./components/settingOption";
 import { Forms } from "@components/forms";

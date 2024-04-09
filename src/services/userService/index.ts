@@ -107,6 +107,10 @@ export const getById = async (id: string | String | number | Number) => {
     return await dbServices.getObjectById(COLLECTION_ID,id, userConverter) as User;
 }
 
+export const getRefId = async (id: string | String | number | Number) => {
+    return await dbServices.getRefById(COLLECTION_ID,id);
+}
+
 export const getByIdSimpleDTO = async (id: string | String | number | Number) => {
     return await dbServices.getObjectById(COLLECTION_ID,id, userConverterSimplified) as SimpleUserDTO;
 }

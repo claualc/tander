@@ -140,7 +140,8 @@ export const Forms: React.FC<{
         setAnswers_(ans)
     },[answers, currentPageId]);
 
-    return <ScrollView style={{width: "100%"}}>
+    return <ScrollView style={{ width:"100%", marginBottom: "10%"}}
+         contentContainerStyle={{flexDirection: "column", alignItems: "flex-start", justifyContent: "center"}}>
             <BackButtonWrapper>
                 <Ionicons 
                     onPress={() => {
@@ -149,7 +150,7 @@ export const Forms: React.FC<{
                     name={"chevron-back-outline"} 
                     color={theme.main_dark}
                     size={40}
-                    style={{position: "relative", right: "4%"}}
+                    style={{margin:0}}
                     />
             </BackButtonWrapper>
 
@@ -250,7 +251,7 @@ export const Forms: React.FC<{
                     </View>
 
                     {q.description && !q.descriptionOnTop && 
-                        <Description>{q.description}</Description> }
+                        <Description bottomDescription={true}>{q.description}</Description> }
                     </View>)
                 }
                 

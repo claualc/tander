@@ -28,7 +28,6 @@ const FCMService = () => {
                         name: 'default',
                         importance: Notifications.AndroidImportance.MAX,
                         vibrationPattern: [0, 250, 250, 250],
-                        lightColor: '#FF231F7C',
                     }
                 );
             }
@@ -71,13 +70,14 @@ const FCMService = () => {
         schedulePushNotification: async (
             title: string, 
             body: string, 
-            data: Object) => {
+            data: Object,
+            token: string) => {
             await Notifications.scheduleNotificationAsync({
-            
               content: {
                 title, body, data
                 },
-              trigger: { seconds: 2 },
+              identifier: token,
+              trigger: { seconds: 2 }
             });
         },
         getDeviceToken: () => {
@@ -86,7 +86,7 @@ const FCMService = () => {
             const regex = /\[(.*?)\]/;
             
             // Extracting the string inside the square brackets using match function
-            const match = pushNotificationToken.match(regex);
+            const match = pushNotificationToken?.match(regex);
             
             return match ? match[1] : "";
         }

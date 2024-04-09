@@ -1,27 +1,29 @@
 import { TouchableOpacity, View } from "react-native";
 import styled from "styled-components/native";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import CustomSelect, { SelectOption } from "@components/select";
 import { convertHexToRGBA, getRandomColor } from "../utils";
+import { DEVICE_WINDOW_TYPE, SCREEN_TYPES, gobalFont } from "@screens/theme";
+import { PADDING_CUSTOM_SELECT } from "../select/style";
 
 const RoundButton = styled.View<{
     color: string;
-    width: string;
 }>`
     justify-content: center;
     align-items: center;
     background-color: ${p => p.color};
-    width: ${p => p.width};
     aspect-ratio: 1;
+    border-radius: 100px;
+    height: ${`${gobalFont.size.default*2}px`};
 `
 
 // to centralize "-"
 const LessSymbol = styled.View<{
     color: string;
 }>`
-    width: 30%;
-    height: 3.2px;
+    width: 40%;
+    aspect-ratio: 6/1;
     justify-content: center;
     align-items: center;
     background-color: ${p => p.color};
@@ -67,33 +69,41 @@ const CustomMultiSelect: React.FC<{
                         justifyContent: "center",
                         alignItems: "center",
                         flexDirection: "row",
+                        marginBottom: gobalFont.size.default*0.4
                     }}
                     key={i}>
+                <View style={{
+                    flex: DEVICE_WINDOW_TYPE == SCREEN_TYPES.SMALL ?
+                        15 : 14,  // the other is medium
+                    height: "100%"}}>
                 <CustomSelect 
-                    width="85%"
                     color={color}
                     onSelect={(v) => {
                         setSpecificValue(i, v.value, values)
                     }} 
                     value={value} 
                     options={options} />
+                </View>
+                <View style={{
+                    flex: DEVICE_WINDOW_TYPE == SCREEN_TYPES.SMALL ?
+                        2 : 1.2 , // the other is medium
+                        height: "100%",alignItems: "flex-end"}}>
                 <TouchableOpacity 
-                    style={{flexDirection: "row",alignItems: "center", justifyContent: "flex-end",width: "15%", aspectRatio: "1/1"}}
+                    style={{justifyContent: "flex-end", flex:1}}
                     onPress={() => deleteValue(i, values)}>
                         <RoundButton 
-                            style={{borderRadius: 100}} 
-                            width="90%"
                             color={convertHexToRGBA(color, 0.2)}>
                             <LessSymbol color={color}/>
                         </RoundButton>
                     </TouchableOpacity>
+                </View>
                 </View>
             })
         }
 
         {
             (!values || (values && values.filter(v=>v!=null).length < maxSelects)) &&
-                <View style={{marginTop: "2%"}}>
+                <View>
                 <CustomSelect 
                     onSelect={(v) => {
                         if (values && values.length)

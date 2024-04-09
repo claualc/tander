@@ -1,7 +1,12 @@
-import { getFirestore, getDocs, doc, query, collection, DocumentData,  getDoc, setDoc,  DocumentReference, updateDoc, deleteDoc, QueryFieldFilterConstraint, QueryCompositeFilterConstraint } from "firebase/firestore";
+import { getFirestore, getDocs, doc, query, collection, DocumentData,  getDoc, setDoc,  DocumentReference, updateDoc, deleteDoc, QueryFieldFilterConstraint, QueryCompositeFilterConstraint, limit, startAt, orderBy, startAfter } from "firebase/firestore";
 import { converter } from "./converterDTO";
 import firebase from "@firebaseServ/index";
 import { generateRandomString } from "@components/utils";
+
+export interface PaginationInfo {
+    limit: number;
+    lastVisible?: DocumentReference;
+}
 
 const FirestoreService = () => {
     console.log("..:: FirestoreService ...")
@@ -80,11 +85,25 @@ const FirestoreService = () => {
            
             return ref;
         },
-        listAll: async (collect: string, converter?: converter<any>, filter?: QueryCompositeFilterConstraint | QueryFieldFilterConstraint) => {
+        listAll: async (collect: string, converter?: converter<any>, filter?: QueryCompositeFilterConstraint | QueryFieldFilterConstraint, p?: PaginationInfo) => {
 
+            let c = collection(db, collect)
             let f: any = filter
-            let q = f ? query(collection(db, collect), f) : query(collection(db, collect))
-            q = converter ? q.withConverter(converter) : q
+
+            let q = query(collection(db, collect)) 
+            if (f) {
+                if (p && p?.limit)
+                    q = query(c, f, orderBy("id"),limit(p.limit)) 
+                else if (p && p?.limit && p?.lastVisible) 
+                    q = query(c, f, orderBy("id"), startAfter(p.lastVisible), limit(p.limit))      
+                else      
+                    q = query(c, f)        
+            } else {
+                 if (p && p?.limit) 
+                     q = query(c, orderBy("id"),limit(p.limit)) 
+                 if (p && p?.limit && p?.lastVisible) 
+                     q = query(c, f, orderBy("id"), startAfter(p.lastVisible), limit(p.limit))                 
+            }
 
             const querySnapshot = await getDocs(q);
             const docsData =  querySnapshot.docs.map(

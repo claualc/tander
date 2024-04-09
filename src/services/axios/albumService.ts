@@ -63,7 +63,7 @@ const searchArtists = async () => {
         
         const artistsRes = await Promise.all(search)
         const artistArr: string[] = get1DArray(artistsRes)
-        console.log(" ..::ALbumService.searchArtists", artistArr.length, "artists found")
+        console.log(" ..:: AlbumService.searchArtists", artistArr.length, "artists found")
 
         return artistArr;
     } catch(e: any) {
@@ -92,7 +92,7 @@ const getArtistTopTracks = async (artistName: string) => {
             )
         }) : []
 
-        console.log(" ..::ALbumService.getArtistTopTracks", topTracks.length, "records of", artistName)
+        console.log("..:: AlbumService.getArtistTopTracks", topTracks.length, "records of", artistName)
         return topTracks
         
     } catch(e: any) {

@@ -2,11 +2,11 @@ import { CustomText, ScreenView } from "@components/index";
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { routeNames, stackGetParams, stackNavigateTo } from "../stackNavigator";
 import { ChatContent, ChatInput, HeaderInfo, Message, NoContent, SendMessageButton, TextInputChat, TimesStampInfo } from "./style";
-import { LoggedUserContext, UserContextType } from "../context";
 import { UserMAtchInfoDTO } from "@serv/matchServices";
 import chatServices from "@serv/chatServices";
 import { ChatDTO, MsgStates } from "@serv/chatServices/DTOs";
 import { ScrollView, View } from "react-native";
+import { LoggedUserContext, UserContextType } from "../contexts/user";
 
 export interface ChatParams {
   matchInfo: UserMAtchInfoDTO;

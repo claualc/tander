@@ -10,7 +10,10 @@ const execute = async (dto: CreateUserDTO) => {
     const {photos, ...userUncompleteDTO} = dto;
 
     const userRef = await dbServices.create(
-        COLLECTION_ID, userUncompleteDTO, userConverter )
+        COLLECTION_ID, 
+        {   ...userUncompleteDTO, 
+            createdAt: new Date().toISOString()
+        }, userConverter )
     
     let photoChunkRefs: string[] = [];
     if (photos?.length) {

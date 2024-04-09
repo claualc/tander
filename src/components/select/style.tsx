@@ -1,9 +1,10 @@
 import styled from "styled-components/native";
 import { convertHexToRGBA, cutText } from "@components/utils";
-import { DimensionValue, Image, TouchableHighlight, View } from "react-native";
+import { DimensionValue, Dimensions, Image, TouchableHighlight, View } from "react-native";
 import SmallLoading from "@assets/loading_small.gif";
 import { CustomText } from "@components/index";
 import { SelectOption } from ".";
+import { DEV_DIM, gobalFont } from "@screens/theme";
 
 // actual shape of select modal 
 export const Card = styled.View`
@@ -19,6 +20,7 @@ export const Card = styled.View`
     used in all select inputs:
         select, multiselect, asyncselect
 */
+export const PADDING_CUSTOM_SELECT =0.3
 export const CustomSelectView: React.FC<React.PropsWithChildren<{
     color: string;
     width?: string;
@@ -31,12 +33,11 @@ export const CustomSelectView: React.FC<React.PropsWithChildren<{
                     width: width as DimensionValue || "100%",
                     aspectRatio: aspectRatio,
                     borderRadius: 100,
-                    overflow: "hidden",
                     backgroundColor: convertHexToRGBA(color, 0.2),
-                    padding: "2%",
-                    paddingLeft: "5%",
+                    padding: gobalFont.size.default*PADDING_CUSTOM_SELECT,
+                    paddingLeft: gobalFont.size.default,
                     alignItems: "center",
-                    justifyContent: "space-between"
+                    justifyContent: "space-between",
                 }}>
                     <>{children}</>
             </View> 
@@ -50,10 +51,12 @@ export const CustomSelectTouchable: React.FC<React.PropsWithChildren<{
 
     return  <TouchableHighlight 
                 onPress={onPress}
-                activeOpacity={0.6}
-                underlayColor="#0000"
+                underlayColor={convertHexToRGBA(color, 0.7)}
                 style={{
                     width: width as DimensionValue || "100%",
+                    borderRadius: 100,
+                    overflow: "hidden",
+                    flexDirection: "row"
                 }}>
                     <CustomSelectView color={color}>{children}</CustomSelectView>
             </TouchableHighlight> 
@@ -62,23 +65,21 @@ export const CustomSelectTouchable: React.FC<React.PropsWithChildren<{
 const LoadingView = styled.View`
     justify-content: center;
     align-items: center;
-    height: 100%;
     width: 100%;
-    margin-top: 5%;
-    margin-bottom: 15%;
+    height:  ${`${DEV_DIM.height*0.2}px`};
 `
 
 export const Loading = () => <LoadingView>
         <Image source={SmallLoading} style={{ width: 100, height: 100 }} />
     </LoadingView>
 
-
-
-export const ItemView = styled.View`
+export const ItemView = styled.View<{
+    last: boolean;
+}>`
     width: "100%";
     padding-left: 1%;
     border-bottom-color: ${p => p.theme.secondary_background};
-    border-bottom-width: 0.7px;
+    border-bottom-width:${p => p.last ? 0 :  "0.7px"};
     justify-content: flex-start;
     flex-direction: row;
     padding: 2%;
@@ -96,12 +97,13 @@ export const Item: React.FC<React.PropsWithChildren<{
     onPress:() => void;
     op: SelectOption;
     selected: boolean;
-}>> = ({onPress, op, selected}) => {
+    last?: boolean;
+}>> = ({onPress, op, selected, last=false}) => {
     return <TouchableHighlight
             activeOpacity={0.6}
             underlayColor="#0000"
             onPress={onPress}>
-        <ItemView>
+        <ItemView last={last}>
            { op.imageUrl && <ItemImageWrap>
                 <Image
                     style={{flex: 1}}

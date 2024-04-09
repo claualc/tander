@@ -1,6 +1,6 @@
 import { TouchableHighlight, View, ImageBackground, DimensionValue } from "react-native";
 
-import { theme } from "@screens/theme";
+import { theme, gobalFont} from "@screens/theme";
 import { CustomText } from "@components/index";
 import Gradient from "@assets/linear_gradient_background.png";
 
@@ -12,9 +12,9 @@ export const ColorButton: React.FC<{
 }> = ({onPress, title, disabled, width}) => {
     return <TouchableHighlight 
             style={{
-                borderRadius: 50,
+                borderRadius: gobalFont.size.textInput*1.5,
                 width: width as DimensionValue || "100%",
-                height: 55,
+                height: gobalFont.size.textInput*2.2,
                 overflow: 'hidden',
             }}
             activeOpacity={0.6}

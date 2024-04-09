@@ -6,7 +6,7 @@
 */
 
 import { SelectOption } from "@components/select"
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { convertHexToRGBA, getRandomColor } from "@components/utils";
 import { CustomText } from "@components/index";
 import { Ionicons } from "@expo/vector-icons";
@@ -16,6 +16,7 @@ import { CustomSelectTouchable } from "@components/select/style";
 import albumservice, { MusicInterestDTO } from "@serv/albumService";
 import { View } from "react-native";
 import AlbumComponent from "../musicAlbum";
+import { LoggedUserContext, UserContextType } from "@screens/contexts/user";
 
 interface AsyncSelectProps {
     value?: MusicInterestDTO;
@@ -30,19 +31,13 @@ const MusicInterectAsyncSelect: React.FC<AsyncSelectProps> = ({
         onSelect, value, color
     }) => {
 
+    const { artistOptionList } = useContext(LoggedUserContext) as UserContextType; 
+
     useEffect(() => {
         if (value)
             setTrackInfo(value)
     }, [value])
 
-    useEffect(() => {
-        (async () => {
-            let artistNames = await albumservice.searchArtists()
-            setStatisArtistList(artistNames)
-        })();
-    }, [])
-
-    const [staticArtistList, setStatisArtistList] = useState<string[]>([]);
 
     const [options, setOptions] = useState<SelectOption[]>([]);
     const [color_, setColor_] = useState<string>(color || getRandomColor());
@@ -56,7 +51,7 @@ const MusicInterectAsyncSelect: React.FC<AsyncSelectProps> = ({
             let {artistName, albumName} = trackInfo
 
             if (!artistName && !albumName) {
-                options = staticArtistList.map(a => ({
+                options = artistOptionList.map(a => ({
                     name: a, value: a
                 }));
             } else if (artistName && !albumName) {
@@ -69,7 +64,7 @@ const MusicInterectAsyncSelect: React.FC<AsyncSelectProps> = ({
             }   
             setOptions(options);
         })();
-    }, [trackInfo, staticArtistList])  
+    }, [trackInfo])  
 
     return <>
     { showModal && !trackInfo.artistName ?
