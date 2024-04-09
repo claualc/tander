@@ -1,4 +1,4 @@
-import { Photo, User } from "@api/domain/User";
+import { User } from "@api/domain/User";
 import { converter } from "@firebaseServ/database/converterDTO";
 
 import * as userServices from "@serv/userService";
@@ -8,6 +8,7 @@ import { generateRandomString } from "@components/utils";
 import { SimpleUserDTO, convertUserToSimpleDTO } from "./userService/DTO";
 import { MessageDTO } from "./chatServices/DTOs";
 import notifications from "./firebase/notifications";
+import { POT_MATCH_BATCH_LIMIT } from "@screens/contexts/match";
 
 export interface UserMAtchInfoDTO {
     match: MatchFactory;
@@ -41,7 +42,7 @@ const matchFactoryConverter: converter<MatchFactory> = {
     },
     fromFirestore: async (snap, opt) => {
         const data = snap.data(opt)!;
-        console.log("..:: FirebaseService.fromFirestore (matchFactory)", snap.id)
+        console.log("..:: FirebaseService.fromFirestore (matchFact)")
         const fact: MatchFactory = {
             id: snap.id,
             userId1: data.userId1,
@@ -59,8 +60,12 @@ const createUserMatchFactories = async (user1: User) => {
     // created everytime an user is created,
     // in relation with all other users
 
+    console.log("..:: MatchSerevices.createUserMatchFactories (user)",user1.id)
+
     const users = await userServices.listAllBasicInfo()
-    const created = users.map(async (user2) => {
+    const created = users.map(async (user2: SimpleUserDTO) => {
+        let {profilePhoto , ...rest} = user2;
+       
         if (user1.id != user2.id) {
             const fact: MatchFactory = {
                 id: generateRandomString(30),
@@ -72,12 +77,21 @@ const createUserMatchFactories = async (user1: User) => {
                 chatId: null
             }
             let match = await dbService.create(COLLECTION_ID,fact, matchFactoryConverter);
-            console.log("  ..::MatchServices.createUserMatchFactories (user)", user1.id, user2.id)
+            console.log("..:: MatchServices.createUserMatchFactories (user)", user1.id, user2.id)
             return match
         }
     })
 
-    await Promise.all(created);
+    /** 
+     * to improve rendedering, wait only for
+     * two batches of users
+    */
+   if(created.length > POT_MATCH_BATCH_LIMIT*2) {
+    await Promise.all(created.slice(0,POT_MATCH_BATCH_LIMIT*2));
+    Promise.all(created.slice(POT_MATCH_BATCH_LIMIT*2));
+   } else {
+    await Promise.all(created)
+   }
 }
 
 const listMatchesByState = async (userId: string, state: MatchState) => {
@@ -114,7 +128,6 @@ const getByUserIds = async (userId1: string, userId2: string) => {
 
 const onUserMatchAction = async (user: User, fact: MatchFactory, liked: boolean) => {
 
-    console.log("..:: onUserMatchAction (fac)", fact)
     /**
      * Match actions can only take place is matches with state on WIP
      */
@@ -139,7 +152,7 @@ const onUserMatchAction = async (user: User, fact: MatchFactory, liked: boolean)
 
         let matchNotMessages = [
             "You’ve got a new match! Start practicing now 🤓",
-            "Are you pretty or smart? Anyways, you’ve got a new match!"
+            "Are you pretty or smart? Anyways, you’ve got a new match!🔥🔥"
         ]
         
         notifications.schedulePushNotification(
@@ -157,26 +170,27 @@ const onUserMatchAction = async (user: User, fact: MatchFactory, liked: boolean)
 
     } // if either on of them stills null it stays on MatchState.WIP
 
-
     // update factory
     await dbService.update(COLLECTION_ID, updated, fact.id)
-
+    return updated.state
 }
 
 const userLiked = async (loggedUser: User, userLiked: User) => {
+    console.log("..:: MatchServices.userLiked")
     const fac = await getByUserIds(loggedUser.id , userLiked.id);
     if (fac) {
-        await onUserMatchAction(loggedUser, fac, true)
+        return await onUserMatchAction(loggedUser, fac, true)
     }
-    console.log("..:: MatchServices.userLiked")
+    return null;
 }
 
 const userUnLiked = async (loggedUser: User, userLiked: User) => {
+    console.log("..:: MatchServices.userUnLiked")
     const fac = await getByUserIds(loggedUser.id , userLiked.id);
     if (fac) {
-        await onUserMatchAction(loggedUser, fac, false)
+        return await onUserMatchAction(loggedUser, fac, false)
     }
-    console.log("..:: MatchServices.userUnLiked")
+    return null
 }
 
 export const listUsersForMatching = async (userId: string, count: number, lastLoadedUserId?: string) => {
@@ -192,11 +206,17 @@ export const listUsersForMatching = async (userId: string, count: number, lastLo
             lastVisible: lastUserRef
         } as PaginationInfo
     }
+
     const matches = await dbService.listAll(
         COLLECTION_ID,
         matchFactoryConverter, 
-        or(where("userId1", "==", userId), where("userId2", "==", userId)),
-    ) as  MatchFactory[]
+        and(
+            or(
+                and(where("userId1", "==", userId),where("userLikes1", "==", null)),
+                and(where("userId2", "==", userId),where("userLikes2", "==", null))        
+            ) ,where("state", "==", MatchState.WIP) 
+        ),
+        p) as  MatchFactory[]
 
     const usersProm = matches
         .filter(m => {

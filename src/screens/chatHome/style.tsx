@@ -19,8 +19,8 @@ const NoContentView = styled.View`
 `
 
 export const NoContent: React.FC<React.PropsWithChildren<{
-    loading: boolean;
-}>> = ({children, loading}) => {
+    loading?: boolean;
+}>> = ({children, loading=false}) => {
     return <NoContentView>
         {
             loading ? <View style={{ aspectRatio:1, height: Dimensions.get("screen").width*0.2, zIndex: 10 }}>

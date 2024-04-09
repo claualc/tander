@@ -32,7 +32,8 @@ const ContextProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
       (async () => {
         setLoading(true)
         
-          const id = process.env.EXPO_PUBLIC_USER_ID
+          //const id = process.env.EXPO_PUBLIC_USER_ID
+          const id = "9HWR21ZjptrHE5ynKsDG_"
           if (id) {
             // logged user
             const user = await userService.getById(id);

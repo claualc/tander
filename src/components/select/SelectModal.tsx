@@ -1,15 +1,16 @@
-import { Dimensions, FlatList, Modal, ScrollView, View } from "react-native";
-import { CustomText } from "@components/index";
-import { SelectOption } from ".";
+import { FlatList, Modal, View } from "react-native";
 import { useMemo, useState } from "react";
 import { BlurView } from "expo-blur";
-import ColorButton from "../colorButton";
-import { getRandomColor } from "../utils";
-import SearchBar from "@components/searchBar";
-import { search } from "./utils";
-import { Card, Item, Loading } from "./style";
-import { DEVICE_WINDOW_TYPE, DEV_DIM, SCREEN_TYPES, theme } from "@screens/theme";
 
+import { DEVICE_WINDOW_TYPE, SCREEN_TYPES, theme } from "@screens/theme";
+import ColorButton from "@components/colorButton";
+import { getRandomColor } from "@components/utils";
+import SearchBar from "@components/searchBar";
+import { Loading, CustomText } from "@components/index";
+
+import { Card, Item } from "./style";
+import { SelectOption } from ".";
+import { search } from "./utils";
 
 /*
     The display of the itens of the modal
@@ -33,7 +34,7 @@ const SelectModal: React.FC<{
 
     const optionList = useMemo<SelectOption[]>(() => {
             return withSearchBar ?
-                search(searchValue, options).slice(0,6)
+                search(searchValue, options)
                 : options
     }, [options, searchValue, withSearchBar])
 

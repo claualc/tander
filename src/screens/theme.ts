@@ -35,7 +35,7 @@ export const DEV_DIM = Dimensions.get("window")
 const devicesWindowTypes = () => {
     const dim = Dimensions.get("window")
     const aspectRatio = dim.width/dim.height
-    console.log("   DEVICE ASCPECT RATIO",aspectRatio)
+    console.log("    DEVICE ASCPECT RATIO",aspectRatio)
 
     switch(true) {
         case aspectRatio < 0.3:
@@ -59,6 +59,7 @@ export const gobalFont = {
     size: {
         default: 18, // equivalent to 16/18 em ,
         title: 30,
+        small: 16,
         textInput: textInputSize,
         dateInput: DEVICE_WINDOW_TYPE == SCREEN_TYPES.SMALL ? 
             textInputSize: textInputSize*1.2

@@ -3,6 +3,7 @@ import styled from "styled-components/native";
 import { View } from "react-native";
 import { Language } from "@api/domain/Language";
 
+
 export const UserDescWrapper = styled(Wrapper)`
     margin-top: 145%; 
     padding: 10% 7% 0% 7%; 

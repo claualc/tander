@@ -2,7 +2,7 @@ import React from 'react';
 import styled from "styled-components/native";
 
 import { CustomText } from '@components/index';
-import { gobalFont, theme } from '@screens/theme';
+import { DEVICE_WINDOW_TYPE, SCREEN_TYPES, gobalFont, theme } from '@screens/theme';
 
 export const ScreenView = styled.View`
     flex: 23;
@@ -17,42 +17,35 @@ export const ScreenView = styled.View`
 `
 
 export const BackButtonWrapper = styled.View`
-    flex: 1;
-    margin-top: 5%;
+    width: 100%;
     justify-content: flex-end;
     align-items: flex-start;
     flex-direction: column;
 `
 
 export const FormsWrapper = styled.View`
-    flex: 8;
     width: 100%;
-    padding: 2% 2% 0% 2%;
+    padding: 4% 0% 0% 0%;
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
 `
 
 export const CenterWrapping = styled.View`
-    flex: 2;
     width: 100%;
-    padding: 0% 0% 0% 0%;
+    padding: ${DEVICE_WINDOW_TYPE == SCREEN_TYPES.SMALL ?
+        "0% 0% 0% 0%" : "0% 2% 0% 2%"};
     justify-content: flex-start;
     align-items: center;
-    flex-direction: column;
 `
-
 
 export const Title: React.FC<React.PropsWithChildren> = ({
     children
 }) => <CustomText 
         color={theme.main_dark} 
         size={gobalFont.size.title} 
-        fontFam='DM'
-        style={{
-            marginBottom: 6,
-            marginTop: 6
-        }}>
+        style={{marginBottom: gobalFont.size.title*0.5}}
+        fontFam='DM'>
             {children}
         </CustomText>
 
@@ -64,7 +57,6 @@ export const Description: React.FC<React.PropsWithChildren<{
         color={theme.tertiary_dark} 
         size={gobalFont.size.default} 
         style={{
-            marginTop: gobalFont.size.default,
             marginBottom: bottomDescription ? gobalFont.size.default*1.5:gobalFont.size.default*0.2,
             textAlign: "justify",
         }}>

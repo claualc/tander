@@ -1,22 +1,23 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { AntDesign, Ionicons, SimpleLineIcons } from "@expo/vector-icons";
 
 import { theme } from "@screens/theme";
 import { User } from "@domain/User";
 import Card from "@components/userCard";
-import { CustomText, ScreenView } from "@components/index";
+import { CustomText, Loading, ScreenView } from "@components/index";
 import AlbumComponent from "@components/musicAlbum";
 
 import { LanguageView, Section, UserDecSections, UserDescWrapper } from "./style";
 import { LoggedUserContext, UserContextType } from "@screens/contexts/user";
-import matchServices from "@serv/matchServices";
+import matchServices, { MatchState } from "@serv/matchServices";
 import { MatchContext, MatchContextType } from "../contexts/match";
+import NewMatchView from "./newMatch";
 
 const HomeScreen: React.FC = () => {
 
   const { loggedUser } = useContext(LoggedUserContext) as UserContextType; 
-  const { potentialMatches } = useContext(MatchContext) as MatchContextType; 
+  const { potentialMatches, loadMoreMatches } = useContext(MatchContext) as MatchContextType; 
 
   /*
      Screen like tinder homme
@@ -28,40 +29,51 @@ const HomeScreen: React.FC = () => {
         - right: liked user
   */
 
-  useEffect(() => {
-    (async () => {
-      if (loggedUser.id ) {
-        let potentialMatchesCount = potentialMatches?.length
-        if (potentialMatches && potentialMatchesCount) {
-          setuIndex(potentialMatchesCount-1)
-          setUsers(potentialMatches)
-          setRenderUserCards(new Array(potentialMatchesCount).fill(true))
-          setSwipedUserCards(new Array(potentialMatchesCount).fill(false))
-        } else 
-          console.log("no matches found")
-      }
-    })();
-  }, [loggedUser]);
-
-  const [uIndex, setuIndex] = useState<number>(0);
-  const [users, setUsers] = useState<User[]>([]);
+  const [uIndex, setuIndex] = useState<number>(-1);
+  // when card is scrolled up
   const [seeDescription, setSeeDescription] = useState<boolean>(false);
+  const [noMoreUsersAvailable, setNoMoreUsersAvailable] = useState<boolean>(false);
+  // to animated after two users matched
+  const [newMatch, setNewMatch] = useState<boolean>(false);
 
   const [renderUserCards, setRenderUserCards ] = useState<boolean[]>([]);
   const [swipedUserCards, setSwipedUserCards ] = useState<boolean[]>([]);
 
+  const users: User[] = useMemo(() => {
+    let potentialMatchesCount = potentialMatches?.length
+    setuIndex(potentialMatches.length-1)
+    setRenderUserCards(new Array(potentialMatchesCount).fill(true))
+    setSwipedUserCards(new Array(potentialMatchesCount).fill(false))
+    setNoMoreUsersAvailable(potentialMatches.length == 0)
+    return potentialMatches
+  }, [potentialMatches])
+
+  useEffect(() => {
+    if (uIndex==-1)
+      loadMoreMatches()
+  }, [uIndex])
+
   const renderOnlyThisCard = useCallback((id: number) => {
     setRenderUserCards(cards => cards.map(
       (c, i) => i == id));
-  }, [renderUserCards, uIndex]);
+  }, [renderUserCards]);
 
   const renderAllNonSwipedUsers = useCallback(() => {
     setRenderUserCards(swipedUserCards.map(s => !s));
   }, [renderUserCards, swipedUserCards]);
 
+  const onHorizontalSwipe = useCallback(async (leftSwiped: boolean, user: User) => {
+    let state = leftSwiped ?
+      await matchServices.userUnLiked(loggedUser,user)
+      : await matchServices.userLiked(loggedUser,user)
+    console.log("state",state)
+    
+    if (state == MatchState.TRUE)
+      setNewMatch(true)
+  }, [newMatch]);
+
   const userSwiped = useCallback((id: number) => {
-    if (uIndex > 0)
-      setuIndex(uIndex-1)
+    setuIndex(u => u-1)
     setSwipedUserCards(newSwp => newSwp.map(
       (sw, i) => i == id ? true : sw));
     setRenderUserCards(cards => cards.map(
@@ -70,7 +82,15 @@ const HomeScreen: React.FC = () => {
 
   return (
     <ScreenView>
-
+      <NewMatchView show={newMatch} onPress={() => {setNewMatch(false)}}/>
+      {
+      /* {noMoreUsersAvailable ?
+      <View style={{flex:1 , justifyContent: "center", alignItems: "center", padding: "10%"}}>
+        <CustomText style={{textAlign: "center"}} color={theme.tertiary_dark}>{"UAU!! You are a machine! \n\n\n You will have to wait for more users... 🥲"}</CustomText>
+      </View>:  */}
+      {
+      uIndex == -1 ? 
+        <Loading height="100%"/> :        
          <ScrollView
               style={{ height: "100%", width: "100%", zIndex:1 }}
               contentContainerStyle={{flexGrow:1, justifyContent: "flex-end", alignItems: "center", paddingBottom: "10%"}}
@@ -81,21 +101,17 @@ const HomeScreen: React.FC = () => {
                     zIndex={i}
                     user={user}
                     onScrollUp={() => {
-                      console.log("onScrollUp")
                       renderOnlyThisCard(i);
                       setSeeDescription(true)}}
                     onScrollDown={() => {
-                      console.log("onScrollDown")
                       renderAllNonSwipedUsers()
                       setSeeDescription(false)}}
                     onSwipeLeft={() => {
-                      console.log("onSwipeLeft")
-                      matchServices.userUnLiked(loggedUser,user)
+                      onHorizontalSwipe(true, user)
                       userSwiped(i);
                     }}
                     onSwipeRigth={() => {
-                      console.log("onSwipeRigth")
-                      matchServices.userLiked(loggedUser,user)
+                      onHorizontalSwipe(false, user)
                       userSwiped(i);
                     }}
                     isScrolledUp={seeDescription}
@@ -163,6 +179,7 @@ const HomeScreen: React.FC = () => {
 
               </UserDescWrapper>
           </ScrollView>
+    }
     </ScreenView>
   );
 }

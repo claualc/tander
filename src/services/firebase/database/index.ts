@@ -90,20 +90,22 @@ const FirestoreService = () => {
             let c = collection(db, collect)
             let f: any = filter
 
-            let q = query(collection(db, collect)) 
+            let q = query(c)
             if (f) {
                 if (p && p?.limit)
-                    q = query(c, f, orderBy("id"),limit(p.limit)) 
+                    q = query(c, f, orderBy("state"),limit(p.limit)) 
                 else if (p && p?.limit && p?.lastVisible) 
-                    q = query(c, f, orderBy("id"), startAfter(p.lastVisible), limit(p.limit))      
+                    q = query(c, f, orderBy("state"), startAfter(p.lastVisible), limit(p.limit))      
                 else      
                     q = query(c, f)        
             } else {
                  if (p && p?.limit) 
-                     q = query(c, orderBy("id"),limit(p.limit)) 
+                     q = query(c, orderBy("state"),limit(p.limit)) 
                  if (p && p?.limit && p?.lastVisible) 
-                     q = query(c, f, orderBy("id"), startAfter(p.lastVisible), limit(p.limit))                 
+                     q = query(c, f, orderBy("state"), startAfter(p.lastVisible), limit(p.limit))                 
             }
+
+            q = converter ? q.withConverter(converter) : q
 
             const querySnapshot = await getDocs(q);
             const docsData =  querySnapshot.docs.map(

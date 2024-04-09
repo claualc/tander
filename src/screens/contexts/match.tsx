@@ -19,8 +19,9 @@ export const MatchContext = createContext<MatchContextType | null>(null);
 
 const ContextProvider: React.FC<{children: React.ReactNode, loggedUser?: User}> = ({children, loggedUser}) => {
 
-    const [potentialMatches, setPotentialMatches] = useState<User[]>([]);
-    // use to do pagination
+  const [potentialMatches, setPotentialMatches] = useState<User[]>([]);
+  
+  // use to do pagination
   const [loadedCounter, setLoadedCounter] = useState<number>(0);
 
   const loadMoreMatches = useCallback(async () => {
@@ -36,6 +37,7 @@ const ContextProvider: React.FC<{children: React.ReactNode, loggedUser?: User}> 
   }, [loggedUser,potentialMatches, POT_MATCH_BATCH_LIMIT, loadedCounter])
 
   useEffect(() => {loadMoreMatches()}, [loggedUser])
+  useEffect(() => {potentialMatches.map(u => console.log("new matched loaded", u.id))}, [potentialMatches])
 
     return <MatchContext.Provider value={{
         potentialMatches,

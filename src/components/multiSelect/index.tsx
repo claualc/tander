@@ -15,7 +15,7 @@ const RoundButton = styled.View<{
     background-color: ${p => p.color};
     aspect-ratio: 1;
     border-radius: 100px;
-    height: ${`${gobalFont.size.default*2}px`};
+    height: ${`${gobalFont.size.default*2.1}px`};
 `
 
 // to centralize "-"
@@ -74,7 +74,7 @@ const CustomMultiSelect: React.FC<{
                     key={i}>
                 <View style={{
                     flex: DEVICE_WINDOW_TYPE == SCREEN_TYPES.SMALL ?
-                        15 : 14,  // the other is medium
+                        14 : 14,  // the other is medium
                     height: "100%"}}>
                 <CustomSelect 
                     color={color}
@@ -86,16 +86,16 @@ const CustomMultiSelect: React.FC<{
                 </View>
                 <View style={{
                     flex: DEVICE_WINDOW_TYPE == SCREEN_TYPES.SMALL ?
-                        2 : 1.2 , // the other is medium
+                        2.4 : 1.2 , // the other is medium
                         height: "100%",alignItems: "flex-end"}}>
-                <TouchableOpacity 
-                    style={{justifyContent: "flex-end", flex:1}}
-                    onPress={() => deleteValue(i, values)}>
-                        <RoundButton 
-                            color={convertHexToRGBA(color, 0.2)}>
-                            <LessSymbol color={color}/>
-                        </RoundButton>
-                    </TouchableOpacity>
+                        <TouchableOpacity 
+                            style={{justifyContent: "flex-end", flex:1}}
+                            onPress={() => deleteValue(i, values)}>
+                                <RoundButton 
+                                    color={convertHexToRGBA(color, 0.2)}>
+                                    <LessSymbol color={color}/>
+                                </RoundButton>
+                        </TouchableOpacity>
                 </View>
                 </View>
             })

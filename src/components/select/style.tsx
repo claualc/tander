@@ -1,10 +1,9 @@
 import styled from "styled-components/native";
 import { convertHexToRGBA, cutText } from "@components/utils";
-import { DimensionValue, Dimensions, Image, TouchableHighlight, View } from "react-native";
-import SmallLoading from "@assets/loading_small.gif";
+import { DimensionValue, Image, TouchableHighlight, View } from "react-native";
 import { CustomText } from "@components/index";
 import { SelectOption } from ".";
-import { DEV_DIM, gobalFont } from "@screens/theme";
+import { gobalFont } from "@screens/theme";
 
 // actual shape of select modal 
 export const Card = styled.View`
@@ -61,17 +60,6 @@ export const CustomSelectTouchable: React.FC<React.PropsWithChildren<{
                     <CustomSelectView color={color}>{children}</CustomSelectView>
             </TouchableHighlight> 
 }
-
-const LoadingView = styled.View`
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height:  ${`${DEV_DIM.height*0.2}px`};
-`
-
-export const Loading = () => <LoadingView>
-        <Image source={SmallLoading} style={{ width: 100, height: 100 }} />
-    </LoadingView>
 
 export const ItemView = styled.View<{
     last: boolean;

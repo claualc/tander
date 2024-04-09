@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useState, useCallback, useMemo, useEffect } from "react";
 import { ScrollView, View } from "react-native";
 
-import { theme } from "@screens/theme";
+import { gobalFont, theme } from "@screens/theme";
 import CustomDateInput from "@components/forms/components/CustomDateInput";
 import CustomPhotoBatchInputs from "@components/forms/components/CustomPhotoBatchInputs";
 import { CustomTextInput, CustomCodeInput } from "@components/forms/components/CustomSimpleInputs";
@@ -140,9 +140,9 @@ export const Forms: React.FC<{
         setAnswers_(ans)
     },[answers, currentPageId]);
 
-    return <ScrollView style={{ width:"100%", marginBottom: "10%"}}
-         contentContainerStyle={{flexDirection: "column", alignItems: "flex-start", justifyContent: "center"}}>
-            <BackButtonWrapper>
+    return <ScrollView style={{ width:"100%", marginBottom: "10%", height: "100%"}}
+         contentContainerStyle={{height: "100%", flexDirection: "column", alignItems: "flex-start", justifyContent: "flex-start"}}>
+            <BackButtonWrapper style={{flex: 1}}>
                 <Ionicons 
                     onPress={() => {
                         turnFormsPageAhead(false)
@@ -154,9 +154,10 @@ export const Forms: React.FC<{
                     />
             </BackButtonWrapper>
 
-            <FormsWrapper>
+            <FormsWrapper style={{flex: 8}}>
                 <Title>{currentPage.title}</Title>
                 <Subtitle>{currentPage.subtitle}</Subtitle>
+                
                 {
                 // to list all te questions of a page
                 currentPage.questions.map(
@@ -165,7 +166,7 @@ export const Forms: React.FC<{
                     { q.description && q.descriptionOnTop && 
                         <Description>{ q.description }</Description> }
 
-                    <View style={{width: "100%", marginBottom: "7%"}}>
+                    <View style={{width: "100%", marginBottom: gobalFont.size.default}}>
                     { (q.inputType == inputTypes.TEXT) ?
                         <CustomTextInput 
                             onChange={v => {
@@ -257,7 +258,7 @@ export const Forms: React.FC<{
                 
             </FormsWrapper>
 
-            <CenterWrapping>
+            <CenterWrapping style={{flex: 1}}>
             <ColorButton
                 onPress={() =>{
                     let v = values;

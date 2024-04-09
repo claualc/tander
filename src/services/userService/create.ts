@@ -15,6 +15,7 @@ const execute = async (dto: CreateUserDTO) => {
             createdAt: new Date().toISOString()
         }, userConverter )
     
+    console.log("..:: FirebaseService.create (user)", userRef.id)
     let photoChunkRefs: string[] = [];
     if (photos?.length) {
         const photoRefsPromise = photos.filter((v:any) =>  v != null)?.map(
@@ -33,7 +34,6 @@ const execute = async (dto: CreateUserDTO) => {
     }, userRef.id)
 
     const userCreated = await dbServices.getObjectByRef(userRef) as User
-    console.log("..:: FirebaseService.create (user)", userRef.id)
 
     await matchServices.createUserMatchFactories(userCreated)
     

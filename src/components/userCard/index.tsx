@@ -108,7 +108,7 @@ const Card: React.FC<CardProps> = ({
         },
         borderRadius: isScrolledUp ? 0 : 13,
         overflow: "hidden",
-        zIndex: 1000+(zIndex||0),
+        zIndex: 100+(zIndex||0),
       }}>
         
         <View style={{ 

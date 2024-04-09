@@ -51,9 +51,9 @@ const BulletpointSelect: React.FC<{
     return <View 
             style={{
                 width: "100%",
-                justifyContent: "flex-start",
+                height: "88%",
             }}>
-                <ScrollView >
+                <ScrollView>
                 { options.map((op, i) => {
                     return <TouchableOpacity
                             key={i}
@@ -69,7 +69,11 @@ const BulletpointSelect: React.FC<{
                                             38 : gobalFont.size.title }>{op.emoji}</CustomText>
                             </Bullet>
                             <Description style={{flex: 4}}>
-                                <CustomText color={i==val ? theme.tertiary :theme.tertiary_dark}>
+                                <CustomText 
+                                    size={ DEVICE_WINDOW_TYPE == SCREEN_TYPES.SMALL ? 
+                                        gobalFont.size.small :gobalFont.size.default 
+                                    } 
+                                    color={i==val ? theme.tertiary :theme.tertiary_dark}>
                                     <CustomText 
                                         color={i==val ? theme.tertiary :theme.tertiary_dark}
                                         fontFam="BD">

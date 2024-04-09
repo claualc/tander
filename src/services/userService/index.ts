@@ -72,26 +72,23 @@ export const userConverter: converter<CreateUserDTO> = {
     },
     fromFirestore: async (snap, opt) => {
         const data = snap.data(opt)!;
-        console.log("..:: FirebaseService.fromFirestore (user)", snap.id)
         return await parseUserFromFirestoreAsync(data, snap.id);
     }
 }
 
-const userConverterSimplified: converter<SimpleUserDTO> = {
+const userSimplified: converter<SimpleUserDTO> = {
     toFirestore: (item) => {
         return {...item}
     },
     fromFirestore: async (snap, opt) => {
         const data = snap.data(opt)!;
-        console.log("..:: FirebaseService.fromFirestore (userSimplified)", snap.id)
-
         const dto: SimpleUserDTO = {
             username: data.username,
             profilePhoto: (await photoServices.getUserPhotos([data.photoChunkRefs[0]]))[0], 
             id: snap.id,
             FCMPushNotificationsToken: data.FCMPushNotificationsToken as string
         }
-        return dto;
+        return await dto;
     }
 }
 
@@ -100,7 +97,7 @@ export const listAll = async () => {
 }
 
 export const listAllBasicInfo = async () => {
-    return (await dbServices.listAll(COLLECTION_ID, userConverterSimplified)) as SimpleUserDTO[];
+    return (await dbServices.listAll(COLLECTION_ID, userSimplified)) as SimpleUserDTO[];
 }
 
 export const getById = async (id: string | String | number | Number) => {
@@ -112,7 +109,7 @@ export const getRefId = async (id: string | String | number | Number) => {
 }
 
 export const getByIdSimpleDTO = async (id: string | String | number | Number) => {
-    return await dbServices.getObjectById(COLLECTION_ID,id, userConverterSimplified) as SimpleUserDTO;
+    return await dbServices.getObjectById(COLLECTION_ID,id, userSimplified) as SimpleUserDTO;
 }
 
 export const update = async (user: CreateUserDTO, userId: string) => {

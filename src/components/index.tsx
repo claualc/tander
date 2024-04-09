@@ -1,9 +1,12 @@
-import { gobalFont, theme } from "@screens/theme";
-import { useState } from "react";
-import styled from "styled-components/native";
-import { convertHexToRGBA } from "@components/utils";
 import React from "react";
-import { Ionicons } from "@expo/vector-icons";
+import { useState } from "react";
+import { Image } from "react-native";
+import styled from "styled-components/native";
+
+import { DEV_DIM, gobalFont, theme } from "@screens/theme";
+import { convertHexToRGBA } from "@components/utils";
+
+import SmallLoading from "@assets/loading_small.gif";
 
 /* 
   ROOT COMPONENTS:
@@ -30,6 +33,7 @@ export const ScreenView = styled.View`
   height: 100%;
   background-color: ${props => props.theme.light_background};
   z-index: -1000;
+  position: relative;
 `;
 
 interface DimensionsI {
@@ -123,3 +127,19 @@ export const ColorWrapper: React.FC<React.PropsWithChildren<PropsColoWrapper>> =
 
   return <Cwrapper color={convertHexToRGBA(color, 0.2)}>{children}</Cwrapper>
 }
+
+const LoadingView = styled.View<{
+  width?: string;
+  height?: string;
+}>`
+  justify-content: center;
+  align-items: center;
+  width: ${p => p.width || "100%"};
+  height:  ${p => p.height || `${DEV_DIM.height*0.2}px`};
+`
+export const Loading: React.FC<{
+  width?: string;
+  height?: string;
+}> = ({width,height}) => <LoadingView width={width} height={height}>
+      <Image source={SmallLoading} style={{ width: 100, height: 100 }} />
+  </LoadingView>

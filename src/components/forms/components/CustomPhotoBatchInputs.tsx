@@ -75,7 +75,7 @@ const CustomPhotoBatchInputs: React.FC<{
     return <ScrollView 
             style={{
                 width: "100%", 
-                height: "90%", 
+                height: "85%",
             }}
             contentContainerStyle={{
                 justifyContent: "space-between",
@@ -93,7 +93,7 @@ const CustomPhotoBatchInputs: React.FC<{
                             aspectRatio: "3/4", 
                             position: "relative"}}>
                             <PhotoFrame 
-                                underlayColor={"#0000"}
+                                underlayColor={theme.secondary_background}
                                 onPress={() => (!imgs_[i]?.value) ? pickImage(i) : deleteImg(i)}
                                 style={{
                                     borderRadius: 25,
