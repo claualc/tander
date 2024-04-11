@@ -45,7 +45,6 @@ const pages = Object.keys(initQuest.pages).map((p )=> initQuest.pages[Number(p)]
 const LoginScreen = () => {
 
   const onSend = useCallback(async (inputs: any[][]) => {
-      console.log("..:: LoginScreen signIn",inputs)
       await authService.signIn(inputs[0][0], inputs[0][1])
   }, [])
 

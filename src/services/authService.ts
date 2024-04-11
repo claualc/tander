@@ -1,4 +1,4 @@
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth"
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, User } from "firebase/auth"
 import authService from "./firebase/auth"
 import { CustomError } from "@components/forms/errors";
 
@@ -64,7 +64,9 @@ const logOut =async () => {
 
 const setLoggedUser =async (setUserLogged: (id: string) => void) => {
     try {
-        return await authService.getAuthenticatedUser((u) => setUserLogged(u?.uid))
+        console.log("..:: AuthService.setLoggedUser")
+        return await authService.getAuthenticatedUser((u: User) => {
+            setUserLogged(u?.uid)})
     } catch (error: any) {
         const errorCode = error.code;
         const errorMessage = error.message;

@@ -1,4 +1,5 @@
 import FCMService from './notifications';
+//import FCMService_ from './cloudMessaging';
 
 // import  all modules to initialize modules
 import FirestoreService from './database';
@@ -23,6 +24,7 @@ if (!firebase.getApps().length) {
 
 const initAsyncFirebaseServices = async () => {
     await FCMService.initAsyncService();
+    //await FCMService.initAsyncService();
 }
 
 export default firebase;

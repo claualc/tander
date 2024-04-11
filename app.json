@@ -33,12 +33,7 @@
       }
     },
     "plugins": [
-      [
-        "expo-notifications",
-        {
-          "icon": "./assets/notifications_icon.png"
-        }
-      ]
+     
     ]
   }
 }

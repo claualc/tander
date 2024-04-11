@@ -39,6 +39,7 @@ const execute = async (dto: CreateUserDTO, password: string) => {
                 )
                 photoChunkRefs = await Promise.all(photoRefsPromise)
             }
+            console.log("photos created", photoChunkRefs)
         
             await userSevices.update({
                 ...userUncompleteDTO,

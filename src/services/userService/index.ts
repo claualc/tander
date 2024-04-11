@@ -17,6 +17,7 @@ import photoServices from "@serv/photoServices";
 export const COLLECTION_ID = "user"; // main collection
 
 const parseUserFromFirestoreAsync = async (data: any, id: string): Promise<User> => {
+    console.log("fromFirestore.user", id)
     const daybirth = getDateFromString(data.birth as string)
     // console.log(data.birth,"daybirth",daybirth)
     const country = locationServices.getCountryById(data.country)

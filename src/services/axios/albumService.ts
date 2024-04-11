@@ -3,9 +3,6 @@ import axios, { AxiosResponse } from "axios";
 
 const albumAPI = axios.create({
     baseURL: 'http://ws.audioscrobbler.com/2.0/',
-    // headers: {
-    //     "Content-Type": "application/json",
-    // },
 });
 
 const defaultParams = {

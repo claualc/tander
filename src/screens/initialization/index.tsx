@@ -7,7 +7,7 @@ import AppIcon from "@imgs/icon.png";
 
 import { CustomText, ScreenView } from '@components/index';
 import { CustomSelectTouchable } from '@components/select/style';
-import { gobalFont, theme } from '../theme';
+import { DEVICE_WINDOW_TYPE, SCREEN_TYPES, gobalFont, theme } from '../theme';
 import { stackNavigateTo } from '@screens/stackNavigator/navigateService';
 import { routeNames } from '@screens/stackNavigator/routes';
 
@@ -20,12 +20,15 @@ const InitializationScreen = () => {
       resizeMode='cover'>
 
         <View style={{width: "100%", flex: 2, justifyContent: "center", alignItems: 'center'}}>
-          <View style={{ width: "30%",position:'relative', top: "10%", aspectRatio:1, borderRadius: 30, overflow: 'hidden'}}>
+          <View style={{ width:  DEVICE_WINDOW_TYPE === SCREEN_TYPES.SMALL ? "30%" : "20%",position:'relative', top: "10%", aspectRatio:1, borderRadius: 30, overflow: 'hidden'}}>
             <Image source={AppIcon} style={{flex:1,width: "100%"}} resizeMode='contain'/>
           </View>
         </View>
         <View style={{width: "100%", flex: 2, alignItems: 'center'}}>
-          <View style={{width: "85%",aspectRatio: "3/1.4",alignItems: 'center', justifyContent: 'space-between'}}>
+          <View style={{width: DEVICE_WINDOW_TYPE === SCREEN_TYPES.SMALL ? "85%" : "55%",// the other one is medium
+            aspectRatio: "3/1.4",
+            alignItems: 'center',
+            justifyContent: 'space-between'}}>
             <CustomText 
               size={gobalFont.size.small}
               color={theme.light_background}>
