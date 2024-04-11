@@ -1,6 +1,6 @@
 import { Image } from "react-native";
 import styled from "styled-components/native";
-import Gradient from "@assets/linear_gradient_background.png";
+import Gradient from "@imgs/linear_gradient_background.png";
 
 
 export const ProgressBar: React.FC<{

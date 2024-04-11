@@ -3,8 +3,8 @@ import { Image, ScrollView, View } from "react-native";
 import { theme } from "../theme";
 
 import { CustomText, ScreenView } from "@components/index";
-import { LoggedUserContext, UserContextType } from "@screens/contexts/user";
-import { CenteredView, DescriptionView, Item, MainWrapper } from "./styles";
+import { LoggedUserContext, UserContextType } from "@context/user";
+import { CenteredView, DescriptionView, Item, ItemView, LogOutItem, MainWrapper } from "./styles";
 import { ProfileFormPageId, profileOptions } from "./components/settingOption";
 import { Forms } from "@components/forms";
 
@@ -14,6 +14,7 @@ import albumService, { MusicInterestDTO } from "@serv/albumService";
 import photoServices from "@serv/photoServices";
 import { Photo, User } from "@api/domain/User";
 import Avatar from "@components/avatar";
+import authService from "@serv/authService";
 /*
     This screen allows the user to modify its 
     personal information.
@@ -28,7 +29,7 @@ const formQuestions = profileOptions();
 
 const ProfileScreen = () => {
 
-  const { loggedUser, setLoading, setLoggedUser } = useContext(LoggedUserContext) as UserContextType;
+  const { loggedUser, setLoading, updateLoggedUser, logOut } = useContext(LoggedUserContext) as UserContextType;
 
   // user attribute to modify
   const [userAttribute, setUserAttribute] = useState<ProfileFormPageId>(ProfileFormPageId.NONE);
@@ -47,9 +48,9 @@ const ProfileScreen = () => {
       case ProfileFormPageId.STUDENT_INFO:
         ans=[loggedUser?.university.id, loggedUser?.course.id]
         break;
-        case ProfileFormPageId.LANG_TO_KNOW_INFO:
-          ans=[loggedUser?.langKnown.map(l => l.id)]
-          break;
+      case ProfileFormPageId.LANG_TO_KNOW_INFO:
+        ans=[loggedUser?.langKnown.map(l => l.id)]
+        break;
       case ProfileFormPageId.LANG_TO_LEARN_INFO:
         ans=[loggedUser?.langToLearn.map(l => l.id)]
         break;
@@ -99,7 +100,7 @@ const ProfileScreen = () => {
       }
 
       updatedU = await userService.update(dto, loggedUser.id)
-      await setLoggedUser(updatedU)
+      await updateLoggedUser(updatedU)
       setLoading(false)
     }
 
@@ -163,8 +164,10 @@ const ProfileScreen = () => {
             <Item 
               onPress={() => {setUserAttribute(ProfileFormPageId.MORE_ABOUT_USER)}}
               icon={"music-tone-alt"}
-              title={"A little about me"}
-              noBorder={true} />
+              title={"A little about me"}/>
+
+            <LogOutItem onPress={() => logOut()} />
+                  
           </CenteredView>
         </ScrollView>
       </View>

@@ -24,7 +24,9 @@ export const CustomSelectView: React.FC<React.PropsWithChildren<{
     color: string;
     width?: string;
     aspectRatio?: string;
-}>> = ({children, color, width, aspectRatio}) => {
+    outlined?: boolean;
+    alignCenter?: boolean;
+}>> = ({children, color, width, aspectRatio, outlined=false, alignCenter=false}) => {
 
     return  <View 
                 style={{
@@ -32,11 +34,13 @@ export const CustomSelectView: React.FC<React.PropsWithChildren<{
                     width: width as DimensionValue || "100%",
                     aspectRatio: aspectRatio,
                     borderRadius: 100,
-                    backgroundColor: convertHexToRGBA(color, 0.2),
+                    backgroundColor: outlined ? "#0000" : convertHexToRGBA(color, 0.2),
+                    borderWidth: outlined ? 1 : 0,
+                    borderColor: outlined ? color : "",
                     padding: gobalFont.size.default*PADDING_CUSTOM_SELECT,
                     paddingLeft: gobalFont.size.default,
                     alignItems: "center",
-                    justifyContent: "space-between",
+                    justifyContent: alignCenter ? "center": "space-between",
                 }}>
                     <>{children}</>
             </View> 
@@ -46,7 +50,9 @@ export const CustomSelectTouchable: React.FC<React.PropsWithChildren<{
     color: string;
     onPress?: () => void;
     width?: string;
-}>> = ({children, color, onPress, width}) => {
+    outlined?: boolean;
+    alignCenter?: boolean;
+}>> = ({children, color, onPress, width, outlined=false, alignCenter=false}) => {
 
     return  <TouchableHighlight 
                 onPress={onPress}
@@ -57,7 +63,11 @@ export const CustomSelectTouchable: React.FC<React.PropsWithChildren<{
                     overflow: "hidden",
                     flexDirection: "row"
                 }}>
-                    <CustomSelectView color={color}>{children}</CustomSelectView>
+                    <CustomSelectView
+                        alignCenter={alignCenter}
+                        outlined={outlined}
+                        color={color}>
+                            {children}</CustomSelectView>
             </TouchableHighlight> 
 }
 

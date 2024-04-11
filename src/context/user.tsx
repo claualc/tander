@@ -5,10 +5,13 @@ import * as userService from "@serv/userService";
 import matchServices from '@serv/matchServices';
 
 import albumservice from "@serv/albumService";
+import authService from '@serv/authService';
 
 export type UserContextType = {
     loggedUser: User;
-    setLoggedUser: React.Dispatch<React.SetStateAction<User>>;
+    updateLoggedUser: React.Dispatch<React.SetStateAction<User>>;
+    logIn: (id: string) => void;
+    logOut: () => void;
     stateLoading: boolean;
     setLoading: React.Dispatch<React.SetStateAction<boolean>>;
     showBottomNav: boolean;
@@ -21,8 +24,8 @@ export const LoggedUserContext = createContext<UserContextType | null>(null);
 const ContextProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
 
   const [showBottomNav, setShowBottomNav] = useState<boolean>(true);
-  const [loggedUser, setLoggedUser] = useState<User>({} as User);
-  const [stateLoading, setLoading] = useState<boolean>(false);
+  const [loggedUser_, setLoggedUser_] = useState<User>({} as User);
+  const [stateLoading, setLoading] = useState<boolean>(true);
   const [artistOptionList, setArtistOptionList] = useState<string[]>([]);
 
   useEffect(() => {
@@ -30,32 +33,38 @@ const ContextProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
      * Preloading some information for the whole app
      */
       (async () => {
-        setLoading(true)
-        
-          //const id = process.env.EXPO_PUBLIC_USER_ID
-          const id = "9HWR21ZjptrHE5ynKsDG_"
-          if (id) {
-            // logged user
-            const user = await userService.getById(id);
-  
-            let {photos_, ...rest} = user
-            setLoggedUser(user)
-            console.log("  CONTEXT (user): user logged",id)
-
-            let artistNames = await albumservice.searchArtists()
-            if (artistNames.length) {
-              setArtistOptionList(artistNames)
-            }
-        }
-        setLoading(false)
+          console.log("   INIT USER CONTEXT")
+          setLoading(true)
+          await authService.setLoggedUser(logIn)
+          let artistNames = await albumservice.searchArtists()
+          if (artistNames.length) {
+            setArtistOptionList(artistNames)
+          }
+          setLoading(false)
       })()
   },[])
+
+  const logIn = useCallback(async (id: string) => {
+    if (id) {
+        // logged user
+        const user = await userService.getById(id);
+        setLoggedUser_(user)
+        console.log("  CONTEXT (user): user logged",id)
+    }
+  }, [loggedUser_])
+
+  const logOut = useCallback(async () => {
+    await authService.logOut()
+    setLoggedUser_({} as User)
+  }, [])
 
   return <LoggedUserContext.Provider value={{
       showBottomNav, 
       setShowBottomNav,
-      loggedUser,
-      setLoggedUser,
+      loggedUser: loggedUser_,
+      logIn,
+      logOut,
+      updateLoggedUser: setLoggedUser_,
       stateLoading,
       setLoading,
       artistOptionList

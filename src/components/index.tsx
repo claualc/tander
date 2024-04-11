@@ -6,7 +6,7 @@ import styled from "styled-components/native";
 import { DEV_DIM, gobalFont, theme } from "@screens/theme";
 import { convertHexToRGBA } from "@components/utils";
 
-import SmallLoading from "@assets/loading_small.gif";
+import SmallLoading from "@imgs//loading_small.gif";
 
 /* 
   ROOT COMPONENTS:

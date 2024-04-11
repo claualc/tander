@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useState, useCallback, useMemo, useEffect } from "react";
+import { useState, useCallback, useMemo, useEffect, useContext } from "react";
 import { ScrollView, View } from "react-native";
 
 import { gobalFont, theme } from "@screens/theme";
@@ -14,8 +14,9 @@ import CustomMultiSelect from "@components/multiSelect";
 import CustomSelect from "@components/select";
 import { FormsPage, FormsQuestion, inputTypes } from "./components/formDTOs";
 import MusicInterectAsyncSelect from "@components/musicInterectAsyncSelect";
-import { Photo } from "@api/domain/User";
-
+import { CustomText } from "@components/index";
+import { CustomError } from "./errors";
+import { LoggedUserContext, UserContextType } from "@context/user";
 
 export const checkFormsInputValid = (v: any, q: FormsQuestion) => {
     let isValid = q.validate ? q.validate(v) : true // allways valid if not validation
@@ -25,18 +26,21 @@ export const checkFormsInputValid = (v: any, q: FormsQuestion) => {
 export const Forms: React.FC<{
     totalPagesCount: number;
     pages:  FormsPage[];
-    onSend: (inputs: any[][]) => Promise<void>;
+    onSend: (inputs: any[][]) => (Promise<void> | void);
     onNextPage?: (nextIndex: number) => void;
     onClose?: () => void;
     defaultAnswers?: any[][];
+    onSendButtonTitle?: string;
     //onInitPage?: (p: FormsPage) => {}; // custom behavour that can be added when a certain type of pages inits
-}> = ({totalPagesCount, pages, onSend, onNextPage, onClose, defaultAnswers}) => {
+}> = ({totalPagesCount, pages, onSend, onNextPage, onClose, defaultAnswers, onSendButtonTitle="Next"}) => {
 
     const [answers, setAnswers_] = useState<any[][]>([]);
     const [validAnswer, setValidAnswer] = useState(false);
     const [currentPageId, setCurrentPageId] = useState<number>(0);
     const [sendForms, setSendForms] = useState<boolean>(false);
     const [allFieldsRequired, setAllFieldsRequired] = useState<boolean>(pages[0].allFieldsRequired == undefined ? true : pages[0].allFieldsRequired);
+    const [error, setError] = useState<string | null>(null);
+    const { setLoading } = useContext(LoggedUserContext) as UserContextType;
 
     // the values of the answers of the current load page
     // they will be shown in the input
@@ -48,6 +52,10 @@ export const Forms: React.FC<{
             setValues([...defaultAnswers[0]])
         }
     }, [defaultAnswers])
+
+    useEffect(() => {
+        error && setError(null)
+    }, [values])
 
     const setCurrentValues = useCallback((id: number, newVal: any) => {
         // arrays r compared by reference not by value
@@ -98,7 +106,18 @@ export const Forms: React.FC<{
 
     useEffect(() => {
         if (sendForms)
-            (async () =>  await onSend(answers))();
+            (async () => {
+            
+            try {
+                await onSend(answers)
+                setLoading(true)
+            } catch(e) {
+                if (e instanceof CustomError) {
+                    setError(e.message)
+                }
+            }
+            setSendForms(false)
+        })();
     }, [sendForms]);
 
     const disableButton = useMemo(() => {
@@ -140,9 +159,8 @@ export const Forms: React.FC<{
         setAnswers_(ans)
     },[answers, currentPageId]);
 
-    return <ScrollView style={{ width:"100%", marginBottom: "10%", height: "100%"}}
-         contentContainerStyle={{height: "100%", flexDirection: "column", alignItems: "flex-start", justifyContent: "flex-start"}}>
-            <BackButtonWrapper style={{flex: 1}}>
+    return <ScrollView>
+            <BackButtonWrapper>
                 <Ionicons 
                     onPress={() => {
                         turnFormsPageAhead(false)
@@ -154,7 +172,7 @@ export const Forms: React.FC<{
                     />
             </BackButtonWrapper>
 
-            <FormsWrapper style={{flex: 8}}>
+            <FormsWrapper>
                 <Title>{currentPage.title}</Title>
                 <Subtitle>{currentPage.subtitle}</Subtitle>
                 
@@ -175,6 +193,7 @@ export const Forms: React.FC<{
                             }}
                             placeholder={q.placeholder} 
                             value={values[i]}
+                            hideText={q.hideText}
                             maxCharacters={q.maxCharacters}/>
                     : (q.inputType == inputTypes.NUMERIC) ?
                         <CustomCodeInput 
@@ -255,18 +274,19 @@ export const Forms: React.FC<{
                         <Description bottomDescription={true}>{q.description}</Description> }
                     </View>)
                 }
+
+                {error && <CustomText color={"red"} >{error}</CustomText> }
                 
             </FormsWrapper>
-
-            <CenterWrapping style={{flex: 1}}>
-            <ColorButton
-                onPress={() =>{
-                    let v = values;
-                    setAnswers(v)
-                    turnFormsPageAhead(true) 
-                }}
-                title={"Next"}
-                disabled={disableButton}/>
+            <CenterWrapping>
+                <ColorButton
+                    onPress={() =>{
+                        let v = values;
+                        setAnswers(v)
+                        turnFormsPageAhead(true) 
+                    }}
+                    title={onSendButtonTitle}
+                    disabled={disableButton}/>
             </CenterWrapping>
     </ScrollView>
 }

@@ -35,6 +35,7 @@ export interface FormsQuestion {
 
     // for code input types
     maxCodeLength?: number;
+    hideText?: boolean; //password inputs
 
     // for text input types
     maxCharacters?: number;

@@ -8,18 +8,16 @@ import "@serv/firebase";
 import "@serv/axios";
 
 import {initAsyncFirebaseServices} from '@serv/firebase';
-
 import { ThemeProvider } from 'styled-components/native';
 import { theme } from './theme';
 import ScreensStack from './stackNavigator';
-import UserContext from './contexts/user';
+import UserContext from "@context/user";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
 
 const App: React.FC = () => {
 
-  const [appIsReady, setAppIsReady] = useState(false);
   const [fontsLoaded] = Font.useFonts({
     // demibold: btwn regular and bold
     'Format-Sans-DM': require('@assets/fonts/OCFormatSans-Dm.otf'),

@@ -8,7 +8,7 @@ import { converter } from "@firebaseServ/database/converterDTO";
 import dbServices from "@firebaseServ/database"
 
 import { User, UserTeam } from "@domain/User";
-import userTeamDic from "@assets/dictionaries/userTeam";
+import userTeamDic from "@dict/userTeam";
 
 import { CreateUserDTO, SimpleUserDTO } from "./DTO";
 import albumService from "@serv/albumService";
@@ -117,9 +117,9 @@ export const update = async (user: CreateUserDTO, userId: string) => {
 
     const ref = await dbServices.getRefById(COLLECTION_ID, userId,userConverter);
     
-    await dbServices.update(COLLECTION_ID, dto, ref.id, userConverter)
+    await dbServices.update(COLLECTION_ID, dto, userId, userConverter)
 
-    console.log("..:: FirebaseService.update (user)", ref.id)
+    console.log("..:: FirebaseService.update (user)", userId)
     const userUpdated = await dbServices.getObjectByRef(ref)
     return userUpdated as User
 }

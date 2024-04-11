@@ -2,8 +2,8 @@ import FCMService from './notifications';
 
 // import  all modules to initialize modules
 import FirestoreService from './database';
+import AuthService from './auth';
 import * as firebase from 'firebase/app';
-
 
 console.log("\n..::Init FirebaseService")
 

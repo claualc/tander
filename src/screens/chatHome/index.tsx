@@ -3,13 +3,14 @@ import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 import { CustomText, ScreenView } from "@components/index";
 import matchServices, { UserMAtchInfoDTO } from "@serv/matchServices";
-import { LoggedUserContext, UserContextType } from "@screens/contexts/user";
+import { LoggedUserContext, UserContextType } from "@context/user";
 import { Avatar } from "@components/avatar";
 import { ItemChat, ItemChatDescription, ItemChatImg, NoContent, Title, UnreadChatAlert } from "./style";
-import { routeNames, stackNavigateTo } from "../stackNavigator";
 import { ChatParams } from "../userChat";
 import chatServices from "@serv/chatServices";
 import { ChatDTO, MessageDTO, MsgStates } from "@serv/chatServices/DTOs";
+import { stackNavigateTo } from "@screens/stackNavigator/navigateService";
+import { routeNames } from "@screens/stackNavigator/routes";
 
 
 const ChatScreen = () => {

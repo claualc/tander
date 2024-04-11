@@ -1,6 +1,6 @@
 import styled from "styled-components/native";
 import { Ionicons, SimpleLineIcons } from "@expo/vector-icons";
-import { Image, TouchableHighlight, View } from "react-native";
+import { TouchableHighlight, View } from "react-native";
 
 import { CustomText } from "@components/index";
 import { theme } from "@screens/theme";
@@ -85,4 +85,26 @@ export const Item: React.FC<Props> = ({title, icon, onPress, noBorder=false}: Pr
       </View>
 
   </ItemView>
+}
+
+
+export const LogOutItem: React.FC<{
+  onPress: () => void;
+}> = ({onPress}) => {
+
+    return <TouchableHighlight 
+            activeOpacity={0.6}
+            style={{borderRadius: 100, justifyContent: "center"}}
+            underlayColor={theme.light_background} 
+            onPress={onPress}>
+              <ItemView showBottomBorder={false}>
+       <View style={{flex: 5, flexDirection: "row"}}>
+          <SimpleLineIcons name="logout" size={20} color={theme.tertiary_dark} />
+          <CustomText>{"  Log Out"}</CustomText>
+      </View>
+      <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+          
+      </View>
+      </ItemView>
+      </TouchableHighlight>
 }

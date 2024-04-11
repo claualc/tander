@@ -2,7 +2,6 @@ import styled from "styled-components/native";
 
 export const MainCard = styled.View`
     width:  100%;
-    aspect-ratio: 100/45;
     padding-top: 2%;
     justify-content: space-between;
     flex-direction: row;
@@ -17,11 +16,12 @@ export const AlbumCoverWrapper = styled.View`
 
 export const AlbumCInfoWrapper = styled.View`
     width:  55%;
-    height: 100%;
+    height: auto;
     flex-direction: column;
     justify-content: flex-end;
     align-items: flex-start;
-    padding-left: 3%;
+    padding-left: 5%;
+    padding-bottom: 10%;
 `
 
 export const LoadingCard = styled.View`

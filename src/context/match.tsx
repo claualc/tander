@@ -2,7 +2,7 @@ import React, { createContext, useCallback, useEffect, useState } from 'react';
 
 import { User } from '@api/domain/User';
 import * as userService from "@serv/userService";
-import matchServices from '@serv/matchServices';
+import matchServices, { POT_MATCH_BATCH_LIMIT } from '@serv/matchServices';
 
 import albumservice from "@serv/albumService";
 import { PaginationInfo } from '@serv/firebase/database';
@@ -14,7 +14,6 @@ export type MatchContextType = {
   };
 
 
-export const POT_MATCH_BATCH_LIMIT = 3;
 export const MatchContext = createContext<MatchContextType | null>(null);
 
 const ContextProvider: React.FC<{children: React.ReactNode, loggedUser?: User}> = ({children, loggedUser}) => {

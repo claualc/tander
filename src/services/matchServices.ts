@@ -8,7 +8,9 @@ import { generateRandomString } from "@components/utils";
 import { SimpleUserDTO, convertUserToSimpleDTO } from "./userService/DTO";
 import { MessageDTO } from "./chatServices/DTOs";
 import notifications from "./firebase/notifications";
-import { POT_MATCH_BATCH_LIMIT } from "@screens/contexts/match";
+
+
+export const POT_MATCH_BATCH_LIMIT = 3; // number of users loaded per each bach
 
 export interface UserMAtchInfoDTO {
     match: MatchFactory;
@@ -63,6 +65,7 @@ const createUserMatchFactories = async (user1: User) => {
     console.log("..:: MatchSerevices.createUserMatchFactories (user)",user1.id)
 
     const users = await userServices.listAllBasicInfo()
+    console.log("listbasic", users.map(u => u.id))
     const created = users.map(async (user2: SimpleUserDTO) => {
         let {profilePhoto , ...rest} = user2;
        
@@ -159,7 +162,8 @@ const onUserMatchAction = async (user: User, fact: MatchFactory, liked: boolean)
             "Tander",
             matchNotMessages[Math.round(Math.random())],
             "",
-            userMatched.FCMPushNotificationsToken
+            //userMatched.FCMPushNotificationsToken+
+            "ksj"
         )
 
     } else if ((userLikes1 === false && userLikes2 === true)
@@ -198,7 +202,6 @@ export const listUsersForMatching = async (userId: string, count: number, lastLo
     let p: PaginationInfo = {
         limit: count,
     } 
-    console.log("lastLoadedUserId",lastLoadedUserId)
     if (lastLoadedUserId) {
         const lastUserRef = await userServices.getRefId(lastLoadedUserId)
         p = {

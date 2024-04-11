@@ -1,44 +1,51 @@
-import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React, { useEffect, useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
 
 import { RootScreenView } from '@components/index';
 import BottomTabNavigator from '@components/bottomTabNavigator';
 import LoadingComponent from '@components/loading';
-import { LoggedUserContext, UserContextType } from '@screens/contexts/user';
-import { CommonActions, NavigationContainer, createNavigationContainerRef } from '@react-navigation/native';
-import { CHAT_MESSAGING_SCREEN, CHAT_SCREEN, HOME_SCREEN, LOGIN_SCREEN, PROFILE_SCREEN, REGISTER_SCREEN, auth_routes, unauth_routes } from './routes';
-import MatchContext from '@screens/contexts/match';
+import { LoggedUserContext, UserContextType } from '@context/user';
+import MatchContext from '@context/match';
+import { Stack, navigatorRef, stackNavigateTo } from './navigateService';
+import { CHAT_MESSAGING_SCREEN, CHAT_SCREEN, HOME_SCREEN, INITIALIZATION_SCREEN, LOGIN_SCREEN, PROFILE_SCREEN, REGISTER_SCREEN } from './routes';
 
-// stack component
-const Stack = createNativeStackNavigator();
-const navigatorRef = createNavigationContainerRef()
+// sreens
+import HomeScreen from '@screens/home';
+import ProfileScreen from '@screens/profile';
+import ChatScreen from '@screens/chatHome';
+import initializationScreen from '@screens/initialization';
+import RegisterScreen from '@screens/register';
+import ChatMessagingScreen from '@screens/userChat';
+import LoginScreen from '@screens/login';
 
-export const routeNames = {
-    HOME_SCREEN,
-    CHAT_SCREEN,
-    PROFILE_SCREEN,
-    REGISTER_SCREEN,
-    LOGIN_SCREEN,
-    CHAT_MESSAGING_SCREEN,
-}
+import HomeIcon from "@imgs/bottomTab/home.png"; 
+import OnFocusHomeIcon from "@imgs/bottomTab/on_focus_home.png"; 
+import ProfileIcon from "@imgs/bottomTab/profile.png"; 
+import OnFocusProfileIcon from "@imgs/bottomTab/on_focus_profile.png"; 
+import ChatIcon from "@imgs/bottomTab/chat.png"; 
+import OnFocusChatIcon from "@imgs/bottomTab/on_focus_chat.png"; 
 
-export function stackNavigateTo(routeName: string, params?: any,metadata?: any) {
-    if (navigatorRef.isReady()) {
-        navigatorRef.dispatch(CommonActions.navigate(routeName, params));
-    }
-}
 
-export function stackGetParams() {
-    if (navigatorRef.isReady()) {
-        return navigatorRef.getCurrentRoute()?.params
-    }
-    return null
-}
+// routes
+export const auth_routes = [
+    { name: HOME_SCREEN, component: HomeScreen ,icon: HomeIcon, onFocusIcon:OnFocusHomeIcon, showInTab: true },
+    { name: CHAT_SCREEN, component: ChatScreen ,icon: ChatIcon, onFocusIcon:OnFocusChatIcon, showInTab: true  },
+    { name: PROFILE_SCREEN, component: ProfileScreen ,icon: ProfileIcon, onFocusIcon:OnFocusProfileIcon, showInTab: true  },
+    { name: CHAT_MESSAGING_SCREEN, component: ChatMessagingScreen, icon: null, onFocusIcon: null, showInTab: false  },
+]
+
+export const unauth_routes = [
+    { name: INITIALIZATION_SCREEN, component: initializationScreen  },
+    { name: LOGIN_SCREEN, component: LoginScreen  },
+    { name: REGISTER_SCREEN, component: RegisterScreen },
+  ]
+
 
 const MyStack = () => {
 
     const { loggedUser, stateLoading, showBottomNav } = React.useContext(LoggedUserContext) as UserContextType;
 
+    useEffect(() => console.log(loggedUser?.id), [loggedUser])
     return <>
             {
                 stateLoading && <LoadingComponent /> 

@@ -48,11 +48,7 @@ const BulletpointSelect: React.FC<{
 }> = ({value, options, onSelect}) => {
 
     const [val, setVal] = useState(value);
-    return <View 
-            style={{
-                width: "100%",
-                height: "88%",
-            }}>
+    return <View>
                 <ScrollView>
                 { options.map((op, i) => {
                     return <TouchableOpacity

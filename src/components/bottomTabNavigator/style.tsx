@@ -1,12 +1,14 @@
 import styled from 'styled-components/native';
-import { Ionicons } from "@expo/vector-icons";
 
-interface PropsIconBarTab {
-    focused: boolean;
-}
-  
-export const IconBarTab = styled(Ionicons)<PropsIconBarTab>`
-    color: ${props => props.focused ? props.theme.tertiary : props.theme.secondary_background};
+export const Icon = styled.ImageBackground`
+    flex:1;
+`;
+
+export const ViewTab = styled.TouchableHighlight`
+    flex: 1;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
 `;
 
 export const MainView = styled.View<{

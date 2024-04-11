@@ -1,16 +1,15 @@
 import React, { useCallback, useState } from 'react';
 
-
-import * as userServices from "@serv/userService";
-import { LoggedUserContext, UserContextType } from '@screens/contexts/user';
+import { LoggedUserContext, UserContextType } from '@context/user';
 import { CreateUserDTO } from '@serv/userService/DTO';
 import { Forms } from '@components/forms';
 import { registerQuestions } from './components/RegisterForms';
 import { View } from 'react-native';
 import { ProgressBar, ProgressBarWrapper } from './components/ProgressBar';
 import FCMService from "@firebaseServ/notifications";
-import createUserService from '@serv/userService/create';
 import CreateUserService from '@serv/userService/create';
+import { routeNames } from '@screens/stackNavigator/routes';
+import { stackNavigateTo } from '@screens/stackNavigator/navigateService';
 
 
 const initQuest = registerQuestions()
@@ -18,37 +17,32 @@ const pages = Object.keys(initQuest.pages).map((p )=> initQuest.pages[Number(p)]
 
 const RegisterScreen = () => {
 
-  const { setLoading, setLoggedUser } = React.useContext(LoggedUserContext) as UserContextType;
+  const { setLoading, logIn } = React.useContext(LoggedUserContext) as UserContextType;
   const [ progress, setProgress ] = useState<number>(0);
 
   const onSend = useCallback(async (inputs: any[][]) => {
-    try {
       console.log("..:: RegisterScreen signup: endend")
-      setLoading(true)
       const userDTO: CreateUserDTO = {
-        username: inputs[1][0], // username
-        birth: inputs[2][0], // birthdate
-        phoneNumber: inputs[0][0], // phonenumber
-        university :inputs[3][0], //university_
-        course :inputs[3][1], // course
-        langToLearn :inputs[4][1], // langTolearn
-        langKnown :inputs[5][0], // langKnown
-        photos :inputs[7][0], //photos
-        team :inputs[6][0], //userTeam
-        country :inputs[4][0], //country,
+        username: inputs[1][0], 
+        birth: inputs[2][0],
+        phoneNumber: inputs[0][0],
+        university :inputs[3][0],
+        course :inputs[3][1],
+        langToLearn :inputs[4][1],
+        langKnown :inputs[5][0],
+        photos :inputs[7][0],
+        team :inputs[6][0],
+        country :inputs[4][0],
         bio: "",
         musicInterest: null,
-        FCMPushNotificationsToken: FCMService.getDeviceToken()
+        FCMPushNotificationsToken: FCMService.getDeviceToken(),
       }
 
-      const user = await CreateUserService.execute(userDTO);
-      setLoggedUser(user);
-      setLoading(false)
-    } catch(e) {
-      console.log("..:: RegisterScreen signup ERROR: user data was collected but not registered in API")
-      console.log(e)
-    }
-   
+      let password = inputs[8][0]
+      const user = await CreateUserService.execute(userDTO,password);
+      setLoading(true)
+      if (user)
+        logIn(user.id);
   }, [])
 
   return <View style={{
@@ -78,7 +72,7 @@ const RegisterScreen = () => {
               onSend={onSend}
               pages={pages}
               onNextPage={(n) => setProgress(n)}
-              onClose={() => console.log("go back tologin")}
+              onClose={() => stackNavigateTo(routeNames.INITIALIZATION_SCREEN)}
             />
         </View>
     </View>

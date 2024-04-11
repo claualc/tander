@@ -16,7 +16,7 @@ import { CustomSelectTouchable } from "@components/select/style";
 import albumservice, { MusicInterestDTO } from "@serv/albumService";
 import { View } from "react-native";
 import AlbumComponent from "../musicAlbum";
-import { LoggedUserContext, UserContextType } from "@screens/contexts/user";
+import { LoggedUserContext, UserContextType } from "@context/user";
 
 interface AsyncSelectProps {
     value?: MusicInterestDTO;
@@ -116,7 +116,7 @@ const MusicInterectAsyncSelect: React.FC<AsyncSelectProps> = ({
         </CustomSelectTouchable>
         {  
             trackInfo.albumName && trackInfo.artistName &&
-            <View style={{width: "100%", height: "100%", marginTop: "3%"}}>
+            <View style={{width: "100%", marginTop: "3%"}}>
                 <AlbumComponent 
                     albumName={trackInfo.albumName}
                     artistName={trackInfo.artistName}

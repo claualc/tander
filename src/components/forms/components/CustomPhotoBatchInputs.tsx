@@ -73,10 +73,6 @@ const CustomPhotoBatchInputs: React.FC<{
     }, [imgs_]);
 
     return <ScrollView 
-            style={{
-                width: "100%", 
-                height: "85%",
-            }}
             contentContainerStyle={{
                 justifyContent: "space-between",
                 flexDirection: "row",

@@ -1,9 +1,9 @@
 import { Animated, Dimensions, Image, PanResponder, TouchableWithoutFeedback, View } from "react-native";
 import { AnimationView, PhotoChipWrapper, PhotoSwipeChips, UserDataView } from "./style";
 import { Chip, CustomText } from "@components/index";
-import EmptyImage from "@assets/empty_image.png";
-import BlackBottomBlur from "@assets/black_blur_user_card.png";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import EmptyImage from "@imgs/empty_image.png";
+import BlackBottomBlur from "@imgs/black_blur_user_card.png";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { INITIAL_GESTURE_VALS, coordsI, panRes } from "./PanResponder";
 import { theme } from "@screens/theme";
 import { User } from "@api/domain/User";

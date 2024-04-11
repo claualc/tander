@@ -1,5 +1,5 @@
 import { Image, View } from "react-native";
-import Loading from "@assets/loading.gif";
+import Loading from "@imgs/loading.gif";
 
 
 const LoadingComponent = () => {

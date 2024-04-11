@@ -21,11 +21,12 @@ export const BackButtonWrapper = styled.View`
     justify-content: flex-end;
     align-items: flex-start;
     flex-direction: column;
+    margin-top: 8%;
 `
 
 export const FormsWrapper = styled.View`
     width: 100%;
-    padding: 4% 0% 0% 0%;
+    padding: 4% 0% 4% 0%;
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
@@ -35,8 +36,8 @@ export const CenterWrapping = styled.View`
     width: 100%;
     padding: ${DEVICE_WINDOW_TYPE == SCREEN_TYPES.SMALL ?
         "0% 0% 0% 0%" : "0% 2% 0% 2%"};
-    justify-content: flex-start;
     align-items: center;
+    margin-bottom: 10%;
 `
 
 export const Title: React.FC<React.PropsWithChildren> = ({

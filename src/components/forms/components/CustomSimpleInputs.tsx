@@ -18,15 +18,18 @@ export const CustomTextInput: React.FC<{
     placeholder?: string;
     onChange: (v: string) => void;
     maxCharacters?: number;
-}> = ({value, onChange, placeholder, maxCharacters}) => {
+    hideText?: boolean; // when is a password
+}> = ({value, onChange, placeholder, maxCharacters, hideText=false}) => {
 
     return <>
         <StyledInputText
-            selectionColor={theme.tertiary_dark}
+            selectionColor={theme.secondary_background}
             onChangeText={onChange}
             value={value}
             maxLength={maxCharacters}
             placeholder={placeholder || ""}
+            placeholderTextColor={theme.secondary_background}
+            secureTextEntry={hideText}
         />
         {
             maxCharacters && <View style={{width: "100%", aspectRatio: "10/1", alignItems: "flex-end"}}>
@@ -45,6 +48,7 @@ export const CustomCodeInput: React.FC<{
 }> = ({value, onChange, placeholder, isPhoneNumber = false, maxLength = 10000}) => {
 
     return <StyledInputText
+        placeholderTextColor={theme.secondary_background}
         selectionColor={theme.tertiary_dark}
         onChangeText={(v: string) => {
             onChange(v.replace(/[^0-9]/g, "").toString()) }}

@@ -1,5 +1,5 @@
 import { CustomText } from "@components/index";
-import NewMAtchImg from "@assets/loading.gif";
+import NewMAtchImg from "@imgs/loading.gif";
 import { useEffect, useState } from "react";
 import { Animated, Image, TouchableHighlight, View } from "react-native";
 

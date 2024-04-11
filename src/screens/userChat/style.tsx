@@ -1,5 +1,5 @@
 import styled from "styled-components/native";
-import Gradient from "@assets/linear_gradient_background.png"
+import Gradient from "@imgs/linear_gradient_background.png"
 import React from "react";
 import { Dimensions, ImageBackground, TextInput, TouchableHighlight, View, ViewBase } from "react-native";
 import { CustomSelectView } from "@components/select/style";

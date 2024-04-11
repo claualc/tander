@@ -2,7 +2,7 @@ import { TouchableHighlight, View, ImageBackground, DimensionValue } from "react
 
 import { theme, gobalFont} from "@screens/theme";
 import { CustomText } from "@components/index";
-import Gradient from "@assets/linear_gradient_background.png";
+import Gradient from "@imgs/linear_gradient_background.png";
 
 export const ColorButton: React.FC<{
     onPress: () => void;

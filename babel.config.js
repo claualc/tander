@@ -11,12 +11,13 @@ module.exports = function(api) {
            alias: {
             "@serv": "./src/services",
             "@firebaseServ": "./src/services/firebase",
-            "@": "src/",
+            "@context": "./src/context",
             "@components": "./src/components",
             "@screens": "./src/screens",
             "@api": "./src/api",
             "@domain": "./src/api/domain",
             "@assets": "./assets",
+            "@imgs": "./assets/imgs",
             "@dict": "./assets/dictionaries",
            }
          }

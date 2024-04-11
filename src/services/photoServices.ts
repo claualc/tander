@@ -8,8 +8,8 @@ import dbServices from "@firebaseServ/database"
 export interface PhotoChunkDTO {
     value: string;
     userRef: DocumentReference;
-    photoLogicalId: string;
-    id: number;
+    index: number;
+    logicalPhotoId: string; 
 }
 
 const isPhotoArray = (arr: Photo[]) => {
@@ -57,39 +57,35 @@ const createUserPhoto = async ({
     let mostSignificatValue = value.slice(0, half)
     let lessSignificatValue = value.slice(half)
 
+
     // Most Significat Value
     let MSVdto: PhotoChunkDTO = {
         value: mostSignificatValue,
         userRef,
-        photoLogicalId: id,
-        id: 0
+        logicalPhotoId: id,
+        index: 0
     }
 
     // Less Significat Value
     let LSVdto: PhotoChunkDTO = {
         value: lessSignificatValue,
         userRef,
-        photoLogicalId: id,
-        id: 2
+        logicalPhotoId: id,
+        index: 2
     }
 
     const MSVphotoRef = await dbServices.create(
         COLLECTION_ID, MSVdto )
-
     const LSVphotoRef = await dbServices.create(
         COLLECTION_ID, LSVdto )
     
     console.log("..:: FirebaseService.createUserPhoto (photo)", id)
-    return `${MSVphotoRef.id}${CHUNK_SYMBOL_SEPARATOR}${LSVphotoRef.id}`
+    return `${MSVphotoRef?.id}${CHUNK_SYMBOL_SEPARATOR}${LSVphotoRef?.id}`
 }
 
 const getChunkIds = (photo: Photo) => photo.chunkIds.split(CHUNK_SYMBOL_SEPARATOR)
-const getChunksToguether = (chunkId1: string, chunkId2: string) => {
-    return `${chunkId1}${CHUNK_SYMBOL_SEPARATOR}${chunkId2}`
-}
 
 const getUserPhotos = async (chunkRefs: string[]) => {
-
     let photos = chunkRefs?.map(async (photoChunk) => {
         let [chunk1, chunk2] = photoChunk.split(CHUNK_SYMBOL_SEPARATOR);
 
@@ -98,7 +94,7 @@ const getUserPhotos = async (chunkRefs: string[]) => {
 
         return new Photo(
             msv?.value&&lsv?.value ?  msv?.value+lsv?.value : "",
-            msv?.photoLogicalId,
+            msv?.logicalPhotoId,
             photoChunk
         )
     })

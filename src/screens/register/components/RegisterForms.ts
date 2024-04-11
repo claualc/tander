@@ -5,6 +5,7 @@ import languageService from "@serv/languageService";
 import studentService from "@serv/studenService";
 import { listAllUserTeam } from "@serv/userService";
 import { FormsPage, FormsQuestion, inputTypes } from "@components/forms/components/formDTOs";
+import authService from "@serv/authService";
 
 /*
 
@@ -33,6 +34,7 @@ export enum ResgisterFormPageId {
     LANG_TO_LEARN_INFO,
     TEAM,
     PHOTOS,
+    PASSWORD,
 }
 
 export const formsCheckIfValidValue = (v: any, q: FormsQuestion) => {
@@ -80,17 +82,6 @@ export const registerQuestions: (phoneNumber?: string) => {
                 validate: validatePhoneNumber
             }]
         },
-        // {
-        //     id: ResgisterFormPageId.PHONE_NUM_CODE_VERIF,
-        //     title: "Inform the code you received",
-        //     subtitle: `If your number is not ${cellphoneMask(phoneNumber)}, return to the previous screen.`,
-        //     questions: [{
-        //         id: 1,
-        //         inputType: NUMERIC,
-        //         maxCodeLength: 4,
-        //         validate: (v: string) => {return v.split("").length == 4}
-        //     }]
-        // },
         [ResgisterFormPageId.USERNAME]: {
             title: "What’s your name?",
             questions: [{
@@ -209,6 +200,18 @@ export const registerQuestions: (phoneNumber?: string) => {
                     photoCount: 4
                 }
             ]
+        },
+        [ResgisterFormPageId.PASSWORD]: {
+            title: "Last Step!",
+            subtitle: "8 characters at least please...",
+            questions:  [{
+              id: 0,
+              inputType: inputTypes.TEXT,
+              validate: authService.validatePassword,
+              placeholder: "Password",
+              maxCharacters: 8,
+              hideText: true
+            }]
         },
     }
 
