@@ -30,7 +30,6 @@ export const FormsWrapper = styled.View`
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
-    flex-wrap: wrap;
 `
 
 export const CenterWrapping = styled.View`
