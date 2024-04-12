@@ -6,6 +6,7 @@ import { CustomText } from "@components/index";
 import { theme } from "@screens/theme";
 import { convertHexToRGBA, getRandomColor } from "@components/utils";
 import { useState } from "react";
+import { responsiveValue } from "@screens/theme";
 
 
 export const CenteredView = styled.View`
@@ -17,29 +18,29 @@ export const CenteredView = styled.View`
 export const MainWrapper = styled.View`
   justify-content: flex-end;
   align-items: center;
-  flex: 2; 
+  flex: ${responsiveValue(2,2.3)}; 
   width: 110%;
-  padding-bottom: 10%;
+  padding-bottom:${responsiveValue("10%", "5%")};
   z-index: 3;
   position: relative;
 `;
 
 export const DescriptionView = styled.View`
     width: 100%;
-    aspect-ratio: 6/1;
     background-color: ${p => p.theme.secondary_background};
     justify-content: center;
     align-items: center;
+    padding: 3% 5% 3% 5%;
     z-index: 0;
     position: relative;
-    `;
+  `;
 
 
 export const ItemView = styled.View<{
   showBottomBorder: boolean;
 }>`
     width: 100%;
-    aspect-ratio: 5/1;
+    padding: 2.3% 0% 2.3% 0%;
     border-bottom-color: ${p => p.theme.secondary_background};
     border-bottom-width:  ${p => p.showBottomBorder ? "0.7px" : 0};;
     justify-content: flex-start;
@@ -50,7 +51,7 @@ export const ItemView = styled.View<{
 export const Button = styled.TouchableHighlight<{
   color: string
 }>`
-  width: 55%;
+  width:${responsiveValue("55%", "40%")};
   aspect-ratio: 1;
   justify-content: flex-start;
   align-items: center;
@@ -80,7 +81,13 @@ export const Item: React.FC<Props> = ({title, icon, onPress, noBorder=false}: Pr
             style={{borderRadius: 100}}
             color={color} 
             onPress={onPress}>
-                <Ionicons style={{position: "relative", left: "0%", top: "20%"}} name="chevron-down-outline" color={color} size={20}/>
+                <Ionicons style={{
+                  position: "relative",
+                  left: "0%",
+                  top: responsiveValue("20%", "22%")}}
+                  name="chevron-down-outline"
+                  color={color}
+                  size={responsiveValue(20, 22)}/>
           </Button>
       </View>
 

@@ -1,7 +1,7 @@
 import styled from "styled-components/native";
 import { cellphoneMask } from "@components/utils";
 
-import { gobalFont, theme } from "@screens/theme";
+import { gobalFont, responsiveValue, theme } from "@screens/theme";
 import { View } from "react-native";
 import { CustomText } from "@components/index";
 
@@ -11,7 +11,7 @@ const StyledInputText = styled.TextInput`
     border-bottom-color: ${p => p.theme.tertiary_dark};
     margin-top: 12px;
     font-size: ${`${gobalFont.size.textInput}px`};
-    flex-wrap: wrap;
+    max-height: ${`${gobalFont.size.default*20}px`};
 `
 
 export const CustomTextInput: React.FC<{
@@ -22,23 +22,22 @@ export const CustomTextInput: React.FC<{
     hideText?: boolean; // when is a password
 }> = ({value, onChange, placeholder, maxCharacters, hideText=false}) => {
 
-    return <>
+    return <View style={{width: "100%", flexWrap: "wrap", overflow: "hidden"}}>
         <StyledInputText
             selectionColor={theme.secondary_background}
             onChangeText={onChange}
             secureTextEntry={hideText}
-            value={value}
+            value={value?.split("").length == 1 ? value?.replace(/^([\s\r\n])/, ""): value?.replace(/\n/g, "")}
             maxLength={maxCharacters}
             placeholder={placeholder || ""}
-            multiline={!hideText}
             placeholderTextColor={theme.secondary_background}
         />
         {
-            maxCharacters && <View style={{width: "100%", aspectRatio: "10/1", alignItems: "flex-end"}}>
+            maxCharacters && <View style={{width: "100%", aspectRatio: responsiveValue("10/1","20/1"), alignItems: "flex-end"}}>
                 <CustomText color={theme.tertiary_dark}>{`${value? value.length : 0}/${maxCharacters}`}</CustomText>
             </View>
         }
-        </>
+        </View>
 };
 
 export const CustomCodeInput: React.FC<{

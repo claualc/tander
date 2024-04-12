@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Image } from "react-native";
 import styled from "styled-components/native";
 
-import { DEV_DIM, gobalFont, theme } from "@screens/theme";
+import { DEVICE_WINDOW_TYPE, DEV_DIM, SCREEN_TYPES, gobalFont, responsiveValue, theme } from "@screens/theme";
 import { convertHexToRGBA } from "@components/utils";
 
 import SmallLoading from "@imgs//loading_small.gif";
@@ -12,7 +12,7 @@ import SmallLoading from "@imgs//loading_small.gif";
   ROOT COMPONENTS:
     - top components in the html
 */
-export const BOTTOM_TABNAV_HEIGTH = 10; //%
+export const BOTTOM_TABNAV_HEIGTH = responsiveValue(10,13); //%
 
 export const RootScreenView = styled.View<{
   showBottomNavigatior: boolean;

@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { Image, ScrollView, View } from "react-native";
-import { theme } from "../theme";
+import { gobalFont, responsiveValue, theme } from "../theme";
 
 import { CustomText, ScreenView } from "@components/index";
 import { LoggedUserContext, UserContextType } from "@context/user";
@@ -14,7 +14,6 @@ import albumService, { MusicInterestDTO } from "@serv/albumService";
 import photoServices from "@serv/photoServices";
 import { Photo, User } from "@api/domain/User";
 import Avatar from "@components/avatar";
-import authService from "@serv/authService";
 import { FormsInputs } from "@components/forms/components/formDTOs";
 /*
     This screen allows the user to modify its 
@@ -99,7 +98,6 @@ const ProfileScreen = () => {
 
       updatedU = await userService.update(dto, loggedUser.id)
       await updateLoggedUser(updatedU)
-      console.log("aaaaaaaaaaa")
       setLoading(false)
     }
 
@@ -109,7 +107,7 @@ const ProfileScreen = () => {
   <ScreenView style={{
     paddingLeft: "8%",
     paddingRight:"8%",
-    paddingTop:"15%" }}>
+    paddingTop: responsiveValue("15%", "3%") }}>
       <Forms 
         totalPagesCount={1} // only one page per attribute
         pages={[formQuestions.pages[userAttribute]]}
@@ -126,10 +124,10 @@ const ProfileScreen = () => {
           shadowOffset: { height: 10, width:0} }}>
           <Avatar 
             borderColor={theme.main}
-            width="35%"
+            width={responsiveValue("35%", "20%")}
             imgURL={loggedUser?.photos[0]?.value}
             onPress={() => {setUserAttribute(ProfileFormPageId.PHOTOS)}} />
-          <View style={{marginTop: "3%"}}>
+          <View style={{marginTop: responsiveValue("3%", "1%")}}>
             <CustomText size={22}>{`${loggedUser?.shortusername}, ${loggedUser?.yearsOld} `}</CustomText>
           </View>
       </MainWrapper>
@@ -137,7 +135,7 @@ const ProfileScreen = () => {
       <View style={{flex: 3, width: "100%", alignItems: "center"}}>
         <ScrollView style={{width: "100%", flexDirection: "column"}}>
           <DescriptionView>
-            <CustomText size={14} style={{textAlign: "center"}} color={theme.tertiary_dark}>Here you can modify informations from your profile. Some are unchangeable for your security!</CustomText>
+            <CustomText size={gobalFont.size.default} style={{textAlign: "center"}} color={theme.tertiary_dark}>Here you can modify informations from your profile. Some are unchangeable for your security!</CustomText>
           </DescriptionView>
           <CenteredView style={{height: "100%", paddingRight: "6%",paddingLeft: "6%", justifyContent: "flex-start"}}>
             <Item 

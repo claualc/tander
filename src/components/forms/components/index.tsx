@@ -2,7 +2,7 @@ import React from 'react';
 import styled from "styled-components/native";
 
 import { CustomText } from '@components/index';
-import { DEVICE_WINDOW_TYPE, SCREEN_TYPES, gobalFont, theme } from '@screens/theme';
+import { DEVICE_WINDOW_TYPE, SCREEN_TYPES, gobalFont, responsiveValue, theme } from '@screens/theme';
 
 export const ScreenView = styled.View`
     flex: 23;
@@ -30,6 +30,7 @@ export const FormsWrapper = styled.View`
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
+    flex-wrap: wrap;
 `
 
 export const CenterWrapping = styled.View`
@@ -58,7 +59,10 @@ export const Description: React.FC<React.PropsWithChildren<{
         color={theme.tertiary_dark} 
         size={gobalFont.size.default} 
         style={{
-            marginBottom: bottomDescription ? gobalFont.size.default*1.5:gobalFont.size.default*0.2,
+            marginBottom: responsiveValue(
+                bottomDescription ? gobalFont.size.default*1.5:gobalFont.size.default*0.2,
+                0 ,
+            ),
             textAlign: "justify",
         }}>
             {children}

@@ -51,14 +51,14 @@ export const profileOptions: () => {
         },
         [ProfileFormPageId.MORE_ABOUT_USER]: {
             title: "Let us know more about you!",
-            subtitle: "You have 200 characters to tell us a little bit more about you and let us know you better!",
+            subtitle: "You have 50 characters to tell us a little bit more about you and let us know you better!",
             allFieldsRequired: false,
             questions: [{
                 id: 100,
                 placeholder: "A little about me",
                 inputType: inputTypes.TEXT,
                 name: "bio",
-                maxCharacters: 100
+                maxCharacters: 50
             },
             {
                 id: 101,

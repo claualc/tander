@@ -49,6 +49,17 @@ const devicesWindowTypes = () => {
     }
 }
 
+export const responsiveValue = (v1: any, v2: any) => {
+    switch(DEVICE_WINDOW_TYPE) {
+        case SCREEN_TYPES.SMALL:
+            return v1;
+        case SCREEN_TYPES.MEDIUM:
+            return v2;
+        default:
+            return v1;
+    }
+}
+
 export const DEVICE_WINDOW_TYPE = devicesWindowTypes()
 console.log("    DEVICE_WINDOW_TYPE", DEVICE_WINDOW_TYPE)
 

@@ -4,12 +4,12 @@ import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
 
 // import to initiate
+import { theme } from './theme';
 import "@serv/firebase";
 import "@serv/axios";
 
 import {initAsyncFirebaseServices} from '@serv/firebase';
 import { ThemeProvider } from 'styled-components/native';
-import { theme } from './theme';
 import ScreensStack from './stackNavigator';
 import UserContext from "@context/user";
 

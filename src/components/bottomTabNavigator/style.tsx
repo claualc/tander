@@ -1,3 +1,4 @@
+import { DEVICE_WINDOW_TYPE, SCREEN_TYPES, responsiveValue } from '@screens/theme';
 import styled from 'styled-components/native';
 
 export const Icon = styled.ImageBackground`
@@ -9,6 +10,7 @@ export const ViewTab = styled.TouchableHighlight`
     height: 100%;
     justify-content: center;
     align-items: center;
+    flex-direction: row;
 `;
 
 export const MainView = styled.View<{
@@ -23,4 +25,6 @@ export const MainView = styled.View<{
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
+    padding-left: ${responsiveValue("0%","15%")};
+    padding-right: ${responsiveValue("0%","15%")};
 `;

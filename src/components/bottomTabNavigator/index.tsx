@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Icon, MainView, ViewTab } from './style';
 import { BOTTOM_TABNAV_HEIGTH } from '@components/index';
 import { View } from 'react-native';
-import { theme } from '@screens/theme';
+import { responsiveValue, theme } from '@screens/theme';
 
 interface Props {
     routes: {
@@ -29,7 +29,12 @@ const BottomTabNavigator: React.FC<Props> = ({routes, onSelect}) => {
             setFocusedScreen(i)
             onSelect(r.name);
         }}>
-          <View style={{height: "100%", width:(focusedScreen === i) ? "51%" : "32%"}}>
+          <View style={{
+            flex: 1,
+            height: responsiveValue(
+              (focusedScreen === i) ? "100%" : "60%",
+              (focusedScreen === i) ? "75%" : "46%")
+          }}>
             <Icon resizeMode='contain' source={(focusedScreen === i) ? r.onFocusIcon : r.icon}  />
           </View>
       </ViewTab>
