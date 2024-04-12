@@ -32,7 +32,7 @@ const BottomTabNavigator: React.FC<Props> = ({routes, onSelect}) => {
           <View style={{
             flex: 1,
             height: responsiveValue(
-              (focusedScreen === i) ? "100%" : "60%",
+              (focusedScreen === i) ? "79%" : "50%",
               (focusedScreen === i) ? "75%" : "46%")
           }}>
             <Icon resizeMode='contain' source={(focusedScreen === i) ? r.onFocusIcon : r.icon}  />

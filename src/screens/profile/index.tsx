@@ -135,7 +135,7 @@ const ProfileScreen = () => {
       <View style={{flex: 3, width: "100%", alignItems: "center"}}>
         <ScrollView style={{width: "100%", flexDirection: "column"}}>
           <DescriptionView>
-            <CustomText size={gobalFont.size.default} style={{textAlign: "center"}} color={theme.tertiary_dark}>Here you can modify informations from your profile. Some are unchangeable for your security!</CustomText>
+            <CustomText size={responsiveValue( gobalFont.size.small,gobalFont.size.default)} style={{textAlign: "center"}} color={theme.tertiary_dark}>Here you can modify informations from your profile. Some are unchangeable for your security!</CustomText>
           </DescriptionView>
           <CenteredView style={{height: "100%", paddingRight: "6%",paddingLeft: "6%", justifyContent: "flex-start"}}>
             <Item 

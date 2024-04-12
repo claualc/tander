@@ -18,9 +18,9 @@ export const CenteredView = styled.View`
 export const MainWrapper = styled.View`
   justify-content: flex-end;
   align-items: center;
-  flex: ${responsiveValue(2,2.3)}; 
+  flex: ${responsiveValue(1.9,2.3)}; 
   width: 110%;
-  padding-bottom:${responsiveValue("10%", "5%")};
+  padding-bottom:${responsiveValue("7%", "5%")};
   z-index: 3;
   position: relative;
 `;
@@ -40,7 +40,7 @@ export const ItemView = styled.View<{
   showBottomBorder: boolean;
 }>`
     width: 100%;
-    padding: 2.3% 0% 2.3% 0%;
+    padding: ${responsiveValue("4% 0% 4% 0%","2.3% 0% 2.3% 0%")};
     border-bottom-color: ${p => p.theme.secondary_background};
     border-bottom-width:  ${p => p.showBottomBorder ? "0.7px" : 0};;
     justify-content: flex-start;

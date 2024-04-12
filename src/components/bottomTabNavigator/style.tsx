@@ -25,6 +25,6 @@ export const MainView = styled.View<{
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
-    padding-left: ${responsiveValue("0%","15%")};
-    padding-right: ${responsiveValue("0%","15%")};
+    padding-left: ${responsiveValue("5%","15%")};
+    padding-right: ${responsiveValue("5%","15%")};
 `;
