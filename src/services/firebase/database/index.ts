@@ -60,9 +60,8 @@ const FirestoreService = () => {
         getObjectByRef,
         getRefById,
         create: async (collectionName: string, data: any, converter?: converter<any>) => {
-            let id_ = data.id ? data.id : generateRandomString(20)+"_"; // _ symbol to know it was generated from app
+            let id_ = data?.id ? data?.id : generateRandomString(20)+"_"; // _ symbol to know it was generated from app
             let ref = await getRefById(collectionName, id_, converter);
-            console.log("ref",ref.id)
             try {
                 await setDoc(ref, data);
             } catch(e) {

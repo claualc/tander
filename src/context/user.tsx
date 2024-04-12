@@ -54,17 +54,12 @@ const ContextProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
 
   const logIn = useCallback(async (id: string) => {
     if (id) {
-        // logged user
-        console.log("  1 CONTEXT (user): user logged",id)
         const user = await userService.getById(id);
 
         if (!user) {
-          console.log("  ..:: contextUser.logIn: user i sundefined")
           authService.logOut()
         }
-        console.log("  2 CONTEXT (user): user logged",user)
         setLoggedUser_(user)
-        console.log("  3 CONTEXT (user): user logged",id)
     }
   }, [loggedUser_])
 

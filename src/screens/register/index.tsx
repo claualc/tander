@@ -10,6 +10,7 @@ import FCMService from "@firebaseServ/notifications";
 import CreateUserService from '@serv/userService/create';
 import { routeNames } from '@screens/stackNavigator/routes';
 import { stackNavigateTo } from '@screens/stackNavigator/navigateService';
+import { FormsInputs } from '@components/forms/components/formDTOs';
 
 
 const initQuest = registerQuestions()
@@ -20,29 +21,20 @@ const RegisterScreen = () => {
   const { setLoading, logIn } = React.useContext(LoggedUserContext) as UserContextType;
   const [ progress, setProgress ] = useState<number>(0);
 
-  const onSend = useCallback(async (inputs: any[][]) => {
+  const onSend = useCallback(async (inputs: FormsInputs) => {
       console.log("..:: RegisterScreen signup: endend")
-      const userDTO: CreateUserDTO = {
-        username: inputs[1][0], 
-        birth: inputs[2][0],
-        phoneNumber: inputs[0][0],
-        university :inputs[3][0],
-        course :inputs[3][1],
-        langToLearn :inputs[4][1],
-        langKnown :inputs[5][0],
-        photos :inputs[7][0],
-        team :inputs[6][0],
-        country :inputs[4][0],
+      const userDTO = {
+        ...inputs as any,
         bio: "",
         musicInterest: null,
-        FCMPushNotificationsToken: FCMService.getDeviceToken(),
-      }
-
-      let password = inputs[8][0]
-      const user = await CreateUserService.execute(userDTO,password);
+        FCMPushNotificationsToken: FCMService.getDeviceToken() || "",
+      } as CreateUserDTO
+  
+      const user = await CreateUserService.execute(userDTO,inputs.password);
       setLoading(true)
-      if (user)
+      if (user) {
         logIn(user.id);
+      }
   }, [])
 
   return <View style={{

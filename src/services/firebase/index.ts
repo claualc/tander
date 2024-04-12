@@ -6,7 +6,7 @@ import FirestoreService from './database';
 import AuthService from './auth';
 import * as firebase from 'firebase/app';
 
-console.log("\n..::Init FirebaseService")
+console.log("\n..:: Init FirebaseService")
 
 if (!firebase.getApps().length) {
   firebase.initializeApp({

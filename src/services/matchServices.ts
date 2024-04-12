@@ -62,10 +62,9 @@ const createUserMatchFactories = async (user1: User) => {
     // created everytime an user is created,
     // in relation with all other users
 
-    console.log("..:: MatchSerevices.createUserMatchFactories (user)",user1.id)
+    console.log("..:: MatchServices.createUserMatchFactories (user)",user1.id)
 
     const users = await userServices.listAllBasicInfo()
-    console.log("listbasic", users.map(u => u.id))
     const created = users.map(async (user2: SimpleUserDTO) => {
         let {profilePhoto , ...rest} = user2;
        
@@ -80,7 +79,6 @@ const createUserMatchFactories = async (user1: User) => {
                 chatId: null
             }
             let match = await dbService.create(COLLECTION_ID,fact, matchFactoryConverter);
-            console.log("..:: MatchServices.createUserMatchFactories (user)", user1.id, user2.id)
             return match
         }
     })
@@ -161,7 +159,6 @@ const onUserMatchAction = async (user: User, fact: MatchFactory, liked: boolean)
         notifications.schedulePushNotification(
             "Tander",
             matchNotMessages[Math.round(Math.random())],
-            "",
             //userMatched.FCMPushNotificationsToken+
             "ksj"
         )

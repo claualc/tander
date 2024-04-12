@@ -15,6 +15,7 @@ import photoServices from "@serv/photoServices";
 import { Photo, User } from "@api/domain/User";
 import Avatar from "@components/avatar";
 import authService from "@serv/authService";
+import { FormsInputs } from "@components/forms/components/formDTOs";
 /*
     This screen allows the user to modify its 
     personal information.
@@ -34,73 +35,71 @@ const ProfileScreen = () => {
   // user attribute to modify
   const [userAttribute, setUserAttribute] = useState<ProfileFormPageId>(ProfileFormPageId.NONE);
 
-  const answers = useMemo(() => {
-    let ans: any;
+  const inputs = useMemo(() => {
+    let inputs = {} as FormsInputs;
     switch (userAttribute) {
       case ProfileFormPageId.NONE:
         break;
       case ProfileFormPageId.PHOTOS:
-        ans=[loggedUser?.photos]
+        inputs.photos=loggedUser?.photos
         break;
       case ProfileFormPageId.PHONE_NUM_INPUT:
-        ans=[loggedUser?.phoneNumber]
+        inputs.phoneNumber=loggedUser?.phoneNumber
         break;
       case ProfileFormPageId.STUDENT_INFO:
-        ans=[loggedUser?.university.id, loggedUser?.course.id]
+        inputs.university=loggedUser?.university.id 
+        inputs.course=loggedUser?.course.id
         break;
       case ProfileFormPageId.LANG_TO_KNOW_INFO:
-        ans=[loggedUser?.langKnown.map(l => l.id)]
+        inputs.langKnown=loggedUser?.langKnown.map(l => l.id)
         break;
       case ProfileFormPageId.LANG_TO_LEARN_INFO:
-        ans=[loggedUser?.langToLearn.map(l => l.id)]
+        inputs.langToLearn=loggedUser?.langToLearn.map(l => l.id)
         break;
       case ProfileFormPageId.MORE_ABOUT_USER:
-        ans=[
-          loggedUser?.bio,
-          !loggedUser?.musicInterest ? null :
-            albumService.convertMusicInterectToDTO(loggedUser?.musicInterest)]
+        inputs.bio= loggedUser?.bio
+        inputs.musicInterest= !loggedUser?.musicInterest 
+            ? null : albumService.convertMusicInterectToDTO(loggedUser?.musicInterest)
         break;
     }
-    return [ans]
+    return inputs
   }, [userAttribute])
 
-  const onSend = useCallback(async(inputs: any[][]) => {
-
+  const onSend = useCallback(async(inputs: FormsInputs) => {
       setLoading(true)
       setUserAttribute(ProfileFormPageId.NONE)
 
       if (loggedUser?.id) {
       let dto = convertUserToCreateDTO(loggedUser);
-
-
       let updatedU: User = loggedUser;
         switch (userAttribute) {
           case ProfileFormPageId.PHOTOS:
             let newPhotos = await photoServices.updateUserPhotos(
-              inputs[0][0] as Photo[], loggedUser )
+              inputs.photos as Photo[], loggedUser )
             dto.photoChunkRefs = newPhotos
             break;
           case ProfileFormPageId.PHONE_NUM_INPUT:
-            dto.phoneNumber = inputs[0][0]
+            dto.phoneNumber = inputs.phoneNumber
             break;
           case ProfileFormPageId.STUDENT_INFO:
-            dto.university= inputs[0][0]
-            dto.course= inputs[0][1]
+            dto.university= inputs.university
+            dto.course= inputs.course
             break;
           case ProfileFormPageId.LANG_TO_KNOW_INFO:
-            dto.langKnown= inputs[0][0]
+            dto.langKnown= inputs.langKnown
             break;
           case ProfileFormPageId.LANG_TO_LEARN_INFO:
-            dto.langToLearn= inputs[0][0]
+            dto.langToLearn= inputs.langToLearn
             break;
           case ProfileFormPageId.MORE_ABOUT_USER:
-            dto.bio= inputs[0][0]
-            dto.musicInterest=inputs[0][1] as MusicInterestDTO
+            dto.bio= inputs.bio
+            dto.musicInterest=inputs.musicInterest as MusicInterestDTO
             break;
       }
 
       updatedU = await userService.update(dto, loggedUser.id)
       await updateLoggedUser(updatedU)
+      console.log("aaaaaaaaaaa")
       setLoading(false)
     }
 
@@ -116,7 +115,7 @@ const ProfileScreen = () => {
         pages={[formQuestions.pages[userAttribute]]}
         onSend={onSend}
         onClose={() => setUserAttribute(ProfileFormPageId.NONE)}
-        defaultAnswers={answers} />
+        defaultInputs={inputs} />
     </ScreenView>
     : <ScreenView>
 

@@ -11,6 +11,7 @@ const StyledInputText = styled.TextInput`
     border-bottom-color: ${p => p.theme.tertiary_dark};
     margin-top: 12px;
     font-size: ${`${gobalFont.size.textInput}px`};
+    flex-wrap: wrap;
 `
 
 export const CustomTextInput: React.FC<{
@@ -25,11 +26,12 @@ export const CustomTextInput: React.FC<{
         <StyledInputText
             selectionColor={theme.secondary_background}
             onChangeText={onChange}
+            secureTextEntry={hideText}
             value={value}
             maxLength={maxCharacters}
             placeholder={placeholder || ""}
+            multiline={!hideText}
             placeholderTextColor={theme.secondary_background}
-            secureTextEntry={hideText}
         />
         {
             maxCharacters && <View style={{width: "100%", aspectRatio: "10/1", alignItems: "flex-end"}}>

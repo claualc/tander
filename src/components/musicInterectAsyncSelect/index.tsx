@@ -34,6 +34,7 @@ const MusicInterectAsyncSelect: React.FC<AsyncSelectProps> = ({
     const { artistOptionList } = useContext(LoggedUserContext) as UserContextType; 
 
     useEffect(() => {
+        console.log("value",value)
         if (value)
             setTrackInfo(value)
     }, [value])

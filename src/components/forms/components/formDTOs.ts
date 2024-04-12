@@ -14,6 +14,8 @@ export enum inputTypes {
     MUSIC_ASYNC_SELECT, 
 }
 
+export interface FormsInputs { [key: string]: any}
+
 export interface FormsPage {
     title: string;
     subtitle?: string;
@@ -27,6 +29,7 @@ export interface FormsQuestion {
 
     // general atributes
     id: number;
+    name: string;
     placeholder?: string; // the array is in the case of multiple selects
     description?: string | string[] ; // the array is in the case of multiple selects
     descriptionOnTop?: boolean; 

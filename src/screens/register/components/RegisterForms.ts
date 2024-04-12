@@ -78,6 +78,7 @@ export const registerQuestions: (phoneNumber?: string) => {
             subtitle: "Don’t worry, we just need a way to identificate you in case you are disconnected from this or other devices!",
             questions:  [{
                 id: 0,
+                name: "phoneNumber",
                 inputType: inputTypes.NUMERIC_PHONE,
                 validate: validatePhoneNumber
             }]
@@ -86,6 +87,7 @@ export const registerQuestions: (phoneNumber?: string) => {
             title: "What’s your name?",
             questions: [{
                 id: 2,
+                name: "username",
                 placeholder: "Input your name",
                 description: "This is how your name will appear on your profile. Remember that as everything you do in college, it will be with you forever!",
                 inputType: inputTypes.TEXT,
@@ -100,6 +102,7 @@ export const registerQuestions: (phoneNumber?: string) => {
             title: "How old are you?",
             questions: [{
                 id: 3,
+                name: "birth",
                 description: "We will show just your age on your profile, not your birthday.",
                 inputType: inputTypes.DATE,
                 validate: validateDate
@@ -111,6 +114,7 @@ export const registerQuestions: (phoneNumber?: string) => {
                     id: 4,
                     placeholder: "Choose your university",
                     inputType: inputTypes.SELECT,
+                    name: "university",
                     options: studentService
                         .listAllUniversity()
                         .map(u => ({
@@ -121,6 +125,7 @@ export const registerQuestions: (phoneNumber?: string) => {
                 {
                     id: 5,
                     placeholder: "Choose your course",
+                    name: "course",
                     inputType: inputTypes.SELECT,
                     includeSearchBar: true,
                     options: studentService
@@ -137,6 +142,7 @@ export const registerQuestions: (phoneNumber?: string) => {
             questions: [{
                 id: 6,
                 description: "First your nationality",
+                name: "country",
                 descriptionOnTop: true,
                 placeholder: "Choose a country",
                 inputType: inputTypes.SELECT,
@@ -146,6 +152,7 @@ export const registerQuestions: (phoneNumber?: string) => {
             {
                 id: 7,
                 description: "Now, the languages you know",
+                name: "langKnown",
                 descriptionOnTop: true,
                 maxSelects: 4,
                 multiPlaceholder: [
@@ -163,6 +170,7 @@ export const registerQuestions: (phoneNumber?: string) => {
             questions: [{
                 id: 8,
                 maxSelects: 4,
+                name: "langToLearn",
                 multiPlaceholder: [
                     "Choose a language", // the first placeholder can be different from the rest
                     "Choose other language", 
@@ -180,6 +188,7 @@ export const registerQuestions: (phoneNumber?: string) => {
                 {
                     id: 9,
                     inputType: inputTypes.BULLETPOINTS_SELECT,
+                    name: "team",
                     bulletPoints: listAllUserTeam().map(
                         (team, id) => ({
                             "title": team.name,
@@ -196,6 +205,7 @@ export const registerQuestions: (phoneNumber?: string) => {
             questions: [
                 {
                     id: 10,
+                    name: "photos",
                     inputType: inputTypes.PHOTO,
                     photoCount: 4
                 }
@@ -207,6 +217,7 @@ export const registerQuestions: (phoneNumber?: string) => {
             questions:  [{
               id: 0,
               inputType: inputTypes.TEXT,
+              name: "password",
               validate: authService.validatePassword,
               placeholder: "Password",
               maxCharacters: 8,

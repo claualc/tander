@@ -1,7 +1,7 @@
 
 import React, { useCallback } from 'react';
 import { ScreenView } from '@components/index';
-import { FormsPage, inputTypes } from '@components/forms/components/formDTOs';
+import { FormsInputs, FormsPage, inputTypes } from '@components/forms/components/formDTOs';
 import { validatePhoneNumber } from '@components/utils';
 import { Forms } from '@components/forms';
 import { LoggedUserContext, UserContextType } from '@context/user';
@@ -22,12 +22,14 @@ const loginInputs = () => {
           subtitle: "We are happy you are here! Use the information you provided when you made your account to login.",
           questions:  [{
               id: 0,
+              name: "phoneNumber",
               inputType: inputTypes.NUMERIC_PHONE,
               validate: validatePhoneNumber,
               placeholder: "Telephone number"
           },
           {
             id: 1,
+            name: "password",
             inputType: inputTypes.TEXT,
             validate: authService.validatePassword,
             placeholder: "Password",
@@ -44,8 +46,8 @@ const pages = Object.keys(initQuest.pages).map((p )=> initQuest.pages[Number(p)]
 
 const LoginScreen = () => {
 
-  const onSend = useCallback(async (inputs: any[][]) => {
-      await authService.signIn(inputs[0][0], inputs[0][1])
+  const onSend = useCallback(async (inputs: FormsInputs) => {
+      await authService.signIn(inputs.phoneNumber, inputs.password)
   }, [])
 
   return  <ScreenView style={{padding: "8%"}}>

@@ -51,8 +51,6 @@ const createUserPhoto = async ({
     photo, userRef
 }: createUserPhotoI ) => {
 
-    console.log("createUserPhoto", photo.id)
-
     let {value, id} = photo
 
     let half = Math.floor(value.length/2)

@@ -48,7 +48,7 @@ const create = async (matchFac: MatchFactory) => {
 }
 
 const getById = async (chatId: string) => {
-    console.log(" ..:: Chatservices.getById")
+    console.log("..:: Chatservices.getById")
     let chat = await dbService.getObjectById(COLLECTION_ID,chatId, chatConverter)
     return chat as ChatDTO
 }
@@ -61,8 +61,6 @@ export const addNewMsgToMsgObject = (messages: messagesObject, newMsg: MessageDT
 }
 
 const sendMessage = async (value: string, chat: ChatDTO, match: UserMAtchInfoDTO) => {
-    console.log("sendMessage", chat)
-
     let newMsg: MessageDTO = {
         id: chat.messageCount+1,
         value: value,

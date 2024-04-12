@@ -1,16 +1,7 @@
 import { FormsPage, inputTypes } from "@components/forms/components/formDTOs";
 import { ResgisterFormPageId, registerQuestions } from "@screens/register/components/RegisterForms";
-import { User } from "@api/domain/User";
 import languageService from "@serv/languageService";
 import { SelectOption } from "@components/select";
-
-/*
-    Which values the user is able to modify
-*/
-
-export interface AttrFormsPage extends FormsPage {
-    user_attibute: keyof User | (keyof User)[];
-}
 
 export enum ProfileFormPageId {
     /*
@@ -28,61 +19,37 @@ export enum ProfileFormPageId {
 
 export const profileOptions: () => {
     pages: {
-       [key: number]: AttrFormsPage
+       [key: number]: FormsPage
     },
 } = () => {
-
     /*
-        This forms extend the registration forms
-        adding new inputs to it
-        (but not allowing ot eadit all of the 
-            inputs of the registration)
+        This forms extend the registration forms adding new inputs to it
     */
     const {pages: resgiterQuestions} = registerQuestions();
-    
-    let languages =  languageService.listAll().map(l => ({
-        "name": l.name,
-        "value": l.id
-    }) as SelectOption)
 
     let pages: {
-        [key: number]: AttrFormsPage
+        [key: number]: FormsPage
     } = {
         [ProfileFormPageId.PHOTOS]: {
-            user_attibute: "photos",
             ...resgiterQuestions[ResgisterFormPageId.PHOTOS]
         },
         [ProfileFormPageId.PHONE_NUM_INPUT]: {
-            user_attibute: "phoneNumber",
             ...resgiterQuestions[ResgisterFormPageId.PHONE_NUM_INPUT]
         },
         [ProfileFormPageId.STUDENT_INFO]: {
-            user_attibute: ["university", "course"],
             ...resgiterQuestions[ResgisterFormPageId.STUDENT_INFO]
         },
         [ProfileFormPageId.LANG_TO_KNOW_INFO]: {
-            user_attibute: "langKnown",
             title: "What languages you want to learn?",
             subtitle: "We will try to connect you with people that know the languages you want to learn, but feel free to talk with whoever you want!",
-            questions: [{
-                id: 800,
-                maxSelects: 4,
-                multiPlaceholder: [
-                    "Choose a language", // the first placeholder can be different from the rest
-                    "Choose other language", 
-                ],
-                descriptionOnTop: true,
-                inputType: inputTypes.MULTISELECT,
-                options: languages,
-                includeSearchBar: true
-            }]
+            questions: [
+                resgiterQuestions[ResgisterFormPageId.COUNTRY_INFO].questions[1]
+            ]
         }, 
         [ProfileFormPageId.LANG_TO_LEARN_INFO]: {
-            user_attibute: "langToLearn",
             ...resgiterQuestions[ResgisterFormPageId.LANG_TO_LEARN_INFO]
         },
         [ProfileFormPageId.MORE_ABOUT_USER]: {
-            user_attibute: "musicInterest",
             title: "Let us know more about you!",
             subtitle: "You have 200 characters to tell us a little bit more about you and let us know you better!",
             allFieldsRequired: false,
@@ -90,10 +57,12 @@ export const profileOptions: () => {
                 id: 100,
                 placeholder: "A little about me",
                 inputType: inputTypes.TEXT,
+                name: "bio",
                 maxCharacters: 100
             },
             {
                 id: 101,
+                name: "musicInterest",
                 description: "Choose also a song that is always on repeat on your playlists!",
                 descriptionOnTop: true,
                 inputType: inputTypes.MUSIC_ASYNC_SELECT,

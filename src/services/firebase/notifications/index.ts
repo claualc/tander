@@ -57,7 +57,6 @@ const FCMService = () => {
                      projectId: process.env.EXPO_PUBLIC_EXPO_PROJECT_ID  })).data
                 
                 pushNotificationToken = token;
-                console.log(pushNotificationToken)
                 
                 console.log("..:: FCMService initiated")
                 console.log("      status:", existingStatus)

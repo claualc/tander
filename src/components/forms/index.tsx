@@ -12,29 +12,25 @@ import BulletpointSelect from "@components/bulletpointSelect";
 import ColorButton from "@components/colorButton";
 import CustomMultiSelect from "@components/multiSelect";
 import CustomSelect from "@components/select";
-import { FormsPage, FormsQuestion, inputTypes } from "./components/formDTOs";
+import { FormsInputs, FormsPage, FormsQuestion, inputTypes } from "./components/formDTOs";
 import MusicInterectAsyncSelect from "@components/musicInterectAsyncSelect";
 import { CustomText } from "@components/index";
 import { CustomError } from "./errors";
 import { LoggedUserContext, UserContextType } from "@context/user";
-
-export const checkFormsInputValid = (v: any, q: FormsQuestion) => {
-    let isValid = q.validate ? q.validate(v) : true // allways valid if not validation
-    return isValid;
-}
+import FormContextProvider from "./components/context";
 
 export const Forms: React.FC<{
     totalPagesCount: number;
     pages:  FormsPage[];
-    onSend: (inputs: any[][]) => (Promise<void> | void);
+    onSend: (inputs: FormsInputs) => (Promise<void> | void);
     onNextPage?: (nextIndex: number) => void;
     onClose?: () => void;
     defaultAnswers?: any[][];
+    defaultInputs?: FormsInputs;
     onSendButtonTitle?: string;
-    //onInitPage?: (p: FormsPage) => {}; // custom behavour that can be added when a certain type of pages inits
-}> = ({totalPagesCount, pages, onSend, onNextPage, onClose, defaultAnswers, onSendButtonTitle="Next"}) => {
+}> = ({totalPagesCount, pages, onSend, onNextPage, onClose, defaultAnswers, onSendButtonTitle="Next", defaultInputs}) => {
 
-    const [answers, setAnswers_] = useState<any[][]>([]);
+    const [inputs, setInputs_] = useState<FormsInputs>(defaultInputs ||  {} as { [key: string]: any});
     const [validAnswer, setValidAnswer] = useState(false);
     const [currentPageId, setCurrentPageId] = useState<number>(0);
     const [sendForms, setSendForms] = useState<boolean>(false);
@@ -42,87 +38,55 @@ export const Forms: React.FC<{
     const [error, setError] = useState<string | null>(null);
     const { setLoading } = useContext(LoggedUserContext) as UserContextType;
 
-    // the values of the answers of the current load page
-    // they will be shown in the input
-    const [values , setValues] = useState<any[]>(new Array(pages[0].questions.length).fill(null));
+    const setInput = useCallback((name: string, value: any) => {
+        setInputs_(i => ({...i, [name]: value}))
+    }, [inputs])
 
     useEffect(() => {
-        if (defaultAnswers) {
-            setAnswers([...defaultAnswers])
-            setValues([...defaultAnswers[0]])
+        if (defaultInputs) {
+            setInputs_(defaultInputs)
         }
-    }, [defaultAnswers])
+    }, [defaultInputs])
 
     useEffect(() => {
         error && setError(null)
-    }, [values])
-
-    const setCurrentValues = useCallback((id: number, newVal: any) => {
-        // arrays r compared by reference not by value
-        let newVals = [...values] // copy object to new referene
-        newVals[id] = newVal
-        setValues(newVals)
-    }, [values])
+    }, [inputs])
 
     const currentPage = useMemo<FormsPage>(() => {
-        let actualValues = answers[currentPageId]
-
-        const phoneNumber = answers[0] ? answers[0][0] : null;
         // let page = onChangeQuestions(
-        //     phoneNumber, // phoneNumber
+        //     inputs.phoneNumber,
         // ).pages[currentPageId]
         let page = pages[currentPageId]
-        setAllFieldsRequired(page.allFieldsRequired == undefined ? true : page.allFieldsRequired)
-
-        // onInitPage
-        // if (page.id == PageId.PHONE_NUM_CODE_VERIF) {
-        // // function to get a random number of 4 digits
-        // let minm = 1000; 
-        // let maxm = 9999; 
-        // const code = Math.floor(Math .random() * (maxm - minm + 1)) + minm;
-        // // setConfirmationCode(code)
-        // // FCMService.schedulePushNotification(
-        // //   "Tander",
-        // //   `${code} is your confirmation code!`,
-        // //   {})
-        // // console.log(code)
-        // }
-
-        setValues( !actualValues ?
-            new Array(page.questions.length).fill(null) : actualValues)
-
+        setAllFieldsRequired(
+            page.allFieldsRequired == undefined ? 
+            true : page.allFieldsRequired
+        )
         return page
     }, [currentPageId]);
 
     const checkValidAnswer = useCallback((v: any, q: FormsQuestion) => {
-        let isValid = checkFormsInputValid(v,q)
-        // specifics for pages
-        // question 1: confirmation of phone number
-        // if (q.id == 1) {
-        //   isValid = isValid && confirmationCode == v
-        // }
+        let isValid = q.validate ? 
+            q.validate(v) : true //checkFormsInputValid
         setValidAnswer(isValid)
     }, [validAnswer])
 
     useEffect(() => {
         if (sendForms)
             (async () => {
-            
-            try {
-                await onSend(answers)
-                setLoading(true)
-            } catch(e) {
-                if (e instanceof CustomError) {
-                    setError(e.message)
+                try {
+                    await onSend(inputs)
+                } catch(e) {
+                    if (e instanceof CustomError)
+                        setError(e.message)
                 }
-            }
             setSendForms(false)
         })();
     }, [sendForms]);
 
     const disableButton = useMemo(() => {
         // all the answers of the page need to be different than null
-        const noNullVal = values.reduce(
+        const fields = currentPage.questions.map(q=> q.name)
+        const noNullVal = fields.map(name => inputs[name]).reduce(
         (acc, v) => {
             return acc && ( 
             v!=null && (
@@ -134,14 +98,11 @@ export const Forms: React.FC<{
             (allFieldsRequired ? noNullVal : true) 
             && validAnswer
         )
-    }, [values, validAnswer, allFieldsRequired])
+    }, [currentPage, validAnswer, allFieldsRequired,inputs])
 
     const turnFormsPageAhead = useCallback((goAhead: boolean) => {
-        // default go ahead
-        // used to swipe between pages of the forms saving the
-        // values in the state answers
         const id = currentPageId;
-        const nextId = goAhead ? id+1 : id-1;
+        const nextId = goAhead ? id+1 : id-1; // go to last or next page
 
         if (nextId<0) {
             onClose && onClose()
@@ -151,142 +112,136 @@ export const Forms: React.FC<{
             setCurrentPageId(nextId)
             onNextPage && onNextPage(nextId)
         }
-    }, [currentPageId, answers]);
+    }, [currentPageId]);
 
-    const setAnswers = useCallback((v: typeof values) => {
-        let ans = [...answers]
-        ans[currentPageId] = v
-        setAnswers_(ans)
-    },[answers, currentPageId]);
+    return <FormContextProvider>
+        <ScrollView>
+                <BackButtonWrapper>
+                    <Ionicons 
+                        onPress={() => {
+                            turnFormsPageAhead(false)
+                        }}
+                        name={"chevron-back-outline"} 
+                        color={theme.main_dark}
+                        size={40}
+                        style={{margin:0}}
+                        />
+                </BackButtonWrapper>
 
-    return <ScrollView>
-            <BackButtonWrapper>
-                <Ionicons 
-                    onPress={() => {
-                        turnFormsPageAhead(false)
-                    }}
-                    name={"chevron-back-outline"} 
-                    color={theme.main_dark}
-                    size={40}
-                    style={{margin:0}}
-                    />
-            </BackButtonWrapper>
+                <FormsWrapper>
+                    <Title>{currentPage.title}</Title>
+                    <Subtitle>{currentPage.subtitle}</Subtitle>
+                    
+                    {
+                    // to list all te questions of a page
+                    currentPage.questions.map(
+                        (q, i) => <View key={i} style={{width: "100%"}}>
+                    
+                        { q.description && q.descriptionOnTop && 
+                            <Description>{ q.description }</Description> }
 
-            <FormsWrapper>
-                <Title>{currentPage.title}</Title>
-                <Subtitle>{currentPage.subtitle}</Subtitle>
-                
-                {
-                // to list all te questions of a page
-                currentPage.questions.map(
-                    (q, i) => <View key={i} style={{width: "100%"}}>
-                
-                    { q.description && q.descriptionOnTop && 
-                        <Description>{ q.description }</Description> }
+                        <View style={{width: "100%", marginBottom: gobalFont.size.default}}>
+                        { (q.inputType == inputTypes.TEXT) ?
+                            <CustomTextInput 
+                                onChange={v => {
+                                    setInput(q.name, v)
+                                    checkValidAnswer(v, q)
+                                }}
+                                placeholder={q.placeholder} 
+                                value={inputs[q.name]}
+                                hideText={q.hideText}
+                                maxCharacters={q.maxCharacters}/>
+                        : (q.inputType == inputTypes.NUMERIC) ?
+                            <CustomCodeInput 
+                                onChange={(v) => {
+                                    setInput(q.name, v)
+                                    checkValidAnswer(v, q)
+                                }}
+                                maxLength={q.maxCodeLength}
+                                placeholder={q.placeholder} 
+                                value={inputs[q.name]}/> 
+                        : (q.inputType == inputTypes.NUMERIC_PHONE) ?
+                            <CustomCodeInput 
+                                onChange={v => {
+                                    setInput(q.name, v)
+                                    checkValidAnswer(v, q)
+                                }}
+                                placeholder={q.placeholder} 
+                                isPhoneNumber={true}
+                                value={inputs[q.name]}/> 
+                        : (q.inputType == inputTypes.DATE) ?
+                            <CustomDateInput 
+                                onChange={v => {
+                                    setInput(q.name, v)
+                                    checkValidAnswer(v, q)
+                                }}
+                                value={inputs[q.name]}/>
+                        : (q.inputType == inputTypes.SELECT) ?
+                            <CustomSelect 
+                                onSelect={v => {
+                                    setInput(q.name, v.value)
+                                    checkValidAnswer(v, q)
+                                }}
+                                withSearchBar={q.includeSearchBar}
+                                value={inputs[q.name]}
+                                placeholder={q.placeholder} 
+                                title={q.placeholder}
+                                options={q.options || []} />
+                        : (q.inputType == inputTypes.MULTISELECT) ?
+                            <CustomMultiSelect 
+                                onSelect={v => {
+                                    let val = [...v]
+                                    setInput(q.name, v)
+                                    checkValidAnswer(v, q)
+                                }}
+                                withSearchBar={q.includeSearchBar}
+                                maxSelects={q.maxSelects}
+                                values={inputs[q.name]}
+                                placeholder={q.multiPlaceholder}
+                                options={q.options || []} />
+                        : (q.inputType == inputTypes.BULLETPOINTS_SELECT) ?
+                            <BulletpointSelect 
+                                onSelect={v => {
+                                    setInput(q.name, v)
+                                    checkValidAnswer(v, q)
+                                }}
+                                value={inputs[q.name]}
+                                options={q.bulletPoints || []} />
+                        : (q.inputType == inputTypes.PHOTO) ?
+                            <CustomPhotoBatchInputs 
+                                count={q.photoCount || 0}
+                                onChange={v => {
+                                    setInput(q.name, v)
+                                    checkValidAnswer(v, q)
+                                }}
+                                values={inputs[q.name]} />
+                        : (q.inputType == inputTypes.MUSIC_ASYNC_SELECT) ?
+                            <MusicInterectAsyncSelect 
+                                onSelect={v => {
+                                    setInput(q.name, v.value)
+                                    checkValidAnswer(v, q)
+                                }}
+                                value={inputs[q.name]} />
+                        :  <></>
+                        }
+                        </View>
 
-                    <View style={{width: "100%", marginBottom: gobalFont.size.default}}>
-                    { (q.inputType == inputTypes.TEXT) ?
-                        <CustomTextInput 
-                            onChange={v => {
-                                setCurrentValues(i,v)
-                                checkValidAnswer(v, q)
-                            }}
-                            placeholder={q.placeholder} 
-                            value={values[i]}
-                            hideText={q.hideText}
-                            maxCharacters={q.maxCharacters}/>
-                    : (q.inputType == inputTypes.NUMERIC) ?
-                        <CustomCodeInput 
-                            onChange={(v) => {
-                                setCurrentValues(i,v)
-                                checkValidAnswer(v, q)
-                            }}
-                            maxLength={q.maxCodeLength}
-                            placeholder={q.placeholder} 
-                            value={values[i]}/> 
-                    : (q.inputType == inputTypes.NUMERIC_PHONE) ?
-                        <CustomCodeInput 
-                            onChange={v => {
-                                setCurrentValues(i,v)
-                                checkValidAnswer(v, q)
-                            }}
-                            placeholder={q.placeholder} 
-                            isPhoneNumber={true}
-                            value={values[i]}/> 
-                    : (q.inputType == inputTypes.DATE) ?
-                        <CustomDateInput 
-                            onChange={v => {
-                                setCurrentValues(i,v)
-                                checkValidAnswer(v, q)
-                            }}
-                            value={values[i]}/>
-                    : (q.inputType == inputTypes.SELECT) ?
-                        <CustomSelect 
-                            onSelect={v => {
-                                setCurrentValues(i,v.value)
-                                checkValidAnswer(v, q)
-                            }}
-                            withSearchBar={q.includeSearchBar}
-                            value={values[i]}
-                            placeholder={q.placeholder} 
-                            title={q.placeholder}
-                            options={q.options || []} />
-                    : (q.inputType == inputTypes.MULTISELECT) ?
-                        <CustomMultiSelect 
-                            onSelect={v => {
-                                let val = [...v]
-                                setCurrentValues(i, val) // array of values
-                                checkValidAnswer(v, q)
-                            }}
-                            withSearchBar={q.includeSearchBar}
-                            maxSelects={q.maxSelects}
-                            values={values[i]}
-                            placeholder={q.multiPlaceholder}
-                            options={q.options || []} />
-                    : (q.inputType == inputTypes.BULLETPOINTS_SELECT) ?
-                        <BulletpointSelect 
-                            onSelect={v => {
-                                setCurrentValues(i, v)
-                                checkValidAnswer(v, q)
-                            }}
-                            value={values[i]}
-                            options={q.bulletPoints || []} />
-                    : (q.inputType == inputTypes.PHOTO) ?
-                        <CustomPhotoBatchInputs 
-                            count={q.photoCount || 0}
-                            onChange={v => {
-                                setCurrentValues(i, v)
-                                checkValidAnswer(v, q)
-                            }}
-                            values={values[i]} />
-                    : (q.inputType == inputTypes.MUSIC_ASYNC_SELECT) ?
-                        <MusicInterectAsyncSelect 
-                            onSelect={v => {
-                                setCurrentValues(i, v.value)
-                                checkValidAnswer(v, q)
-                            }}
-                            value={values[i]} />
-                    :  <></>
+                        {q.description && !q.descriptionOnTop && 
+                            <Description bottomDescription={true}>{q.description}</Description> }
+                        </View>)
                     }
-                    </View>
 
-                    {q.description && !q.descriptionOnTop && 
-                        <Description bottomDescription={true}>{q.description}</Description> }
-                    </View>)
-                }
-
-                {error && <CustomText color={"red"} >{error}</CustomText> }
-                
-            </FormsWrapper>
-            <CenterWrapping>
-                <ColorButton
-                    onPress={() =>{
-                        let v = values;
-                        setAnswers(v)
-                        turnFormsPageAhead(true) 
-                    }}
-                    title={onSendButtonTitle}
-                    disabled={disableButton}/>
-            </CenterWrapping>
-    </ScrollView>
+                    {error && <CustomText color={"red"} >{error}</CustomText> }
+                    
+                </FormsWrapper>
+                <CenterWrapping>
+                    <ColorButton
+                        onPress={() => {
+                            turnFormsPageAhead(true) 
+                        }}
+                        title={onSendButtonTitle}
+                        disabled={disableButton}/>
+                </CenterWrapping>
+        </ScrollView>
+    </FormContextProvider>
 }

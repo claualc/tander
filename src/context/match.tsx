@@ -36,7 +36,6 @@ const ContextProvider: React.FC<{children: React.ReactNode, loggedUser?: User}> 
   }, [loggedUser,potentialMatches, POT_MATCH_BATCH_LIMIT, loadedCounter])
 
   useEffect(() => {loadMoreMatches()}, [loggedUser])
-  useEffect(() => {potentialMatches.map(u => console.log("new matched loaded", u.id))}, [potentialMatches])
 
     return <MatchContext.Provider value={{
         potentialMatches,

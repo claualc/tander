@@ -20,6 +20,8 @@ const execute = async (dto: CreateUserDTO, password: string) => {
             password
         );
 
+        console.log("auth", auth)
+
         if (auth?.user?.uid) {
             const userRef = await dbServices.create(
                 COLLECTION_ID, 
@@ -28,7 +30,7 @@ const execute = async (dto: CreateUserDTO, password: string) => {
                     createdAt: new Date().toISOString()
                 }, userConverter )
             
-            console.log("..:: FirebaseService.create (user)", userRef.id)
+            console.log("..:: FirebaseService.create (user)", userRef.id,auth?.user.uid)
             let photoChunkRefs: string[] = [];
             if (photos?.length) {
                 const photoRefsPromise = photos.filter((v:any) =>  v != null)?.map(
@@ -39,7 +41,6 @@ const execute = async (dto: CreateUserDTO, password: string) => {
                 )
                 photoChunkRefs = await Promise.all(photoRefsPromise)
             }
-            console.log("photos created", photoChunkRefs)
         
             await userSevices.update({
                 ...userUncompleteDTO,
@@ -52,7 +53,7 @@ const execute = async (dto: CreateUserDTO, password: string) => {
             return userCreated
         }
     } catch(e) {
-        console.log("..:: CreateUserDTO.execute")
+        console.log("..:: CreateUserDTO.execute ERROR")
         console.log(e)
         throw new Error(createUserDTOErrors.ERROR)
     }
