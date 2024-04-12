@@ -1,4 +1,4 @@
-import { CommonActions, createNavigationContainerRef } from "@react-navigation/native";
+import { CommonActions, StackActions, createNavigationContainerRef } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 // stack component
@@ -17,3 +17,14 @@ export function stackGetParams() {
     }
     return null
 }
+
+export function stackReplaceTo(routeName: string, params: any) {
+    if (navigatorRef.isReady()) {
+        const resetAction = StackActions.replace(routeName,params);
+
+        navigatorRef.dispatch(resetAction); 
+    }
+}
+
+
+

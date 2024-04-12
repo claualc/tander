@@ -3,7 +3,7 @@ import { ScrollView, View, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import styled from "styled-components/native";
 
-import { DEVICE_WINDOW_TYPE, SCREEN_TYPES, theme } from "@screens/theme";
+import { responsiveValue, theme } from "@screens/theme";
 import { Photo } from "@api/domain/User";
 import photoServices from "@serv/photoServices";
 
@@ -84,8 +84,7 @@ const CustomPhotoBatchInputs: React.FC<{
                 return <View 
                         key={i}
                         style={{ 
-                            width: DEVICE_WINDOW_TYPE == SCREEN_TYPES.SMALL ? 
-                                "50%" : "30%", 
+                            width: responsiveValue("50%","30%"), 
                             aspectRatio: "3/4", 
                             position: "relative"}}>
                             <PhotoFrame 

@@ -83,9 +83,9 @@ const getArtistTopTracks = async (artistName: string) => {
         }})
 
         const array = req.data?.topalbums?.album
-        topTracks = array.length ? array.filter((e: any) => e.image[e.image.length-2]["#text"]).map((e: any) => {
+        topTracks = array?.length ? array.filter((e: any) => e.image[e.image.length-2]["#text"]).map((e: any) => {
             return new Album(
-                e.name, e.image[e.image.length-2]["#text"], artistName
+                e.name, e.image[e.image?.length-2]["#text"], artistName
             )
         }) : []
 

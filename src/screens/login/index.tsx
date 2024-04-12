@@ -1,5 +1,5 @@
 
-import React, { useCallback } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { ScreenView } from '@components/index';
 import { FormsInputs, FormsPage, inputTypes } from '@components/forms/components/formDTOs';
 import { validatePhoneNumber } from '@components/utils';
@@ -46,8 +46,12 @@ const pages = Object.keys(initQuest.pages).map((p )=> initQuest.pages[Number(p)]
 
 const LoginScreen = () => {
 
+  const { setLoading } = useContext(LoggedUserContext) as UserContextType;
+
   const onSend = useCallback(async (inputs: FormsInputs) => {
+    console.log("inputs",inputs)
       await authService.signIn(inputs.phoneNumber, inputs.password)
+      setLoading(true)
   }, [])
 
   return  <ScreenView style={{padding: "8%"}}>

@@ -1,4 +1,4 @@
-import { DEVICE_WINDOW_TYPE, SCREEN_TYPES, responsiveValue } from '@screens/theme';
+import { responsiveValue } from '@screens/theme';
 import styled from 'styled-components/native';
 
 export const Icon = styled.ImageBackground`

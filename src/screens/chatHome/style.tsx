@@ -3,6 +3,7 @@ import { Dimensions, Image, TouchableHighlight, View } from "react-native";
 import styled from "styled-components/native";
 import { theme } from "@screens/theme";
 import SmallLoading from "@imgs/loading_small.gif";
+import { responsiveValue } from "@screens/theme";
 
 export const Title: React.FC<React.PropsWithChildren> = ({children}) => {
     return <View style={{width: "100%", flex: 2,flexDirection:"row", alignItems: "flex-end"}}>
@@ -10,21 +11,26 @@ export const Title: React.FC<React.PropsWithChildren> = ({children}) => {
       </View>
 }
 
-const NoContentView = styled.View`
+const NoContentView = styled.View<{
+    paddingTop: string;
+}>`
     width: 100%;
     flex:1;
+    flex-direction: column;
     justify-content: flex-start;
-    padding-top: 15%;
+    padding-top: ${p => p.paddingTop};
     align-items: center;
 `
 
 export const NoContent: React.FC<React.PropsWithChildren<{
     loading?: boolean;
-}>> = ({children, loading=false}) => {
-    return <NoContentView>
+    imgSize: string;
+    paddingTop: string;
+}>> = ({children, loading=false, imgSize, paddingTop}) => {
+    return <NoContentView paddingTop={paddingTop}>
         {
-            loading ? <View style={{ aspectRatio:1, height: Dimensions.get("screen").width*0.2, zIndex: 10 }}>
-                <Image source={SmallLoading} style={{ flex: 1 }} />
+            loading ? <View style={{ height: imgSize as any, zIndex: 10}}>
+                <Image resizeMode="contain" source={SmallLoading} style={{ flex: 1 }} />
             </View> :
             <CustomText color={theme.tertiary_dark}>{children}</CustomText>
         }
@@ -33,7 +39,6 @@ export const NoContent: React.FC<React.PropsWithChildren<{
 
 const ItemChatView = styled.View`
     width: 100%;
-    aspect-ratio: 3.5/1;
     justify-content: flex-start;
     flex-direction: row;
     padding: 2%;
@@ -58,14 +63,13 @@ export const ItemChat: React.FC<React.PropsWithChildren<{
 export const ItemChatImg = styled.View`
     width: 100%;
     height: 100%;
-    align-items: center;
-    flex: 2;
+    flex: ${responsiveValue(2, 1.5)};
 `
 
 export const ItemChatDescription = styled.View`
     width: 100%;
     height: 100%;
-    padding: 5%;
+    padding:${responsiveValue( "5%","0% 0% 0% 5%")};
     border-bottom-color: ${p => p.theme.secondary_background};
     border-bottom-width: 0.7px;
     justify-content: flex-start;

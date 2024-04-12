@@ -87,7 +87,7 @@ const createUserMatchFactories = async (user1: User) => {
      * to improve rendedering, wait only for
      * two batches of users
     */
-   if(created.length > POT_MATCH_BATCH_LIMIT*2) {
+   if(created?.length > POT_MATCH_BATCH_LIMIT*2) {
     await Promise.all(created.slice(0,POT_MATCH_BATCH_LIMIT*2));
     Promise.all(created.slice(POT_MATCH_BATCH_LIMIT*2));
    } else {
@@ -124,7 +124,7 @@ const getByUserIds = async (userId1: string, userId2: string) => {
             or(where("userId2", "==", userId1), where("userId2", "==", userId2))
         )
         ) as  MatchFactory[]
-    return matches.length ? matches[0] : null
+    return matches?.length ? matches[0] : null
 }
 
 const onUserMatchAction = async (user: User, fact: MatchFactory, liked: boolean) => {
@@ -156,12 +156,12 @@ const onUserMatchAction = async (user: User, fact: MatchFactory, liked: boolean)
             "Are you pretty or smart? Anyways, you’ve got a new match!🔥🔥"
         ]
         
-        notifications.schedulePushNotification(
-            "Tander",
-            matchNotMessages[Math.round(Math.random())],
-            //userMatched.FCMPushNotificationsToken+
-            "ksj"
-        )
+        // notifications.schedulePushNotification(
+        //     "Tander",
+        //     matchNotMessages[Math.round(Math.random())],
+        //     //userMatched.FCMPushNotificationsToken+
+        //     "ksj"
+        // )
 
     } else if ((userLikes1 === false && userLikes2 === true)
         || (userLikes1 === true && userLikes2 === false) 

@@ -20,8 +20,6 @@ const execute = async (dto: CreateUserDTO, password: string) => {
             password
         );
 
-        console.log("auth", auth)
-
         if (auth?.user?.uid) {
             const userRef = await dbServices.create(
                 COLLECTION_ID, 

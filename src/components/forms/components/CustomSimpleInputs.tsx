@@ -26,10 +26,10 @@ export const CustomTextInput: React.FC<{
             selectionColor={theme.secondary_background}
             onChangeText={onChange}
             value={value}
-            // maxLength={maxCharacters}
-            // placeholder={placeholder || ""}
-            // placeholderTextColor={theme.secondary_background}
-            // secureTextEntry={hideText}
+            maxLength={maxCharacters}
+            placeholder={placeholder || ""}
+            placeholderTextColor={theme.secondary_background}
+            secureTextEntry={hideText}
         />
         {
             maxCharacters && <View style={{width: "100%", aspectRatio: responsiveValue("10/1","20/1"), alignItems: "flex-end"}}>

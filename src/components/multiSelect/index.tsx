@@ -4,8 +4,7 @@ import styled from "styled-components/native";
 import { useCallback, useMemo, useState } from "react";
 import CustomSelect, { SelectOption } from "@components/select";
 import { convertHexToRGBA, getRandomColor } from "../utils";
-import { DEVICE_WINDOW_TYPE, SCREEN_TYPES, gobalFont } from "@screens/theme";
-import { PADDING_CUSTOM_SELECT } from "../select/style";
+import { gobalFont, responsiveValue } from "@screens/theme";
 
 const RoundButton = styled.View<{
     color: string;
@@ -73,8 +72,7 @@ const CustomMultiSelect: React.FC<{
                     }}
                     key={i}>
                 <View style={{
-                    flex: DEVICE_WINDOW_TYPE == SCREEN_TYPES.SMALL ?
-                        14 : 14,  // the other is medium
+                    flex: 14,
                     height: "100%"}}>
                 <CustomSelect 
                     color={color}
@@ -85,8 +83,7 @@ const CustomMultiSelect: React.FC<{
                     options={options} />
                 </View>
                 <View style={{
-                    flex: DEVICE_WINDOW_TYPE == SCREEN_TYPES.SMALL ?
-                        2.4 : 1.2 , // the other is medium
+                    flex: responsiveValue(2.4, 1.2),
                         height: "100%",alignItems: "flex-end"}}>
                         <TouchableOpacity 
                             style={{justifyContent: "flex-end", flex:1}}

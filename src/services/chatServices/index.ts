@@ -99,11 +99,11 @@ const getLastMsgChat = async (id: string) => {
     let doc = await dbService.getObjectById(COLLECTION_ID,id, chatConverter) as ChatDTO;
     
     let days = Object.keys(doc.messages)
-    let lastMsgDay = days.length-1
+    let lastMsgDay = days?.length-1
     let msgsOfDay = doc.messages[days[lastMsgDay]]
 
     // returns the last msg in the array
-    return doc?.messages ? msgsOfDay[msgsOfDay.length-1] : {} as MessageDTO;
+    return doc?.messages ? msgsOfDay[msgsOfDay?.length-1] : {} as MessageDTO;
 }
 
 const update = async(chat: ChatDTO) => {

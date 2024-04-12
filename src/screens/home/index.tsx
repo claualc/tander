@@ -1,14 +1,12 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { ScrollView, View } from "react-native";
-import { AntDesign, Ionicons, SimpleLineIcons } from "@expo/vector-icons";
 
 import { theme } from "@screens/theme";
 import { User } from "@domain/User";
 import Card from "@components/userCard";
 import { CustomText, Loading, ScreenView } from "@components/index";
-import AlbumComponent from "@components/musicAlbum";
 
-import { LanguageView, Section, UserDecSections, UserDescWrapper } from "./style";
+import { UserDetails } from "./style";
 import { LoggedUserContext, UserContextType } from "@context/user";
 import matchServices, { MatchState } from "@serv/matchServices";
 import { MatchContext, MatchContextType } from "@context/match";
@@ -126,66 +124,7 @@ const HomeScreen: React.FC = () => {
                       renderController={renderUserCards[i]}
                     /> )
                   }
-                  <UserDescWrapper>
-                    { seeDescription && <>
-
-                    {/* ######### BASIC INFO SECTION */}
-                    <UserDecSections>
-                      <CustomText size={30} fontFam="BD">{users[uIndex].shortusername || ""}</CustomText>
-                      <CustomText  size={30}>{" " + users[uIndex].yearsOld}</CustomText>
-                    </UserDecSections>
-                    <UserDecSections>
-                      <AntDesign name="book" size={24} color={theme.tertiary_dark} />
-                      <CustomText color={theme.tertiary_dark}>{" " + users[uIndex].courseName}</CustomText>
-                    </UserDecSections>
-                    <UserDecSections>
-                      <Ionicons name="earth-outline" size={24} color={theme.tertiary_dark} />
-                      <CustomText color={theme.tertiary_dark}>{` ${users[uIndex].countryName}`}</CustomText>
-                    </UserDecSections>
-                    <UserDecSections>
-                      <SimpleLineIcons name="graduation" size={24} color={theme.tertiary_dark} />
-                      <CustomText color={theme.tertiary_dark}>{" " +  users[uIndex].universityName}</CustomText>
-                    </UserDecSections>
-
-                    {/* ######### LANGUAGES SECTION */}
-                    <Section style={{justifyContent: "flex-start",width:"100%"}}>
-                      <LanguageView 
-                        lang={users[uIndex].langKnown} 
-                        emoji={"🤓"} 
-                        color={theme.tertiary}
-                        title={"Here To Help With"}  />
-                      
-                      <LanguageView 
-                        lang={users[uIndex].langToLearn} 
-                        emoji={"😎"}  
-                        color={theme.secondary}
-                        title={"Here To learn"}  />
-                    </Section>
-
-                    {/* ######### BIO  */}
-                    {users[uIndex].bio && <Section>
-                      <CustomText size={20} fontFam="DM" color={theme.secondary_dark}>Qualcosa di me</CustomText>
-                      <CustomText size={17}  style={{marginTop: 10}}>
-                        {users[uIndex].bio}
-                      </CustomText>
-                    </Section>
-                    }
-
-                    {/* ######### ALBUM SECTION  */
-                      (users[uIndex].musicInterest) ? <Section style={{width: "100%"}}>
-                      <CustomText size={20} fontFam="DM" color={theme.secondary_dark}>On repeat</CustomText>
-                          <AlbumComponent
-                            artistName={users[uIndex].MIArtistName || ""}
-                            albumName={users[uIndex].MIAlbumName || ""} 
-                            imageUrl={users[uIndex].MIImgURL || ""}
-                            />
-                    </Section>
-                    : <></>
-                    }
-                    </>
-                  }
-
-                </UserDescWrapper>
+                  <UserDetails user={users[uIndex]} show={seeDescription} />
             </ScrollView>
       }
     </ScreenView>

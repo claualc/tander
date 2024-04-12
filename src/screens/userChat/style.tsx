@@ -3,21 +3,11 @@ import Gradient from "@imgs/linear_gradient_background.png"
 import React from "react";
 import { Dimensions, ImageBackground, TextInput, TouchableHighlight, View, ViewBase } from "react-native";
 import { CustomSelectView } from "@components/select/style";
-import { theme } from "@screens/theme";
+import { responsiveValue, theme } from "@screens/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { CustomText } from "@components/index";
 import { getYYYYMMDDFromDate } from "@components/utils";
 
-export const Header = styled.View`
-    width: 110%;
-    top: -5%;
-    position: relative;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-    flex: 4.5;   
-    padding-bottom: 6%;
-`
 
 export const HeaderInfo: React.FC<{
     photoUrl?: string;
@@ -31,7 +21,7 @@ export const HeaderInfo: React.FC<{
                 backgroundColor: "white",
                 shadowColor: "black",
                 shadowOffset: { height: 10, width:10} }}>
-        <View style={{flex: 2,paddingBottom: "2%", height: "100%", justifyContent: "flex-end", alignItems: "center"}}>
+        <View style={{flex: 2,paddingBottom: responsiveValue("2%","3%"), height: "100%", justifyContent: "flex-end", alignItems: "center"}}>
                 <Ionicons 
                     onPress={onPressBackButton}
                     name={"chevron-back-outline"} 
@@ -40,7 +30,7 @@ export const HeaderInfo: React.FC<{
         </View>
         <View style={{ flex: 4, height: "100%", flexDirection: "row", justifyContent: "center", alignItems: "flex-end"}}>
           <View style={{width: "100%", alignItems: "center", justifyContent: "center", flexDirection: "row"}}>
-            <View style={{ marginRight: "4%", overflow: "hidden", width: "25%", aspectRatio: 1, borderRadius: 300}}>
+            <View style={{ marginRight: "4%", overflow: "hidden", width: responsiveValue("25%", "22%"), aspectRatio: 1, borderRadius: 300}}>
                 <ImageBackground 
                     style={{flex: 1}}
                     source={{uri:  `data:image/jpeg;base64,${photoUrl || ""}`}}/>
@@ -57,7 +47,19 @@ export const ChatContent = styled.View`
     width: 100%;
     justify-content: center;
     align-items: center;
-    flex: 17;
+    margin-top: ${responsiveValue(0, "4%")};
+    flex: ${responsiveValue(17, 60)};
+`
+
+export const Header = styled.View`
+    width: 110%;
+    top: ${responsiveValue("-5%", 0)};
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    flex: ${responsiveValue(4.5, 20)};
+    padding-bottom: ${responsiveValue("6%", "3%")};
 `
 
 export const ChatInput = styled.View`
@@ -130,8 +132,8 @@ export const SendMessageButton: React.FC<{
     return <TouchableHighlight
                 onPress={onPress}
                 style={{
-                    width: "20%",
-                    aspectRatio: "1.6/1",
+                    width: responsiveValue("20%","15%"),
+                    aspectRatio: responsiveValue("1.6/1", "2/1"),
                     overflow: "hidden",
                     borderRadius: Dimensions.get("window").width*0.1,
                 }}>
@@ -155,7 +157,7 @@ export const TextInputChat: React.FC<{
 }> = ({onChange, value, placeholder}) => {
     return <>
         
-        <CustomSelectView width="77%" aspectRatio="6/1" color={theme.tertiary_dark}>
+        <CustomSelectView width={responsiveValue("77%","82%") }aspectRatio={responsiveValue("6/1","10/1")} color={theme.tertiary_dark}>
         <TextInput 
             selectionColor={theme.tertiary_dark}
             onChangeText={onChange}

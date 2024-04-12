@@ -2,7 +2,7 @@ import React from 'react';
 import styled from "styled-components/native";
 
 import { CustomText } from '@components/index';
-import { DEVICE_WINDOW_TYPE, SCREEN_TYPES, gobalFont, responsiveValue, theme } from '@screens/theme';
+import { gobalFont, responsiveValue, theme } from '@screens/theme';
 
 export const ScreenView = styled.View`
     flex: 23;
@@ -34,8 +34,7 @@ export const FormsWrapper = styled.View`
 
 export const CenterWrapping = styled.View`
     width: 100%;
-    padding: ${DEVICE_WINDOW_TYPE == SCREEN_TYPES.SMALL ?
-        "0% 0% 0% 0%" : "0% 2% 0% 2%"};
+    padding: ${responsiveValue("0% 0% 0% 0%","0% 0% 0% 0%")};
     align-items: center;
     margin-bottom: 10%;
 `
@@ -45,7 +44,7 @@ export const Title: React.FC<React.PropsWithChildren> = ({
 }) => <CustomText 
         color={theme.main_dark} 
         size={gobalFont.size.title} 
-        style={{marginBottom: gobalFont.size.title*0.5}}
+        style={{ marginBottom: gobalFont.size.title*0.5}}
         fontFam='DM'>
             {children}
         </CustomText>
@@ -60,7 +59,7 @@ export const Description: React.FC<React.PropsWithChildren<{
         style={{
             marginBottom: responsiveValue(
                 bottomDescription ? gobalFont.size.default*1.5:gobalFont.size.default*0.2,
-                0 ,
+                bottomDescription ? gobalFont.size.default*1.5:gobalFont.size.default*0.4,
             ),
             textAlign: "justify",
         }}>

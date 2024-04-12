@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Icon, MainView, ViewTab } from './style';
 import { BOTTOM_TABNAV_HEIGTH } from '@components/index';
 import { View } from 'react-native';

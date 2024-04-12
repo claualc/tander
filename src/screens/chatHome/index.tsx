@@ -9,8 +9,9 @@ import { ItemChat, ItemChatDescription, ItemChatImg, NoContent, Title, UnreadCha
 import { ChatParams } from "../userChat";
 import chatServices from "@serv/chatServices";
 import { ChatDTO, MessageDTO, MsgStates } from "@serv/chatServices/DTOs";
-import { stackNavigateTo } from "@screens/stackNavigator/navigateService";
+import { stackNavigateTo, stackReplaceTo } from "@screens/stackNavigator/navigateService";
 import { routeNames } from "@screens/stackNavigator/routes";
+import { DEV_DIM, responsiveValue } from "@screens/theme";
 
 
 const ChatScreen = () => {
@@ -29,7 +30,7 @@ const ChatScreen = () => {
         setNewMatchesDTOs(matchedUsers.filter(m => !m.match.chatId))
         let chats = matchedUsers.filter(m => !!m.match.chatId)
         setChatDTOs(chats)
-        setChatsLastsMsgs(new Array(chats.length).fill({}))
+        setChatsLastsMsgs(new Array(chats?.length).fill({}))
       }
     })()
   },[])
@@ -43,7 +44,7 @@ const ChatScreen = () => {
           : {} as MessageDTO) || []
       let lastMsgs = await Promise.all(lastMsgsProm)
 
-      if (lastMsgs && lastMsgs.length)
+      if (lastMsgs && lastMsgs?.length)
         setChatsLastsMsgs(lastMsgs)
       })();
   },[chatDTOs])
@@ -58,7 +59,7 @@ const ChatScreen = () => {
       chatDTO = await chatServices.create(info.match)
       params = { matchInfo: info, chat: chatDTO}
     }
-    stackNavigateTo(routeNames.CHAT_MESSAGING_SCREEN, params)
+    stackReplaceTo(routeNames.CHAT_MESSAGING_SCREEN, params)
 
     if (chatDTOs)
       setChatsLastsMsgs(chatDTOs.map((c, i) => {
@@ -70,20 +71,26 @@ const ChatScreen = () => {
       }))
   }, []);
 
-  return <ScreenView style={{paddingLeft: "5%", paddingRight: "5%", paddingTop: "20%"}}>
-    <View style={{ flex: 3, width: "100%",flexDirection: "column"}}>
+  return <ScreenView style={{paddingLeft: "5%", paddingRight: "5%", paddingTop: responsiveValue("15%", "5%")}}>
+    <View style={{ flex: responsiveValue(3.5, 4), width: "100%",flexDirection: "column"}}>
       <Title>New Matches</Title>
       <View style={{ flex: 6, overflow: "hidden"}}>
       {
         !newMatchesDTOs?.length ? 
-          <NoContent loading={newMatchesDTOs==null}>{"no new matches 💔"}</NoContent> 
-          : <ScrollView 
+          <NoContent
+              paddingTop={responsiveValue("9%","0%")}
+              imgSize={responsiveValue("90%","110%")}
+              loading={newMatchesDTOs==null}>
+                {"no new matches 💔"}
+          </NoContent> 
+          : <ScrollView
+                showsHorizontalScrollIndicator={false} 
                 horizontal={true}
                 contentContainerStyle={{flexDirection: "row", alignItems: "center"}}>
                 {
-                  newMatchesDTOs.map((info, i) => <View key={i} style={{marginRight: Dimensions.get("screen").width*0.03, justifyContent: "center"}} >
+                  newMatchesDTOs.map((info, i) => <View key={i} style={{alignItems: "center"}} >
                     <Avatar 
-                      width={`${Dimensions.get("screen").width*0.2}px`}
+                      width={`${DEV_DIM.width*responsiveValue(0.2, 0.12)}px`}
                       imgURL={info.targetUser.profilePhoto.value}
                       onPress={() => {openChat(info)}} />
                       <CustomText>{info.targetUser.username}</CustomText>
@@ -93,18 +100,24 @@ const ChatScreen = () => {
       }
       </View>
     </View>
-    <View style={{flex: 9, width: "100%", flexDirection: "column"}}>
+    <View style={{flex: responsiveValue(9, 9), width: "100%", flexDirection: "column"}}>
       <Title>Messages</Title>
       <View style={{overflow: "hidden", flex: 28}}>
         {
           !chatDTOs?.length ? 
-            <NoContent loading={chatDTOs==null}>{"talk with someone!!"}</NoContent>
+            <NoContent
+              paddingTop={responsiveValue("10%","8%")}
+              imgSize={responsiveValue("30%","30%")}
+              loading={chatDTOs==null}>
+                {"talk with someone!!"}
+            </NoContent>
             : <ScrollView>
               {
                   chatDTOs?.filter(m=> !!m.match.chatId)
                     .map((info, i) => <ItemChat key={i} onPress={() => openChat(info)}>
                     <ItemChatImg>
                       <Avatar 
+                        width={`${DEV_DIM.width*responsiveValue(0.17, 0.13)}px`}
                         imgURL={info.targetUser.profilePhoto.value}
                         onPress={() => {}} />
                     </ItemChatImg>

@@ -7,7 +7,7 @@ import { getDateFromString } from "@components/utils";
 import { converter } from "@firebaseServ/database/converterDTO";
 import dbServices from "@firebaseServ/database"
 
-import { User, UserTeam } from "@domain/User";
+import { Photo, User, UserTeam } from "@domain/User";
 import userTeamDic from "@dict/userTeam";
 
 import { CreateUserDTO, SimpleUserDTO } from "./DTO";
@@ -17,28 +17,29 @@ import photoServices from "@serv/photoServices";
 export const COLLECTION_ID = "user"; // main collection
 
 const parseUserFromFirestoreAsync = async (data: any, id: string): Promise<User> => {
-    console.log("..:: UserService.fromFirestore (user)", id)
+    // console.log("..:: UserService.fromFirestore (user)", id)
     const daybirth = getDateFromString(data.birth as string)
-    console.log(data.birth,"daybirth",daybirth)
+    // console.log(data.birth,"daybirth",daybirth)
     const country = locationServices.getCountryById(data.country)
-    console.log("country",country)
+    // console.log("country",country)
     const university = studentService.getUniversityById(data.university)
-    console.log("university",university)
+    // console.log("university",university)
     const course = studentService.getCourseById(data.course)
-    console.log("course",course)
+    // console.log("course",course)
     const langKnown = data.langKnown.map((id: string) => languageService.getById(id))
-    console.log("langKnown",langKnown)
+    // console.log("langKnown",langKnown)
     const langToLearn = data.langToLearn.map((id: string) => languageService.getById(id))
-    console.log("langToLearn",langToLearn)
+    // console.log("langToLearn",langToLearn)
     const team = getUserTeamById(data.team)
-    console.log("team",team)
+    // console.log("team",team)
 
     let musicInterest;
-    if (data.musicInterest) {
+    if (data.musicInterest) 
         musicInterest = await albumService.getMusicInterestFromDTO(data.musicInterest)
-    }
-
-    let photos = await photoServices.getUserPhotos(data.photoChunkRefs)
+    
+    let photos: Photo[] = [];
+    if (data.photoChunkRefs?.length) 
+        photos = await photoServices.getUserPhotos(data.photoChunkRefs)
     
     const matches: String[] = data.matches
     const likedUsersId: String[] = data.likedUsers
@@ -64,6 +65,7 @@ const parseUserFromFirestoreAsync = async (data: any, id: string): Promise<User>
         data.bio as string
     )
 
+    console.log("..:: FromFiresore (user)", user.id)
     return user as User
 }
 

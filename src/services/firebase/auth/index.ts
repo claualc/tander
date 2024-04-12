@@ -18,7 +18,6 @@ const AuthFirebaseService = () => {
         signUp: async (userPhone: string, password: string) => {
             console.log("..:: AuthFirebaseService.signUp");
             const userCredential = await createUserWithEmailAndPassword(auth, userPhone+"@gmail.com", password)
-            console.log({userCredential})
             return userCredential
         },
         logOut: async() => {

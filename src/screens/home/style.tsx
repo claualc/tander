@@ -2,6 +2,10 @@ import { ColorWrapper, CustomText, Wrapper } from "@components/index";
 import styled from "styled-components/native";
 import { View } from "react-native";
 import { Language } from "@api/domain/Language";
+import { User } from "@api/domain/User";
+import { theme } from "@screens/theme";
+import { AntDesign, Ionicons, SimpleLineIcons } from "@expo/vector-icons";
+import AlbumComponent from "@components/musicAlbum";
 
 
 export const UserDescWrapper = styled(Wrapper)`
@@ -52,4 +56,69 @@ export const LanguageView: React.FC<{
             </View>
         </View>
     </ColorWrapper>
+}
+
+export const UserDetails: React.FC<{
+    user: User;
+    show: boolean;
+}> = ({ user, show }) => {
+
+    return <UserDescWrapper>
+        { show && <>
+            {/* ######### BASIC INFO SECTION */}
+            <UserDecSections>
+                <CustomText size={30} fontFam="BD">{user.shortusername || ""}</CustomText>
+                <CustomText  size={30}>{" " + user.yearsOld}</CustomText>
+            </UserDecSections>
+            <UserDecSections>
+                <AntDesign name="book" size={24} color={theme.tertiary_dark} />
+                <CustomText color={theme.tertiary_dark}>{" " + user.courseName}</CustomText>
+            </UserDecSections>
+            <UserDecSections>
+                <Ionicons name="earth-outline" size={24} color={theme.tertiary_dark} />
+                <CustomText color={theme.tertiary_dark}>{` ${user.countryName}`}</CustomText>
+            </UserDecSections>
+            <UserDecSections>
+                <SimpleLineIcons name="graduation" size={24} color={theme.tertiary_dark} />
+                <CustomText color={theme.tertiary_dark}>{" " +  user.universityName}</CustomText>
+            </UserDecSections>
+
+            {/* ######### LANGUAGES SECTION */}
+            <Section style={{justifyContent: "flex-start",width:"100%"}}>
+            <LanguageView 
+                lang={user.langKnown} 
+                emoji={"🤓"} 
+                color={theme.tertiary}
+                title={"Here To Help With"}  />
+            
+            <LanguageView 
+                lang={user.langToLearn} 
+                emoji={"😎"}  
+                color={theme.secondary}
+                title={"Here To learn"}  />
+            </Section>
+
+            {/* ######### BIO  */}
+            {user.bio && <Section>
+                <CustomText size={20} fontFam="DM" color={theme.secondary_dark}>Qualcosa di me</CustomText>
+                    <CustomText size={17}  style={{marginTop: 10}}>
+                        {user.bio}
+                    </CustomText>
+                </Section>
+            }
+
+            {/* ######### ALBUM SECTION  */
+                (user.musicInterest) ? <Section style={{width: "100%"}}>
+                    <CustomText size={20} fontFam="DM" color={theme.secondary_dark}>On repeat</CustomText>
+                        <AlbumComponent
+                            artistName={user.MIArtistName || ""}
+                            albumName={user.MIAlbumName || ""} 
+                            imageUrl={user.MIImgURL || ""}
+                            />
+                    </Section>
+                : <></>
+            }
+        </>
+    }
+    </UserDescWrapper>
 }

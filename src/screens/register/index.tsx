@@ -52,7 +52,7 @@ const RegisterScreen = () => {
           flex: 23,
           width: "100%",
           justifyContent: "flex-start",
-          alignItems: "flex-start",
+          alignItems: "center",
           flexDirection: "column",
           paddingLeft: "8%",
           paddingRight:"8%",

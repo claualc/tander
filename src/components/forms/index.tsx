@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useState, useCallback, useMemo, useEffect, useContext } from "react";
 import { ScrollView, View } from "react-native";
 
-import { gobalFont, theme } from "@screens/theme";
+import { gobalFont, responsiveValue, theme } from "@screens/theme";
 import CustomDateInput from "@components/forms/components/CustomDateInput";
 import CustomPhotoBatchInputs from "@components/forms/components/CustomPhotoBatchInputs";
 import { CustomTextInput, CustomCodeInput } from "@components/forms/components/CustomSimpleInputs";
@@ -115,7 +115,7 @@ export const Forms: React.FC<{
     }, [currentPageId]);
 
     return <FormContextProvider>
-        <ScrollView>
+        <ScrollView style={{width: "100%"}}>
                 <BackButtonWrapper>
                     <Ionicons 
                         onPress={() => {
@@ -129,8 +129,11 @@ export const Forms: React.FC<{
                 </BackButtonWrapper>
 
                 <FormsWrapper>
-                    <Title>{currentPage.title}</Title>
-                    <Subtitle>{currentPage.subtitle}</Subtitle>
+                    <View style={{marginBottom: responsiveValue("0%", "0%")}} >
+                        <Title>{currentPage.title}</Title>
+                        {currentPage.subtitle && 
+                            <Subtitle>{currentPage.subtitle}</Subtitle>}
+                    </View>
                     
                     {
                     // to list all te questions of a page
@@ -140,7 +143,10 @@ export const Forms: React.FC<{
                         { q.description && q.descriptionOnTop && 
                             <Description>{ q.description }</Description> }
 
-                        <View style={{width: "100%", marginBottom: gobalFont.size.default}}>
+                        <View style={{
+                            justifyContent: "center",
+                            alignItems: "center",
+                            marginBottom: responsiveValue(gobalFont.size.default,gobalFont.size.default*1.5)}}>
                         { (q.inputType == inputTypes.TEXT) ?
                             <CustomTextInput 
                                 onChange={v => {

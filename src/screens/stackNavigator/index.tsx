@@ -11,7 +11,7 @@ import { CHAT_MESSAGING_SCREEN, CHAT_SCREEN, HOME_SCREEN, INITIALIZATION_SCREEN,
 
 // sreens
 import HomeScreen from '@screens/home';
-import ProfileScreen from '@screens/profile';
+import ProfileScreen from '@screens/editProfile';
 import ChatScreen from '@screens/chatHome';
 import initializationScreen from '@screens/initialization';
 import RegisterScreen from '@screens/register';

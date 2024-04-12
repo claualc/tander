@@ -7,7 +7,7 @@ import { convertHexToRGBA, getRandomColor } from "@components/utils";
 import { CustomSelectTouchable } from "./style";
 import { MusicInterestDTO } from "@serv/albumService";
 import { View } from "react-native";
-import { DEVICE_WINDOW_TYPE, SCREEN_TYPES } from "@screens/theme";
+import { responsiveValue } from "@screens/theme";
 
 export interface SelectLogicalProps {
     value?: string | number;
@@ -70,20 +70,14 @@ const CustomSelect: React.FC<SelectComponentProps> = ({
         }}
         width={width}
         color={color_}>
-            <View style={{
-                        flex: DEVICE_WINDOW_TYPE == SCREEN_TYPES.SMALL ?
-                            11 : 20 , // the other is medium
-                    }}>
+            <View style={{ flex: responsiveValue(11,20) }}>
             {
                 valueName ?
                 <CustomText color={color_}>{valueName}</CustomText>
                 : <CustomText color={convertHexToRGBA(color_, 0.5)}>{ placeholder || ""}</CustomText>
             }
             </View>
-            <View  style={{
-                        flex: DEVICE_WINDOW_TYPE == SCREEN_TYPES.SMALL ?
-                            1 : 1 , // the other is medium
-                    }}>
+            <View  style={{ flex: 1 }}>
                 <Ionicons name="chevron-down-outline" color={color_} size={20}/>
             </View>
     </CustomSelectTouchable>

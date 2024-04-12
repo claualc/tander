@@ -72,8 +72,7 @@ export const gobalFont = {
         title: 30,
         small: 16,
         textInput: textInputSize,
-        dateInput: DEVICE_WINDOW_TYPE == SCREEN_TYPES.SMALL ? 
-            textInputSize: textInputSize*1.2
+        dateInput: responsiveValue(textInputSize,textInputSize*1.2)
     }
 };
 

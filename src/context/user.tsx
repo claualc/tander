@@ -35,7 +35,6 @@ const ContextProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
      */
       (async () => {
           console.log("   INIT USER CONTEXT")
-          setLoading(true)
           await authService.setLoggedUser(logIn)
 
           // FCMService.schedulePushNotification(
@@ -48,7 +47,6 @@ const ContextProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
           if (artistNames.length) {
             setArtistOptionList(artistNames)
           }
-          setLoading(false)
       })()
   },[])
 
@@ -61,6 +59,7 @@ const ContextProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
         }
         setLoggedUser_(user)
     }
+    setLoading(false)
   }, [loggedUser_])
 
   const logOut = useCallback(async () => {

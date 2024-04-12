@@ -104,6 +104,10 @@ const languages: {
       name: "Korean",
       language_code: "ko"
     },
+    "26": {
+      name: "danish",
+      language_code: "da"
+    },
   };
 
 export default languages;

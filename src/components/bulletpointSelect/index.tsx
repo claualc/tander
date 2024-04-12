@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components/native";
 import { Dimensions, ScrollView, TouchableOpacity, View } from "react-native";
 import { CustomText } from "@components/index";
-import { DEVICE_WINDOW_TYPE, SCREEN_TYPES, gobalFont, theme } from "@screens/theme";
+import { gobalFont, responsiveValue, theme } from "@screens/theme";
 
 export interface BulletpointSelectOption {
     description: string;
@@ -12,7 +12,7 @@ export interface BulletpointSelectOption {
 
 const Item = styled.View`
     width: 100%;
-    aspect-ratio: ${DEVICE_WINDOW_TYPE == SCREEN_TYPES.SMALL ? "5/1": "7/1"};
+    aspect-ratio: ${responsiveValue("5/1","7/1")};
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
@@ -48,8 +48,7 @@ const BulletpointSelect: React.FC<{
 }> = ({value, options, onSelect}) => {
 
     const [val, setVal] = useState(value);
-    return <View>
-                <ScrollView>
+    return  <ScrollView>
                 { options.map((op, i) => {
                     return <TouchableOpacity
                             key={i}
@@ -60,15 +59,11 @@ const BulletpointSelect: React.FC<{
                         <Item>
                             <Bullet selected={i==val}>
                                 <CustomText 
-                                    size={ DEVICE_WINDOW_TYPE == SCREEN_TYPES.SMALL ? 
-                                        30 :  DEVICE_WINDOW_TYPE == SCREEN_TYPES.MEDIUM ? 
-                                            38 : gobalFont.size.title }>{op.emoji}</CustomText>
+                                    size={ responsiveValue(30,38)}>{op.emoji}</CustomText>
                             </Bullet>
                             <Description style={{flex: 4}}>
                                 <CustomText 
-                                    size={ DEVICE_WINDOW_TYPE == SCREEN_TYPES.SMALL ? 
-                                        gobalFont.size.small :gobalFont.size.default 
-                                    } 
+                                    size={ responsiveValue(gobalFont.size.small,gobalFont.size.default)} 
                                     color={i==val ? theme.tertiary :theme.tertiary_dark}>
                                     <CustomText 
                                         color={i==val ? theme.tertiary :theme.tertiary_dark}
@@ -82,8 +77,7 @@ const BulletpointSelect: React.FC<{
                         </TouchableOpacity>
                     })
                 }
-                </ScrollView>
-            </View>
+        </ScrollView>
 }
 
 export default BulletpointSelect;
