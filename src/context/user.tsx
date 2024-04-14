@@ -29,6 +29,8 @@ const ContextProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
   const [stateLoading, setLoading] = useState<boolean>(true);
   const [artistOptionList, setArtistOptionList] = useState<string[]>([]);
 
+  useEffect(() => {console.log(stateLoading)},[stateLoading])
+
   useEffect(() => {
     /**
      * Preloading some information for the whole app
@@ -58,8 +60,8 @@ const ContextProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
           authService.logOut()
         }
         setLoggedUser_(user)
-    }
-    setLoading(false)
+    } else
+      setLoading(false)
   }, [loggedUser_])
 
   const logOut = useCallback(async () => {

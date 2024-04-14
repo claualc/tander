@@ -1,4 +1,4 @@
-import { TouchableHighlight, View, ImageBackground, DimensionValue } from "react-native";
+import { TouchableHighlight, View, ImageBackground, DimensionValue, ActivityIndicator } from "react-native";
 
 import { theme, gobalFont} from "@screens/theme";
 import { CustomText } from "@components/index";
@@ -9,7 +9,8 @@ export const ColorButton: React.FC<{
     title: string;
     disabled?: boolean;
     width?: string;
-}> = ({onPress, title, disabled, width}) => {
+    loading?: boolean;
+}> = ({onPress, title, disabled, width, loading=false}) => {
     return <TouchableHighlight 
             style={{
                 borderRadius: gobalFont.size.textInput*1.5,
@@ -41,9 +42,13 @@ export const ColorButton: React.FC<{
                         alignItems: "center"
                     }} source={Gradient}>
 
-                    <CustomText fontFam="DM" color={theme.text_ligth_primary}>
-                        {title}
-                    </CustomText>
+                    {
+                        loading ?
+                            <ActivityIndicator size={gobalFont.size.title} color={theme.light_background} />
+                            : <CustomText fontFam="DM" color={theme.text_ligth_primary}>
+                                {title}
+                            </CustomText>
+                    }
                 </ImageBackground>
                 }
             </TouchableHighlight >

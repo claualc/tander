@@ -23,16 +23,17 @@ const RegisterScreen = () => {
 
   const onSend = useCallback(async (inputs: FormsInputs) => {
       console.log("..:: RegisterScreen signup: endend")
+      
       const userDTO = {
         ...inputs as any,
         bio: "",
         musicInterest: null,
         FCMPushNotificationsToken: FCMService.getDeviceToken() || "",
       } as CreateUserDTO
-  
-      const user = await CreateUserService.execute(userDTO,inputs.password);
+
       setLoading(true)
-      if (user) {
+      const user = await CreateUserService.execute(userDTO,inputs.password);
+      if (user?.id) {
         logIn(user.id);
       }
   }, [])
@@ -59,7 +60,7 @@ const RegisterScreen = () => {
           position: "relative",
           zIndex: 0,
         }}>
-          <Forms 
+          <Forms
               totalPagesCount={pages.length}
               onSend={onSend}
               pages={pages}

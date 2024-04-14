@@ -1,4 +1,3 @@
-import { Wrapper } from "@components/index";
 import styled from "styled-components/native";
 
 interface ChipProps {
@@ -43,14 +42,13 @@ export const UserDataView = styled.View`
     flex: 1;
 `
 
-export const AnimationView = styled.View<{
+export const AnimationView = styled.Image<{
     x: number;
     y: number;
 }>`
-    width: 20%;
-    height: 20%;
+    width: 30%;
+    height: 30%;
     z-index: 100000;
-    background-color: yellow;
     position: absolute;
     top: ${p => p.y+"%" };
     left: ${p => p.x+"%" };;

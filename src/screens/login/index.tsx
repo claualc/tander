@@ -49,7 +49,6 @@ const LoginScreen = () => {
   const { setLoading } = useContext(LoggedUserContext) as UserContextType;
 
   const onSend = useCallback(async (inputs: FormsInputs) => {
-    console.log("inputs",inputs)
       await authService.signIn(inputs.phoneNumber, inputs.password)
       setLoading(true)
   }, [])

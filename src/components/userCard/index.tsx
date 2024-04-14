@@ -1,4 +1,4 @@
-import { Animated, Dimensions, Image, PanResponder, TouchableWithoutFeedback, View } from "react-native";
+import { Animated, Dimensions, Image, ImageBackground, PanResponder, TouchableWithoutFeedback, View } from "react-native";
 import { AnimationView, PhotoChipWrapper, PhotoSwipeChips, UserDataView } from "./style";
 import { Chip, CustomText } from "@components/index";
 import EmptyImage from "@imgs/empty_image.png";
@@ -7,6 +7,9 @@ import { useCallback, useMemo, useRef, useState } from "react";
 import { INITIAL_GESTURE_VALS, coordsI, panRes } from "./PanResponder";
 import { theme } from "@screens/theme";
 import { User } from "@api/domain/User";
+
+import UnLikedGif from "@imgs/unliked_user.gif";
+import LikedGif from "@imgs/liked_user.gif";
 
 interface CardProps {
     onScrollUp?: () => void | null;
@@ -17,6 +20,7 @@ interface CardProps {
     zIndex: number | undefined;
     renderController: boolean | undefined;
     user: User;
+    top: string;
 }
 
 const Card: React.FC<CardProps> = ({
@@ -27,11 +31,16 @@ const Card: React.FC<CardProps> = ({
         isScrolledUp,
         zIndex,
         renderController, 
-        user
+        user,
+        top
     }) => {
 
         
-    const [animationGifCoords, setAnimationGifCoords] = useState<coordsI | null >(null);
+    const [animationGifCoords, setAnimationGifCoords] = useState<coordsI>({
+        swipeLeft: {x:0, y:0},
+        swipeRigth: {x:0, y:0},
+    } as coordsI);
+    const [showGif, setShowGif] = useState<boolean[]>([false, false]);
     const [currentPhotoId, setCurrentPhotoId] = useState<number>(0);
     const [photosBase64, setPhotosBase64] = useState<string[]>(
         user?.photos?.length ? 
@@ -39,10 +48,8 @@ const Card: React.FC<CardProps> = ({
         : []
     );
 
-    //useEffect(() => {console.log("animationGifCoords",animationGifCoords)},[animationGifCoords])
-  
     const pan = useRef(new Animated.ValueXY(INITIAL_GESTURE_VALS.pan)).current;
-    const scale = useRef(new Animated.ValueXY(INITIAL_GESTURE_VALS.scale)).current; // width (x) and height (y)
+    const scale = useRef(new Animated.Value(INITIAL_GESTURE_VALS.scale)).current; // width (x) and height (y)
     
     const tapPhotoRight = useCallback(() => {
         if (photosBase64.length) {
@@ -68,6 +75,7 @@ const Card: React.FC<CardProps> = ({
             onSwipeRigth ? onSwipeRigth : () => {},
             onSwipeLeft ? onSwipeLeft : () => {},
             setAnimationGifCoords,
+            setShowGif,
             animationGifCoords)
         , [isScrolledUp]
     );
@@ -75,28 +83,30 @@ const Card: React.FC<CardProps> = ({
     return !((renderController==undefined) ? true : renderController) ? <></> : (
     <>
     {
-        animationGifCoords &&
-        <AnimationView x={animationGifCoords?.x} y={animationGifCoords?.y} />
+        showGif[0] &&
+        <AnimationView source={UnLikedGif} x={animationGifCoords?.swipeLeft.x} y={animationGifCoords?.swipeLeft.y} />
+    }
+     {
+        showGif[1] &&
+        <AnimationView source={LikedGif} x={animationGifCoords?.swipeRigth.x} y={animationGifCoords?.swipeRigth.y} />
     }
     <Animated.View {...panResponder.panHandlers}  style={{
-        width: Dimensions.get("window").width*INITIAL_GESTURE_VALS.scale.x,
-        height:  Dimensions.get("window").height*INITIAL_GESTURE_VALS.scale.y,
+        width:`60%`,
+        aspectRatio: "2/2.8",
         justifyContent: "center",
         alignItems: "center",
         position: "absolute",
-        top: Dimensions.get("window").width/4,
-        margin: 0,
+        top: top as any,
         padding: 0,
         transform: [
-          // or pan.getTranslateTransform()
           { translateX: pan.x },
           { translateY: pan.y },
-          { scaleX: scale.x.interpolate({
-                inputRange: [INITIAL_GESTURE_VALS.scale.x, 1],
-                outputRange: [1,1/INITIAL_GESTURE_VALS.scale.x]
-            })
+          { scaleX: scale
+            // .interpolate({
+            //     inputRange: [INITIAL_GESTURE_VALS.scale, 100],
+            //     outputRange: [1,1/INITIAL_GESTURE_VALS.scale]
+            // })
          },
-          { scaleY: scale.y },
         ],
         shadowOpacity: 1,
         shadowRadius: 1,
@@ -117,6 +127,7 @@ const Card: React.FC<CardProps> = ({
             height: "100%",
             display: "flex",
             alignItems: "center",
+            backgroundColor: theme.light_background,
             justifyContent: "space-between",
             flexDirection: "column" }}>
        
@@ -140,11 +151,11 @@ const Card: React.FC<CardProps> = ({
             {/* 
                 Display the current image selected
             */}
-            <Image resizeMode={"cover"} 
+            <ImageBackground
                 style= {{
-                    flex:1,
                     width: "100%",
-                    height: "100%",
+                    aspectRatio: "2/2.8",
+                    flex:1,
                     zIndex:-1,
                     position: "absolute"
                 }} 

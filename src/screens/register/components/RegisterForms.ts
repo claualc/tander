@@ -3,7 +3,7 @@ import { validateDate, validatePhoneNumber } from "@components/utils";
 import locationService from "@serv/locationServices";
 import languageService from "@serv/languageService";
 import studentService from "@serv/studenService";
-import { listAllUserTeam } from "@serv/userService";
+import { checkUserPhoneNotInUse, listAllUserTeam } from "@serv/userService";
 import { FormsPage, FormsQuestion, inputTypes } from "@components/forms/components/formDTOs";
 import authService from "@serv/authService";
 
@@ -80,7 +80,8 @@ export const registerQuestions: (phoneNumber?: string) => {
                 id: 0,
                 name: "phoneNumber",
                 inputType: inputTypes.NUMERIC_PHONE,
-                validate: validatePhoneNumber
+                validate: validatePhoneNumber,
+                validateOnSend: checkUserPhoneNotInUse
             }]
         },
         [ResgisterFormPageId.USERNAME]: {

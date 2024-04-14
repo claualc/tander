@@ -105,8 +105,12 @@ const languages: {
       language_code: "ko"
     },
     "26": {
-      name: "danish",
+      name: "Danish",
       language_code: "da"
+    },
+    "27": {
+      name: "Estonian",
+      language_code: "et"
     },
   };
 

@@ -107,7 +107,6 @@ const getLastMsgChat = async (id: string) => {
 }
 
 const update = async(chat: ChatDTO) => {
-    console.log("update,chatDTO", chat)
     await dbService.update(COLLECTION_ID, chat, chat.id)
 }
 

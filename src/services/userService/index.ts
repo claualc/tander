@@ -10,9 +10,11 @@ import dbServices from "@firebaseServ/database"
 import { Photo, User, UserTeam } from "@domain/User";
 import userTeamDic from "@dict/userTeam";
 
-import { CreateUserDTO, SimpleUserDTO } from "./DTO";
+import { CreateUserDTO, SimpleUserDTO, convertUserToSimpleDTO } from "./DTO";
 import albumService from "@serv/albumService";
 import photoServices from "@serv/photoServices";
+import { where } from "firebase/firestore";
+import { CustomError } from "@components/forms/errors";
 
 export const COLLECTION_ID = "user"; // main collection
 
@@ -138,4 +140,16 @@ export const listAllUserTeam = () => {
     return userTeamDic.map((dto, id) => new UserTeam(
         id, dto.name, dto.icon
     ))
+}
+
+
+export const checkUserPhoneNotInUse = async (phone: string) => {
+    let user: any = await dbServices.listAll(
+        COLLECTION_ID,
+        userSimplified,
+        where( "phoneNumber", "==", phone )
+    )
+    if (user?.length && !!user[0]?.id)
+        throw new CustomError("Phonenumber already in use", "userService")
+    return !user?.id
 }

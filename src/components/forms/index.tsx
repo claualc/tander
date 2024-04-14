@@ -16,8 +16,6 @@ import { FormsInputs, FormsPage, FormsQuestion, inputTypes } from "./components/
 import MusicInterectAsyncSelect from "@components/musicInterectAsyncSelect";
 import { CustomText } from "@components/index";
 import { CustomError } from "./errors";
-import { LoggedUserContext, UserContextType } from "@context/user";
-import FormContextProvider from "./components/context";
 
 export const Forms: React.FC<{
     totalPagesCount: number;
@@ -25,10 +23,9 @@ export const Forms: React.FC<{
     onSend: (inputs: FormsInputs) => (Promise<void> | void);
     onNextPage?: (nextIndex: number) => void;
     onClose?: () => void;
-    defaultAnswers?: any[][];
     defaultInputs?: FormsInputs;
     onSendButtonTitle?: string;
-}> = ({totalPagesCount, pages, onSend, onNextPage, onClose, defaultAnswers, onSendButtonTitle="Next", defaultInputs}) => {
+}> = ({totalPagesCount, pages, onSend, onNextPage, onClose, onSendButtonTitle="Next", defaultInputs}) => {
 
     const [inputs, setInputs_] = useState<FormsInputs>(defaultInputs ||  {} as { [key: string]: any});
     const [validAnswer, setValidAnswer] = useState(false);
@@ -36,7 +33,8 @@ export const Forms: React.FC<{
     const [sendForms, setSendForms] = useState<boolean>(false);
     const [allFieldsRequired, setAllFieldsRequired] = useState<boolean>(pages[0].allFieldsRequired == undefined ? true : pages[0].allFieldsRequired);
     const [error, setError] = useState<string | null>(null);
-    const { setLoading } = useContext(LoggedUserContext) as UserContextType;
+  const [ localButtonLoading, setLocalButtonLoading ] = useState<boolean>(false);
+
 
     const setInput = useCallback((name: string, value: any) => {
         setInputs_(i => ({...i, [name]: value}))
@@ -64,9 +62,9 @@ export const Forms: React.FC<{
         return page
     }, [currentPageId]);
 
-    const checkValidAnswer = useCallback((v: any, q: FormsQuestion) => {
+    const checkValidAnswer = useCallback(async (v: any, q: FormsQuestion) => {
         let isValid = q.validate ? 
-            q.validate(v) : true //checkFormsInputValid
+            await q.validate(v) : true //checkFormsInputValid
         setValidAnswer(isValid)
     }, [validAnswer])
 
@@ -79,6 +77,7 @@ export const Forms: React.FC<{
                     if (e instanceof CustomError)
                         setError(e.message)
                 }
+            setLocalButtonLoading(false)
             setSendForms(false)
         })();
     }, [sendForms]);
@@ -100,22 +99,35 @@ export const Forms: React.FC<{
         )
     }, [currentPage, validAnswer, allFieldsRequired,inputs])
 
-    const turnFormsPageAhead = useCallback((goAhead: boolean) => {
+    const turnFormsPageAhead = useCallback(async (goAhead: boolean) => {
+        setLocalButtonLoading(true)
         const id = currentPageId;
         const nextId = goAhead ? id+1 : id-1; // go to last or next page
 
-        if (nextId<0) {
-            onClose && onClose()
-        } else if (nextId==totalPagesCount) {
-            setSendForms(true)
-        } else {
-            setCurrentPageId(nextId)
-            onNextPage && onNextPage(nextId)
-        }
-    }, [currentPageId]);
+        try {
+            let validToSend = currentPage.questions.map(
+                async ({validateOnSend, name})=> validateOnSend && await validateOnSend(inputs[name])
+            )
+            await Promise.all(validToSend)
 
-    return <FormContextProvider>
-        <ScrollView style={{width: "100%"}}>
+            if (nextId<0) {
+                onClose && onClose()
+                setLocalButtonLoading(false)
+            } else if (nextId==totalPagesCount) {
+                setSendForms(true)
+            } else {
+                setLocalButtonLoading(false)
+                setCurrentPageId(nextId)
+                onNextPage && onNextPage(nextId)
+            }
+        } catch (e) {
+            if (e instanceof CustomError)
+                setError(e.message)
+                setLocalButtonLoading(false)
+        }
+    }, [currentPageId,inputs]);
+
+    return <ScrollView style={{width: "100%"}}>
                 <BackButtonWrapper>
                     <Ionicons 
                         onPress={() => {
@@ -196,7 +208,6 @@ export const Forms: React.FC<{
                         : (q.inputType == inputTypes.MULTISELECT) ?
                             <CustomMultiSelect 
                                 onSelect={v => {
-                                    let val = [...v]
                                     setInput(q.name, v)
                                     checkValidAnswer(v, q)
                                 }}
@@ -242,6 +253,7 @@ export const Forms: React.FC<{
                 </FormsWrapper>
                 <CenterWrapping>
                     <ColorButton
+                        loading={localButtonLoading}
                         onPress={() => {
                             turnFormsPageAhead(true) 
                         }}
@@ -249,5 +261,4 @@ export const Forms: React.FC<{
                         disabled={disableButton}/>
                 </CenterWrapping>
         </ScrollView>
-    </FormContextProvider>
 }

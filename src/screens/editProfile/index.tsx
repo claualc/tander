@@ -29,7 +29,7 @@ const formQuestions = profileOptions();
 
 const EditProfileScreen = () => {
 
-  const { loggedUser, setLoading, updateLoggedUser, logOut } = useContext(LoggedUserContext) as UserContextType;
+  const { loggedUser, updateLoggedUser, logOut } = useContext(LoggedUserContext) as UserContextType;
 
   // user attribute to modify
   const [userAttribute, setUserAttribute] = useState<ProfileFormPageId>(ProfileFormPageId.NONE);
@@ -65,7 +65,6 @@ const EditProfileScreen = () => {
   }, [userAttribute])
 
   const onSend = useCallback(async(inputs: FormsInputs) => {
-      setLoading(true)
       setUserAttribute(ProfileFormPageId.NONE)
 
       if (loggedUser?.id) {
@@ -98,7 +97,6 @@ const EditProfileScreen = () => {
 
       updatedU = await userService.update(dto, loggedUser.id)
       await updateLoggedUser(updatedU)
-      setLoading(false)
     }
 
   }, [userAttribute])

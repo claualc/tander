@@ -61,6 +61,7 @@ export interface FormsQuestion {
     }[]; 
 
     validate?: (v: any) => boolean;
+    validateOnSend?: (v: any) => Promise<boolean>;
     
     // for photo input types
     photoCount?: number;

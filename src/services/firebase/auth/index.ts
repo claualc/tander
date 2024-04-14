@@ -1,4 +1,4 @@
-import firebase from "@firebaseServ/index";
+import firebase, { userFactoryApp } from "@firebaseServ/index";
 import { createUserWithEmailAndPassword, getReactNativePersistence, initializeAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -7,17 +7,22 @@ const AuthFirebaseService = () => {
         persistence: getReactNativePersistence(ReactNativeAsyncStorage)
       });
 
+    // to create users without mandatory login
+    const userFac = initializeAuth(firebase.getApp(userFactoryApp), {
+        persistence: undefined
+    });
+
     console.log("..:: AuthFirebaseService initiated");
     return {
         signIn: async (userPhone: string, password: string) => {
             console.log("..:: AuthFirebaseService.signIn");
             const userCredential = await signInWithEmailAndPassword(auth, userPhone+"@gmail.com", password)
-            console.log({userCredential, user:userCredential.user})
             return userCredential
         },
         signUp: async (userPhone: string, password: string) => {
             console.log("..:: AuthFirebaseService.signUp");
-            const userCredential = await createUserWithEmailAndPassword(auth, userPhone+"@gmail.com", password)
+            const userCredential = await createUserWithEmailAndPassword(userFac, userPhone+"@gmail.com", password)
+            signOut(userFac)
             return userCredential
         },
         logOut: async() => {

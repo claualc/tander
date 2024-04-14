@@ -9,7 +9,7 @@ import { ItemChat, ItemChatDescription, ItemChatImg, NoContent, Title, UnreadCha
 import { ChatParams } from "../userChat";
 import chatServices from "@serv/chatServices";
 import { ChatDTO, MessageDTO, MsgStates } from "@serv/chatServices/DTOs";
-import { stackNavigateTo, stackReplaceTo } from "@screens/stackNavigator/navigateService";
+import { stackReplaceTo } from "@screens/stackNavigator/navigateService";
 import { routeNames } from "@screens/stackNavigator/routes";
 import { DEV_DIM, responsiveValue } from "@screens/theme";
 

@@ -3,12 +3,12 @@ import { convertHexToRGBA, cutText } from "@components/utils";
 import { DimensionValue, Image, TouchableHighlight, View } from "react-native";
 import { CustomText } from "@components/index";
 import { SelectOption } from ".";
-import { gobalFont } from "@screens/theme";
+import { gobalFont, responsiveValue } from "@screens/theme";
 
 // actual shape of select modal 
 export const Card = styled.View`
     background-color: white;
-    width: 88%;
+    width: ${responsiveValue("88%", "75%")};
     border-radius: 20px;
     overflow: hidden;
     align-items: center;

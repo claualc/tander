@@ -1,4 +1,4 @@
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, User } from "firebase/auth"
+import { User } from "firebase/auth"
 import authService from "./firebase/auth"
 import { CustomError } from "@components/forms/errors";
 

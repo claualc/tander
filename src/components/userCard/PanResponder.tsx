@@ -1,15 +1,24 @@
 import { Animated, Dimensions, PanResponder } from "react-native";
 import { isLeftTap, isRightTap, isScrollDown, isScrollUp, isSwipeLeft, isSwipeRight } from "./motionDefinitions";
+import { DEV_DIM, responsiveValue } from "@screens/theme";
 
 
 export const INITIAL_GESTURE_VALS = {
     pan: {x:0, y:0},
-    scale: {x:0.85, y: 0.82},
+    scale: 1,
 }
 
 export interface coordsI {
-    x: number ;
-    y: number;
+    swipeLeft: {
+        x: number ;
+        y: number;
+        show: boolean;
+    };
+    swipeRigth: {
+        x: number ;
+        y: number;
+        show: boolean;
+    }
 }
 
 const randomInside = (arr: number[]) => {
@@ -18,60 +27,71 @@ const randomInside = (arr: number[]) => {
 }
 
 const getRandomCoordinateY = () => {
-    let heightTop = [20,30];
+    let heightTop = [10,20];
     return randomInside(heightTop)
 }
 
 const getRandomCoordinateX = (moveRigth:boolean) => {
-    let swipedRigt = [50,70]
-    let swipedLeft = [10,30]
+    let swipedRigt = [60,70]
+    let swipedLeft = [10,20]
     
     return moveRigth ? 
             randomInside(swipedRigt)
             : randomInside(swipedLeft)
 }
+
 export const panRes = (
     isScrolledUp: boolean,
     pan: Animated.ValueXY,
-    scale: Animated.ValueXY,
+    scale: Animated.Value,
     tapPhotoLeft: () => void,
     tapPhotoRight: () => void,
     whenScrollUp: () => void,
     whenScrollDown: () => void,
     onSwipeRigth: () => void,
     onSwipeLeft: () => void,
-    setGifCoords: React.Dispatch<React.SetStateAction<coordsI | null>>,
+    setGifCoords: React.Dispatch<React.SetStateAction<coordsI>>,
+    setShowGif: React.Dispatch<React.SetStateAction<boolean[]>>,
     gifCoords: coordsI | null
     ) => PanResponder.create({
 
     onMoveShouldSetPanResponder: () => true,
       onStartShouldSetPanResponder: () => true,
+      onPanResponderStart: (event,ges) => {
+            setGifCoords({
+                swipeLeft: {
+                    x: getRandomCoordinateX(false),
+                    y: getRandomCoordinateY(),
+                    show: false,
+                },
+                swipeRigth: {
+                    x: getRandomCoordinateX(true),
+                    y: getRandomCoordinateY(),
+                    show: false,
+                }
+            });
+        },
       onPanResponderMove:(event, ges) => {
-        if (!isScrolledUp) {
+        if (!isScrolledUp)
             pan.setValue({
                 x: ges.dx,
                 y: ges.dy,
             });
 
-            let dx = 5
-            const moveLeft = ges.dx < -dx 
-            const moveRigth = ges.dx > dx 
-
-            if (!gifCoords?.x && !gifCoords?.y) {
-                setGifCoords({
-                    x: getRandomCoordinateX(moveRigth),
-                    y: getRandomCoordinateY()
-                });
+            let motion = ges.dx/DEV_DIM.width;
+            if (Math.abs(motion) > 0.10) {
+                if (motion > 0)
+                    setShowGif([false, true])
+                else 
+                    setShowGif([true, false])
             }
-        }
+
       },
       onPanResponderRelease: (ev, ges) => {
-
-            setGifCoords(null)
+            setShowGif([false, false])
 
             let animations: any[] = []
-            const width = Dimensions.get('screen').width;
-            const height = Dimensions.get('screen').height;
+            const height = DEV_DIM.height;
 
             if (isLeftTap(ges))
                 tapPhotoLeft();
@@ -102,16 +122,13 @@ export const panRes = (
                     animations = [
                         Animated.spring(
                             scale,
-                            {toValue: {
-                                x: 1,
-                                y: INITIAL_GESTURE_VALS.scale.y
-                            }, useNativeDriver: true}, // Back to zero
+                            {toValue: 1.3, useNativeDriver: true}, // Back to zero
                         ),
                         Animated.spring(
                             pan,
                             {toValue: {
                                 x: INITIAL_GESTURE_VALS.pan.x,
-                                y: INITIAL_GESTURE_VALS.pan.y -0.12*height
+                                y: INITIAL_GESTURE_VALS.pan.y-responsiveValue(0.12, 0.07)*height
                             }, useNativeDriver: true}, // Back to zero
                         )
                     ]

@@ -3,18 +3,15 @@ import styled from "styled-components/native";
 import { View } from "react-native";
 import { Language } from "@api/domain/Language";
 import { User } from "@api/domain/User";
-import { theme } from "@screens/theme";
+import { responsiveValue, theme } from "@screens/theme";
 import { AntDesign, Ionicons, SimpleLineIcons } from "@expo/vector-icons";
 import AlbumComponent from "@components/musicAlbum";
 
 
 export const UserDescWrapper = styled(Wrapper)`
-    margin-top: 145%; 
-    padding: 10% 7% 0% 7%; 
+    padding: ${responsiveValue("0% 7% 0% 7%", "0% 12% 0% 12%")};
     width: 100%;
-    justify-content: flex-start;
     align-items: flex-start;
-    
 `
 export const UserDecSections = styled.View`
     width: "100%";
