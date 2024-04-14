@@ -32,8 +32,8 @@ const getRandomCoordinateY = () => {
 }
 
 const getRandomCoordinateX = (moveRigth:boolean) => {
-    let swipedRigt = [60,70]
-    let swipedLeft = [10,20]
+    let swipedRigt = [50,60]
+    let swipedLeft = [5,20]
     
     return moveRigth ? 
             randomInside(swipedRigt)
@@ -128,7 +128,7 @@ export const panRes = (
                             pan,
                             {toValue: {
                                 x: INITIAL_GESTURE_VALS.pan.x,
-                                y: INITIAL_GESTURE_VALS.pan.y-responsiveValue(0.12, 0.07)*height
+                                y: INITIAL_GESTURE_VALS.pan.y-responsiveValue(0.05, 0.05)*height
                             }, useNativeDriver: true}, // Back to zero
                         )
                     ]

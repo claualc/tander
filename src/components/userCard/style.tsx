@@ -1,3 +1,6 @@
+import { responsiveValue } from "@screens/theme";
+import React from "react";
+import { ImageBackground } from "react-native";
 import styled from "styled-components/native";
 
 interface ChipProps {
@@ -42,14 +45,27 @@ export const UserDataView = styled.View`
     flex: 1;
 `
 
-export const AnimationView = styled.Image<{
+export const AnimationView = styled.View<{
     x: number;
     y: number;
 }>`
-    width: 30%;
-    height: 30%;
+    width: ${responsiveValue("40%", "25%")};
+    aspect-ratio: 1/1;
     z-index: 100000;
     position: absolute;
     top: ${p => p.y+"%" };
-    left: ${p => p.x+"%" };;
+    left: ${p => p.x+"%" };
 `
+
+export const ActionGif : React.FC<{
+    x: number;
+    y: number;
+    source: any;
+}> = ({x, y, source}) => {
+    return <AnimationView 
+        x={x}
+        y={y}
+        >
+            <ImageBackground style={{flex:1}} source={source} />
+    </AnimationView>
+}

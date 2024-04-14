@@ -96,12 +96,20 @@ const HomeScreen: React.FC = () => {
         <View style={{flex:1 , justifyContent: "center", alignItems: "center", padding: "15%"}}>
           <CustomText style={{textAlign: "center"}} color={theme.tertiary_dark}>{"UAU!! You are a machine! \n\n\n You will have to wait for more users... 🥲"}</CustomText>
         </View> : uIndex == -1 ? 
-          <Loading height="100%"/> :        
+          <Loading height="100%"/> : 
+                 
           <ScrollView 
-            style={{width: "100%", flex: 1, position: "relative", zIndex: 0}} 
-            contentContainerStyle={{width: "100%", alignItems: "center"}}
+            style={{width: "100%", position: "relative", zIndex: 0}} 
+            contentContainerStyle={{width: "100%", alignItems: "center",}}
             scrollEnabled={seeDescription}>
 
+                <View style={{
+                  alignItems: "center", 
+                  width: "100%", 
+                  aspectRatio: seeDescription ?responsiveValue( "2/2.9","2/1.9") : DEV_DIM.width/DEV_DIM.height,
+                  position: "relative", 
+                  overflow: "visible",
+                  zIndex: 1}}>
                 {
                     users.map((user, i) => <Card
                       key={i}
@@ -121,16 +129,15 @@ const HomeScreen: React.FC = () => {
                         onHorizontalSwipe(false, user)
                         userSwiped(i);
                       }}
-                      top={ responsiveValue("7%","9%")}
+                      top={responsiveValue("20%", "10%")}
                       isScrolledUp={seeDescription}
                       renderController={renderUserCards[i]}
                     /> )
                   }
 
-                  <View style={{alignItems: "center", marginTop: responsiveValue("95%","96%") ,width: "100%", position: "relative", zIndex: 0}}>
-                    <UserDetails user={users[uIndex]} show={seeDescription} />
-                  </View>
-
+              </View>
+              
+              <UserDetails user={users[uIndex]} show={seeDescription} />
             </ScrollView>
       }
     </ScreenView>

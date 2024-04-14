@@ -1,11 +1,11 @@
 import { Animated, Dimensions, Image, ImageBackground, PanResponder, TouchableWithoutFeedback, View } from "react-native";
-import { AnimationView, PhotoChipWrapper, PhotoSwipeChips, UserDataView } from "./style";
+import { ActionGif, AnimationView, PhotoChipWrapper, PhotoSwipeChips, UserDataView } from "./style";
 import { Chip, CustomText } from "@components/index";
 import EmptyImage from "@imgs/empty_image.png";
 import BlackBottomBlur from "@imgs/black_blur_user_card.png";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { INITIAL_GESTURE_VALS, coordsI, panRes } from "./PanResponder";
-import { theme } from "@screens/theme";
+import { responsiveValue, theme } from "@screens/theme";
 import { User } from "@api/domain/User";
 
 import UnLikedGif from "@imgs/unliked_user.gif";
@@ -84,14 +84,14 @@ const Card: React.FC<CardProps> = ({
     <>
     {
         showGif[0] &&
-        <AnimationView source={UnLikedGif} x={animationGifCoords?.swipeLeft.x} y={animationGifCoords?.swipeLeft.y} />
+        <ActionGif source={UnLikedGif} x={animationGifCoords?.swipeLeft.x} y={animationGifCoords?.swipeLeft.y} />
     }
      {
         showGif[1] &&
-        <AnimationView source={LikedGif} x={animationGifCoords?.swipeRigth.x} y={animationGifCoords?.swipeRigth.y} />
+        <ActionGif source={LikedGif} x={animationGifCoords?.swipeRigth.x} y={animationGifCoords?.swipeRigth.y} />
     }
     <Animated.View {...panResponder.panHandlers}  style={{
-        width:`60%`,
+        width:responsiveValue("85%",`60%`),
         aspectRatio: "2/2.8",
         justifyContent: "center",
         alignItems: "center",

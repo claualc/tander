@@ -12,6 +12,9 @@ export const UserDescWrapper = styled(Wrapper)`
     padding: ${responsiveValue("0% 7% 0% 7%", "0% 12% 0% 12%")};
     width: 100%;
     align-items: flex-start;
+    position: relative;
+    z-index: 0;
+    margin-bottom: 7%;
 `
 export const UserDecSections = styled.View`
     width: "100%";
