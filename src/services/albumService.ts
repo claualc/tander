@@ -1,6 +1,6 @@
 
-import { MusicInterest } from "@api/domain/User";
-import axiosAlbumService from "./axios/albumService";
+import { MusicInterest } from "@domain/User";
+import axiosAlbumService from "./infra/axios/albumService";
 
 export interface MusicInterestDTO {
     albumName: string;

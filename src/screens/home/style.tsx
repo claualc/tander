@@ -1,9 +1,9 @@
 import { ColorWrapper, CustomText, Wrapper } from "@components/index";
 import styled from "styled-components/native";
 import { View } from "react-native";
-import { Language } from "@api/domain/Language";
-import { User } from "@api/domain/User";
-import { responsiveValue, theme } from "@screens/theme";
+import { Language } from "@domain/Language";
+import { User } from "@domain/User";
+import { responsiveValue, theme } from "@screens/global.style";
 import { AntDesign, Ionicons, SimpleLineIcons } from "@expo/vector-icons";
 import AlbumComponent from "@components/musicAlbum";
 

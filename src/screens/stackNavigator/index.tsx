@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 
-import { RootScreenView } from '@components/index';
-import BottomTabNavigator from '@components/bottomTabNavigator';
-import LoadingComponent from '@components/loading';
+import { RootScreenView, LoadingComponent } from '@components/index';
+import BottomTabNavigator from '@screens/stackNavigator/bottomTabNavigator';
 import { LoggedUserContext, UserContextType } from '@context/user';
 import MatchContext from '@context/match';
 import { Stack, navigatorRef, stackNavigateTo } from './navigateService';

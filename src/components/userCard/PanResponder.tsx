@@ -1,6 +1,6 @@
 import { Animated, Dimensions, PanResponder } from "react-native";
 import { isLeftTap, isRightTap, isScrollDown, isScrollUp, isSwipeLeft, isSwipeRight } from "./motionDefinitions";
-import { DEV_DIM, responsiveValue } from "@screens/theme";
+import { DEV_DIM, responsiveValue } from "@screens/global.style";
 
 
 export const INITIAL_GESTURE_VALS = {

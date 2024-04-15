@@ -2,7 +2,7 @@ import React from 'react';
 import styled from "styled-components/native";
 
 import { CustomText } from '@components/index';
-import { gobalFont, responsiveValue, theme } from '@screens/theme';
+import { gobalFont, responsiveValue, theme } from '@screens/global.style';
 
 export const ScreenView = styled.View`
     flex: 23;

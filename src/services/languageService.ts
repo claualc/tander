@@ -1,4 +1,4 @@
-import { Language } from "@api/domain/Language";
+import { Language } from "@domain/Language";
 
 import languageDic from "@dict/languages";
 

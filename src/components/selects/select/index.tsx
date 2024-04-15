@@ -2,12 +2,12 @@ import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 
 import { CustomText } from "@components/index";
-import SelectModal from "./SelectModal";
+import SelectModal from "./Modal";
 import { convertHexToRGBA, getRandomColor } from "@components/utils";
 import { CustomSelectTouchable } from "./style";
 import { MusicInterestDTO } from "@serv/albumService";
 import { View } from "react-native";
-import { responsiveValue } from "@screens/theme";
+import { responsiveValue } from "@screens/global.style";
 
 export interface SelectLogicalProps {
     value?: string | number;

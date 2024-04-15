@@ -1,6 +1,6 @@
 import universityDic from "@dict/university";
 import courseDic from "@dict/course";
-import { Course, Univeristy } from "@api/domain/University";
+import { Course, Univeristy } from "@domain/University";
 
 const getUniversityById = (id: string) => {
     const dto = universityDic[id];

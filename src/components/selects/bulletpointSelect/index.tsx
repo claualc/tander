@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components/native";
 import { Dimensions, ScrollView, TouchableOpacity, View } from "react-native";
 import { CustomText } from "@components/index";
-import { gobalFont, responsiveValue, theme } from "@screens/theme";
+import { gobalFont, responsiveValue, theme } from "@screens/global.style";
 
 export interface BulletpointSelectOption {
     description: string;

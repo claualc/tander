@@ -4,7 +4,7 @@ import { CreateUserDTO } from "./DTO";
 import photoServices from "@serv/photoServices";
 import * as userSevices from "./index";
 import matchServices from "@serv/matchServices";
-import { User } from "@api/domain/User";
+import { User } from "@domain/User";
 import authService from "@serv/authService";
 
 enum createUserDTOErrors {

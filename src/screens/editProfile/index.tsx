@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { Image, ScrollView, View } from "react-native";
-import { gobalFont, responsiveValue, theme } from "../theme";
+import { gobalFont, responsiveValue, theme } from "../global.style";
 
 import { CustomText, ScreenView } from "@components/index";
 import { LoggedUserContext, UserContextType } from "@context/user";
@@ -12,7 +12,7 @@ import * as userService from "@serv/userService";
 import { convertUserToCreateDTO } from "@serv/userService/DTO";
 import albumService, { MusicInterestDTO } from "@serv/albumService";
 import photoServices from "@serv/photoServices";
-import { Photo, User } from "@api/domain/User";
+import { Photo, User } from "@domain/User";
 import Avatar from "@components/avatar";
 import { FormsInputs } from "@components/forms/components/formDTOs";
 /*
@@ -33,6 +33,13 @@ const EditProfileScreen = () => {
 
   // user attribute to modify
   const [userAttribute, setUserAttribute] = useState<ProfileFormPageId>(ProfileFormPageId.NONE);
+  const [updated, setUpdated] = useState<boolean>(false);
+
+  useEffect(() => {
+    if(updated)
+      setUserAttribute(ProfileFormPageId.NONE)
+    setUpdated(false)
+  }, [updated])
 
   const inputs = useMemo(() => {
     let inputs = {} as FormsInputs;
@@ -65,8 +72,6 @@ const EditProfileScreen = () => {
   }, [userAttribute])
 
   const onSend = useCallback(async(inputs: FormsInputs) => {
-      setUserAttribute(ProfileFormPageId.NONE)
-
       if (loggedUser?.id) {
       let dto = convertUserToCreateDTO(loggedUser);
       let updatedU: User = loggedUser;
@@ -97,8 +102,8 @@ const EditProfileScreen = () => {
 
       updatedU = await userService.update(dto, loggedUser.id)
       await updateLoggedUser(updatedU)
+      setUpdated(true)
     }
-
   }, [userAttribute])
 
   return (userAttribute != ProfileFormPageId.NONE) ?

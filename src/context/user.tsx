@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useEffect, useState } from 'react';
 
-import { MusicInterest, User } from '@api/domain/User';
+import { MusicInterest, User } from '@domain/User';
 import * as userService from "@serv/userService";
 import matchServices from '@serv/matchServices';
 

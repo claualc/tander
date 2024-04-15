@@ -1,12 +1,13 @@
 import React from "react";
 import { useState } from "react";
-import { Image } from "react-native";
+import { Image, View } from "react-native";
 import styled from "styled-components/native";
 
-import { DEVICE_WINDOW_TYPE, DEV_DIM, SCREEN_TYPES, gobalFont, responsiveValue, theme } from "@screens/theme";
+import { DEV_DIM,  gobalFont, responsiveValue, theme } from "@screens/global.style";
 import { convertHexToRGBA } from "@components/utils";
 
-import SmallLoading from "@imgs//loading_small.gif";
+import SmallLoading from "@imgs/loading_small.gif";
+import LoadingGif from "@imgs/loading.gif";
 
 /* 
   ROOT COMPONENTS:
@@ -143,3 +144,21 @@ export const Loading: React.FC<{
 }> = ({width,height}) => <LoadingView width={width} height={height}>
       <Image source={SmallLoading} style={{ width: 100, height: 100 }} />
   </LoadingView>
+
+
+export const LoadingComponent = () => {
+  return <View
+      style={{
+          width: "100%",
+          height: "100%",
+          position: "absolute",
+          top: 0,
+          right: 0,
+          backgroundColor: "blue",
+          justifyContent: "center",
+          alignItems: "center",
+          zIndex: 100
+      }}>
+          <Image source={LoadingGif} style={{ width: "30%", height: "30%" }} />
+  </View>
+}

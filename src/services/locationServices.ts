@@ -1,4 +1,4 @@
-import { City, Country } from "@api/domain/Location";
+import { City, Country } from "@domain/Location";
 
 import cityDic from "@dict/city";
 import countryDic from "@dict/country";

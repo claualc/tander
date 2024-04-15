@@ -1,11 +1,11 @@
 import React, { createContext, useCallback, useEffect, useState } from 'react';
 
-import { User } from '@api/domain/User';
+import { User } from '@domain/User';
 import * as userService from "@serv/userService";
 import matchServices, { POT_MATCH_BATCH_LIMIT } from '@serv/matchServices';
 
 import albumservice from "@serv/albumService";
-import { PaginationInfo } from '@serv/firebase/database';
+import { PaginationInfo } from '@serv/infra/firebase/database';
 
 export type MatchContextType = {
     potentialMatches: User[];

@@ -1,7 +1,7 @@
 import { FormsPage, inputTypes } from "@components/forms/components/formDTOs";
 import { ResgisterFormPageId, registerQuestions } from "@screens/register/components/RegisterForms";
 import languageService from "@serv/languageService";
-import { SelectOption } from "@components/select";
+import { SelectOption } from "@components/selects/select";
 
 export enum ProfileFormPageId {
     /*

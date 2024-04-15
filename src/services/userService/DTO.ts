@@ -1,4 +1,4 @@
-import { Photo, User } from "@api/domain/User";
+import { Photo, User } from "@domain/User";
 import { getDDMMYYYYFromDate } from "@components/utils";
 import albumService, { MusicInterestDTO } from "@serv/albumService";
 

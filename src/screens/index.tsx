@@ -1,16 +1,16 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
+import { ThemeProvider } from 'styled-components/native';
 import { View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
 
 // import to initiate
-import { theme } from './theme';
-import "@serv/firebase";
-import "@serv/axios";
+import "@firebaseServ/index";
+import "@serv/infra/axios";
 
-import {initAsyncFirebaseServices} from '@serv/firebase';
-import { ThemeProvider } from 'styled-components/native';
+import { theme } from './global.style';
 import ScreensStack from './stackNavigator';
+import {initAsyncFirebaseServices} from '@firebaseServ/index';
 import UserContext from "@context/user";
 
 // Keep the splash screen visible while we fetch resources

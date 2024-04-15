@@ -1,13 +1,13 @@
-import { User } from "@api/domain/User";
+import { User } from "@domain/User";
 import { converter } from "@firebaseServ/database/converterDTO";
 
 import * as userServices from "@serv/userService";
-import dbService, { PaginationInfo } from "./firebase/database";
+import dbService, { PaginationInfo } from "./infra/firebase/database";
 import { and, or, where } from "firebase/firestore";
 import { generateRandomString } from "@components/utils";
 import { SimpleUserDTO, convertUserToSimpleDTO } from "./userService/DTO";
 import { MessageDTO } from "./chatServices/DTOs";
-import notifications from "./firebase/notifications";
+import notifications from "./infra/firebase/notifications";
 
 
 export const POT_MATCH_BATCH_LIMIT = 3; // number of users loaded per each bach

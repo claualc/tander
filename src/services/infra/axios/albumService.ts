@@ -1,4 +1,4 @@
-import { Album } from "@api/domain/Album";
+import { Album } from "@domain/Album";
 import axios, { AxiosResponse } from "axios";
 
 const albumAPI = axios.create({

@@ -1,4 +1,4 @@
-import { SelectOption } from "@components/select";
+import { SelectOption } from "@components/selects/select";
 
 export enum inputTypes {
     TEXT,  //also used for cellphone number

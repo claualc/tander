@@ -2,9 +2,9 @@ import { TouchableOpacity, View } from "react-native";
 import styled from "styled-components/native";
 
 import { useCallback, useMemo, useState } from "react";
-import CustomSelect, { SelectOption } from "@components/select";
-import { convertHexToRGBA, getRandomColor } from "../utils";
-import { gobalFont, responsiveValue } from "@screens/theme";
+import CustomSelect, { SelectOption } from "@components/selects/select";
+import { convertHexToRGBA, getRandomColor } from "../../utils";
+import { gobalFont, responsiveValue } from "@screens/global.style";
 
 const RoundButton = styled.View<{
     color: string;

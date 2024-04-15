@@ -2,10 +2,10 @@
 import albumService, * as albumAPI from '@serv/albumService';
 import React, { useEffect, useState } from 'react';
 import { AlbumCInfoWrapper, AlbumCoverWrapper, ErrorCard, LoadingCard, MainCard } from './style';
-import { Album } from '@api/domain/Album';
+import { Album } from '@domain/Album';
 import { Image } from 'react-native';
 import { CustomText } from '@components/index';
-import { theme } from '@screens/theme';
+import { theme } from '@screens/global.style';
 import { cutText } from '../utils';
 
 interface Props {

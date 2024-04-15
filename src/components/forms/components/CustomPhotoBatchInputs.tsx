@@ -3,8 +3,8 @@ import { ScrollView, View, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import styled from "styled-components/native";
 
-import { responsiveValue, theme } from "@screens/theme";
-import { Photo } from "@api/domain/User";
+import { responsiveValue, theme } from "@screens/global.style";
+import { Photo } from "@domain/User";
 import photoServices from "@serv/photoServices";
 
 const PhotoFrame = styled.TouchableHighlight`

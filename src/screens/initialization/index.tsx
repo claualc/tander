@@ -6,8 +6,8 @@ import LoginBackground from "@imgs/login_background.png";
 import AppIcon from "@imgs/icon.png";
 
 import { CustomText, ScreenView } from '@components/index';
-import { CustomSelectTouchable } from '@components/select/style';
-import { gobalFont, responsiveValue, theme } from '../theme';
+import { CustomSelectTouchable } from '@components/selects/select/style';
+import { gobalFont, responsiveValue, theme } from '../global.style';
 import { stackNavigateTo } from '@screens/stackNavigator/navigateService';
 import { routeNames } from '@screens/stackNavigator/routes';
 

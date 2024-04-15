@@ -1,5 +1,5 @@
 import { User } from "firebase/auth"
-import authService from "./firebase/auth"
+import authService from "@firebaseServ/auth"
 import { CustomError } from "@components/forms/errors";
 
 const SERVICE_ID = "auth";

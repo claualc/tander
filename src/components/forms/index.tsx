@@ -2,18 +2,18 @@ import { Ionicons } from "@expo/vector-icons";
 import { useState, useCallback, useMemo, useEffect, useContext } from "react";
 import { ScrollView, View } from "react-native";
 
-import { gobalFont, responsiveValue, theme } from "@screens/theme";
+import { gobalFont, responsiveValue, theme } from "@screens/global.style";
 import CustomDateInput from "@components/forms/components/CustomDateInput";
 import CustomPhotoBatchInputs from "@components/forms/components/CustomPhotoBatchInputs";
 import { CustomTextInput, CustomCodeInput } from "@components/forms/components/CustomSimpleInputs";
 import { BackButtonWrapper, FormsWrapper, Title, Subtitle, Description, CenterWrapping } from "./components";
 
-import BulletpointSelect from "@components/bulletpointSelect";
+import BulletpointSelect from "@components/selects/bulletpointSelect";
 import ColorButton from "@components/colorButton";
-import CustomMultiSelect from "@components/multiSelect";
-import CustomSelect from "@components/select";
+import CustomMultiSelect from "@components/selects/multiSelect";
+import CustomSelect from "@components/selects/select";
 import { FormsInputs, FormsPage, FormsQuestion, inputTypes } from "./components/formDTOs";
-import MusicInterectAsyncSelect from "@components/musicInterectAsyncSelect";
+import MusicInterectAsyncSelect from "@components/selects/musicInterectAsyncSelect";
 import { CustomText } from "@components/index";
 import { CustomError } from "./errors";
 
@@ -72,6 +72,7 @@ export const Forms: React.FC<{
         if (sendForms)
             (async () => {
                 try {
+                    setLocalButtonLoading(true)
                     await onSend(inputs)
                 } catch(e) {
                     if (e instanceof CustomError)

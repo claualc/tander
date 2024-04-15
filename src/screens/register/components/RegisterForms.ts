@@ -1,4 +1,4 @@
-import { SelectOption } from "@components/select";
+import { SelectOption } from "@components/selects/select";
 import { validateDate, validatePhoneNumber } from "@components/utils";
 import locationService from "@serv/locationServices";
 import languageService from "@serv/languageService";

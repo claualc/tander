@@ -5,17 +5,17 @@
     of the select component are asyncronous
 */
 
-import { SelectOption } from "@components/select"
+import { SelectOption } from "@components/selects/select"
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { convertHexToRGBA, getRandomColor } from "@components/utils";
 import { CustomText } from "@components/index";
 import { Ionicons } from "@expo/vector-icons";
-import SelectModal from "@components/select/SelectModal";
-import { CustomSelectTouchable } from "@components/select/style";
+import SelectModal from "@components/selects/select/Modal";
+import { CustomSelectTouchable } from "@components/selects/select/style";
 
 import albumservice, { MusicInterestDTO } from "@serv/albumService";
 import { View } from "react-native";
-import AlbumComponent from "../musicAlbum";
+import AlbumComponent from "../../musicAlbum";
 import { LoggedUserContext, UserContextType } from "@context/user";
 
 interface AsyncSelectProps {

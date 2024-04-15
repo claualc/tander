@@ -1,4 +1,4 @@
-import { Photo, User } from '@api/domain/User';
+import { Photo, User } from '@domain/User';
 import { generateRandomString } from '@components/utils';
 import * as ImagePicker from 'expo-image-picker';
 import { DocumentReference } from 'firebase/firestore';

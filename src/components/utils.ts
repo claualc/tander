@@ -5,7 +5,7 @@
 
 */
 
-import { theme } from "@screens/theme";
+import { theme } from "@screens/global.style";
 
 export const convertHexToRGBA = (hexCode: string, opacity = 1) => {  
     let hex = hexCode.replace('#', '');
