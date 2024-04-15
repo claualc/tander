@@ -78,7 +78,7 @@ const ChatScreen = () => {
       {
         !newMatchesDTOs?.length ? 
           <NoContent
-              paddingTop={responsiveValue("9%","0%")}
+              paddingTop={responsiveValue("9%","7%")}
               imgSize={responsiveValue("90%","110%")}
               loading={newMatchesDTOs==null}>
                 {"no new matches 💔"}
