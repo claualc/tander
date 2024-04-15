@@ -7,7 +7,7 @@ import { convertHexToRGBA, getRandomColor } from "@components/utils";
 import { CustomSelectTouchable } from "./style";
 import { MusicInterestDTO } from "@serv/albumService";
 import { View } from "react-native";
-import { responsiveValue } from "@screens/global.style";
+import { responsiveValue } from "@screens/globalstyle";
 
 export interface SelectLogicalProps {
     value?: string | number;

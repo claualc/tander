@@ -5,7 +5,7 @@ import { AlbumCInfoWrapper, AlbumCoverWrapper, ErrorCard, LoadingCard, MainCard 
 import { Album } from '@domain/Album';
 import { Image } from 'react-native';
 import { CustomText } from '@components/index';
-import { theme } from '@screens/global.style';
+import { theme } from '@screens/globalstyle';
 import { cutText } from '../utils';
 
 interface Props {

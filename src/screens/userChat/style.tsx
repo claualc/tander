@@ -3,7 +3,7 @@ import Gradient from "@imgs/linear_gradient_background.png"
 import React from "react";
 import { Dimensions, ImageBackground, TextInput, TouchableHighlight, View, ViewBase } from "react-native";
 import { CustomSelectView } from "@components/selects/select/style";
-import { responsiveValue, theme } from "@screens/global.style";
+import { responsiveValue, theme } from "@screens/globalstyle";
 import { Ionicons } from "@expo/vector-icons";
 import { CustomText } from "@components/index";
 import { getYYYYMMDDFromDate } from "@components/utils";

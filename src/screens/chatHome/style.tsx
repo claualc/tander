@@ -1,9 +1,9 @@
 import { CustomText } from "@components/index";
 import { Dimensions, Image, TouchableHighlight, View } from "react-native";
 import styled from "styled-components/native";
-import { theme } from "@screens/global.style";
+import { theme } from "@screens/globalstyle";
 import SmallLoading from "@imgs/loading_small.gif";
-import { responsiveValue } from "@screens/global.style";
+import { responsiveValue } from "@screens/globalstyle";
 
 export const Title: React.FC<React.PropsWithChildren> = ({children}) => {
     return <View style={{width: "100%", flex: 2,flexDirection:"row", alignItems: "flex-end"}}>

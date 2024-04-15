@@ -6,9 +6,9 @@ import * as Font from 'expo-font';
 
 // import to initiate
 import "@firebaseServ/index";
-import "@serv/infra/axios";
+//import "@serv/infra/axios";
 
-import { theme } from './global.style';
+import { theme } from './globalstyle';
 import ScreensStack from './stackNavigator';
 import {initAsyncFirebaseServices} from '@firebaseServ/index';
 import UserContext from "@context/user";

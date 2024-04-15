@@ -11,7 +11,7 @@ import chatServices from "@serv/chatServices";
 import { ChatDTO, MessageDTO, MsgStates } from "@serv/chatServices/DTOs";
 import { stackReplaceTo } from "@screens/stackNavigator/navigateService";
 import { routeNames } from "@screens/stackNavigator/routes";
-import { DEV_DIM, responsiveValue } from "@screens/global.style";
+import { DEV_DIM, responsiveValue } from "@screens/globalstyle";
 
 
 const ChatScreen = () => {

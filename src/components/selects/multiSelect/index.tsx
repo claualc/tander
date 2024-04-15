@@ -4,7 +4,7 @@ import styled from "styled-components/native";
 import { useCallback, useMemo, useState } from "react";
 import CustomSelect, { SelectOption } from "@components/selects/select";
 import { convertHexToRGBA, getRandomColor } from "../../utils";
-import { gobalFont, responsiveValue } from "@screens/global.style";
+import { gobalFont, responsiveValue } from "@screens/globalstyle";
 
 const RoundButton = styled.View<{
     color: string;

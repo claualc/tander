@@ -2,7 +2,7 @@ import { Dimensions, Text, TextInput, View } from "react-native";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components/native";
 
-import { theme, gobalFont } from "@screens/global.style";
+import { theme, gobalFont } from "@screens/globalstyle";
 import { get2FirstDigitsYear } from "@components/utils";
 import { CustomText } from "@components/index";
 

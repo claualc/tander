@@ -3,10 +3,10 @@ import { Ionicons, SimpleLineIcons } from "@expo/vector-icons";
 import { TouchableHighlight, View } from "react-native";
 
 import { CustomText } from "@components/index";
-import { theme } from "@screens/global.style";
+import { theme } from "@screens/globalstyle";
 import { convertHexToRGBA, getRandomColor } from "@components/utils";
 import { useState } from "react";
-import { responsiveValue } from "@screens/global.style";
+import { responsiveValue } from "@screens/globalstyle";
 
 
 export const CenteredView = styled.View`

@@ -7,7 +7,7 @@ import AppIcon from "@imgs/icon.png";
 
 import { CustomText, ScreenView } from '@components/index';
 import { CustomSelectTouchable } from '@components/selects/select/style';
-import { gobalFont, responsiveValue, theme } from '../global.style';
+import { gobalFont, responsiveValue, theme } from '../globalstyle';
 import { stackNavigateTo } from '@screens/stackNavigator/navigateService';
 import { routeNames } from '@screens/stackNavigator/routes';
 

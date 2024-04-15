@@ -1,7 +1,7 @@
 import { View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import styled from "styled-components/native";
-import { theme } from "@screens/global.style";
+import { theme } from "@screens/globalstyle";
 import { CustomSelectView } from "@components/selects/select/style";
 
 interface PropsSearchBar {

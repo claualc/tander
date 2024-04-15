@@ -1,7 +1,7 @@
 import styled from "styled-components/native";
 import { cellphoneMask } from "@components/utils";
 
-import { gobalFont, responsiveValue, theme } from "@screens/global.style";
+import { gobalFont, responsiveValue, theme } from "@screens/globalstyle";
 import { View } from "react-native";
 import { CustomText } from "@components/index";
 

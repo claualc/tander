@@ -12,7 +12,9 @@
         "@assets/*":["assets/*"],
         "@imgs/*":["assets/imgs/*"],
         "@dict/*":["assets/dictionaries/*"],
-        "@firebase/auth": ["./node_modules/@firebase/auth/dist/index.rn.d.ts"]
+        "@firebase/auth": ["./node_modules/@firebase/auth/dist/index.rn.d.ts"],
       },
+      "esModuleInterop": true,
+      "allowSyntheticDefaultImports": true,
     },
 }

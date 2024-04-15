@@ -3,7 +3,7 @@ import { convertHexToRGBA, cutText } from "@components/utils";
 import { DimensionValue, Image, TouchableHighlight, View } from "react-native";
 import { CustomText } from "@components/index";
 import { SelectOption } from ".";
-import { gobalFont, responsiveValue } from "@screens/global.style";
+import { gobalFont, responsiveValue } from "@screens/globalstyle";
 
 // actual shape of select modal 
 export const Card = styled.View`

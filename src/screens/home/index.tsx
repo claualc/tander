@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { ScrollView, View } from "react-native";
 
-import { DEV_DIM, responsiveValue, theme } from "@screens/global.style";
+import { DEV_DIM, responsiveValue, theme } from "@screens/globalstyle";
 import { User } from "@domain/User";
 import Card from "@components/userCard";
 import { CustomText, Loading, ScreenView } from "@components/index";

@@ -5,7 +5,7 @@ import EmptyImage from "@imgs/empty_image.png";
 import BlackBottomBlur from "@imgs/black_blur_user_card.png";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { INITIAL_GESTURE_VALS, coordsI, panRes } from "./PanResponder";
-import { responsiveValue, theme } from "@screens/global.style";
+import { responsiveValue, theme } from "@screens/globalstyle";
 import { User } from "@domain/User";
 
 import UnLikedGif from "@imgs/unliked_user.gif";

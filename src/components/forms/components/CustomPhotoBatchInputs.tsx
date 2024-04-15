@@ -3,7 +3,7 @@ import { ScrollView, View, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import styled from "styled-components/native";
 
-import { responsiveValue, theme } from "@screens/global.style";
+import { responsiveValue, theme } from "@screens/globalstyle";
 import { Photo } from "@domain/User";
 import photoServices from "@serv/photoServices";
 

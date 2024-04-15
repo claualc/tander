@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Icon, MainView, ViewTab } from './style';
 import { BOTTOM_TABNAV_HEIGTH } from '@components/index';
 import { View } from 'react-native';
-import { responsiveValue, theme } from '@screens/global.style';
+import { responsiveValue, theme } from '@screens/globalstyle';
 
 interface Props {
     routes: {

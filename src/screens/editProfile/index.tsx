@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { Image, ScrollView, View } from "react-native";
-import { gobalFont, responsiveValue, theme } from "../global.style";
+import { gobalFont, responsiveValue, theme } from "../globalstyle";
 
 import { CustomText, ScreenView } from "@components/index";
 import { LoggedUserContext, UserContextType } from "@context/user";

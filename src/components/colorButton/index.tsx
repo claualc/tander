@@ -1,6 +1,6 @@
 import { TouchableHighlight, View, ImageBackground, DimensionValue, ActivityIndicator } from "react-native";
 
-import { theme, gobalFont} from "@screens/global.style";
+import { theme, gobalFont} from "@screens/globalstyle";
 import { CustomText } from "@components/index";
 import Gradient from "@imgs/linear_gradient_background.png";
 

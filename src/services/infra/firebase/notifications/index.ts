@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import { Platform } from 'react-native';
-import { sendPushNotification } from '@serv/infra/axios/pushNotifications';
 
 
 const FCMService = () => {
@@ -72,19 +71,13 @@ const FCMService = () => {
             title: string, 
             body: string, 
             token: string) => {
-            // await Notifications.scheduleNotificationAsync({
-            //   content: {
-            //     title, body, data: {}
-            //     },
-            //   identifier: token,
-            //   trigger: { seconds: 2 }
-            // });
-            sendPushNotification(
-                title,
-                body,
-                {},
-                token
-            );
+            
+            // sendPushNotification(
+            //     title,
+            //     body,
+            //     {},
+            //     token
+            // );
 
         },
         getDeviceToken: () => {

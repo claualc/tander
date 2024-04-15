@@ -1,4 +1,4 @@
-import { responsiveValue } from "@screens/global.style";
+import { responsiveValue } from "@screens/globalstyle";
 import React from "react";
 import { ImageBackground } from "react-native";
 import styled from "styled-components/native";

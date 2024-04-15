@@ -1,4 +1,4 @@
-import { responsiveValue } from '@screens/global.style';
+import { responsiveValue } from '@screens/globalstyle';
 import styled from 'styled-components/native';
 
 export const Icon = styled.ImageBackground`

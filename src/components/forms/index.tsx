@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useState, useCallback, useMemo, useEffect, useContext } from "react";
 import { ScrollView, View } from "react-native";
 
-import { gobalFont, responsiveValue, theme } from "@screens/global.style";
+import { gobalFont, responsiveValue, theme } from "@screens/globalstyle";
 import CustomDateInput from "@components/forms/components/CustomDateInput";
 import CustomPhotoBatchInputs from "@components/forms/components/CustomPhotoBatchInputs";
 import { CustomTextInput, CustomCodeInput } from "@components/forms/components/CustomSimpleInputs";

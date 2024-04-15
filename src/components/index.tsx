@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Image, View } from "react-native";
 import styled from "styled-components/native";
 
-import { DEV_DIM,  gobalFont, responsiveValue, theme } from "@screens/global.style";
+import { DEV_DIM,  gobalFont, responsiveValue, theme } from "@screens/globalstyle";
 import { convertHexToRGBA } from "@components/utils";
 
 import SmallLoading from "@imgs/loading_small.gif";
