@@ -1,5 +1,5 @@
-import { Dimensions, ScrollView, Text, View } from "react-native";
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { ScrollView, View } from "react-native";
+import { useCallback, useContext, useEffect, useState } from "react";
 
 import { CustomText, ScreenView } from "@components/index";
 import matchServices, { UserMAtchInfoDTO } from "@serv/matchServices";

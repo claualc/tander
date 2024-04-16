@@ -43,7 +43,9 @@ const RegisterScreen = () => {
           flexDirection: 'column', 
           justifyContent: 'flex-start',
           alignItems: 'center', 
-        }}>
+          }}
+          testID='screen-register'
+        >
 
         <ProgressBarWrapper >
             <ProgressBar percentage={(1-(progress+1)/(pages.length+1))*100}></ProgressBar>

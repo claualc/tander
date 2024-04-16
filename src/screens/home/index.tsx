@@ -89,7 +89,7 @@ const HomeScreen: React.FC = () => {
   }, [swipedUserCards, renderUserCards,uIndex, timeoutTrigguered]);
 
   return (
-    <ScreenView>
+    <ScreenView testID='screen-home'>
       <NewMatchView show={newMatch} onPress={() => {setNewMatch(false)}}/>
       {
         timeoutTrigguered && potentialMatches.length == 0 ?

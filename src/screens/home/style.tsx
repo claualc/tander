@@ -46,7 +46,7 @@ export const LanguageView: React.FC<{
         <CustomText size={13}  color={color}>{title}</CustomText>
             <View style={{flex:2, flexWrap: "wrap", flexDirection: "row"}}>
             {
-                lang.map((l, i) => {
+                lang?.length && lang.map((l, i) => {
                 return <CustomText 
                     key={i} 
                     size={20} 
@@ -67,53 +67,53 @@ export const UserDetails: React.FC<{
         { show && <>
             {/* ######### BASIC INFO SECTION */}
             <UserDecSections>
-                <CustomText size={30} fontFam="BD">{user.shortusername || ""}</CustomText>
-                <CustomText  size={30}>{" " + user.yearsOld}</CustomText>
+                <CustomText size={30} fontFam="BD">{user?.shortusername || ""}</CustomText>
+                <CustomText  size={30}>{" " + user?.yearsOld}</CustomText>
             </UserDecSections>
             <UserDecSections>
                 <AntDesign name="book" size={24} color={theme.tertiary_dark} />
-                <CustomText color={theme.tertiary_dark}>{" " + user.courseName}</CustomText>
+                <CustomText color={theme.tertiary_dark}>{" " + user?.courseName}</CustomText>
             </UserDecSections>
             <UserDecSections>
                 <Ionicons name="earth-outline" size={24} color={theme.tertiary_dark} />
-                <CustomText color={theme.tertiary_dark}>{` ${user.countryName}`}</CustomText>
+                <CustomText color={theme.tertiary_dark}>{` ${user?.countryName}`}</CustomText>
             </UserDecSections>
             <UserDecSections>
                 <SimpleLineIcons name="graduation" size={24} color={theme.tertiary_dark} />
-                <CustomText color={theme.tertiary_dark}>{" " +  user.universityName}</CustomText>
+                <CustomText color={theme.tertiary_dark}>{" " +  user?.universityName}</CustomText>
             </UserDecSections>
 
             {/* ######### LANGUAGES SECTION */}
             <Section style={{justifyContent: "flex-start",width:"100%"}}>
             <LanguageView 
-                lang={user.langKnown} 
+                lang={user?.langKnown} 
                 emoji={"🤓"} 
                 color={theme.tertiary}
                 title={"Here To Help With"}  />
             
             <LanguageView 
-                lang={user.langToLearn} 
+                lang={user?.langToLearn} 
                 emoji={"😎"}  
                 color={theme.secondary}
                 title={"Here To learn"}  />
             </Section>
 
             {/* ######### BIO  */}
-            {user.bio && <Section>
+            {user?.bio && <Section>
                 <CustomText size={20} fontFam="DM" color={theme.secondary_dark}>Qualcosa di me</CustomText>
                     <CustomText size={17}  style={{marginTop: 10}}>
-                        {user.bio}
+                        {user?.bio}
                     </CustomText>
                 </Section>
             }
 
             {/* ######### ALBUM SECTION  */
-                (user.musicInterest) ? <Section style={{width: "100%"}}>
+                (user?.musicInterest) ? <Section style={{width: "100%"}}>
                     <CustomText size={20} fontFam="DM" color={theme.secondary_dark}>On repeat</CustomText>
                         <AlbumComponent
-                            artistName={user.MIArtistName || ""}
-                            albumName={user.MIAlbumName || ""} 
-                            imageUrl={user.MIImgURL || ""}
+                            artistName={user?.MIArtistName || ""}
+                            albumName={user?.MIAlbumName || ""} 
+                            imageUrl={user?.MIImgURL || ""}
                             />
                     </Section>
                 : <></>

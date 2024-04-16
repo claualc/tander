@@ -13,7 +13,7 @@ import { routeNames } from '@screens/stackNavigator/routes';
 
 
 const InitializationScreen = () => {
-  return  <ScreenView>
+  return  <ScreenView testID='screen-initialization'>
     <ImageBackground
       source={LoginBackground}
       style={{flex:1, width: "100%"}} 

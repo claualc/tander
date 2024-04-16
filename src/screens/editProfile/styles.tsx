@@ -41,7 +41,7 @@ export const ItemView = styled.View<{
 }>`
     width: 100%;
     padding: ${responsiveValue("4% 0% 4% 0%","2.3% 0% 2.3% 0%")};
-    border-bottom-color: ${p => p.theme.secondary_background};
+    border-color: ${p => p.theme.secondary_background};
     border-bottom-width:  ${p => p.showBottomBorder ? "0.7px" : 0};;
     justify-content: flex-start;
     flex-direction: row;

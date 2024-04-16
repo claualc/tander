@@ -76,7 +76,7 @@ export const ItemView = styled.View<{
 }>`
     width: "100%";
     padding-left: 1%;
-    border-bottom-color: ${p => p.theme.secondary_background};
+    border-color: ${p => p.theme.secondary_background};
     border-bottom-width:${p => p.last ? 0 :  "0.7px"};
     justify-content: flex-start;
     flex-direction: row;

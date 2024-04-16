@@ -8,7 +8,7 @@ import { CustomText } from "@components/index";
 const StyledInputText = styled.TextInput`
     width: 100%;
     border-bottom-width: ${`${gobalFont.size.textInput*0.05}px`};
-    border-bottom-color: ${p => p.theme.tertiary_dark};
+    border-color: ${p => p.theme.tertiary_dark};
     margin-top: 12px;
     font-size: ${`${gobalFont.size.textInput}px`};
 `

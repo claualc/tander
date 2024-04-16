@@ -24,15 +24,14 @@ const ProfileScreen: React.FC = () => {
                 contentContainerStyle={{flexGrow:1, justifyContent: "flex-end", alignItems: "center", paddingBottom: "10%"}}
                 scrollEnabled={true}>
                  <Card
-                    zIndex={1}
-                    user={user}
-                    onScrollUp={() => { } }
-                    onScrollDown={() => { } }
-                    onSwipeLeft={() => { } }
-                    onSwipeRigth={() => { } }
-                    isScrolledUp={true} 
-                    renderController={true} 
-                    /> 
+                  zIndex={1}
+                  user={user}
+                  onScrollUp={() => { } }
+                  onScrollDown={() => { } }
+                  onSwipeLeft={() => { } }
+                  onSwipeRigth={() => { } }
+                  isScrolledUp={true}
+                  renderController={true} top={""}   /> 
 
                   <UserDetails user={user} show={true} />
             </ScrollView>

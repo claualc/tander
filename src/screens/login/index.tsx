@@ -49,11 +49,11 @@ const LoginScreen = () => {
   const { setLoading } = useContext(LoggedUserContext) as UserContextType;
 
   const onSend = useCallback(async (inputs: FormsInputs) => {
-      await authService.signIn(inputs.phoneNumber, inputs.password)
+      //await authService.signIn(inputs.phoneNumber, inputs.password)
       setLoading(true)
   }, [])
 
-  return  <ScreenView style={{padding: "8%"}}>
+  return  <ScreenView style={{padding: "8%"}} testID='screen-login'>
       <Forms 
           totalPagesCount={pages.length}
           onSend={onSend}

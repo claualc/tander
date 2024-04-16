@@ -11,7 +11,7 @@ const fontSize = gobalFont.size.dateInput
 const StyledSingleInputText: typeof TextInput = styled.TextInput`
     width: ${`${fontSize*1.09}px`};
     border-bottom-width: ${`${fontSize*0.07}px`};
-    border-bottom-color: ${p => p.theme.tertiary_dark};
+    border-color: ${p => p.theme.tertiary_dark};
     margin:  ${`${fontSize*0.2}px`};
     font-size:  ${`${fontSize}px`};
     text-align: center;

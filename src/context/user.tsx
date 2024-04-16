@@ -1,13 +1,11 @@
 import React, { createContext, useCallback, useEffect, useState } from 'react';
 
-import { MusicInterest, User } from '@domain/User';
+import { User } from '@domain/User';
 import * as userService from "@serv/userService";
-import matchServices from '@serv/matchServices';
 
 import albumservice from "@serv/albumService";
 import authService from '@serv/authService';
 
-import FCMService from  "@firebaseServ/notifications";
 export type UserContextType = {
     loggedUser: User;
     updateLoggedUser: React.Dispatch<React.SetStateAction<User>>;

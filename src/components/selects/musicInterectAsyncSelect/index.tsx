@@ -6,7 +6,7 @@
 */
 
 import { SelectOption } from "@components/selects/select"
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { convertHexToRGBA, getRandomColor } from "@components/utils";
 import { CustomText } from "@components/index";
 import { Ionicons } from "@expo/vector-icons";

@@ -70,7 +70,7 @@ export const ItemChatDescription = styled.View`
     width: 100%;
     height: 100%;
     padding:${responsiveValue( "5%","0% 0% 0% 5%")};
-    border-bottom-color: ${p => p.theme.secondary_background};
+    border-color: ${p => p.theme.secondary_background};
     border-bottom-width: 0.7px;
     justify-content: flex-start;
     align-items: center;

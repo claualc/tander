@@ -1,6 +1,6 @@
 import firebase, { userFactoryApp } from "@firebaseServ/index";
-//@ts-ignore
-import { createUserWithEmailAndPassword, getReactNativePersistence, initializeAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+
+import { createUserWithEmailAndPassword, getReactNativePersistence, initializeAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "@firebase/auth";
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 
 const AuthFirebaseService = () => {

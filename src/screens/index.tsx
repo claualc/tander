@@ -16,6 +16,7 @@ import UserContext from "@context/user";
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
 
+
 const App: React.FC = () => {
 
   const [fontsLoaded] = Font.useFonts({

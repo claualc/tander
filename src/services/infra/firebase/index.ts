@@ -1,5 +1,4 @@
 import FCMService from './notifications';
-//import FCMService_ from './cloudMessaging';
 
 // import  all modules to initialize modules
 import FirestoreService from './database';

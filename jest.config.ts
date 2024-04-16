@@ -19,7 +19,7 @@ export default async (): Promise<Config> => {
      ],
     coverageReporters: ["json-summary", "text", "lcov"],
     moduleDirectories: [...defaults.moduleDirectories],
-    //setupFiles: ["<rootDir>/jestSetupFile.js"],
+    setupFiles: ["<rootDir>/jestSetupFile.ts"],
      
     moduleNameMapper: {
       "@serv": "<rootDir>/src/services",
