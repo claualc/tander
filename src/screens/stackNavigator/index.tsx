@@ -71,7 +71,7 @@ const MyStack = () => {
                 </MatchContext>
             </RootScreenView>
         {
-            !!loggedUser.id && showBottomNav ?
+            !!loggedUser.id ?
               <BottomTabNavigator 
                     currentRoute={currentRouteName}
                     onSelect={(v) => {stackNavigateTo(v)}} 

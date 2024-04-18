@@ -20,6 +20,7 @@ export const MainView = styled.View<{
     height: ${props => `${props.height}%`};
     position: absolute;
     bottom: 0;
+    z-index: 0;
     background-color: ${props => props.theme.light_background};
     display: flex;
     flex-direction: row;

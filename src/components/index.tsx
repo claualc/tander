@@ -19,6 +19,8 @@ export const RootScreenView = styled.View<{
   showBottomNavigatior: boolean;
 }>`
   width: 100%;
+  z-index: 0;
+  position: "absolute";
   height: ${p =>  p.showBottomNavigatior? `${100-BOTTOM_TABNAV_HEIGTH}%` : "100%"};
 `
 

@@ -4,7 +4,7 @@ import { getRandomColor } from "@components/utils";
 import { User } from "@domain/User";
 import { DEV_DIM, gobalFont, responsiveValue, theme } from "@screens/globalstyle";
 import { useEffect, useMemo, useState } from "react";
-import { Animated, TouchableHighlight, View } from "react-native";
+import { Animated, Modal, TouchableHighlight, View } from "react-native";
 
 const NewMatchView: React.FC<{
     onPress: () => void;
@@ -27,11 +27,11 @@ const NewMatchView: React.FC<{
         }
     }, [match])
 
-    return match ? <TouchableHighlight
+    return <Modal transparent={true} visible={!!match} style={{justifyContent: "center", alignItems: "center"}}>
+        <TouchableHighlight
                 style={{
-                    flex:1,
-                    width: "100%",
-                    height: "100%",
+                    width: DEV_DIM.width,
+                    height: DEV_DIM.height,
                     position: "absolute",
                     zIndex: 2000,
                     top: 0,
@@ -44,6 +44,10 @@ const NewMatchView: React.FC<{
                         height: "100%",
                         justifyContent: "center",
                         backgroundColor: color,
+                        position: "absolute",
+                        top: 0,
+                        right: 0,
+                        zIndex: 2000,
                         alignItems: "center",
                     }}>
                 <CustomText style={{marginBottom: responsiveValue(10, 20)}} size={gobalFont.size.title} color={theme.light_background}>NEW MAAAAAATCH</CustomText>
@@ -52,9 +56,9 @@ const NewMatchView: React.FC<{
                       imgURL={match.photos[0].value}
                       onPress={() => {}} />
                 <CustomText size={gobalFont.size.title} color={theme.light_background} >{match.username}</CustomText>
-        </View>
-    </TouchableHighlight>
-    : <></>
+            </View>
+        </TouchableHighlight>
+    </Modal>
 }
 
 export default NewMatchView;

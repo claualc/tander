@@ -90,7 +90,7 @@ const HomeScreen: React.FC = () => {
 
   return (
     <ScreenView testID='screen-home'>
-      { newMatch.map(m =>  <NewMatchView match={m} onPress={() => {setNewMatch(ms => ms.filter(mss => mss.id != m.id))}}/> )}
+      { newMatch.map((m, i) =>  <NewMatchView key={i} match={m} onPress={() => {setNewMatch(ms => ms.filter(mss => mss.id != m.id))}}/> )}
       {
         timeoutTrigguered && potentialMatches.length == 0 ?
         <View style={{flex:1 , justifyContent: "center", alignItems: "center", padding: "15%"}}>
