@@ -43,6 +43,7 @@ export const unauth_routes = [
 const MyStack = () => {
 
     const { loggedUser, stateLoading, showBottomNav } = React.useContext(LoggedUserContext) as UserContextType;
+    const [currentRouteName, setCurrentRouteName] = useState<string>("");
 
     return <>
             {
@@ -52,6 +53,11 @@ const MyStack = () => {
                 <MatchContext loggedUserId={loggedUser?.id}>
                     <NavigationContainer ref={navigatorRef}>
                             <Stack.Navigator 
+                                screenListeners={({route}) => ({
+                                    state: (e) => {
+                                        setCurrentRouteName(route.name)
+                                    },
+                                })}
                                 screenOptions={{headerShown: false}}>
                                     {
                                         !!loggedUser.id ? auth_routes.map((
@@ -67,6 +73,7 @@ const MyStack = () => {
         {
             !!loggedUser.id && showBottomNav ?
               <BottomTabNavigator 
+                    currentRoute={currentRouteName}
                     onSelect={(v) => {stackNavigateTo(v)}} 
                     routes={auth_routes.filter(f => f.showInTab)} />
               : <></>

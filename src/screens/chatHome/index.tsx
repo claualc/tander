@@ -9,7 +9,7 @@ import { ItemChat, ItemChatDescription, ItemChatImg, NoContent, Title, UnreadCha
 import { ChatParams } from "../userChat";
 import chatServices from "@serv/chatServices";
 import { ChatDTO, MessageDTO, MsgStates } from "@serv/chatServices/DTOs";
-import { stackReplaceTo } from "@screens/stackNavigator/navigateService";
+import { stackNavigateTo, stackReplaceTo } from "@screens/stackNavigator/navigateService";
 import { routeNames } from "@screens/stackNavigator/routes";
 import { DEV_DIM, responsiveValue } from "@screens/globalstyle";
 
@@ -59,7 +59,7 @@ const ChatScreen = () => {
       chatDTO = await chatServices.create(info.match)
       params = { matchInfo: info, chat: chatDTO}
     }
-    stackReplaceTo(routeNames.CHAT_MESSAGING_SCREEN, params)
+    stackNavigateTo(routeNames.CHAT_MESSAGING_SCREEN, params)
 
     if (chatDTOs)
       setChatsLastsMsgs(chatDTOs.map((c, i) => {
