@@ -111,7 +111,7 @@ const Card: React.FC<CardProps> = ({
         shadowOpacity: 1,
         shadowRadius: 1,
         elevation: 10,
-        shadowColor: "black",
+        shadowColor: theme.secondary_dark,
         shadowOffset: { 
             height: 10, 
             width:  0

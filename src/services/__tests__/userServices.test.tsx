@@ -63,40 +63,40 @@ describe("User Service Test Suit", () => {
     expect(matchServices.createUserMatchFactories).toHaveBeenCalledTimes(1)
   });
 
-  test('getById', async () => {
+  test('getById returns the correct id', async () => {
     await userServices.getById(id)
     expect(dB.getObjectById).toHaveBeenCalledTimes(1);
     expect(dB.getObjectById.mock.calls[0][1]).toBe(id) 
     expect(dB.getObjectById.mock.calls[0][0]).toBe(userServices.COLLECTION_ID) 
   });
 
-  test('listAll', async () => {
+  test('listAll users', async () => {
     await userServices.listAll()
     expect(dB.listAll).toHaveBeenCalledTimes(1);
     expect(dB.listAll.mock.calls[0][0]).toBe(userServices.COLLECTION_ID) 
   });
 
-  test('listAllBasicInfo', async () => {
+  test('listAllBasicInfo users', async () => {
     await userServices.listAllBasicInfo()
     expect(dB.listAll).toHaveBeenCalledTimes(1);
     expect(dB.listAll.mock.calls[0][0]).toBe(userServices.COLLECTION_ID) 
   });
 
-  test('getRefId', async () => {
+  test('getRefId returns correct ref', async () => {
     await userServices.getRefId(id)
     expect(dB.getRefById).toHaveBeenCalledTimes(1);
     expect(dB.getRefById.mock.calls[0][0]).toBe(userServices.COLLECTION_ID) 
     expect(dB.getRefById.mock.calls[0][1]).toBe(id) 
   });
 
-  test('getByIdSimpleDTO', async () => {
+  test('getByIdSimpleDTO returns correct dto', async () => {
     await userServices.getByIdSimpleDTO(id)
     expect(dB.getObjectById).toHaveBeenCalledTimes(1);
     expect(dB.getObjectById.mock.calls[0][0]).toBe(userServices.COLLECTION_ID) 
     expect(dB.getObjectById.mock.calls[0][1]).toBe(id) 
   });
   
-  test('update', async () => {
+  test('update user', async () => {
     await userServices.update({} as CreateUserDTO, id)
     expect(dB.update).toHaveBeenCalledTimes(1);
     expect(dB.update.mock.calls[0][0]).toBe(userServices.COLLECTION_ID) 

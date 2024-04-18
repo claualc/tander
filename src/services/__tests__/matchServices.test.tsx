@@ -6,9 +6,7 @@ jest.mock("@firebaseServ/index", () => {
   };
 });
 
-
 import dbServices from "@firebaseServ/database"
-import { CreateUserDTO } from "@serv/userService/DTO";
 import { User } from "@domain/User";
 jest.mock("@firebaseServ/database")
 
@@ -22,7 +20,7 @@ jest.mock("@serv/matchServices", () => {
   };
 });
 
-describe("User Service Test Suit", () => {
+describe("Match Service Test Suit", () => {
   const id= "1VyuB2dE2XPoaDWZHlBmkrCTnC13"
   const id2 = "kdsjfljejiej23u4r89fefsdjdl"
  
