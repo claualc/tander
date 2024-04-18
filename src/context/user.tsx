@@ -27,8 +27,6 @@ const ContextProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
   const [stateLoading, setLoading] = useState<boolean>(true);
   const [artistOptionList, setArtistOptionList] = useState<string[]>([]);
 
-  useEffect(() => {console.log(stateLoading)},[stateLoading])
-
   useEffect(() => {
     /**
      * Preloading some information for the whole app

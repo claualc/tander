@@ -26,7 +26,7 @@ const ChatScreen = () => {
     
     (async () => {
         if (loggedUser.id) {
-        const matchedUsers = await matchServices.listMatches(loggedUser)
+        const matchedUsers = await matchServices.listUsersMatchedAsTrue(loggedUser)
         setNewMatchesDTOs(matchedUsers.filter(m => !m.match.chatId))
         let chats = matchedUsers.filter(m => !!m.match.chatId)
         setChatDTOs(chats)

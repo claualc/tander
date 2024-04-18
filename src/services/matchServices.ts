@@ -65,7 +65,7 @@ const createUserMatchFactories = async (user1: User) => {
     console.log("..:: MatchServices.createUserMatchFactories (user)",user1.id)
 
     const users = await userServices.listAllBasicInfo()
-    const created = users.map(async (user2: SimpleUserDTO) => {
+    const created = users?.map(async (user2: SimpleUserDTO) => {
         let {profilePhoto , ...rest} = user2;
        
         if (user1.id != user2.id) {
@@ -124,10 +124,11 @@ const getByUserIds = async (userId1: string, userId2: string) => {
             or(where("userId2", "==", userId1), where("userId2", "==", userId2))
         )
         ) as  MatchFactory[]
-    return matches?.length ? matches[0] : null
+    return matches?.length ? matches[0] : {} as MatchFactory
 }
 
-const onUserMatchAction = async (user: User, fact: MatchFactory, liked: boolean) => {
+// exporteed only for tests
+export const onUserMatchAction = async (user: User, fact: MatchFactory, liked: boolean) => {
 
     /**
      * Match actions can only take place is matches with state on WIP
@@ -179,6 +180,7 @@ const onUserMatchAction = async (user: User, fact: MatchFactory, liked: boolean)
 const userLiked = async (loggedUser: User, userLiked: User) => {
     console.log("..:: MatchServices.userLiked")
     const fac = await getByUserIds(loggedUser.id , userLiked.id);
+    console.log("facfac", fac, !!fac)
     if (fac) {
         return await onUserMatchAction(loggedUser, fac, true)
     }
@@ -194,7 +196,7 @@ const userUnLiked = async (loggedUser: User, userLiked: User) => {
     return null
 }
 
-export const listUsersForMatching = async (userId: string, count: number, lastLoadedUserId?: string) => {
+const listUsersForMatching = async (userId: string, count: number, lastLoadedUserId?: string) => {
 
     let p: PaginationInfo = {
         limit: count,
@@ -207,16 +209,7 @@ export const listUsersForMatching = async (userId: string, count: number, lastLo
         } as PaginationInfo
     }
 
-    const matches = await dbService.listAll(
-        COLLECTION_ID,
-        matchFactoryConverter, 
-        and(
-            or(
-                and(where("userId1", "==", userId),where("userLikes1", "==", null)),
-                and(where("userId2", "==", userId),where("userLikes2", "==", null))        
-            ) ,where("state", "==", MatchState.WIP) 
-        ),
-        p) as  MatchFactory[]
+    const matches = await listMatchesByState(userId, MatchState.WIP)
 
     const usersProm = matches
         .filter(m => {
@@ -231,29 +224,22 @@ export const listUsersForMatching = async (userId: string, count: number, lastLo
     return Promise.all(usersProm)
 }
 
-export const listMatches = async (loggedUser: User) => {
+const listUsersMatchedAsTrue = async (loggedUser: User) => {
     let loggedUserDTO = convertUserToSimpleDTO(loggedUser)
 
-    const matches = await dbService.listAll(
-        COLLECTION_ID,
-        matchFactoryConverter, 
-            and(
-                or(where("userId1", "==", loggedUser.id), where("userId2", "==", loggedUser.id)),
-                where("state", "==", MatchState.TRUE)
-            )
-    ) as  MatchFactory[]
+    const matches = await listMatchesByState(loggedUser.id, MatchState.TRUE)
 
-    const usersDto =  matches.map(async (m) => {
+    const usersDto = matches?.length ? matches?.map(async (m) => {
         let targetUserMatched = (m.userId1 == loggedUser.id) ? m.userId2 : m.userId1
         let user = await userServices.getByIdSimpleDTO(targetUserMatched)
         let unreadMsgs = false;
         return {targetUser: user, match: m, loggedUser:loggedUserDTO, unreadMsgs} as UserMAtchInfoDTO
-    }) 
+    }) : []
 
     return Promise.all(usersDto)
 }
 
-export const update = async (matchFac: MatchFactory, id: string) => {
+const update = async (matchFac: MatchFactory, id: string) => {
 
     let ref = await dbService.update(COLLECTION_ID, matchFac, id, matchFactoryConverter)
     const matchUpdated = await dbService.getObjectByRef(ref)
@@ -266,8 +252,9 @@ export default {
     createUserMatchFactories,
     listMatchesByState,
     listUsersForMatching,
-    listMatches,
+    listUsersMatchedAsTrue,
     userLiked,
     userUnLiked,
-    update
+    update,
+    COLLECTION_ID,
 }

@@ -82,7 +82,7 @@ const ChatMessagingScreen = () => {
     })();
     return () => {
       goBack()
-      closeChatListener()
+      closeChatListener && closeChatListener()
     }
   }, [])
 

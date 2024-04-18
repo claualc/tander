@@ -10,19 +10,9 @@ import UserChatScreen from "@screens/userChat";
 import Main from '@screens/index';
 import { MatchContext } from '@context/match';
 
-/**
- * import {helper as helperOriginal} from "moduleB";
- * const helper = helperOriginal as jest.Mock;
- * or
- * when a fucniton is not rexognixe:. jest.mock("moduleB");
- * (func as jest.Mock).mockReturnValue(true);
- * import it normally
- * altough the call to jest.mock occures later, it will be executed before any imports are made. Therefore, helper is an instance of jest.fn() in our test file.
- */ 
+describe("Render Components Test Suit", () => {
 
-describe("Render Components", () => {
-
-  test('App renders correctly ', async () => {
+  test('App render ', async () => {
     const component = await render(<Main/>, {wrapper: UserContext});
 
     await waitFor(() => {
@@ -30,7 +20,7 @@ describe("Render Components", () => {
     });
   });
 
-  test('LoginScreen renders correctly ', async () => {
+  test('LoginScreen render ', async () => {
     const component = await render(<LoginScreen/>, {wrapper: UserContext});
 
     await waitFor(() => {
@@ -38,7 +28,7 @@ describe("Render Components", () => {
     });
   });
 
-  test('InitializationScreen renders correctly ', async () => {
+  test('InitializationScreen render ', async () => {
     const component = await render(<InitializationScreen/>);
 
     await waitFor(() => {
@@ -46,7 +36,7 @@ describe("Render Components", () => {
     });
   });
 
-  test('EditProfileScreen renders correctly ', async () => {
+  test('EditProfileScreen render ', async () => {
     const component = await render(<ProfileScreen/>);
 
     await waitFor(() => {
@@ -54,19 +44,22 @@ describe("Render Components", () => {
     });
   });
 
-  test('HomeScreen renders correctly ', async () => {
-    const component = await render( <MatchContext.Provider value={{
-      potentialMatches: [],
-      setPotentialMatches: () => {},
-      loadMoreMatches: () => Promise.resolve(),
-    }}><HomeScreen/></MatchContext.Provider>, {wrapper: UserContext});
+  test('HomeScreen render ', async () => {
+    const component = await render( 
+      <MatchContext.Provider value={{
+        potentialMatches: [],
+        setPotentialMatches: () => {},
+        loadMoreMatches: () => Promise.resolve(),
+      }}><HomeScreen/>
+      </MatchContext.Provider>
+    , {wrapper: UserContext});
 
     await waitFor(() => {
       expect(component).toBeDefined()
     });
   });
 
-  test('ChatHomeScreen renders correctly ', async () => {
+  test('ChatHomeScreen render ', async () => {
     const component = await render( <ChatScreen/>, {wrapper: UserContext});
 
     await waitFor(() => {
@@ -74,7 +67,7 @@ describe("Render Components", () => {
     });
   });
 
-  test('ChatScreen renders correctly ', async () => {
+  test('ChatScreen render ', async () => {
     const component = await render( <UserChatScreen/>, {wrapper: UserContext});
 
     await waitFor(() => {
@@ -82,7 +75,7 @@ describe("Render Components", () => {
     });
   });
 
-  test('RegisterScreen renders correctly ', async () => {
+  test('RegisterScreen render ', async () => {
     const component = await render( <RegisterScreen/>, {wrapper: UserContext});
 
     await waitFor(() => {

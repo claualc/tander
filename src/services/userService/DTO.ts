@@ -82,7 +82,7 @@ export const convertUserToSimpleDTO = (user: User) => {
     let dto: SimpleUserDTO = {
         username: user.username,
         FCMPushNotificationsToken: user.FCMPushNotificationsToken,
-        profilePhoto: user.photos[0],
+        profilePhoto: user.photos?.length ? user.photos[0] : {} as Photo,
         id: user.id
     }
     return dto

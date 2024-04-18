@@ -149,5 +149,6 @@ export default {
     createUserPhoto,
     getUserPhotos,
     updateUserPhotos,
-    isPhotoArray
+    isPhotoArray,
+    COLLECTION_ID
 }

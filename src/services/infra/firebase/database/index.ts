@@ -1,4 +1,4 @@
-import { getFirestore, getDocs, doc, query, collection, DocumentData,  getDoc, setDoc,  DocumentReference, updateDoc, deleteDoc, QueryFieldFilterConstraint, QueryCompositeFilterConstraint, limit, startAt, orderBy, startAfter } from "firebase/firestore";
+import { getFirestore, getDocs, doc, query, collection, DocumentData,  getDoc, setDoc,  DocumentReference, updateDoc, deleteDoc, QueryFieldFilterConstraint, QueryCompositeFilterConstraint, limit, startAt, orderBy, startAfter, Firestore } from "firebase/firestore";
 import { converter } from "./converterDTO";
 import firebase from "@firebaseServ/index";
 import { generateRandomString } from "@components/utils";
@@ -8,11 +8,13 @@ export interface PaginationInfo {
     lastVisible?: DocumentReference;
 }
 
-const FirestoreService = () => {
-    console.log("..:: FirestoreService ...")
-    const db = getFirestore(firebase.getApp());
-    console.log("..:: FirestoreService initiated");
-
+export const FirestoreService = (app?: any) => {
+    let db: Firestore;
+    if (firebase.getApp() || app){
+        db = getFirestore(app ? app : firebase.getApp());
+        console.log("..:: FirestoreService initiated");
+    } else
+        console.log("..:: FirestoreService ERROR not initiated");
     /*
         Document: firebase object containting the domain object.
         Ref: id to refer to the document in the Firebase API
@@ -43,7 +45,7 @@ const FirestoreService = () => {
         },
         getListDataFromDocReferences: async (ref: any[]): Promise<any> => {
             const promisses = ref ? ref.map(
-                async (d: any) => {
+                async (d: any) => { 
                     const doc = await getDoc(d)
                     return {data: doc.data(), id: doc.id}
             }) : null;
@@ -117,5 +119,5 @@ const FirestoreService = () => {
     }
 }
 
-const dbService = FirestoreService();
+let dbService = FirestoreService();
 export default dbService;

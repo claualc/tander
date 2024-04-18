@@ -1,12 +1,3 @@
-/**
- * import {helper as helperOriginal} from "moduleB";
- * const helper = helperOriginal as jest.Mock;
- * or
- * when a fucniton is not rexognixe:. jest.mock("moduleB");
- * (func as jest.Mock).mockReturnValue(true);
- * import it normally
- * altough the call to jest.mock occures later, it will be executed before any imports are made. Therefore, helper is an instance of jest.fn() in our test file.
- */
 
 import albumService from "@serv/albumService";
 jest.mock("@serv/albumService", () => {
@@ -37,7 +28,8 @@ jest.mock("@serv/albumService", () => {
   };
 });
 
-import * as userService from "@serv/userService";
+
+import * as userServices from "@serv/userService";
 jest.mock("@serv/userService", () => {
   const user1 = {
     id: "1VyuB2dE2XPoaDWZHlBmkrCTnC13",
@@ -156,7 +148,7 @@ jest.mock("@serv/authService", () => {
     __esModule: true,
     default: {
       signIn: jest.fn().mockResolvedValue(true),
-      signUp: jest.fn(),
+      signUp: jest.fn().mockReturnValue({user:{uid:"1"}}),
       logOut: jest.fn(),
       setLoggedUser: jest.fn().mockResolvedValue(true)
     }
@@ -204,8 +196,9 @@ const match3 = {
       userLiked: jest.fn(),
       userUnLiked: jest.fn(),
       listUsersForMatching: jest.fn().mockResolvedValue([match2, match3]),
-      listMatches: jest.fn().mockResolvedValue([match2, match3, match1]),
+      listUsersMatchedAsTrue: jest.fn().mockResolvedValue([match2, match3, match1]),
       update: jest.fn(),
+      createUserMatchFactories:  jest.fn()
     },
   };
 });
@@ -225,5 +218,6 @@ jest.mock("@serv/photoServices", () => {
 })
 
 import "@firebaseServ/index";
+import { UserCredential } from "firebase/auth";
 jest.mock("@firebaseServ/index")
 
