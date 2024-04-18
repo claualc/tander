@@ -16,7 +16,7 @@ const PhotoFrame = styled.TouchableHighlight`
     border-style: dashed;
 `;
 
-const AddDeletePhotoButton = styled.View<{
+const AddDeletePhotoButton = styled.TouchableHighlight<{
     photoSelected?: boolean;
 }>`
     width: 22%;
@@ -104,6 +104,8 @@ const CustomPhotoBatchInputs: React.FC<{
                                 
                             </PhotoFrame>
                         <AddDeletePhotoButton
+                            underlayColor={theme.secondary_background}
+                            onPress={() => (!imgs_[i]?.value) ? pickImage(i) : deleteImg(i)}
                             style={{
                                 borderRadius: 25,
                             }}

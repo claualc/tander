@@ -106,20 +106,23 @@ export const Forms: React.FC<{
         const nextId = goAhead ? id+1 : id-1; // go to last or next page
 
         try {
-            let validToSend = currentPage.questions.map(
-                async ({validateOnSend, name})=> validateOnSend && await validateOnSend(inputs[name])
-            )
-            await Promise.all(validToSend)
+            let validToSend: Promise<any>[] = [];
+            if (nextId>=0)
+                validToSend = currentPage.questions.map(
+                    async ({validateOnSend, name})=> validateOnSend && await validateOnSend(inputs[name])
+                )
 
             if (nextId<0) {
                 onClose && onClose()
                 setLocalButtonLoading(false)
             } else if (nextId==totalPagesCount) {
                 setSendForms(true)
+                await Promise.all(validToSend)
             } else {
                 setLocalButtonLoading(false)
                 setCurrentPageId(nextId)
                 onNextPage && onNextPage(nextId)
+                await Promise.all(validToSend)
             }
         } catch (e) {
             if (e instanceof CustomError)

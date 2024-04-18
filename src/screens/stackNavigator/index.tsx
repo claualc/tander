@@ -44,13 +44,12 @@ const MyStack = () => {
 
     const { loggedUser, stateLoading, showBottomNav } = React.useContext(LoggedUserContext) as UserContextType;
 
-    useEffect(() => console.log(loggedUser?.id), [loggedUser])
     return <>
             {
                 stateLoading && <LoadingComponent /> 
             }
             <RootScreenView showBottomNavigatior={!!loggedUser.id && showBottomNav}>
-                <MatchContext loggedUser={loggedUser}>
+                <MatchContext loggedUserId={loggedUser?.id}>
                     <NavigationContainer ref={navigatorRef}>
                             <Stack.Navigator 
                                 screenOptions={{headerShown: false}}>

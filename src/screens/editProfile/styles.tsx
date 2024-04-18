@@ -48,7 +48,7 @@ export const ItemView = styled.View<{
     align-items: center;
 `
 
-export const Button = styled.TouchableHighlight<{
+export const Button = styled.View<{
   color: string
 }>`
   width:${responsiveValue("55%", "40%")};
@@ -69,31 +69,31 @@ export const Item: React.FC<Props> = ({title, icon, onPress, noBorder=false}: Pr
 
   const [color, setColor] = useState(getRandomColor);
 
-    return <ItemView showBottomBorder={!noBorder}>
-      <View style={{flex: 5, flexDirection: "row"}}>
-          <SimpleLineIcons name={icon as any} size={20} color={theme.tertiary_dark} />
-          <CustomText>{`  ${title}`}</CustomText>
-      </View>
-      <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-          <Button 
-            activeOpacity={0.6}
-            underlayColor="#0000"
-            style={{borderRadius: 100}}
-            color={color} 
-            onPress={onPress}>
-                <Ionicons style={{
-                  position: "relative",
-                  left: "0%",
-                  top: responsiveValue("20%", "22%")}}
-                  name="chevron-down-outline"
-                  color={color}
-                  size={responsiveValue(20, 22)}/>
-          </Button>
-      </View>
-
+    return <TouchableHighlight   
+        onPress={onPress}
+        activeOpacity={0.6}
+        underlayColor="#0000">
+      <ItemView showBottomBorder={!noBorder}>
+        <View style={{flex: 5, flexDirection: "row"}}>
+            <SimpleLineIcons name={icon as any} size={20} color={theme.tertiary_dark} />
+            <CustomText>{`  ${title}`}</CustomText>
+        </View>
+        <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+            <Button 
+              style={{borderRadius: 100}}
+              color={color} >
+                  <Ionicons style={{
+                    position: "relative",
+                    left: "0%",
+                    top: responsiveValue("20%", "22%")}}
+                    name="chevron-down-outline"
+                    color={color}
+                    size={responsiveValue(20, 22)}/>
+            </Button>
+        </View>
   </ItemView>
+  </TouchableHighlight>
 }
-
 
 export const LogOutItem: React.FC<{
   onPress: () => void;

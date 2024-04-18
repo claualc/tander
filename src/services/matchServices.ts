@@ -180,7 +180,6 @@ export const onUserMatchAction = async (user: User, fact: MatchFactory, liked: b
 const userLiked = async (loggedUser: User, userLiked: User) => {
     console.log("..:: MatchServices.userLiked")
     const fac = await getByUserIds(loggedUser.id , userLiked.id);
-    console.log("facfac", fac, !!fac)
     if (fac) {
         return await onUserMatchAction(loggedUser, fac, true)
     }
@@ -209,7 +208,16 @@ const listUsersForMatching = async (userId: string, count: number, lastLoadedUse
         } as PaginationInfo
     }
 
-    const matches = await listMatchesByState(userId, MatchState.WIP)
+    const matches = await dbService.listAll(
+        COLLECTION_ID,
+        matchFactoryConverter, 
+        and(
+            or(
+                and(where("userId1", "==", userId),where("userLikes1", "==", null)),
+                and(where("userId2", "==", userId),where("userLikes2", "==", null))        
+            ) ,where("state", "==", MatchState.WIP) 
+        ),
+        p) as  MatchFactory[]
 
     const usersProm = matches
         .filter(m => {
@@ -221,6 +229,7 @@ const listUsersForMatching = async (userId: string, count: number, lastLoadedUse
             return await userServices.getById(userPotentialMatchId)
     });
 
+    usersProm.shift() // first element it the already loaded user : p.lastVisible
     return Promise.all(usersProm)
 }
 

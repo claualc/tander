@@ -1,7 +1,7 @@
 
 import albumService, * as albumAPI from '@serv/albumService';
 import React, { useEffect, useState } from 'react';
-import { AlbumCInfoWrapper, AlbumCoverWrapper, ErrorCard, LoadingCard, MainCard } from './style';
+import { AlbumCInfoWrapper, AlbumCoverWrapper, LoadingCard, MainCard } from './style';
 import { Album } from '@domain/Album';
 import { Image } from 'react-native';
 import { CustomText } from '@components/index';
@@ -45,7 +45,7 @@ const AlbumComponent = ({albumName, artistName, imageUrl}: Props) => {
           <CustomText fontFam='RG' color={theme.tertiary_dark}>{data.artist.name}</CustomText>
         </AlbumCInfoWrapper>
       </MainCard>
-      :<ErrorCard></ErrorCard>
+      :<LoadingCard></LoadingCard>
     );
 }
 

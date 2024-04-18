@@ -1,3 +1,5 @@
+import { gobalFont, theme } from "@screens/globalstyle";
+import { ActivityIndicator } from "react-native";
 import styled from "styled-components/native";
 
 export const MainCard = styled.View`
@@ -24,14 +26,16 @@ export const AlbumCInfoWrapper = styled.View`
     padding-bottom: 10%;
 `
 
-export const LoadingCard = styled.View`
-    background-color: blue;
+export const LoadingCardView = styled.View`
     width:  100%;
     aspect-ratio: 2/1;
+    justify-content: center;
+    align-items: center;
 `
 
-export const ErrorCard = styled.View`
-    background-color: red;
-    width:  45%;
-    aspect-ratio: 1;
-`
+export const LoadingCard = () => {
+    return <LoadingCardView>
+        <ActivityIndicator size={gobalFont.size.title} color={theme.light_background} />
+    </LoadingCardView>
+}
+

@@ -32,7 +32,7 @@ const HomeScreen: React.FC = () => {
   const [seeDescription, setSeeDescription] = useState<boolean>(false);
   const [timeoutTrigguered, setTimeoutTrigguered] = useState<boolean>(false);
   // to animated after two users matched
-  const [newMatch, setNewMatch] = useState<boolean>(false);
+  const [newMatch, setNewMatch] = useState<User[]>([]);
 
   const [renderUserCards, setRenderUserCards ] = useState<boolean[]>([]);
   const [swipedUserCards, setSwipedUserCards ] = useState<boolean[]>([]);
@@ -76,7 +76,7 @@ const HomeScreen: React.FC = () => {
       : await matchServices.userLiked(loggedUser,user)
     
     if (state == MatchState.TRUE)
-      setNewMatch(true)
+      setNewMatch([...newMatch,user])
   }, [newMatch]);
 
   const userSwiped = useCallback((id: number) => {
@@ -90,7 +90,7 @@ const HomeScreen: React.FC = () => {
 
   return (
     <ScreenView testID='screen-home'>
-      <NewMatchView show={newMatch} onPress={() => {setNewMatch(false)}}/>
+      { newMatch.map(m =>  <NewMatchView match={m} onPress={() => {setNewMatch(ms => ms.filter(mss => mss.id != m.id))}}/> )}
       {
         timeoutTrigguered && potentialMatches.length == 0 ?
         <View style={{flex:1 , justifyContent: "center", alignItems: "center", padding: "15%"}}>

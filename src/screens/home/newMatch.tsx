@@ -1,17 +1,21 @@
+import Avatar from "@components/avatar";
 import { CustomText } from "@components/index";
-import NewMAtchImg from "@imgs/loading.gif";
-import { useEffect, useState } from "react";
-import { Animated, Image, TouchableHighlight, View } from "react-native";
+import { getRandomColor } from "@components/utils";
+import { User } from "@domain/User";
+import { DEV_DIM, gobalFont, responsiveValue, theme } from "@screens/globalstyle";
+import { useEffect, useMemo, useState } from "react";
+import { Animated, TouchableHighlight, View } from "react-native";
 
 const NewMatchView: React.FC<{
     onPress: () => void;
-    show: boolean;
-}> = ({onPress, show}) => {
+    match: User;
+}> = ({onPress, match}) => {
 
     const [scaleAnim] = useState(new Animated.Value(0))  // Initial value for scale: 0
+    const color = useMemo(() => getRandomColor(), [match])
 
     useEffect(() => {
-        if (show) {
+        if (match) {
             Animated.spring(
                 scaleAnim,
                 {
@@ -21,9 +25,9 @@ const NewMatchView: React.FC<{
                 }
             ).start();
         }
-    }, [show])
+    }, [match])
 
-    return show ? <TouchableHighlight
+    return match ? <TouchableHighlight
                 style={{
                     flex:1,
                     width: "100%",
@@ -38,12 +42,16 @@ const NewMatchView: React.FC<{
                         //transform: [{scale: scaleAnim}],
                         width: "100%",
                         height: "100%",
-                        backgroundColor: "red",
                         justifyContent: "center",
+                        backgroundColor: color,
                         alignItems: "center",
                     }}>
-                <CustomText>NEW MATTTCH</CustomText>
-                <Image source={NewMAtchImg} style={{ width: "40%", height: "40%" }} />
+                <CustomText style={{marginBottom: responsiveValue(10, 20)}} size={gobalFont.size.title} color={theme.light_background}>NEW MAAAAAATCH</CustomText>
+                <Avatar 
+                      width={`${DEV_DIM.width*responsiveValue(0.40, 0.30)}px`}
+                      imgURL={match.photos[0].value}
+                      onPress={() => {}} />
+                <CustomText size={gobalFont.size.title} color={theme.light_background} >{match.username}</CustomText>
         </View>
     </TouchableHighlight>
     : <></>
