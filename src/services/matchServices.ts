@@ -8,6 +8,7 @@ import { generateRandomString } from "@components/utils";
 import { SimpleUserDTO, convertUserToSimpleDTO } from "./userService/DTO";
 import { MessageDTO } from "./chatServices/DTOs";
 import notifications from "./infra/firebase/notifications";
+import { sendPushNotification } from "./infra/axios/pushNotifications";
 
 
 export const POT_MATCH_BATCH_LIMIT = 3; // number of users loaded per each bach
@@ -156,13 +157,13 @@ export const onUserMatchAction = async (user: User, fact: MatchFactory, liked: b
             "You’ve got a new match! Start practicing now 🤓",
             "Are you pretty or smart? Anyways, you’ve got a new match!🔥🔥"
         ]
-        
-        // notifications.schedulePushNotification(
-        //     "Tander",
-        //     matchNotMessages[Math.round(Math.random())],
-        //     //userMatched.FCMPushNotificationsToken+
-        //     "ksj"
-        // )
+
+        sendPushNotification(
+            "Tander",
+            matchNotMessages[Math.round(Math.random())],
+            {},
+            user.FCMPushNotificationsToken
+        );
 
     } else if ((userLikes1 === false && userLikes2 === true)
         || (userLikes1 === true && userLikes2 === false) 

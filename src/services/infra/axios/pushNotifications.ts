@@ -1,10 +1,8 @@
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 
-console.log("process.env.EXPO_PUBLIC_NOTIFICATIONS_API_URL",process.env.EXPO_PUBLIC_NOTIFICATIONS_API_URL)
 const server = axios.create({
-    baseURL: process.env.EXPO_PUBLIC_NOTIFICATIONS_API_URL,
+    baseURL: `http://${process.env.EXPO_PUBLIC_NOTIFICATIONS_API_URL}`,
 });
-
 
 export const sendPushNotification = async(
     title: string, 
@@ -29,8 +27,9 @@ export const sendPushNotification = async(
 
         return res.data;
 
-    } catch(e: any) {
-        console.log("ERROR albumAPI", e)
+    } catch(e) {
+        if (e instanceof AxiosError)
+            console.log("ERROR sendPushNotification", e.isAxiosError, e.toJSON(), e.code, e.message, e.message)
         throw new Error("..:: PushNotSErver.sendPushNotification: Something went wrong");
     }
        
