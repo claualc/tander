@@ -34,7 +34,7 @@ export const FormsWrapper = styled.View`
 
 export const CenterWrapping = styled.View`
     width: 100%;
-    padding: ${responsiveValue("0% 0% 0% 0%","0% 0% 0% 0%")};
+    padding: ${responsiveValue("0% 0% 0% 0%","0% 0% 0% 0%","0% 0% 0% 0%")};
     align-items: center;
     margin-bottom: 10%;
 `
@@ -59,6 +59,7 @@ export const Description: React.FC<React.PropsWithChildren<{
         style={{
             marginBottom: responsiveValue(
                 bottomDescription ? gobalFont.size.default*1.5:gobalFont.size.default*0.2,
+                bottomDescription ? gobalFont.size.default*1.5:gobalFont.size.default*0.4,
                 bottomDescription ? gobalFont.size.default*1.5:gobalFont.size.default*0.4,
             ),
             textAlign: "justify",

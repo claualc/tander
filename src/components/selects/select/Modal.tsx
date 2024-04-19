@@ -2,7 +2,7 @@ import { FlatList, Modal, View } from "react-native";
 import { useMemo, useState } from "react";
 import { BlurView } from "expo-blur";
 
-import { DEVICE_WINDOW_TYPE, SCREEN_TYPES, responsiveValue, theme } from "@screens/globalstyle";
+import { DEVICE_WINDOW_TYPE, SCREEN_TYPES, gobalFont, responsiveValue, theme } from "@screens/globalstyle";
 import ColorButton from "@components/colorButton";
 import { getRandomColor } from "@components/utils";
 import SearchBar from "@components/searchBar";
@@ -95,7 +95,7 @@ const SelectModal: React.FC<{
                     position: "relative",
                     justifyContent: "center",
                 }}>
-                    <CustomText fontFam="DM" size={19}>{modalTitle || ""}</CustomText>
+                    <CustomText fontFam="DM" size={gobalFont.size.default}>{modalTitle || ""}</CustomText>
                     {
                         withSearchBar && <View style={{paddingTop: "2%"}}>
                             <SearchBar
@@ -137,7 +137,7 @@ const SelectModal: React.FC<{
 
                 <View style={{
                     width: "110%",
-                    aspectRatio: responsiveValue("4.5/1","7/1"), // the other is medium
+                    aspectRatio: responsiveValue("4.5/1","7/1","7/1"), // the other is medium
                     flexDirection: "column",
                     justifyContent: "center",
                     alignItems: "center",

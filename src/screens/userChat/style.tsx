@@ -3,11 +3,10 @@ import Gradient from "@imgs/linear_gradient_background.png"
 import React from "react";
 import { Dimensions, ImageBackground, TextInput, TouchableHighlight, View, ViewBase } from "react-native";
 import { CustomSelectView } from "@components/selects/select/style";
-import { responsiveValue, theme } from "@screens/globalstyle";
+import { gobalFont, responsiveValue, theme } from "@screens/globalstyle";
 import { Ionicons } from "@expo/vector-icons";
 import { CustomText } from "@components/index";
 import { getYYYYMMDDFromDate } from "@components/utils";
-
 
 export const HeaderInfo: React.FC<{
     photoUrl?: string;
@@ -21,16 +20,16 @@ export const HeaderInfo: React.FC<{
                 backgroundColor: "white",
                 shadowColor: "black",
                 shadowOffset: { height: 10, width:10} }}>
-        <View style={{flex: 2,paddingBottom: responsiveValue("2%","3%"), height: "100%", justifyContent: "flex-end", alignItems: "center"}}>
+        <View style={{flex: 1,paddingBottom: responsiveValue("2%","3%","3%"), height: "100%", justifyContent: "flex-end", alignItems: "center"}}>
                 <Ionicons 
                     onPress={onPressBackButton}
                     name={"chevron-back-outline"} 
                     color={theme.main_background}
-                    size={35} />
+                    size={gobalFont.size.title} />
         </View>
         <View style={{ flex: 4, height: "100%", flexDirection: "row", justifyContent: "center", alignItems: "flex-end"}}>
           <View style={{width: "100%", alignItems: "center", justifyContent: "center", flexDirection: "row"}}>
-            <View style={{ marginRight: "4%", overflow: "hidden", width: responsiveValue("25%", "22%"), aspectRatio: 1, borderRadius: 300}}>
+            <View style={{ marginRight: "4%", overflow: "hidden", width: responsiveValue("20%", "20%", "25%"), aspectRatio: 1, borderRadius: 300}}>
                 <ImageBackground 
                     style={{flex: 1}}
                     source={{uri:  `data:image/jpeg;base64,${photoUrl || ""}`}}/>
@@ -47,19 +46,19 @@ export const ChatContent = styled.View`
     width: 100%;
     justify-content: center;
     align-items: center;
-    margin-top: ${responsiveValue(0, "4%")};
-    flex: ${responsiveValue(17, 60)};
+    margin-top: ${responsiveValue(0, "4%","4%")};
+    flex: ${responsiveValue(17, 60, 60)};
 `
 
 export const Header = styled.View`
     width: 110%;
-    top: ${responsiveValue("-5%", 0)};
+    top: ${responsiveValue("-5%", 0, 0)};
     position: relative;
     justify-content: center;
     align-items: center;
     flex-direction: row;
-    flex: ${responsiveValue(4.5, 20)};
-    padding-bottom: ${responsiveValue("6%", "3%")};
+    flex: ${responsiveValue(4.5, 20,20)};
+    padding-bottom: ${responsiveValue("6%", "3%","3%")};
 `
 
 export const ChatInput = styled.View`
@@ -73,12 +72,12 @@ export const ChatInput = styled.View`
 `
 
 export const NoContentIcon = styled.View`
-    width: 30%;
+    width: ${responsiveValue("30%","30%","22%")};
     aspect-ratio: 1;
     border-radius: 100px;
     position: relative;
     overflow: hidden;
-    left: 34%;
+    left: ${responsiveValue("34%","34%","40%")};
     z-index: 3;
 `
 
@@ -95,7 +94,7 @@ export const NoContentView = styled.View`
 `
 
 export const NoContent: React.FC<React.PropsWithChildren> = ({children}) => {
-    return <View style={{width: "60%", position: "relative", top:"-7%"}}>
+    return <View style={{width: responsiveValue("60%","60%","50%"), position: "relative", top:"-7%"}}>
             <NoContentIcon style={{
                 elevation: 8,
                 backgroundColor: "#0000",
@@ -110,16 +109,16 @@ export const NoContent: React.FC<React.PropsWithChildren> = ({children}) => {
             </NoContentIcon>
             <NoContentView>
                     <CustomText style={{textAlign: "center", marginBottom: "5%"}}>
-                        <CustomText size={15} color={theme.tertiary_dark}>{"In italian, you can start a conversation with "}</CustomText>
-                        <CustomText size={15} color={theme.tertiary_dark}  fontFam="BD">ciao, salve o ehi!</CustomText>
+                        <CustomText size={gobalFont.size.default*1.1} color={theme.tertiary_dark}>{"In italian, you can start a conversation with "}</CustomText>
+                        <CustomText size={gobalFont.size.default*1.1} color={theme.tertiary_dark}  fontFam="BD">ciao, salve o ehi!</CustomText>
                     </CustomText>
                     <CustomText style={{textAlign: "center", marginBottom: "9%"}}>
-                        <CustomText size={15} color={theme.tertiary_dark}>{"To continue, ask also "}</CustomText>
-                        <CustomText size={15} color={theme.tertiary_dark}  fontFam="BD">come stai?</CustomText>
-                        <CustomText size={15} color={theme.tertiary_dark}>{" to know how your match is feeling."}</CustomText>
+                        <CustomText size={gobalFont.size.default*1.1} color={theme.tertiary_dark}>{"To continue, ask also "}</CustomText>
+                        <CustomText size={gobalFont.size.default*1.1} color={theme.tertiary_dark}  fontFam="BD">come stai?</CustomText>
+                        <CustomText size={gobalFont.size.default*1.1} color={theme.tertiary_dark}>{" to know how your match is feeling."}</CustomText>
                     </CustomText>
                     <CustomText style={{textAlign: "center"}}>
-                        <CustomText size={15} color={theme.tertiary_dark}  fontFam="BD">Give a try!</CustomText>
+                        <CustomText size={gobalFont.size.default*1.1} color={theme.tertiary_dark}  fontFam="BD">Give a try!</CustomText>
                     </CustomText>
                 
             </NoContentView>
@@ -132,8 +131,8 @@ export const SendMessageButton: React.FC<{
     return <TouchableHighlight
                 onPress={onPress}
                 style={{
-                    width: responsiveValue("20%","15%"),
-                    aspectRatio: responsiveValue("1.6/1", "2/1"),
+                    width: responsiveValue("20%","15%","15%"),
+                    aspectRatio: responsiveValue("1.6/1", "2/1", "2/1.1"),
                     overflow: "hidden",
                     borderRadius: Dimensions.get("window").width*0.1,
                 }}>
@@ -145,7 +144,7 @@ export const SendMessageButton: React.FC<{
                         alignItems: "center"
                     }} source={Gradient}>
 
-                        <Ionicons name="send" size={22} color={theme.light_background}/>
+                        <Ionicons name="send" size={gobalFont.size.title*0.7} color={theme.light_background}/>
                     </ImageBackground>
             </TouchableHighlight>
 }
@@ -156,30 +155,29 @@ export const TextInputChat: React.FC<{
     placeholder?: string;
 }> = ({onChange, value, placeholder}) => {
     return <>
-        
-        <CustomSelectView width={responsiveValue("77%","82%") }aspectRatio={responsiveValue("6/1","10/1")} color={theme.tertiary_dark}>
+        <CustomSelectView width={responsiveValue("77%","82%","82%") }aspectRatio={responsiveValue("6/1","10/1","10/1")} color={theme.tertiary_dark}>
         <TextInput 
             selectionColor={theme.tertiary_dark}
             onChangeText={onChange}
             value={value}
-            style={{fontSize: 18}}
+            style={{fontSize: gobalFont.size.default}}
             placeholder={placeholder || ""}
             />
         </CustomSelectView>
     </>
-    
 }
 
 const getBorderRadiousOfmsg = (ofLoggedUser: boolean, firstInBatch: boolean) => {
+    const padding = responsiveValue(15,15,15)
     switch(true) {
         case ofLoggedUser && firstInBatch:
-            return `15px 15px 0px 15px`
+            return `${padding}px ${padding}px 0px ${padding}px`
         case ofLoggedUser && !firstInBatch:
-            return `15px 0px 0px 15px`
+            return `${padding}px 0px 0px ${padding}px`
         case !ofLoggedUser && firstInBatch:
-            return  `15px 15px 15px 0px`
+            return  `${padding}px ${padding}px ${padding}px 0px`
         case !ofLoggedUser && !firstInBatch:
-            return `0px 15px 15px 0px`
+            return `0px ${padding}px ${padding}px 0px`
     }
 }
 
@@ -206,7 +204,7 @@ export const Message: React.FC<{
         }}>
             <MessageView {...rest}>
                 <CustomText 
-                    size={16}
+                    size={gobalFont.size.default*0.8}
                     style={{textAlign:rest.ofLoggedUser ? "right" : "left"}} 
                     color={rest.ofLoggedUser ? theme.light_background : theme.main_background}
                         >{value}</CustomText>
@@ -231,7 +229,7 @@ export const TimesStampInfo: React.FC<{
                 <CustomText 
                     color={theme.tertiary_dark}
                     fontFam="MD"
-                    size={16}
+                    size={gobalFont.size.default*0.8}
                         >{getDateStringInfo(value)}</CustomText>
         </View> 
 }

@@ -32,7 +32,7 @@ export const CustomTextInput: React.FC<{
             secureTextEntry={hideText}
         />
         {
-            maxCharacters && <View style={{width: "100%", aspectRatio: responsiveValue("10/1","20/1"), alignItems: "flex-end"}}>
+            maxCharacters && <View style={{width: "100%", aspectRatio: responsiveValue("10/1","20/1","18/1"), alignItems: "flex-end"}}>
                 <CustomText color={theme.tertiary_dark}>{`${value? value.length : 0}/${maxCharacters}`}</CustomText>
             </View>
         }

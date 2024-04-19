@@ -1,3 +1,4 @@
+import { responsiveValue } from "@screens/globalstyle";
 import { TouchableHighlight, View, Image } from "react-native";
 import styled from "styled-components/native";
 
@@ -10,7 +11,7 @@ const AvaterWrapper = styled.TouchableHighlight<{
     overflow: hidden;
     border-color: ${p => p.borderColor};
     border-width: ${p => p.borderColor ? "2.5px" : "0"};
-    border-radius: 100px;
+    border-radius:  ${responsiveValue("100px","100px","300px")};
     margin: 9px;
 `;
 

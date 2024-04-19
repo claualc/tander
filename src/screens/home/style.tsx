@@ -3,13 +3,13 @@ import styled from "styled-components/native";
 import { View } from "react-native";
 import { Language } from "@domain/Language";
 import { User } from "@domain/User";
-import { responsiveValue, theme } from "@screens/globalstyle";
+import { gobalFont, responsiveValue, theme } from "@screens/globalstyle";
 import { AntDesign, Ionicons, SimpleLineIcons } from "@expo/vector-icons";
 import AlbumComponent from "@components/musicAlbum";
 
 
 export const UserDescWrapper = styled(Wrapper)`
-    padding: ${responsiveValue("0% 7% 0% 7%", "0% 12% 0% 12%")};
+    padding: ${responsiveValue("0% 7% 0% 7%", "0% 12% 0% 12%","0% 12% 0% 12%")};
     width: 100%;
     align-items: flex-start;
     position: relative;
@@ -40,7 +40,7 @@ export const LanguageView: React.FC<{
 
     return <ColorWrapper inColor={color}>
         <View style={{flex:1, alignItems: "center"}}>
-            <CustomText size={30}>{emoji}</CustomText>
+            <CustomText size={gobalFont.size.title*responsiveValue(0.6,1,1)}>{emoji}</CustomText>
         </View>
         <View style={{flex:4,justifyContent: "flex-start", alignItems: "flex-start"}}>
         <CustomText size={13}  color={color}>{title}</CustomText>
@@ -49,7 +49,7 @@ export const LanguageView: React.FC<{
                 lang?.length && lang.map((l, i) => {
                 return <CustomText 
                     key={i} 
-                    size={20} 
+                    size={gobalFont.size.title*0.6}
                     color={color} 
                     fontFam="DM" >{`${l.name}${lang.length-1==i ? "" : ","} `}</CustomText>})
             }
@@ -67,19 +67,19 @@ export const UserDetails: React.FC<{
         { show && <>
             {/* ######### BASIC INFO SECTION */}
             <UserDecSections>
-                <CustomText size={30} fontFam="BD">{user?.shortusername || ""}</CustomText>
-                <CustomText  size={30}>{" " + user?.yearsOld}</CustomText>
+                <CustomText size={gobalFont.size.default*1.8} fontFam="BD">{user?.shortusername || ""}</CustomText>
+                <CustomText  size={gobalFont.size.default*1.8}>{" " + user?.yearsOld}</CustomText>
             </UserDecSections>
             <UserDecSections>
-                <AntDesign name="book" size={24} color={theme.tertiary_dark} />
+                <AntDesign name="book" size={gobalFont.size.default*1.5} color={theme.tertiary_dark} />
                 <CustomText color={theme.tertiary_dark}>{" " + user?.courseName}</CustomText>
             </UserDecSections>
             <UserDecSections>
-                <Ionicons name="earth-outline" size={24} color={theme.tertiary_dark} />
+                <Ionicons name="earth-outline" size={gobalFont.size.default*1.5} color={theme.tertiary_dark} />
                 <CustomText color={theme.tertiary_dark}>{` ${user?.countryName}`}</CustomText>
             </UserDecSections>
             <UserDecSections>
-                <SimpleLineIcons name="graduation" size={24} color={theme.tertiary_dark} />
+                <SimpleLineIcons name="graduation" size={gobalFont.size.default*1.5} color={theme.tertiary_dark} />
                 <CustomText color={theme.tertiary_dark}>{" " +  user?.universityName}</CustomText>
             </UserDecSections>
 
@@ -100,8 +100,8 @@ export const UserDetails: React.FC<{
 
             {/* ######### BIO  */}
             {user?.bio && <Section>
-                <CustomText size={20} fontFam="DM" color={theme.secondary_dark}>Qualcosa di me</CustomText>
-                    <CustomText size={17}  style={{marginTop: 10}}>
+                <CustomText size={gobalFont.size.default*1.2} fontFam="DM" color={theme.secondary_dark}>Qualcosa di me</CustomText>
+                    <CustomText size={gobalFont.size.default}  style={{marginTop: 10}}>
                         {user?.bio}
                     </CustomText>
                 </Section>
@@ -109,7 +109,7 @@ export const UserDetails: React.FC<{
 
             {/* ######### ALBUM SECTION  */
                 (user?.musicInterest) ? <Section style={{width: "100%"}}>
-                    <CustomText size={20} fontFam="DM" color={theme.secondary_dark}>On repeat</CustomText>
+                    <CustomText size={gobalFont.size.default*1.2} fontFam="DM" color={theme.secondary_dark}>On repeat</CustomText>
                         <AlbumComponent
                             artistName={user?.MIArtistName || ""}
                             albumName={user?.MIAlbumName || ""} 

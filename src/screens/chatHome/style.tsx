@@ -1,13 +1,13 @@
 import { CustomText } from "@components/index";
 import { Dimensions, Image, TouchableHighlight, View } from "react-native";
 import styled from "styled-components/native";
-import { theme } from "@screens/globalstyle";
+import { gobalFont, theme } from "@screens/globalstyle";
 import SmallLoading from "@imgs/loading_small.gif";
 import { responsiveValue } from "@screens/globalstyle";
 
 export const Title: React.FC<React.PropsWithChildren> = ({children}) => {
-    return <View style={{width: "100%", flex: 2,flexDirection:"row", alignItems: "flex-end"}}>
-        <CustomText>{children}</CustomText>
+    return <View style={{ width: "100%", flex: 2,flexDirection:"row", alignItems: "flex-end"}}>
+        <CustomText size={gobalFont.size.default*1.2}>{children}</CustomText>
       </View>
 }
 
@@ -63,13 +63,13 @@ export const ItemChat: React.FC<React.PropsWithChildren<{
 export const ItemChatImg = styled.View`
     width: 100%;
     height: 100%;
-    flex: ${responsiveValue(2, 1.5)};
+    flex: ${responsiveValue(2, 1.5, 2)};
 `
 
 export const ItemChatDescription = styled.View`
     width: 100%;
     height: 100%;
-    padding:${responsiveValue( "5%","0% 0% 0% 5%")};
+    padding:${responsiveValue( "5%","0% 0% 0% 5%","0% 0% 0% 0%")};
     border-color: ${p => p.theme.secondary_background};
     border-bottom-width: 0.7px;
     justify-content: flex-start;

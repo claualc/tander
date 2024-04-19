@@ -11,6 +11,7 @@ import CreateUserService from '@serv/userService/create';
 import { routeNames } from '@screens/stackNavigator/routes';
 import { stackNavigateTo } from '@screens/stackNavigator/navigateService';
 import { FormsInputs } from '@components/forms/components/formDTOs';
+import { responsiveValue } from '@screens/globalstyle';
 
 
 const initQuest = registerQuestions()
@@ -57,8 +58,8 @@ const RegisterScreen = () => {
           justifyContent: "flex-start",
           alignItems: "center",
           flexDirection: "column",
-          paddingLeft: "8%",
-          paddingRight:"8%",
+          paddingLeft: responsiveValue("8%","8%", "15%"),
+          paddingRight:responsiveValue("8%","8%", "15%"),
           position: "relative",
           zIndex: 0,
         }}>

@@ -70,7 +70,7 @@ const CustomSelect: React.FC<SelectComponentProps> = ({
         }}
         width={width}
         color={color_}>
-            <View style={{ flex: responsiveValue(11,20) }}>
+            <View style={{ flex: responsiveValue(11,20,20) }}>
             {
                 valueName ?
                 <CustomText color={color_}>{valueName}</CustomText>

@@ -139,13 +139,13 @@ export const Forms: React.FC<{
                         }}
                         name={"chevron-back-outline"} 
                         color={theme.main_dark}
-                        size={40}
+                        size={responsiveValue(40,40,60)}
                         style={{margin:0}}
                         />
                 </BackButtonWrapper>
 
                 <FormsWrapper>
-                    <View style={{marginBottom: responsiveValue("0%", "0%")}} >
+                    <View style={{marginBottom: responsiveValue("0%", "0%","0%")}} >
                         <Title>{currentPage.title}</Title>
                         {currentPage.subtitle && 
                             <Subtitle>{currentPage.subtitle}</Subtitle>}
@@ -162,7 +162,7 @@ export const Forms: React.FC<{
                         <View style={{
                             justifyContent: "center",
                             alignItems: "center",
-                            marginBottom: responsiveValue(gobalFont.size.default,gobalFont.size.default*1.5)}}>
+                            marginBottom: responsiveValue(gobalFont.size.default,gobalFont.size.default*1.5,gobalFont.size.default*1.5)}}>
                         { (q.inputType == inputTypes.TEXT) ?
                             <CustomTextInput 
                                 onChange={v => {

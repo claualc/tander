@@ -24,7 +24,6 @@ import OnFocusProfileIcon from "@imgs/bottomTab/on_focus_profile.png";
 import ChatIcon from "@imgs/bottomTab/chat.png"; 
 import OnFocusChatIcon from "@imgs/bottomTab/on_focus_chat.png"; 
 
-
 // routes
 export const auth_routes = [
     { name: HOME_SCREEN, component: HomeScreen ,icon: HomeIcon, onFocusIcon:OnFocusHomeIcon, showInTab: true },

@@ -128,7 +128,7 @@ export const panRes = (
                             pan,
                             {toValue: {
                                 x: INITIAL_GESTURE_VALS.pan.x,
-                                y: INITIAL_GESTURE_VALS.pan.y-responsiveValue(0.05, 0.05)*height
+                                y: INITIAL_GESTURE_VALS.pan.y-responsiveValue(0.05, 0.05,0.05)*height
                             }, useNativeDriver: true}, // Back to zero
                         )
                     ]

@@ -12,7 +12,7 @@ export interface BulletpointSelectOption {
 
 const Item = styled.View`
     width: 100%;
-    aspect-ratio: ${responsiveValue("5/1","7/1")};
+    aspect-ratio: ${responsiveValue("5/1","7/1","7/1")};
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
@@ -59,11 +59,11 @@ const BulletpointSelect: React.FC<{
                         <Item>
                             <Bullet selected={i==val}>
                                 <CustomText 
-                                    size={ responsiveValue(30,38)}>{op.emoji}</CustomText>
+                                    size={ responsiveValue(30,38,38)}>{op.emoji}</CustomText>
                             </Bullet>
                             <Description style={{flex: 4}}>
                                 <CustomText 
-                                    size={ responsiveValue(gobalFont.size.small,gobalFont.size.default)} 
+                                    size={ responsiveValue(gobalFont.size.small,gobalFont.size.default,gobalFont.size.default)} 
                                     color={i==val ? theme.tertiary :theme.tertiary_dark}>
                                     <CustomText 
                                         color={i==val ? theme.tertiary :theme.tertiary_dark}

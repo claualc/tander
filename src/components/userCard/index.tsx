@@ -5,7 +5,7 @@ import EmptyImage from "@imgs/empty_image.png";
 import BlackBottomBlur from "@imgs/black_blur_user_card.png";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { INITIAL_GESTURE_VALS, coordsI, panRes } from "./PanResponder";
-import { responsiveValue, theme } from "@screens/globalstyle";
+import { gobalFont, responsiveValue, theme } from "@screens/globalstyle";
 import { User } from "@domain/User";
 
 import UnLikedGif from "@imgs/unliked_user.gif";
@@ -91,7 +91,7 @@ const Card: React.FC<CardProps> = ({
         <ActionGif source={LikedGif} x={animationGifCoords?.swipeRigth.x} y={animationGifCoords?.swipeRigth.y} />
     }
     <Animated.View {...panResponder.panHandlers}  style={{
-        width:responsiveValue("85%",`60%`),
+        width:responsiveValue("85%",`60%`,`60%`),
         aspectRatio: "2/2.8",
         justifyContent: "center",
         alignItems: "center",
@@ -175,8 +175,8 @@ const Card: React.FC<CardProps> = ({
                 !isScrolledUp && 
                 <UserDataView>
                     <View style={{ width: "100%", display:"flex",flexDirection:"row",justifyContent: "flex-start", alignItems:"center"}}>
-                        <CustomText color={theme.text_ligth_primary} size={25} fontFam={"BD"}>{user.shortusername+" "}</CustomText>
-                        <CustomText color={theme.text_ligth_primary} size={25}>{user.yearsOld}</CustomText>
+                        <CustomText size={gobalFont.size.default} color={theme.text_ligth_primary} fontFam={"BD"}>{user.shortusername+" "}</CustomText>
+                        <CustomText size={gobalFont.size.default} color={theme.text_ligth_primary}>{user.yearsOld}</CustomText>
                     </View>
                     <Chip textColor={theme.text_ligth_primary} >{`${user.countryFlag} ${user.countryName}`}</Chip>
                     <Chip textColor={theme.text_ligth_primary} >{"Spritz"}</Chip>

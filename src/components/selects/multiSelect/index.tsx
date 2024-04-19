@@ -83,7 +83,7 @@ const CustomMultiSelect: React.FC<{
                     options={options} />
                 </View>
                 <View style={{
-                    flex: responsiveValue(2.4, 1.2),
+                    flex: responsiveValue(2.4, 1.2, 1.8),
                         height: "100%",alignItems: "flex-end"}}>
                         <TouchableOpacity 
                             style={{justifyContent: "flex-end", flex:1}}

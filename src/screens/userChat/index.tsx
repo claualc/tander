@@ -4,7 +4,7 @@ import { ChatContent, ChatInput, HeaderInfo, Message, NoContent, SendMessageButt
 import { UserMAtchInfoDTO } from "@serv/matchServices";
 import chatServices from "@serv/chatServices";
 import { ChatDTO, MsgStates } from "@serv/chatServices/DTOs";
-import { ScrollView, View } from "react-native";
+import { Modal, ScrollView, View } from "react-native";
 import { LoggedUserContext, UserContextType } from "@context/user";
 import { stackGetParams, stackNavigateTo } from "@screens/stackNavigator/navigateService";
 import { routeNames } from "@screens/stackNavigator/routes";
@@ -86,7 +86,7 @@ const ChatMessagingScreen = () => {
     }
   }, [])
 
-  return <ScreenView style={{zIndex: 0}}>
+  return <Modal style={{zIndex: 2,position: "absolute", top: 0, width: "100%", height:"100%"}}>
     <HeaderInfo 
       photoUrl={matchInfo?.targetUser.profilePhoto.value}
       username={matchInfo?.targetUser.username}
@@ -126,7 +126,7 @@ const ChatMessagingScreen = () => {
       <SendMessageButton 
         onPress={sendMessage} />
     </ChatInput>
-  </ScreenView>;
+  </Modal>;
 }
 
 export default ChatMessagingScreen;

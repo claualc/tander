@@ -1,6 +1,6 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { ThemeProvider } from 'styled-components/native';
-import { View } from 'react-native';
+import { Dimensions, View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
 
@@ -40,7 +40,6 @@ const App: React.FC = () => {
   if (!fontsLoaded) {
     return null;
   }
-
 
   return (
     <View style={{

@@ -13,7 +13,7 @@ import LoadingGif from "@imgs/loading.gif";
   ROOT COMPONENTS:
     - top components in the html
 */
-export const BOTTOM_TABNAV_HEIGTH = responsiveValue(10,13); //%
+export const BOTTOM_TABNAV_HEIGTH = responsiveValue(10,13, 13); //%
 
 export const RootScreenView = styled.View<{
   showBottomNavigatior: boolean;
@@ -138,7 +138,7 @@ const LoadingView = styled.View<{
   justify-content: center;
   align-items: center;
   width: ${p => p.width || "100%"};
-  height:  ${p => p.height || `${DEV_DIM.height*0.2}px`};
+  height:  ${p => p.height || `${DEV_DIM.height*0.3}px`};
 `
 export const Loading: React.FC<{
   width?: string;

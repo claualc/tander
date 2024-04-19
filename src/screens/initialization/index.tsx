@@ -20,13 +20,13 @@ const InitializationScreen = () => {
       resizeMode='cover'>
 
         <View style={{width: "100%", flex: 2, justifyContent: "center", alignItems: 'center'}}>
-          <View style={{ width:  responsiveValue("30%","20%") ,position:'relative', top: "10%", aspectRatio:1, borderRadius: 30, overflow: 'hidden'}}>
+          <View style={{ width:  responsiveValue("30%","20%","29%") ,position:'relative', top: "10%", aspectRatio:1, borderRadius: 30, overflow: 'hidden'}}>
             <Image source={AppIcon} style={{flex:1,width: "100%"}} resizeMode='contain'/>
           </View>
         </View>
         <View style={{width: "100%", flex: 2, alignItems: 'center'}}>
-          <View style={{width: responsiveValue("85%","55%") ,// the other one is medium
-            aspectRatio: "3/1.4",
+          <View style={{width: responsiveValue("85%","55%","55%") ,// the other one is medium
+            aspectRatio: responsiveValue("3/1.4","3/1.4","3/1.5"),
             alignItems: 'center',
             justifyContent: 'space-between'}}>
             <CustomText 

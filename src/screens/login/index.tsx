@@ -8,6 +8,7 @@ import { LoggedUserContext, UserContextType } from '@context/user';
 import authService from '@serv/authService';
 import { stackNavigateTo } from '@screens/stackNavigator/navigateService';
 import { routeNames } from '@screens/stackNavigator/routes';
+import { responsiveValue } from '@screens/globalstyle';
 
 export enum LoginFormPageId {
       INIT,
@@ -53,7 +54,7 @@ const LoginScreen = () => {
       setLoading(true)
   }, [])
 
-  return  <ScreenView style={{padding: "8%"}} testID='screen-login'>
+  return  <ScreenView style={{padding: responsiveValue("8%","8%","15%")}} testID='screen-login'>
       <Forms 
           totalPagesCount={pages.length}
           onSend={onSend}

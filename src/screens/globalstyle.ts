@@ -27,7 +27,8 @@ export const theme = {
 export enum SCREEN_TYPES {
     SMALL="SMALL",
     MEDIUM="MEDIUM",
-    BIG="BIG"
+    BIG="BIG",
+    LANDSCAPE="LANDSCAPE"
 }
 
 export const DEV_DIM = Dimensions.get("window")
@@ -40,21 +41,23 @@ const devicesWindowTypes = () => {
     switch(true) {
         case aspectRatio < 0.3:
             return SCREEN_TYPES.SMALL
-        case aspectRatio < 0.7:
-            return SCREEN_TYPES.SMALL
-        case aspectRatio > 0.7 && aspectRatio < 1.2:
+        case aspectRatio < 0.65:
             return SCREEN_TYPES.MEDIUM
-        case  aspectRatio > 1.2:
+        case aspectRatio > 0.65 && aspectRatio < 1:
             return SCREEN_TYPES.BIG
+        case  aspectRatio > 1:
+            return SCREEN_TYPES.LANDSCAPE
     }
 }
 
-export const responsiveValue: (v1: any, v2: any) => any = (v1, v2) => {
+export const responsiveValue: (v1: any, v2: any, v3: any) => any = (v1, v2,v3) => {
     switch(DEVICE_WINDOW_TYPE) {
         case SCREEN_TYPES.SMALL:
             return v1;
         case SCREEN_TYPES.MEDIUM:
             return v2;
+        case SCREEN_TYPES.BIG:
+            return v3;
         default:
             return v1;
     }
@@ -64,15 +67,14 @@ export const DEVICE_WINDOW_TYPE = devicesWindowTypes()
 console.log("    DEVICE_WINDOW_TYPE", DEVICE_WINDOW_TYPE)
 
 // to keep the responsiveness
-const textInputSize= 22;
-const dimX = Dimensions.get("window").width
+const textInputSize= responsiveValue(22,22, 32);
 export const gobalFont = {
     size: {
-        default: 18, // equivalent to 16/18 em ,
-        title: 30,
-        small: 16,
+        default: responsiveValue(18,18, 25), // equivalent to 16/18 em ,
+        title: responsiveValue(30,30, 45),
+        small: responsiveValue(16,16, 20),
         textInput: textInputSize,
-        dateInput: responsiveValue(textInputSize,textInputSize*1.2)
+        dateInput: responsiveValue(textInputSize,textInputSize*1.2, textInputSize*1)
     }
 };
 

@@ -8,7 +8,7 @@ import { gobalFont, responsiveValue } from "@screens/globalstyle";
 // actual shape of select modal 
 export const Card = styled.View`
     background-color: white;
-    width: ${responsiveValue("88%", "75%")};
+    width: ${responsiveValue("88%", "75%", "75%")};
     border-radius: 20px;
     overflow: hidden;
     align-items: center;

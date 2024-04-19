@@ -3,7 +3,7 @@ import { Ionicons, SimpleLineIcons } from "@expo/vector-icons";
 import { TouchableHighlight, View } from "react-native";
 
 import { CustomText } from "@components/index";
-import { theme } from "@screens/globalstyle";
+import { gobalFont, theme } from "@screens/globalstyle";
 import { convertHexToRGBA, getRandomColor } from "@components/utils";
 import { useState } from "react";
 import { responsiveValue } from "@screens/globalstyle";
@@ -18,9 +18,9 @@ export const CenteredView = styled.View`
 export const MainWrapper = styled.View`
   justify-content: flex-end;
   align-items: center;
-  flex: ${responsiveValue(1.9,2.3)}; 
+  flex: ${responsiveValue(1.9,2.3,2.3)}; 
   width: 110%;
-  padding-bottom:${responsiveValue("7%", "5%")};
+  padding-bottom:${responsiveValue("7%", "5%","5%")};
   z-index: 3;
   position: relative;
 `;
@@ -40,7 +40,7 @@ export const ItemView = styled.View<{
   showBottomBorder: boolean;
 }>`
     width: 100%;
-    padding: ${responsiveValue("4% 0% 4% 0%","2.3% 0% 2.3% 0%")};
+    padding: ${responsiveValue("4% 0% 4% 0%","2.3% 0% 2.3% 0%","2.3% 0% 2.3% 0%")};
     border-color: ${p => p.theme.secondary_background};
     border-bottom-width:  ${p => p.showBottomBorder ? "0.7px" : 0};;
     justify-content: flex-start;
@@ -51,7 +51,7 @@ export const ItemView = styled.View<{
 export const Button = styled.View<{
   color: string
 }>`
-  width:${responsiveValue("55%", "40%")};
+  width:${responsiveValue("55%", "40%","40%")};
   aspect-ratio: 1;
   justify-content: flex-start;
   align-items: center;
@@ -75,7 +75,7 @@ export const Item: React.FC<Props> = ({title, icon, onPress, noBorder=false}: Pr
         underlayColor="#0000">
       <ItemView showBottomBorder={!noBorder}>
         <View style={{flex: 5, flexDirection: "row"}}>
-            <SimpleLineIcons name={icon as any} size={20} color={theme.tertiary_dark} />
+            <SimpleLineIcons name={icon as any} size={gobalFont.size.title*0.8} color={theme.tertiary_dark} />
             <CustomText>{`  ${title}`}</CustomText>
         </View>
         <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
@@ -85,10 +85,10 @@ export const Item: React.FC<Props> = ({title, icon, onPress, noBorder=false}: Pr
                   <Ionicons style={{
                     position: "relative",
                     left: "0%",
-                    top: responsiveValue("20%", "22%")}}
+                    top: responsiveValue("20%", "22%","20%")}}
                     name="chevron-down-outline"
                     color={color}
-                    size={responsiveValue(20, 22)}/>
+                    size={responsiveValue(20, 22,32)}/>
             </Button>
         </View>
   </ItemView>
@@ -106,7 +106,7 @@ export const LogOutItem: React.FC<{
             onPress={onPress}>
               <ItemView showBottomBorder={false}>
        <View style={{flex: 5, flexDirection: "row"}}>
-          <SimpleLineIcons name="logout" size={20} color={theme.tertiary_dark} />
+          <SimpleLineIcons name="logout" size={gobalFont.size.title*0.8} color={theme.tertiary_dark} />
           <CustomText>{"  Log Out"}</CustomText>
       </View>
       <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>

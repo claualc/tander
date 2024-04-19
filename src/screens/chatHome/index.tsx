@@ -9,9 +9,9 @@ import { ItemChat, ItemChatDescription, ItemChatImg, NoContent, Title, UnreadCha
 import { ChatParams } from "../userChat";
 import chatServices from "@serv/chatServices";
 import { ChatDTO, MessageDTO, MsgStates } from "@serv/chatServices/DTOs";
-import { stackNavigateTo, stackReplaceTo } from "@screens/stackNavigator/navigateService";
+import { stackNavigateTo } from "@screens/stackNavigator/navigateService";
 import { routeNames } from "@screens/stackNavigator/routes";
-import { DEV_DIM, responsiveValue } from "@screens/globalstyle";
+import { DEV_DIM, gobalFont, responsiveValue } from "@screens/globalstyle";
 
 
 const ChatScreen = () => {
@@ -71,15 +71,15 @@ const ChatScreen = () => {
       }))
   }, []);
 
-  return <ScreenView style={{paddingLeft: "5%", paddingRight: "5%", paddingTop: responsiveValue("15%", "5%")}}>
-    <View style={{ flex: responsiveValue(3.5, 4), width: "100%",flexDirection: "column"}}>
+  return <ScreenView style={{paddingLeft: "5%", paddingRight: "5%", paddingTop: responsiveValue("15%", "5%","10%")}}>
+    <View style={{ flex: responsiveValue(3.5, 4,10), width: "100%",flexDirection: "column"}}>
       <Title>New Matches</Title>
       <View style={{ flex: 6, overflow: "hidden"}}>
       {
         !newMatchesDTOs?.length ? 
           <NoContent
-              paddingTop={responsiveValue("9%","7%")}
-              imgSize={responsiveValue("90%","110%")}
+              paddingTop={responsiveValue("9%","7%","7%")}
+              imgSize={responsiveValue("90%","110%","110%")}
               loading={newMatchesDTOs==null}>
                 {"no new matches 💔"}
           </NoContent> 
@@ -90,7 +90,7 @@ const ChatScreen = () => {
                 {
                   newMatchesDTOs.map((info, i) => <View key={i} style={{alignItems: "center"}} >
                     <Avatar 
-                      width={`${DEV_DIM.width*responsiveValue(0.2, 0.12)}px`}
+                      width={`${DEV_DIM.width*responsiveValue(0.2, 0.12,0.13)}px`}
                       imgURL={info.targetUser.profilePhoto.value}
                       onPress={() => {openChat(info)}} />
                       <CustomText>{info.targetUser.username}</CustomText>
@@ -100,14 +100,14 @@ const ChatScreen = () => {
       }
       </View>
     </View>
-    <View style={{flex: responsiveValue(9, 9), width: "100%", flexDirection: "column"}}>
+    <View style={{flex: responsiveValue(9, 9, 20), width: "100%", flexDirection: "column"}}>
       <Title>Messages</Title>
       <View style={{overflow: "hidden", flex: 28}}>
         {
           !chatDTOs?.length ? 
             <NoContent
-              paddingTop={responsiveValue("10%","8%")}
-              imgSize={responsiveValue("30%","30%")}
+              paddingTop={responsiveValue("10%","8%","8%")}
+              imgSize={responsiveValue("30%","30%","30%")}
               loading={chatDTOs==null}>
                 {"talk with someone!!"}
             </NoContent>
@@ -117,12 +117,12 @@ const ChatScreen = () => {
                     .map((info, i) => <ItemChat key={i} onPress={() => openChat(info)}>
                     <ItemChatImg>
                       <Avatar 
-                        width={`${DEV_DIM.width*responsiveValue(0.17, 0.13)}px`}
+                        width={`${DEV_DIM.width*responsiveValue(0.17, 0.13,0.15)}px`}
                         imgURL={info.targetUser.profilePhoto.value}
                         onPress={() => {}} />
                     </ItemChatImg>
                     <ItemChatDescription style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
-                      <CustomText>{info.targetUser.username}</CustomText>
+                      <CustomText size={gobalFont.size.default}>{info.targetUser.username}</CustomText>
                       { (chatsLastsMsgs[i] && chatsLastsMsgs[i].state==MsgStates.UNREAD &&  chatsLastsMsgs[i].user != loggedUser.id) ?
                          <UnreadChatAlert /> : <></>}
                     </ItemChatDescription>

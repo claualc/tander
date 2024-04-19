@@ -108,9 +108,9 @@ const EditProfileScreen = () => {
 
   return (userAttribute != ProfileFormPageId.NONE) ?
   <ScreenView style={{
-    paddingLeft: "8%",
-    paddingRight:"8%",
-    paddingTop: responsiveValue("15%", "3%") }}>
+    paddingLeft: responsiveValue("8%","8%","15%"),
+    paddingRight:responsiveValue("8%","8%","15%"),
+    paddingTop: responsiveValue("15%", "3%","13%") }}>
       <Forms 
         totalPagesCount={1} // only one page per attribute
         pages={[formQuestions.pages[userAttribute]]}
@@ -127,18 +127,18 @@ const EditProfileScreen = () => {
           shadowOffset: { height: 10, width:0} }}>
           <Avatar 
             borderColor={theme.main}
-            width={responsiveValue("35%", "20%")}
+            width={responsiveValue("35%", "20%","27%")}
             imgURL={loggedUser?.photos[0]?.value}
             onPress={() => {setUserAttribute(ProfileFormPageId.PHOTOS)}} />
-          <View style={{marginTop: responsiveValue("3%", "1%")}}>
-            <CustomText size={22}>{`${loggedUser?.shortusername}, ${loggedUser?.yearsOld} `}</CustomText>
+          <View style={{marginTop: responsiveValue("3%", "1%", "1%")}}>
+            <CustomText size={gobalFont.size.default}>{`${loggedUser?.shortusername}, ${loggedUser?.yearsOld} `}</CustomText>
           </View>
       </MainWrapper>
 
       <View style={{flex: 3, width: "100%", alignItems: "center"}}>
         <ScrollView style={{width: "100%", flexDirection: "column"}}>
           <DescriptionView>
-            <CustomText size={responsiveValue( gobalFont.size.small,gobalFont.size.default)} style={{textAlign: "center"}} color={theme.tertiary_dark}>Here you can modify informations from your profile. Some are unchangeable for your security!</CustomText>
+            <CustomText size={responsiveValue(gobalFont.size.small,gobalFont.size.default,gobalFont.size.default)} style={{textAlign: "center"}} color={theme.tertiary_dark}>Here you can modify informations from your profile. Some are unchangeable for your security!</CustomText>
           </DescriptionView>
           <CenteredView style={{height: "100%", paddingRight: "6%",paddingLeft: "6%", justifyContent: "flex-start"}}>
             <Item 

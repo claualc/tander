@@ -49,7 +49,7 @@ export const AnimationView = styled.View<{
     x: number;
     y: number;
 }>`
-    width: ${responsiveValue("40%", "25%")};
+    width: ${responsiveValue("40%", "25%","25%")};
     aspect-ratio: 1/1;
     z-index: 100000;
     position: absolute;

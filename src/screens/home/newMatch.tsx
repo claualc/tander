@@ -50,9 +50,9 @@ const NewMatchView: React.FC<{
                         zIndex: 2000,
                         alignItems: "center",
                     }}>
-                <CustomText style={{marginBottom: responsiveValue(10, 20)}} size={gobalFont.size.title} color={theme.light_background}>NEW MAAAAAATCH</CustomText>
+                <CustomText style={{marginBottom: responsiveValue(10, 20,20)}} size={gobalFont.size.title} color={theme.light_background}>NEW MAAAAAATCH</CustomText>
                 <Avatar 
-                      width={`${DEV_DIM.width*responsiveValue(0.40, 0.30)}px`}
+                      width={`${DEV_DIM.width*responsiveValue(0.40, 0.30,0.30)}px`}
                       imgURL={match.photos[0].value}
                       onPress={() => {}} />
                 <CustomText size={gobalFont.size.title} color={theme.light_background} >{match.username}</CustomText>
