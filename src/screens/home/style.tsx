@@ -39,11 +39,11 @@ export const LanguageView: React.FC<{
 }> = ({ lang, emoji, title, color }) => {
 
     return <ColorWrapper inColor={color}>
-        <View style={{flex:1, alignItems: "center"}}>
+        <View style={{flex:responsiveValue(1,1,2.5), alignItems: "center"}}>
             <CustomText size={gobalFont.size.title*responsiveValue(0.6,1,1)}>{emoji}</CustomText>
         </View>
         <View style={{flex:4,justifyContent: "flex-start", alignItems: "flex-start"}}>
-        <CustomText size={13}  color={color}>{title}</CustomText>
+        <CustomText size={gobalFont.size.default}  color={color}>{title}</CustomText>
             <View style={{flex:2, flexWrap: "wrap", flexDirection: "row"}}>
             {
                 lang?.length && lang.map((l, i) => {
@@ -67,8 +67,8 @@ export const UserDetails: React.FC<{
         { show && <>
             {/* ######### BASIC INFO SECTION */}
             <UserDecSections>
-                <CustomText size={gobalFont.size.default*1.8} fontFam="BD">{user?.shortusername || ""}</CustomText>
-                <CustomText  size={gobalFont.size.default*1.8}>{" " + user?.yearsOld}</CustomText>
+                <CustomText size={gobalFont.size.default*responsiveValue(1,0.8,1.8)} fontFam="BD">{user?.shortusername || ""}</CustomText>
+                <CustomText  size={gobalFont.size.default*responsiveValue(0.8,0.8,1.8)}>{" " + user?.yearsOld}</CustomText>
             </UserDecSections>
             <UserDecSections>
                 <AntDesign name="book" size={gobalFont.size.default*1.5} color={theme.tertiary_dark} />
@@ -84,7 +84,7 @@ export const UserDetails: React.FC<{
             </UserDecSections>
 
             {/* ######### LANGUAGES SECTION */}
-            <Section style={{justifyContent: "flex-start",width:"100%"}}>
+            <Section style={{justifyContent: "flex-start",width:responsiveValue("100%","100%","40%")}}>
             <LanguageView 
                 lang={user?.langKnown} 
                 emoji={"🤓"} 

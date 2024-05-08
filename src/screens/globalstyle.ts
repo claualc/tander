@@ -39,9 +39,9 @@ const devicesWindowTypes = () => {
     console.log("    DEVICE ASCPECT RATIO",aspectRatio)
 
     switch(true) {
-        case aspectRatio < 0.3:
-            return SCREEN_TYPES.SMALL
         case aspectRatio < 0.65:
+            return SCREEN_TYPES.SMALL
+        case  aspectRatio < 0.65:
             return SCREEN_TYPES.MEDIUM
         case aspectRatio > 0.65 && aspectRatio < 1:
             return SCREEN_TYPES.BIG

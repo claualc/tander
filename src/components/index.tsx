@@ -96,7 +96,7 @@ const ChipWrapper = styled.View<PropsChip>`
 export const Chip: React.FC<React.PropsWithChildren<PropsChip>> = (
   {children, textColor, ...rest}) => (
   <ChipWrapper {...rest}>
-    <CustomText color={textColor}>
+    <CustomText size={gobalFont.size.default*0.9} color={textColor}>
       {children}
     </CustomText>
   </ChipWrapper>
