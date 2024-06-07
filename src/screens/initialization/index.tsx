@@ -2,8 +2,7 @@
 import React from 'react';
 import { Image, ImageBackground, View } from 'react-native';
 
-import LoginBackground from "@imgs/login_background.png";
-import AppIcon from "@imgs/icon.png";
+import LoginBackground from "@imgs/linear_gradient_background2.png";
 
 import { CustomText, ScreenView } from '@components/index';
 import { CustomSelectTouchable } from '@components/selects/select/style';
@@ -11,6 +10,7 @@ import { gobalFont, responsiveValue, theme } from '../globalstyle';
 import { stackNavigateTo } from '@screens/stackNavigator/navigateService';
 import { routeNames } from '@screens/stackNavigator/routes';
 
+import WhiteIconName from "@imgs/logo/icon_name/TYPO-LOGO-sembg_branco.png";
 
 const InitializationScreen = () => {
   return  <ScreenView testID='screen-initialization'>
@@ -19,18 +19,18 @@ const InitializationScreen = () => {
       style={{flex:1, width: "100%"}} 
       resizeMode='cover'>
 
-        <View style={{width: "100%", flex: 2, justifyContent: "center", alignItems: 'center'}}>
-          <View style={{ width:  responsiveValue("30%","20%","29%") ,position:'relative', top: "10%", aspectRatio:1, borderRadius: 30, overflow: 'hidden'}}>
-            <Image source={AppIcon} style={{flex:1,width: "100%"}} resizeMode='contain'/>
+        <View style={{width: "100%", flex: 1.5, justifyContent: "flex-end",marginBottom: responsiveValue("20%","15%","15%"), alignItems: 'center'}}>
+          <View style={{ width:  responsiveValue("62%","20%","29%") ,position:'relative', top: "10%", aspectRatio:2/1, overflow: 'hidden'}}>
+            <Image source={WhiteIconName} style={{flex:1,width: "100%"}} resizeMode='contain'/>
           </View>
         </View>
         <View style={{width: "100%", flex: 2, alignItems: 'center'}}>
-          <View style={{width: responsiveValue("85%","55%","55%") ,// the other one is medium
-            aspectRatio: responsiveValue("3/1.4","3/1.4","3/1.5"),
+          <View style={{width: responsiveValue("80%","55%","55%") ,// the other one is medium
+            aspectRatio: responsiveValue("2.3/1.4","3/1.4","3/1.5"),
             alignItems: 'center',
             justifyContent: 'space-between'}}>
             <CustomText 
-              size={gobalFont.size.small}
+              size={gobalFont.size.small*0.9}
               color={theme.light_background}>
               If you already have an account
               </CustomText>
@@ -44,7 +44,7 @@ const InitializationScreen = () => {
             </CustomSelectTouchable>
 
             <CustomText 
-              size={gobalFont.size.small}
+              size={gobalFont.size.small*0.9}
               color={theme.light_background}>
               or, if you are new here
               </CustomText>

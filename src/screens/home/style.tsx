@@ -9,7 +9,7 @@ import AlbumComponent from "@components/musicAlbum";
 
 
 export const UserDescWrapper = styled(Wrapper)`
-    padding: ${responsiveValue("0% 7% 0% 7%", "0% 12% 0% 12%","0% 12% 0% 12%")};
+    padding: ${responsiveValue("1% 7% 0% 7%", "0% 12% 0% 12%","0% 12% 0% 12%")};
     width: 100%;
     align-items: flex-start;
     position: relative;
@@ -28,7 +28,7 @@ export const Section = styled.View`
     align-items: flex-start;
     flex-direction: column;
     align-items: flex-start;
-    margin-top: 30px;
+    margin-top: 10px;
 `
 
 export const LanguageView: React.FC<{
@@ -67,8 +67,8 @@ export const UserDetails: React.FC<{
         { show && <>
             {/* ######### BASIC INFO SECTION */}
             <UserDecSections>
-                <CustomText size={gobalFont.size.default*responsiveValue(1,0.8,1.8)} fontFam="BD">{user?.shortusername || ""}</CustomText>
-                <CustomText  size={gobalFont.size.default*responsiveValue(0.8,0.8,1.8)}>{" " + user?.yearsOld}</CustomText>
+                <CustomText size={gobalFont.size.default*responsiveValue(1.5,0.8,1.8)} fontFam="BD">{user?.shortusername || ""}</CustomText>
+                <CustomText  size={gobalFont.size.default*responsiveValue(1.4,0.8,1.8)}>{" " + user?.yearsOld}</CustomText>
             </UserDecSections>
             <UserDecSections>
                 <AntDesign name="book" size={gobalFont.size.default*1.5} color={theme.tertiary_dark} />

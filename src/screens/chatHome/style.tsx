@@ -29,7 +29,7 @@ export const NoContent: React.FC<React.PropsWithChildren<{
 }>> = ({children, loading=false, imgSize, paddingTop}) => {
     return <NoContentView paddingTop={paddingTop}>
         {
-            loading ? <View style={{ height: imgSize as any, zIndex: 10}}>
+            true ? <View style={{ height: imgSize as any, zIndex: 10}}>
                 <Image resizeMode="contain" source={SmallLoading} style={{ flex: 1 }} />
             </View> :
             <CustomText color={theme.tertiary_dark}>{children}</CustomText>
@@ -49,7 +49,7 @@ export const ItemChat: React.FC<React.PropsWithChildren<{
     onPress: () => void
 }>> = ({children, onPress}) => {
     return <TouchableHighlight
-        activeOpacity={0.6}
+        activeOpacity={0.1}
         onPress={onPress}
         underlayColor="#0000"
         style={{

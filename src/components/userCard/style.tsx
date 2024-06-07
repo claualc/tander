@@ -8,7 +8,7 @@ interface ChipProps {
     currentPhoto: boolean;
 }
 
-const chipMaxWidth = 95;
+const chipMaxWidth = 90;
 const chipMargin = 2;
 
 export const PhotoSwipeChips = styled.View<ChipProps>`
@@ -49,8 +49,8 @@ export const AnimationView = styled.View<{
     x: number;
     y: number;
 }>`
-    width: ${responsiveValue("40%", "25%","25%")};
-    aspect-ratio: 1/1;
+    width: ${responsiveValue("70%", "25%","25%")};
+    aspect-ratio: 1;
     z-index: 100000;
     position: absolute;
     top: ${p => p.y+"%" };
@@ -66,6 +66,6 @@ export const ActionGif : React.FC<{
         x={x}
         y={y}
         >
-            <ImageBackground style={{flex:1}} source={source} />
+            <ImageBackground resizeMode="contain" style={{flex:1}} source={source} />
     </AnimationView>
 }

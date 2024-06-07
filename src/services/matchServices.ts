@@ -159,7 +159,7 @@ export const onUserMatchAction = async (user: User, fact: MatchFactory, liked: b
         ]
 
         sendPushNotification(
-            "Tander",
+            "Typo",
             matchNotMessages[Math.round(Math.random())],
             {},
             user.FCMPushNotificationsToken
@@ -198,6 +198,7 @@ const userUnLiked = async (loggedUser: User, userLiked: User) => {
 
 const listUsersForMatching = async (userId: string, count: number, lastLoadedUserId?: string) => {
 
+    console.log("listUsersForMatching count",count)
     let p: PaginationInfo = {
         limit: count,
     } 

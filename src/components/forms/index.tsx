@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useState, useCallback, useMemo, useEffect, useContext } from "react";
 import { ScrollView, View } from "react-native";
 
-import { gobalFont, responsiveValue, theme } from "@screens/globalstyle";
+import { DEV_DIM, gobalFont, responsiveValue, theme } from "@screens/globalstyle";
 import CustomDateInput from "@components/forms/components/CustomDateInput";
 import CustomPhotoBatchInputs from "@components/forms/components/CustomPhotoBatchInputs";
 import { CustomTextInput, CustomCodeInput } from "@components/forms/components/CustomSimpleInputs";
@@ -14,7 +14,7 @@ import CustomMultiSelect from "@components/selects/multiSelect";
 import CustomSelect from "@components/selects/select";
 import { FormsInputs, FormsPage, FormsQuestion, inputTypes } from "./components/formDTOs";
 import MusicInterectAsyncSelect from "@components/selects/musicInterectAsyncSelect";
-import { CustomText } from "@components/index";
+import { CustomText, ScrollDownAlarm } from "@components/index";
 import { CustomError } from "./errors";
 
 export const Forms: React.FC<{
@@ -116,13 +116,13 @@ export const Forms: React.FC<{
                 onClose && onClose()
                 setLocalButtonLoading(false)
             } else if (nextId==totalPagesCount) {
-                setSendForms(true)
                 await Promise.all(validToSend)
+                setSendForms(true)
             } else {
+                await Promise.all(validToSend)
                 setLocalButtonLoading(false)
                 setCurrentPageId(nextId)
                 onNextPage && onNextPage(nextId)
-                await Promise.all(validToSend)
             }
         } catch (e) {
             if (e instanceof CustomError)
@@ -131,7 +131,17 @@ export const Forms: React.FC<{
         }
     }, [currentPageId,inputs]);
 
-    return <ScrollView style={{width: "100%"}}>
+    const [showScrollIndication, setScrollIndication] = useState(false);
+
+    return <ScrollView 
+                indicatorStyle="black"
+                showsVerticalScrollIndicator={true}
+                style={{width: "100%"}}
+                onContentSizeChange={(width, heigth) => {
+                    setScrollIndication(heigth/DEV_DIM.height >= 0.99)
+                }}>
+
+        
                 <BackButtonWrapper>
                     <Ionicons 
                         onPress={() => {
@@ -143,6 +153,10 @@ export const Forms: React.FC<{
                         style={{margin:0}}
                         />
                 </BackButtonWrapper>
+                <ScrollDownAlarm 
+                    bottom="12%"
+                    left="86%"
+                    show={showScrollIndication}/>
 
                 <FormsWrapper>
                     <View style={{marginBottom: responsiveValue("0%", "0%","0%")}} >
@@ -264,5 +278,6 @@ export const Forms: React.FC<{
                         title={onSendButtonTitle}
                         disabled={disableButton}/>
                 </CenterWrapping>
+                
         </ScrollView>
 }

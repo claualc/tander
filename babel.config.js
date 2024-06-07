@@ -5,7 +5,15 @@ module.exports = function(api) {
       ['@babel/preset-env', {targets: {node: 'current'}}],
       '@babel/preset-typescript',
       ['module:metro-react-native-babel-preset']],
+    overrides: [{
+      "plugins": [
+        ["@babel/plugin-transform-private-methods", {
+        "loose": true
+      }]
+      ]
+    }],
     plugins: [
+      
       [
          'module-resolver',
          {

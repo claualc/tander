@@ -19,13 +19,22 @@ const ContextProvider: React.FC<{children: React.ReactNode, loggedUserId?: strin
   const [loadedCounter, setLoadedCounter] = useState<number>(0);
 
   const loadMoreMatches = useCallback(async () => {
-    if (loggedUserId) {
-        let lastUser =potentialMatches[potentialMatches?.length-1]
+    if (!!loggedUserId) {
+        let lastUser = potentialMatches.length ? potentialMatches[0] : null
+        console.log("lastuser",lastUser?.username, lastUser?.id)
         setPotentialMatches([])
     
-        let users: User[] = await matchServices.listUsersForMatching(loggedUserId,POT_MATCH_BATCH_LIMIT+1,lastUser?.id)
+        let users: User[] = await matchServices.listUsersForMatching(loggedUserId,POT_MATCH_BATCH_LIMIT+2,lastUser?.id)
+        console.log("users length", users.length)
+        let removed = users[users.length-1]
+        if (lastUser?.id) {
+          console.log("removed", users.filter(u => u.id == lastUser.id)[0]?.id)
+          users = users.filter(u => u.id != lastUser.id)
+        }
+        console.log("users length", users.length)
         setLoadedCounter(loadedCounter+POT_MATCH_BATCH_LIMIT)
         setPotentialMatches(users.length ? users : [])
+        users.map((user: User, i) => console.log(user.username, user.id, i))
         console.log("  CONTEXT (match): ", users?.length, "potential matches found")
     }
   }, [loggedUserId,potentialMatches, POT_MATCH_BATCH_LIMIT, loadedCounter])

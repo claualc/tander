@@ -1,13 +1,16 @@
 import React from "react";
-import { useState } from "react";
-import { Image, View } from "react-native";
 import styled from "styled-components/native";
+import { useState } from "react";
+import { Image, ImageBackground, View } from "react-native";
+import { Ionicons } from '@expo/vector-icons';
 
 import { DEV_DIM,  gobalFont, responsiveValue, theme } from "@screens/globalstyle";
 import { convertHexToRGBA } from "@components/utils";
 
 import SmallLoading from "@imgs/loading_small.gif";
-import LoadingGif from "@imgs/loading.gif";
+import BigLoading from "@imgs/loading_big.gif";
+import LinearGradientBrackground from "@imgs/linear_gradient_background2.png";
+import GradientBackground from "@imgs/linear_gradient_background.png";
 
 /* 
   ROOT COMPONENTS:
@@ -144,9 +147,34 @@ export const Loading: React.FC<{
   width?: string;
   height?: string;
 }> = ({width,height}) => <LoadingView width={width} height={height}>
-      <Image source={SmallLoading} style={{ width: 100, height: 100 }} />
+      <Image source={SmallLoading} style={{ aspectRatio:1, height: "100%" }} />
   </LoadingView>
 
+export const ScrollDownAlarmBackground = styled.View<{
+  bottom: string;
+  left: string;
+}>`
+    width: 12%;
+    position: absolute;
+    z-index: 1000;
+    aspect-ratio: 1;
+    border-radius: 100px;
+    bottom: ${p => p.bottom || "12%"};
+    overflow: hidden;
+    left: ${p => p.left || "86%"};
+`
+
+export const ScrollDownAlarm: React.FC<{
+  show: boolean;
+  bottom: string;
+  left: string;
+}> = ({show, bottom, left}) => {
+    return show && <ScrollDownAlarmBackground bottom={bottom} left={left}>
+        <ImageBackground  style={{width: "100%", height: "100%", justifyContent: "center", alignContent: "center"}} source={GradientBackground}>
+            <Ionicons name="arrow-down-outline" style={{color: "white", position: "relative", left: "21%"}} size={gobalFont.size.title*0.9}/>
+        </ImageBackground>
+    </ScrollDownAlarmBackground>
+}
 
 export const LoadingComponent = () => {
   return <View
@@ -156,11 +184,11 @@ export const LoadingComponent = () => {
           position: "absolute",
           top: 0,
           right: 0,
-          backgroundColor: "blue",
           justifyContent: "center",
           alignItems: "center",
           zIndex: 100
       }}>
-          <Image source={LoadingGif} style={{ width: "30%", height: "30%" }} />
+        <ImageBackground style={{flex:1, position: "absolute",  width: "100%", height: "100%",}} resizeMode="cover" source={LinearGradientBrackground} />
+        <Image source={BigLoading} resizeMode="contain" style={{ width: "25%" }} />
   </View>
 }

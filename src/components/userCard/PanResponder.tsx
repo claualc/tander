@@ -27,13 +27,13 @@ const randomInside = (arr: number[]) => {
 }
 
 const getRandomCoordinateY = () => {
-    let heightTop = [10,20];
+    let heightTop = [5,20];
     return randomInside(heightTop)
 }
 
 const getRandomCoordinateX = (moveRigth:boolean) => {
-    let swipedRigt = [50,60]
-    let swipedLeft = [5,20]
+    let swipedRigt = [40,40]
+    let swipedLeft = [-5,0]
     
     return moveRigth ? 
             randomInside(swipedRigt)

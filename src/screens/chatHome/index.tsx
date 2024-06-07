@@ -76,10 +76,10 @@ const ChatScreen = () => {
       <Title>New Matches</Title>
       <View style={{ flex: 6, overflow: "hidden"}}>
       {
-        !newMatchesDTOs?.length ? 
+        !newMatchesDTOs?.length ?
           <NoContent
               paddingTop={responsiveValue("9%","7%","7%")}
-              imgSize={responsiveValue("90%","110%","110%")}
+              imgSize={responsiveValue("65%","110%","110%")}
               loading={newMatchesDTOs==null}>
                 {"no new matches 💔"}
           </NoContent> 
@@ -104,10 +104,10 @@ const ChatScreen = () => {
       <Title>Messages</Title>
       <View style={{overflow: "hidden", flex: 28}}>
         {
-          !chatDTOs?.length ? 
-            <NoContent
-              paddingTop={responsiveValue("10%","8%","8%")}
-              imgSize={responsiveValue("30%","30%","30%")}
+          !chatDTOs?.length ?
+          <NoContent
+              paddingTop={responsiveValue("20%","8%","8%")}
+              imgSize={responsiveValue("19%","30%","30%")}
               loading={chatDTOs==null}>
                 {"talk with someone!!"}
             </NoContent>

@@ -58,10 +58,11 @@ const FCMService = () => {
                 pushNotificationToken = token;
                 
                 console.log("..:: FCMService initiated")
+                console.log("      token:", pushNotificationToken)
                 console.log("      status:", existingStatus)
 
             } else {
-                console.log("..:: FCMService ERROR!")
+                console.log("..:: FCMService get token ERROR!")
                 console.log("      status:", finalStatus)
             }
 
@@ -81,6 +82,7 @@ const FCMService = () => {
 
         },
         getDeviceToken: () => {
+            console.log("..:: FCMService: push notification token saved",pushNotificationToken)
             return pushNotificationToken;
         }
     }

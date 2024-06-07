@@ -52,7 +52,7 @@ export const ChatContent = styled.View`
 
 export const Header = styled.View`
     width: 110%;
-    top: ${responsiveValue("-5%", 0, 0)};
+    top: ${responsiveValue("-8%", 0, 0)};
     position: relative;
     justify-content: center;
     align-items: center;
@@ -94,7 +94,7 @@ export const NoContentView = styled.View`
 `
 
 export const NoContent: React.FC<React.PropsWithChildren> = ({children}) => {
-    return <View style={{width: responsiveValue("60%","60%","50%"), position: "relative", top:"-7%"}}>
+    return <View style={{width: responsiveValue("65%","50%","60%"), position: "relative", top:"-7%"}}>
             <NoContentIcon style={{
                 elevation: 8,
                 backgroundColor: "#0000",
@@ -204,7 +204,7 @@ export const Message: React.FC<{
         }}>
             <MessageView {...rest}>
                 <CustomText 
-                    size={gobalFont.size.default*0.8}
+                    size={gobalFont.size.default}
                     style={{textAlign:rest.ofLoggedUser ? "right" : "left"}} 
                     color={rest.ofLoggedUser ? theme.light_background : theme.main_background}
                         >{value}</CustomText>

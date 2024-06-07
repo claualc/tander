@@ -31,6 +31,17 @@ const ContextProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
     /**
      * Preloading some information for the whole app
      */
+    if (!loggedUser_?.id) {
+      console.log("unlogged user")
+    } else {
+      console.log("logged user", loggedUser_.id)
+    }
+  },[loggedUser_])
+
+  useEffect(() => {
+    /**
+     * Preloading some information for the whole app
+     */
       (async () => {
           console.log("   INIT USER CONTEXT")
           await authService.setLoggedUser(logIn)

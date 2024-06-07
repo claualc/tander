@@ -4,13 +4,14 @@ import { ScrollView, View } from "react-native";
 import { DEV_DIM, gobalFont, responsiveValue, theme } from "@screens/globalstyle";
 import { User } from "@domain/User";
 import Card from "@components/userCard";
-import { CustomText, Loading, ScreenView } from "@components/index";
+import { CustomText, Loading, ScreenView, ScrollDownAlarm } from "@components/index";
 
 import { UserDetails } from "./style";
 import { LoggedUserContext, UserContextType } from "@context/user";
 import matchServices, { MatchState } from "@serv/matchServices";
 import { MatchContext, MatchContextType } from "@context/match";
 import NewMatchView from "./newMatch";
+import { isScrollUp } from "@components/userCard/motionDefinitions";
 
 const HomeScreen: React.FC = () => {
 
@@ -96,7 +97,7 @@ const HomeScreen: React.FC = () => {
         <View style={{flex:1 , justifyContent: "center", alignItems: "center", padding: responsiveValue("15%","15%","25%")}}>
           <CustomText size={gobalFont.size.default} style={{textAlign: "center"}} color={theme.tertiary_dark}>{"UAU!! You are a machine! \n\n\n You will have to wait for more users... 🥲"}</CustomText>
         </View> : uIndex == -1 ? 
-          <Loading height="100%"/> : 
+          <Loading height="13%" /> : 
                  
           <ScrollView 
             style={{width: "100%", position: "relative", zIndex: 0}} 
@@ -106,7 +107,7 @@ const HomeScreen: React.FC = () => {
                 <View style={{
                   alignItems: "center", 
                   width: "100%", 
-                  aspectRatio: seeDescription ?responsiveValue( "2/2.9","2/1.9","2/1.9") : DEV_DIM.width/DEV_DIM.height,
+                  aspectRatio: seeDescription ? responsiveValue( "2/2.9","2/1.9","2/1.9") : DEV_DIM.width/DEV_DIM.height,
                   position: "relative", 
                   overflow: "visible",
                   zIndex: 1}}>
@@ -129,7 +130,7 @@ const HomeScreen: React.FC = () => {
                         onHorizontalSwipe(false, user)
                         userSwiped(i);
                       }}
-                      top={responsiveValue("20%", "10%", "15%")}
+                      top={seeDescription?responsiveValue("18%", "10%", "15%"): responsiveValue("13%", "10%", "15%")}
                       isScrolledUp={seeDescription}
                       renderController={renderUserCards[i]}
                     /> )
@@ -137,6 +138,11 @@ const HomeScreen: React.FC = () => {
 
               </View>
               
+              <ScrollDownAlarm 
+                    bottom="22%"
+                    left="80%"
+                    show={!seeDescription}/>
+
               <UserDetails user={users[uIndex]} show={seeDescription} />
             </ScrollView>
       }

@@ -30,7 +30,7 @@ const BottomTabNavigator: React.FC<Props> = ({routes, onSelect, currentRoute}) =
           <View style={{
             flex: 1,
             height: responsiveValue(
-              (currentRoute === r.name) ? "79%" : "50%",
+              (currentRoute === r.name) ? "103%" : "65%",
               (currentRoute === r.name) ? "75%" : "46%",
               (currentRoute === r.name) ? "75%" : "46%",
             )

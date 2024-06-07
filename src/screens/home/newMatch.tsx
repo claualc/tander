@@ -1,10 +1,15 @@
+import { useContext, useEffect, useMemo, useState } from "react";
+import { Animated, Image, ImageBackground, Modal, TouchableHighlight, View } from "react-native";
+
 import Avatar from "@components/avatar";
 import { CustomText } from "@components/index";
 import { getRandomColor } from "@components/utils";
 import { User } from "@domain/User";
+
 import { DEV_DIM, gobalFont, responsiveValue, theme } from "@screens/globalstyle";
-import { useEffect, useMemo, useState } from "react";
-import { Animated, Modal, TouchableHighlight, View } from "react-native";
+import GradientBackground from "@imgs/linear_gradient_background2.png";
+import NewMatchMsg from "@imgs/new_match.png";
+import { LoggedUserContext, UserContextType } from "@context/user";
 
 const NewMatchView: React.FC<{
     onPress: () => void;
@@ -27,7 +32,11 @@ const NewMatchView: React.FC<{
         }
     }, [match])
 
-    return <Modal transparent={true} visible={!!match} style={{justifyContent: "center", alignItems: "center"}}>
+    const { loggedUser, setLoading } = useContext(LoggedUserContext) as UserContextType; 
+
+    return <Modal transparent={true} visible={!!match} style={{
+            height: "100%",
+            justifyContent: "center", alignItems: "center"}}>
         <TouchableHighlight
                 style={{
                     width: DEV_DIM.width,
@@ -35,6 +44,8 @@ const NewMatchView: React.FC<{
                     position: "absolute",
                     zIndex: 2000,
                     top: 0,
+                    flexDirection: "column",
+                    justifyContent: "space-around",
                     right: 0,}}
                 onPress={onPress}>
                 <View
@@ -50,12 +61,40 @@ const NewMatchView: React.FC<{
                         zIndex: 2000,
                         alignItems: "center",
                     }}>
-                <CustomText style={{marginBottom: responsiveValue(10, 20,20)}} size={gobalFont.size.title} color={theme.light_background}>NEW MAAAAAATCH</CustomText>
-                <Avatar 
-                      width={`${DEV_DIM.width*responsiveValue(0.40, 0.30,0.30)}px`}
-                      imgURL={match.photos[0].value}
-                      onPress={() => {}} />
-                <CustomText size={gobalFont.size.title} color={theme.light_background} >{match.username}</CustomText>
+                        
+                        <ImageBackground style={{flex:1, position: "absolute",  width: "100%", height: "100%",}} resizeMode="cover" source={GradientBackground} />
+                        
+
+                <View 
+                    style={{
+                        flexDirection: "row",
+                        paddingLeft: "4%",
+                        width: "100%",
+                        marginBottom: "20%",
+                        justifyContent: "center"}}>
+                    <Avatar 
+                        width={`${DEV_DIM.width*responsiveValue(0.39, 0.30,0.30)}px`}
+                        imgURL={match.photos[0].value}
+                        onPress={() => {}} />
+                    <Avatar 
+                        width={`${DEV_DIM.width*responsiveValue(0.39, 0.30,0.30)}px`}
+                        imgURL={loggedUser.photos[0].value}
+                        onPress={() => {}} />
+
+                    <Image 
+                        style={{
+                            position: "absolute",
+                            zIndex: 1000,
+                            width: "60%", 
+                            left: "22%",
+                            top: "48%",
+                            aspectRatio: 3/1}} 
+                            resizeMode="contain"
+                            source={NewMatchMsg} />
+                </View>    
+                <CustomText style={{textAlign: "center",width: "80%"}} size={gobalFont.size.default} color={theme.light_background} >{
+                    "Go to your messages to start practicing!"}</CustomText>
+                
             </View>
         </TouchableHighlight>
     </Modal>

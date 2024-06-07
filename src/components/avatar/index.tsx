@@ -12,7 +12,9 @@ const AvaterWrapper = styled.TouchableHighlight<{
     border-color: ${p => p.borderColor};
     border-width: ${p => p.borderColor ? "2.5px" : "0"};
     border-radius:  ${responsiveValue("100px","100px","300px")};
-    margin: 9px;
+    margin-top: 9px;
+    margin-bottom: 9px;
+    margin-right: 9px;
 `;
 
 export const Avatar: React.FC<{
