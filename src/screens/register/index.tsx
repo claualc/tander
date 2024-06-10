@@ -55,11 +55,10 @@ const RegisterScreen = () => {
         <View style={{
           flex: 23,
           width: "100%",
-          justifyContent: "flex-start",
           alignItems: "center",
           flexDirection: "column",
-          paddingLeft: responsiveValue("8%","8%", "15%"),
-          paddingRight:responsiveValue("8%","8%", "15%"),
+          paddingLeft: responsiveValue("8%","8%", "25%"),
+          paddingRight:responsiveValue("8%","8%", "25%"),
           position: "relative",
           zIndex: 0,
         }}>

@@ -17,6 +17,7 @@ import albumservice, { MusicInterestDTO } from "@serv/albumService";
 import { View } from "react-native";
 import AlbumComponent from "../../musicAlbum";
 import { LoggedUserContext, UserContextType } from "@context/user";
+import { responsiveValue } from "@screens/globalstyle";
 
 interface AsyncSelectProps {
     value?: MusicInterestDTO;
@@ -116,7 +117,7 @@ const MusicInterectAsyncSelect: React.FC<AsyncSelectProps> = ({
         </CustomSelectTouchable>
         {  
             trackInfo.albumName && trackInfo.artistName &&
-            <View style={{width: "100%", marginTop: "3%"}}>
+            <View style={{width: responsiveValue("100%","100%","60%"), marginTop: "3%"}}>
                 <AlbumComponent 
                     albumName={trackInfo.albumName}
                     artistName={trackInfo.artistName}

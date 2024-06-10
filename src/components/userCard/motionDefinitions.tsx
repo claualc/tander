@@ -1,9 +1,10 @@
+import { responsiveValue } from "@screens/globalstyle";
 import { Dimensions } from "react-native";
 
 // percentages of the movement of the card
 export const MAX_SCROLL_UP = 0.18; // vertical
 const MIN_SCROLL_UP = 0.075; // vertical
-const IS_SWIPE_MOVE = 0.50; // horizontal move
+const IS_SWIPE_MOVE = responsiveValue(0.50,0.50,0.17); // horizontal move
 const SCROLL_MOVE_MAX_DX = 0.099; // horizontal move
 
 interface gesture { dx: number; dy: number, x0: number; y0: number }

@@ -86,15 +86,18 @@ export const validateDate = (v: string) => {
             inputDate.getDate() == day && 
             inputDate.getMonth()+1 == month 
             && inputDate.getFullYear() == year)
-            
-        return isValidDatee && (todayDate>inputDate) 
+
+        const validBornYear = year > 1924 && 18 <= ((new Date()).getFullYear()-year)
+        return isValidDatee && (todayDate>inputDate) && validBornYear
     }
 
     return false
 }
 
-export const get2FirstDigitsYear = (v: string[]) => {
-    return v.toString().split("").length>=13 ? Number(v.slice(4,6).reduce((acc,v) => acc+v, "")) : null
+export const getYear = (v: string[]) => {
+    console.log(v.slice(4,8)?.filter(u => u != null && u != "").length == 4)
+    return v.toString().split("").length>=13 && v.slice(4,8)?.filter(u => u != null && u != "").length == 4 ?
+        Number(v.slice(4,8).reduce((acc,v) => acc+v, "")) : 0
 }
 
 export const cellphoneMask = (value?: string) => {

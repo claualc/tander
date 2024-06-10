@@ -32,7 +32,7 @@ const BottomTabNavigator: React.FC<Props> = ({routes, onSelect, currentRoute}) =
             height: responsiveValue(
               (currentRoute === r.name) ? "103%" : "65%",
               (currentRoute === r.name) ? "75%" : "46%",
-              (currentRoute === r.name) ? "75%" : "46%",
+              (currentRoute === r.name) ? "105%" : "60%",
             )
           }}>
             <Icon resizeMode='contain' source={(currentRoute === r.name) ? r.onFocusIcon : r.icon}  />

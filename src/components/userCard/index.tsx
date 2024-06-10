@@ -39,6 +39,7 @@ interface CardProps {
     renderController: boolean | undefined;
     user: User;
     top: string;
+    doNotScrollUp?: boolean;
 }
 
 const Card: React.FC<CardProps> = ({
@@ -50,10 +51,9 @@ const Card: React.FC<CardProps> = ({
         zIndex,
         renderController, 
         user,
-        top
+        top,
+        doNotScrollUp=false
     }) => {
-
-
 
     const getRandomActionGif = useCallback((liked: boolean) => {
         let userActionGifs = liked ? USER_ACTION_LIKED_GIFS : USER_ACTION_UNLIKED_GIFS
@@ -113,7 +113,7 @@ const Card: React.FC<CardProps> = ({
             onSwipeLeft ? onSwipeLeft : () => {},
             setAnimationGifCoords,
             setShowGif,
-            animationGifCoords)
+            doNotScrollUp)
         , [isScrolledUp]
     );
 
@@ -128,8 +128,11 @@ const Card: React.FC<CardProps> = ({
         <ActionGif source={likedAnimationGif} x={animationGifCoords?.swipeRigth.x} y={animationGifCoords?.swipeRigth.y} />
     }
     <Animated.View {...panResponder.panHandlers}  style={{
-        width:responsiveValue("90%",`60%`,`60%`),
-        aspectRatio: isScrolledUp ? "2/2.8" : "2/3.2",
+        width:responsiveValue("90%",`60%`,`75%`),
+        aspectRatio: responsiveValue(
+            isScrolledUp ? "2/2.8" : "2/3.2",
+            isScrolledUp ? "2/2.8" : "2/3.2",
+            "3/4.5"),
         justifyContent: "center",
         alignItems: "center",
         position: "absolute",
@@ -221,7 +224,11 @@ const Card: React.FC<CardProps> = ({
                     <Chip textColor={theme.text_ligth_primary} >{`${user.countryFlag} ${user.countryName}`}</Chip>
                     <Chip textColor={theme.text_ligth_primary} >{"Spritz"}</Chip>
 
-                    <View style={{ width: "100%", display:"flex",flexDirection:"row",justifyContent: "flex-start", alignItems:"center"}}>
+                    <View style={{ 
+                        width: "100%", 
+                        display:"flex",
+                        flexDirection:"row",
+                        justifyContent: "flex-start", alignItems:"center"}}>
                         { 
                             user.langKnown?.map((lang, i) => {
                             return <Chip textColor={theme.text_ligth_primary} key={i}>{lang.language_code.toLocaleUpperCase()}</Chip>})

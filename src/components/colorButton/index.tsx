@@ -1,6 +1,6 @@
 import { TouchableHighlight, View, ImageBackground, DimensionValue, ActivityIndicator } from "react-native";
 
-import { theme, gobalFont} from "@screens/globalstyle";
+import { theme, gobalFont, responsiveValue} from "@screens/globalstyle";
 import { CustomText } from "@components/index";
 import Gradient from "@imgs/linear_gradient_background.png";
 
@@ -15,7 +15,7 @@ export const ColorButton: React.FC<{
             style={{
                 borderRadius: gobalFont.size.textInput*1.5,
                 width: width as DimensionValue || "100%",
-                height: gobalFont.size.textInput*2.2,
+                height: gobalFont.size.textInput*responsiveValue(2.2,2.2,1.8),
                 overflow: 'hidden',
             }}
             activeOpacity={0.6}

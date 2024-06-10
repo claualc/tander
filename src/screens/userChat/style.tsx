@@ -20,7 +20,10 @@ export const HeaderInfo: React.FC<{
                 backgroundColor: "white",
                 shadowColor: "black",
                 shadowOffset: { height: 10, width:10} }}>
-        <View style={{flex: 1,paddingBottom: responsiveValue("2%","3%","3%"), height: "100%", justifyContent: "flex-end", alignItems: "center"}}>
+        <View style={{flex: 1,
+            paddingBottom: responsiveValue("2%","3%","3%"), 
+            height: "100%", 
+            justifyContent: "flex-end", alignItems: "center"}}>
                 <Ionicons 
                     onPress={onPressBackButton}
                     name={"chevron-back-outline"} 
@@ -29,7 +32,7 @@ export const HeaderInfo: React.FC<{
         </View>
         <View style={{ flex: 4, height: "100%", flexDirection: "row", justifyContent: "center", alignItems: "flex-end"}}>
           <View style={{width: "100%", alignItems: "center", justifyContent: "center", flexDirection: "row"}}>
-            <View style={{ marginRight: "4%", overflow: "hidden", width: responsiveValue("20%", "20%", "25%"), aspectRatio: 1, borderRadius: 300}}>
+            <View style={{ marginRight: "4%", overflow: "hidden", width: responsiveValue("20%", "20%", "15%"), aspectRatio: 1, borderRadius: 300}}>
                 <ImageBackground 
                     style={{flex: 1}}
                     source={{uri:  `data:image/jpeg;base64,${photoUrl || ""}`}}/>
@@ -57,12 +60,12 @@ export const Header = styled.View`
     justify-content: center;
     align-items: center;
     flex-direction: row;
-    flex: ${responsiveValue(4.5, 20,20)};
+    flex: ${responsiveValue(4.5, 20,30)};
     padding-bottom: ${responsiveValue("6%", "3%","3%")};
 `
 
 export const ChatInput = styled.View`
-    padding: 8% 5% 8% 5%;
+    padding: ${responsiveValue("8% 5% 8% 5%","8% 5% 8% 5%","4% 5% 5% 5%")};
     width: 100%;
     justify-content: center;
     align-items: center;
@@ -72,12 +75,13 @@ export const ChatInput = styled.View`
 `
 
 export const NoContentIcon = styled.View`
-    width: ${responsiveValue("30%","30%","22%")};
+    width: ${responsiveValue("30%","30%","17%")};
     aspect-ratio: 1;
     border-radius: 100px;
     position: relative;
     overflow: hidden;
-    left: ${responsiveValue("34%","34%","40%")};
+    left: ${responsiveValue("34%","34%","-6%")};
+    top: ${responsiveValue("0%","0%","63%")};
     z-index: 3;
 `
 
@@ -88,13 +92,13 @@ export const NoContentView = styled.View`
     border-radius: 25px;
     text-align: center;
     position: relative;
-    padding: 20% 5% 10% 5%;
+    padding: ${responsiveValue("20% 5% 10% 5%","20% 5% 10% 5%","5% 5% 3% 3%")};
     z-index: 0;
     top: -7%;
 `
 
 export const NoContent: React.FC<React.PropsWithChildren> = ({children}) => {
-    return <View style={{width: responsiveValue("65%","50%","60%"), position: "relative", top:"-7%"}}>
+    return <View style={{width: responsiveValue("65%","50%","50%"), position: "relative", top:"-7%"}}>
             <NoContentIcon style={{
                 elevation: 8,
                 backgroundColor: "#0000",
@@ -131,8 +135,8 @@ export const SendMessageButton: React.FC<{
     return <TouchableHighlight
                 onPress={onPress}
                 style={{
-                    width: responsiveValue("20%","15%","15%"),
-                    aspectRatio: responsiveValue("1.6/1", "2/1", "2/1.1"),
+                    width: responsiveValue("20%","15%","13%"),
+                    aspectRatio: responsiveValue("1.6/1", "2/1", "2.2/1"),
                     overflow: "hidden",
                     borderRadius: Dimensions.get("window").width*0.1,
                 }}>
@@ -155,7 +159,8 @@ export const TextInputChat: React.FC<{
     placeholder?: string;
 }> = ({onChange, value, placeholder}) => {
     return <>
-        <CustomSelectView width={responsiveValue("77%","82%","82%") }aspectRatio={responsiveValue("6/1","10/1","10/1")} color={theme.tertiary_dark}>
+        <CustomSelectView width={responsiveValue("77%","82%","82%") }
+        aspectRatio={responsiveValue("6/1","10/1","14/1")} color={theme.tertiary_dark}>
         <TextInput 
             selectionColor={theme.tertiary_dark}
             onChangeText={onChange}

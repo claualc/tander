@@ -30,22 +30,23 @@ const AlbumComponent = ({albumName, artistName, imageUrl}: Props) => {
 
 
   return (
-    loading ?
-      <LoadingCard />
-      : data ?
+    data ?
       <MainCard>
         <AlbumCoverWrapper>
-          <Image
-            style={{flex: 1}}
-            source={{uri: data.imageUrl}}
-          />
+        {loading ?
+          <LoadingCard />
+          :  <Image
+                style={{flex: 1}}
+                source={{uri: data.imageUrl}}
+              />
+        }
         </AlbumCoverWrapper>
         <AlbumCInfoWrapper>
           <CustomText fontFam='BD' color={theme.secondary_dark}>{cutText(data.name, 40)}</CustomText>
           <CustomText fontFam='RG' color={theme.tertiary_dark}>{data.artist.name}</CustomText>
         </AlbumCInfoWrapper>
       </MainCard>
-      :<LoadingCard></LoadingCard>
+      : <LoadingCard />
     );
 }
 

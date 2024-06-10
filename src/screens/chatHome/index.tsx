@@ -1,7 +1,7 @@
 import { ScrollView, View } from "react-native";
 import { useCallback, useContext, useEffect, useState } from "react";
 
-import { CustomText, ScreenView } from "@components/index";
+import { CustomText, ScreenView, ScrollDownAlarm } from "@components/index";
 import matchServices, { UserMAtchInfoDTO } from "@serv/matchServices";
 import { LoggedUserContext, UserContextType } from "@context/user";
 import { Avatar } from "@components/avatar";
@@ -71,43 +71,57 @@ const ChatScreen = () => {
       }))
   }, []);
 
-  return <ScreenView style={{paddingLeft: "5%", paddingRight: "5%", paddingTop: responsiveValue("15%", "5%","10%")}}>
-    <View style={{ flex: responsiveValue(3.5, 4,10), width: "100%",flexDirection: "column"}}>
+  return <ScreenView style={{
+    paddingLeft: "5%", 
+    paddingRight: "5%", 
+    paddingTop: responsiveValue("15%", "5%","5%")}}>
+    <View style={{ 
+        flex: responsiveValue(3.5, 4,9), width: "100%",flexDirection: "column"}}>
       <Title>New Matches</Title>
       <View style={{ flex: 6, overflow: "hidden"}}>
       {
         !newMatchesDTOs?.length ?
           <NoContent
               paddingTop={responsiveValue("9%","7%","7%")}
-              imgSize={responsiveValue("65%","110%","110%")}
+              imgSize={responsiveValue("65%","110%","60%")}
               loading={newMatchesDTOs==null}>
                 {"no new matches 💔"}
           </NoContent> 
           : <ScrollView
                 showsHorizontalScrollIndicator={false} 
                 horizontal={true}
-                contentContainerStyle={{flexDirection: "row", alignItems: "center"}}>
+                style={{flex: 1}}
+                contentContainerStyle={{
+                  flexDirection: "row", 
+                  paddingRight: `${DEV_DIM.width*0.01}%`,
+                  alignItems: "center"}}>
                 {
                   newMatchesDTOs.map((info, i) => <View key={i} style={{alignItems: "center"}} >
                     <Avatar 
-                      width={`${DEV_DIM.width*responsiveValue(0.2, 0.12,0.13)}px`}
+                      width={`${DEV_DIM.width*responsiveValue(0.2, 0.12,0.1)}px`}
                       imgURL={info.targetUser.profilePhoto.value}
                       onPress={() => {openChat(info)}} />
-                      <CustomText>{info.targetUser.username}</CustomText>
+                      <CustomText size={gobalFont.size.default*responsiveValue(0.9,0.9,1)}>{info.targetUser.username}</CustomText>
                     </View>)
                 }
               </ScrollView>
       }
       </View>
     </View>
-    <View style={{flex: responsiveValue(9, 9, 20), width: "100%", flexDirection: "column"}}>
+    <ScrollDownAlarm 
+        bottom={responsiveValue("7%","7%","7%")}
+        width={responsiveValue("","","6%")}
+        left={responsiveValue("90%","90%","88%")}
+        show={!!chatDTOs && chatDTOs?.length >= responsiveValue(6,6,2)}/>
+
+    <View style={{flex: responsiveValue(9, 9, 9), width: "100%", flexDirection: "column"}}>
       <Title>Messages</Title>
-      <View style={{overflow: "hidden", flex: 28}}>
+      <View style={{overflow: "hidden", flex: responsiveValue(28,28,10)}}>
         {
           !chatDTOs?.length ?
           <NoContent
-              paddingTop={responsiveValue("20%","8%","8%")}
-              imgSize={responsiveValue("19%","30%","30%")}
+              paddingTop={responsiveValue("20%","8%","2%")}
+              imgSize={responsiveValue("19%","30%","40%")}
               loading={chatDTOs==null}>
                 {"talk with someone!!"}
             </NoContent>
@@ -117,7 +131,7 @@ const ChatScreen = () => {
                     .map((info, i) => <ItemChat key={i} onPress={() => openChat(info)}>
                     <ItemChatImg>
                       <Avatar 
-                        width={`${DEV_DIM.width*responsiveValue(0.17, 0.13,0.15)}px`}
+                        width={`${DEV_DIM.width*responsiveValue(0.17, 0.13,0.1)}px`}
                         imgURL={info.targetUser.profilePhoto.value}
                         onPress={() => {}} />
                     </ItemChatImg>

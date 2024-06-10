@@ -2,7 +2,7 @@ import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { Image, ScrollView, View } from "react-native";
 import { gobalFont, responsiveValue, theme } from "../globalstyle";
 
-import { CustomText, ScreenView } from "@components/index";
+import { CustomText, ScreenView, ScrollDownAlarm } from "@components/index";
 import { LoggedUserContext, UserContextType } from "@context/user";
 import { CenteredView, DescriptionView, Item, ItemView, LogOutItem, MainWrapper } from "./styles";
 import { ProfileFormPageId, profileOptions } from "./components/settingOption";
@@ -110,7 +110,7 @@ const EditProfileScreen = () => {
   <ScreenView style={{
     paddingLeft: responsiveValue("8%","8%","15%"),
     paddingRight:responsiveValue("8%","8%","15%"),
-    paddingTop: responsiveValue("15%", "3%","13%") }}>
+    paddingTop: responsiveValue("15%", "3%","0%") }}>
       <Forms 
         totalPagesCount={1} // only one page per attribute
         pages={[formQuestions.pages[userAttribute]]}
@@ -125,22 +125,36 @@ const EditProfileScreen = () => {
           elevation: 10,
           shadowColor: "black",
           shadowOffset: { height: 10, width:0} }}>
-          <Avatar 
-            borderColor={theme.main}
-            width={responsiveValue("35%", "20%","27%")}
-            imgURL={loggedUser?.photos[0]?.value}
-            onPress={() => {setUserAttribute(ProfileFormPageId.PHOTOS)}} />
-          <View style={{marginTop: responsiveValue("3%", "1%", "1%")}}>
+          <View style={{
+            width: responsiveValue("35%", "20%","13%")}}>
+            <Avatar 
+              borderColor={theme.main}
+              imgURL={loggedUser?.photos?.length ? loggedUser?.photos[0]?.value : ""}
+              onPress={() => {setUserAttribute(ProfileFormPageId.PHOTOS)}} />
+            </View>
+            <View style={{marginTop: responsiveValue("3%", "1%", "1%")}}>
             <CustomText size={gobalFont.size.default}>{`${loggedUser?.shortusername}, ${loggedUser?.yearsOld} `}</CustomText>
           </View>
       </MainWrapper>
 
       <View style={{flex: 3, width: "100%", alignItems: "center"}}>
-        <ScrollView style={{width: "100%", flexDirection: "column"}}>
+        <ScrollView 
+          contentContainerStyle={{
+            height: responsiveValue("100%","100%","90%")
+          }}
+          style={{
+              width: "100%", 
+              flexDirection: "column"}}>
           <DescriptionView>
             <CustomText size={responsiveValue(gobalFont.size.small,gobalFont.size.default,gobalFont.size.default)} style={{textAlign: "center"}} color={theme.tertiary_dark}>Here you can modify informations from your profile. Some are unchangeable for your security!</CustomText>
           </DescriptionView>
-          <CenteredView style={{height: "100%", paddingRight: "6%",paddingLeft: "6%", justifyContent: "flex-start"}}>
+          <CenteredView style={{
+            height: "100%", 
+            paddingRight: "6%",
+            paddingLeft: "6%", 
+            flexWrap: "wrap",
+            alignItems: "flex-start",
+            justifyContent: "flex-start"}}>
             <Item 
               onPress={() => {setUserAttribute(ProfileFormPageId.PHONE_NUM_INPUT)}}
               icon={"phone"}

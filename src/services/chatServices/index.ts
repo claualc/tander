@@ -1,4 +1,4 @@
-import { collection, onSnapshot } from "firebase/firestore";
+import { onSnapshot } from "firebase/firestore";
 import dbService from "@firebaseServ/database";
 import { converter } from "@firebaseServ/database/converterDTO";
 import matchServices, { MatchFactory, UserMAtchInfoDTO } from "@serv/matchServices";

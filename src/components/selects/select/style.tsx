@@ -19,7 +19,7 @@ export const Card = styled.View`
     used in all select inputs:
         select, multiselect, asyncselect
 */
-export const PADDING_CUSTOM_SELECT =0.3
+export const PADDING_CUSTOM_SELECT=responsiveValue(0.3,0.3,0.1)
 export const CustomSelectView: React.FC<React.PropsWithChildren<{
     color: string;
     width?: string;
@@ -84,11 +84,11 @@ export const ItemView = styled.View<{
 `
 
 export const ItemImageWrap = styled.View`
-    width: 25%;
     aspect-ratio: 1;
     border-radius: 15px;
     margin-right: 5%;
     overflow: hidden;
+    width: ${responsiveValue("100%", "100%", "15%")};
 `
 
 export const Item: React.FC<React.PropsWithChildren<{

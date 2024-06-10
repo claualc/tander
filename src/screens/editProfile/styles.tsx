@@ -20,7 +20,8 @@ export const MainWrapper = styled.View`
   align-items: center;
   flex: ${responsiveValue(1.9,2.3,2.3)}; 
   width: 110%;
-  padding-bottom:${responsiveValue("7%", "5%","5%")};
+  padding-bottom:${responsiveValue("7%", "5%","2%")};
+  margin-top:${responsiveValue("0%", "0%","5%")};
   z-index: 3;
   position: relative;
 `;
@@ -30,7 +31,8 @@ export const DescriptionView = styled.View`
     background-color: ${p => p.theme.secondary_background};
     justify-content: center;
     align-items: center;
-    padding: 3% 5% 3% 5%;
+    padding: ${responsiveValue("3% 5% 3% 5%","3% 5% 3% 5%","1% 3% 1% 2%")};
+    margin-bottom: ${responsiveValue(0,0,"1%")};
     z-index: 0;
     position: relative;
   `;
@@ -40,7 +42,7 @@ export const ItemView = styled.View<{
   showBottomBorder: boolean;
 }>`
     width: 100%;
-    padding: ${responsiveValue("4% 0% 4% 0%","2.3% 0% 2.3% 0%","2.3% 0% 2.3% 0%")};
+    padding: ${responsiveValue("4% 0% 4% 0%","2.3% 0% 2.3% 0%","2.5% 0% 2.5% 0%")};
     border-color: ${p => p.theme.secondary_background};
     border-bottom-width:  ${p => p.showBottomBorder ? "0.7px" : 0};;
     justify-content: flex-start;
@@ -51,7 +53,7 @@ export const ItemView = styled.View<{
 export const Button = styled.View<{
   color: string
 }>`
-  width:${responsiveValue("55%", "40%","40%")};
+  width:${responsiveValue("55%", "40%","45%")};
   aspect-ratio: 1;
   justify-content: flex-start;
   align-items: center;
@@ -71,6 +73,9 @@ export const Item: React.FC<Props> = ({title, icon, onPress, noBorder=false}: Pr
 
     return <TouchableHighlight   
         onPress={onPress}
+        style={{
+          width: responsiveValue("100%","100%","50%")
+        }}
         activeOpacity={0.6}
         underlayColor="#0000">
       <ItemView showBottomBorder={!noBorder}>

@@ -29,7 +29,7 @@ export const NoContent: React.FC<React.PropsWithChildren<{
 }>> = ({children, loading=false, imgSize, paddingTop}) => {
     return <NoContentView paddingTop={paddingTop}>
         {
-            true ? <View style={{ height: imgSize as any, zIndex: 10}}>
+            loading ? <View style={{ height: imgSize as any, zIndex: 10}}>
                 <Image resizeMode="contain" source={SmallLoading} style={{ flex: 1 }} />
             </View> :
             <CustomText color={theme.tertiary_dark}>{children}</CustomText>
@@ -63,7 +63,7 @@ export const ItemChat: React.FC<React.PropsWithChildren<{
 export const ItemChatImg = styled.View`
     width: 100%;
     height: 100%;
-    flex: ${responsiveValue(2, 1.5, 2)};
+    flex: ${responsiveValue(2, 1.5, 1)};
 `
 
 export const ItemChatDescription = styled.View`

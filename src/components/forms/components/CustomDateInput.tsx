@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components/native";
 
 import { theme, gobalFont } from "@screens/globalstyle";
-import { get2FirstDigitsYear } from "@components/utils";
+import { getYear } from "@components/utils";
 import { CustomText } from "@components/index";
 
 
@@ -86,13 +86,17 @@ const CustomDateInput: React.FC<{
         })
     }
         {
-            get2FirstDigitsYear(values) == null || get2FirstDigitsYear(values) == 0 ?
+            ( getYear(values) == 0) ?
                 <CustomText size={fontSize}>😐</CustomText>
-                : get2FirstDigitsYear(values) == 20 ?
-                <CustomText size={fontSize}>👶</CustomText>
-                : get2FirstDigitsYear(values) == 19 ?
-                <CustomText size={fontSize}>🫣</CustomText>
-                : <CustomText size={fontSize}>💀</CustomText>
+                : values != null && getYear(values) >= (new Date()).getFullYear()?
+                    <CustomText size={fontSize}>⁉️</CustomText>
+                : values != null && getYear(values) >= (new Date()).getFullYear()-18 ?
+                    <CustomText size={fontSize}>🔞</CustomText>
+                    : getYear(values) >= 2000 ?
+                        <CustomText size={fontSize}>👶</CustomText>
+                        : getYear(values) <= 1924 ?
+                            <CustomText size={fontSize}>💀</CustomText>
+                           : <CustomText size={fontSize}>🫣</CustomText>
         }
      
     </View> 

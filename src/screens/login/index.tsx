@@ -54,7 +54,12 @@ const LoginScreen = () => {
       setLoading(true)
   }, [])
 
-  return  <ScreenView style={{padding: responsiveValue("8%","8%","15%")}} testID='screen-login'>
+  return  <ScreenView style={{
+    paddingTop: responsiveValue("8%","8%","0"),
+    paddingLeft: responsiveValue("8%","8%","22%"),
+    paddingRight: responsiveValue("8%","8%","22%"),
+    }} 
+      testID='screen-login'>
       <Forms 
           totalPagesCount={pages.length}
           onSend={onSend}

@@ -11,21 +11,25 @@ export const sendPushNotification = async(
     deviceToken: string
 ) => {
 
+
     try {
 
-        const res: AxiosResponse = await server.post(
-            "",
-            {
-                to: deviceToken,
-                sound: "default",
-                body: body,
-                data: { },
-                title: title
-            },
-        );
-        console.log(" PushNotSErver.sendPushNotification",res.data)
+    if (deviceToken) {
 
-        return res.data;
+            const res: AxiosResponse = await server.post(
+                "",
+                {
+                    to: deviceToken,
+                    sound: "default",
+                    body: body,
+                    data: { },
+                    title: title
+                },
+            );
+            console.log(" PushNotSErver.sendPushNotification",res.data)
+
+            return res.data;
+        }
 
     } catch(e) {
         if (e instanceof AxiosError)

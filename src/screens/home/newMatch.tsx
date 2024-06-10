@@ -43,7 +43,7 @@ const NewMatchView: React.FC<{
                     height: DEV_DIM.height,
                     position: "absolute",
                     zIndex: 2000,
-                    top: 0,
+                    top: "-2%",
                     flexDirection: "column",
                     justifyContent: "space-around",
                     right: 0,}}
@@ -62,22 +62,28 @@ const NewMatchView: React.FC<{
                         alignItems: "center",
                     }}>
                         
-                        <ImageBackground style={{flex:1, position: "absolute",  width: "100%", height: "100%",}} resizeMode="cover" source={GradientBackground} />
-                        
+                        <ImageBackground 
+                            style={{
+                                flex:1,
+                                position: "absolute", 
+                                width: "100%", 
+                                height: "100%",}} 
+                                resizeMode="cover" 
+                                source={GradientBackground} />
 
                 <View 
                     style={{
                         flexDirection: "row",
                         paddingLeft: "4%",
                         width: "100%",
-                        marginBottom: "20%",
+                        marginBottom: responsiveValue("20%","20%","10%"),
                         justifyContent: "center"}}>
                     <Avatar 
-                        width={`${DEV_DIM.width*responsiveValue(0.39, 0.30,0.30)}px`}
+                        width={`${DEV_DIM.width*responsiveValue(0.39, 0.30,0.20)}px`}
                         imgURL={match.photos[0].value}
                         onPress={() => {}} />
                     <Avatar 
-                        width={`${DEV_DIM.width*responsiveValue(0.39, 0.30,0.30)}px`}
+                        width={`${DEV_DIM.width*responsiveValue(0.39, 0.30,0.20)}px`}
                         imgURL={loggedUser.photos[0].value}
                         onPress={() => {}} />
 
@@ -85,9 +91,9 @@ const NewMatchView: React.FC<{
                         style={{
                             position: "absolute",
                             zIndex: 1000,
-                            width: "60%", 
-                            left: "22%",
-                            top: "48%",
+                            width: responsiveValue("60%","60%","35%"), 
+                            left: responsiveValue("22%","22%","37%"),
+                            top: responsiveValue("48%","48%","70%"),
                             aspectRatio: 3/1}} 
                             resizeMode="contain"
                             source={NewMatchMsg} />

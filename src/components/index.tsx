@@ -147,14 +147,16 @@ export const Loading: React.FC<{
   width?: string;
   height?: string;
 }> = ({width,height}) => <LoadingView width={width} height={height}>
-      <Image source={SmallLoading} style={{ aspectRatio:1, height: "100%" }} />
+      <Image 
+        source={SmallLoading} style={{ aspectRatio:1, height: "50%" }} />
   </LoadingView>
 
 export const ScrollDownAlarmBackground = styled.View<{
   bottom: string;
+  width?: string;
   left: string;
 }>`
-    width: 12%;
+    width: ${p => p.width || "12%"};
     position: absolute;
     z-index: 1000;
     aspect-ratio: 1;
@@ -167,9 +169,10 @@ export const ScrollDownAlarmBackground = styled.View<{
 export const ScrollDownAlarm: React.FC<{
   show: boolean;
   bottom: string;
+  width?: string;
   left: string;
-}> = ({show, bottom, left}) => {
-    return show && <ScrollDownAlarmBackground bottom={bottom} left={left}>
+}> = ({show, bottom, left, width}) => {
+    return show && <ScrollDownAlarmBackground width={width} bottom={bottom} left={left}>
         <ImageBackground  style={{width: "100%", height: "100%", justifyContent: "center", alignContent: "center"}} source={GradientBackground}>
             <Ionicons name="arrow-down-outline" style={{color: "white", position: "relative", left: "21%"}} size={gobalFont.size.title*0.9}/>
         </ImageBackground>

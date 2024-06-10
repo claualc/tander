@@ -133,7 +133,13 @@ export const Forms: React.FC<{
 
     const [showScrollIndication, setScrollIndication] = useState(false);
 
-    return <ScrollView 
+    return <>
+        <ScrollDownAlarm 
+            bottom={responsiveValue("12%","12%","7%")}
+            left={responsiveValue("86%","86%","170%")}
+            show={showScrollIndication}/>
+
+        <ScrollView 
                 indicatorStyle="black"
                 showsVerticalScrollIndicator={true}
                 style={{width: "100%"}}
@@ -153,11 +159,7 @@ export const Forms: React.FC<{
                         style={{margin:0}}
                         />
                 </BackButtonWrapper>
-                <ScrollDownAlarm 
-                    bottom="12%"
-                    left="86%"
-                    show={showScrollIndication}/>
-
+            
                 <FormsWrapper>
                     <View style={{marginBottom: responsiveValue("0%", "0%","0%")}} >
                         <Title>{currentPage.title}</Title>
@@ -278,6 +280,6 @@ export const Forms: React.FC<{
                         title={onSendButtonTitle}
                         disabled={disableButton}/>
                 </CenterWrapping>
-                
-        </ScrollView>
+            </ScrollView>
+        </>
 }

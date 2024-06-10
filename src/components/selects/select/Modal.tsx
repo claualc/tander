@@ -90,8 +90,8 @@ const SelectModal: React.FC<{
                     // background color must be set
                     backgroundColor: "white",
                     paddingLeft: "10%",
-                    paddingTop: "5%",
-                    paddingBottom: "5%",
+                    paddingTop: responsiveValue("5%","5%","2%"),
+                    paddingBottom: responsiveValue("5%","5%","2%"),
                     position: "relative",
                     justifyContent: "center",
                 }}>
@@ -111,7 +111,7 @@ const SelectModal: React.FC<{
                         width: "100%",
                         paddingLeft: "5%",
                         paddingRight: "5%",
-                        maxHeight: "70%",
+                        maxHeight: responsiveValue("70%","70%","50%"),
                         zIndex:0,
                         position: "relative"
                     }}>

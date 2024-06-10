@@ -42,21 +42,15 @@ const ContextProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
     /**
      * Preloading some information for the whole app
      */
-      (async () => {
-          console.log("   INIT USER CONTEXT")
-          await authService.setLoggedUser(logIn)
+    (async () => {
+      console.log("   INIT USER CONTEXT")
+      await authService.setLoggedUser(logIn)
 
-          // FCMService.schedulePushNotification(
-          //   "teste",
-          //   "aaaaaa",
-          //   FCMService.getDeviceToken()
-          // )
-
-          let artistNames = await albumservice.searchArtists()
-          if (artistNames.length) {
-            setArtistOptionList(artistNames)
-          }
-      })()
+      let artistNames = await albumservice.searchArtists()
+      if (artistNames.length) {
+        setArtistOptionList(artistNames)
+      }
+    })()
   },[])
 
   const logIn = useCallback(async (id: string) => {

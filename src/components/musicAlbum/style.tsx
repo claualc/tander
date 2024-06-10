@@ -1,6 +1,7 @@
-import { gobalFont, theme } from "@screens/globalstyle";
-import { ActivityIndicator } from "react-native";
+import { Image } from "react-native";
 import styled from "styled-components/native";
+import Loading from "@imgs/loading_big.gif";
+import { theme } from "@screens/globalstyle";
 
 export const MainCard = styled.View`
     width:  100%;
@@ -28,14 +29,15 @@ export const AlbumCInfoWrapper = styled.View`
 
 export const LoadingCardView = styled.View`
     width:  100%;
-    aspect-ratio: 2/1;
+    height: 100%;
     justify-content: center;
     align-items: center;
+    background-color: ${theme.secondary_background};
 `
 
 export const LoadingCard = () => {
     return <LoadingCardView>
-        <ActivityIndicator size={gobalFont.size.title} color={theme.light_background} />
+        <Image source={Loading} resizeMode="contain" style={{width: "60%"}}/>
     </LoadingCardView>
 }
 

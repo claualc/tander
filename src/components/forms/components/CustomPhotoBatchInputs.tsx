@@ -84,7 +84,7 @@ const CustomPhotoBatchInputs: React.FC<{
                 return <View 
                         key={i}
                         style={{ 
-                            width: responsiveValue("50%","30%","30%"), 
+                            width: responsiveValue("50%","30%","25%"), 
                             aspectRatio: "3/4", 
                             position: "relative"}}>
                             <PhotoFrame 

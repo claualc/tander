@@ -56,7 +56,7 @@ export const responsiveValue: (v1: any, v2: any, v3: any) => any = (v1, v2,v3) =
             return v1;
         case SCREEN_TYPES.MEDIUM:
             return v2;
-        case SCREEN_TYPES.BIG:
+        case SCREEN_TYPES.LANDSCAPE:
             return v3;
         default:
             return v1;

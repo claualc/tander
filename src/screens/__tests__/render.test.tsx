@@ -2,13 +2,13 @@ import LoginScreen from '@screens/login';
 import { render,waitFor } from "@testing-library/react-native";
 import UserContext from "@context/user";
 import InitializationScreen from '@screens/initialization';
-import ProfileScreen from '@screens/profile';
 import HomeScreen from '@screens/home';
 import ChatScreen from '@screens/chatHome';
 import RegisterScreen from '@screens/register';
 import UserChatScreen from "@screens/userChat";
 import Main from '@screens/index';
 import { MatchContext } from '@context/match';
+import EditProfileScreen from '@screens/editProfile';
 
 describe("Render Components Test Suit", () => {
 
@@ -37,7 +37,7 @@ describe("Render Components Test Suit", () => {
   });
 
   test('EditProfileScreen render ', async () => {
-    const component = await render(<ProfileScreen/>);
+    const component = await render(<EditProfileScreen/>, {wrapper: UserContext});
 
     await waitFor(() => {
       expect(component).toBeDefined()

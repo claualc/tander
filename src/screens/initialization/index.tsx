@@ -19,14 +19,14 @@ const InitializationScreen = () => {
       style={{flex:1, width: "100%"}} 
       resizeMode='cover'>
 
-        <View style={{width: "100%", flex: 1.5, justifyContent: "flex-end",marginBottom: responsiveValue("20%","15%","15%"), alignItems: 'center'}}>
-          <View style={{ width:  responsiveValue("62%","20%","29%") ,position:'relative', top: "10%", aspectRatio:2/1, overflow: 'hidden'}}>
+        <View style={{ width: "100%", flex: responsiveValue(1.5,1.5,1), justifyContent: "flex-end",marginBottom: responsiveValue("20%","15%","5%"), alignItems: 'center'}}>
+          <View style={{ width:  responsiveValue("62%","20%","30%") ,position:'relative', top: "10%", aspectRatio:2/1, overflow: 'hidden'}}>
             <Image source={WhiteIconName} style={{flex:1,width: "100%"}} resizeMode='contain'/>
           </View>
         </View>
-        <View style={{width: "100%", flex: 2, alignItems: 'center'}}>
-          <View style={{width: responsiveValue("80%","55%","55%") ,// the other one is medium
-            aspectRatio: responsiveValue("2.3/1.4","3/1.4","3/1.5"),
+        <View style={{width: "100%",flex:responsiveValue(2,2,1), alignItems: 'center'}}>
+          <View style={{width: responsiveValue("80%","55%","25%") ,// the other one is medium
+            aspectRatio: responsiveValue("2.3/1.4","3/1.4","3/1.6"),
             alignItems: 'center',
             justifyContent: 'space-between'}}>
             <CustomText 

@@ -27,13 +27,13 @@ const randomInside = (arr: number[]) => {
 }
 
 const getRandomCoordinateY = () => {
-    let heightTop = [5,20];
+    let heightTop = [5,10];
     return randomInside(heightTop)
 }
 
 const getRandomCoordinateX = (moveRigth:boolean) => {
-    let swipedRigt = [40,40]
-    let swipedLeft = [-5,0]
+    let swipedRigt = responsiveValue([38,43],[38,43],[40,40])
+    let swipedLeft = responsiveValue([-7,-4],[-7,-4],[-5,0])
     
     return moveRigth ? 
             randomInside(swipedRigt)
@@ -52,7 +52,7 @@ export const panRes = (
     onSwipeLeft: () => void,
     setGifCoords: React.Dispatch<React.SetStateAction<coordsI>>,
     setShowGif: React.Dispatch<React.SetStateAction<boolean[]>>,
-    gifCoords: coordsI | null
+    doNotScrollUp?: boolean,
     ) => PanResponder.create({
 
     onMoveShouldSetPanResponder: () => true,
@@ -79,7 +79,7 @@ export const panRes = (
             });
 
             let motion = ges.dx/DEV_DIM.width;
-            if (Math.abs(motion) > 0.10) {
+            if (Math.abs(motion) > responsiveValue(0.10,0.10,0.05)) {
                 if (motion > 0)
                     setShowGif([false, true])
                 else 
@@ -118,7 +118,7 @@ export const panRes = (
                     ]
                     onSwipeLeft();
                     break;
-                case isScrollUp(ges):
+                case isScrollUp(ges) && !doNotScrollUp:
                     animations = [
                         Animated.spring(
                             scale,

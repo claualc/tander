@@ -3,7 +3,7 @@
     "name": "typo",
     "slug": "typo",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "default",
     "icon": "./assets/imgs/logo/icon/TYPO-LOGO-bgcor.png",
     "userInterfaceStyle": "light",
     "splash": {
