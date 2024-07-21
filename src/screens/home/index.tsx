@@ -102,7 +102,7 @@ const HomeScreen: React.FC = () => {
           padding: responsiveValue("15%","15%","0%")}}>
           <CustomText 
             size={gobalFont.size.default*responsiveValue(1,1,1.5)}
-            style={{textAlign: "center", backgroundColor: "red"}} 
+            style={{textAlign: "center"}} 
             color={theme.tertiary_dark}>{"UAU!! You are a machine! \n\n\n You will have to wait for more users... 🥲"}</CustomText>
         </View> : uIndex == -1 ? 
           <Loading height="13%" /> : 
